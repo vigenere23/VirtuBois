@@ -1,5 +1,5 @@
 package backend.domain;
 
-class Package {
+public class Package {
   
 }

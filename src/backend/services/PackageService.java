@@ -1,5 +1,5 @@
 package backend.services;
 
-class PackageService {
+public class PackageService {
   
 }

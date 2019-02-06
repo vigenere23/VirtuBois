@@ -1,5 +1,5 @@
 package backend;
 
-class LarmanController {
+public class LarmanController {
   
 }

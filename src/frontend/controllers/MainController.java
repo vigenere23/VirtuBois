@@ -1,5 +1,5 @@
 package frontend.controllers;
 
-class MainController {
+public class MainController {
 
 }

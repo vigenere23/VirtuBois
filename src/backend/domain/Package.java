@@ -1,7 +1,9 @@
+package backend.domain;
+
 import javafx.util.Pair;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Package
@@ -9,33 +11,24 @@ public class Package
     private double height;
     private double width;
     private double length;
-    private Date date;
-    private Time time;
+    private LocalDate date;
+    private LocalTime time;
     private Pair<String, String> type;
     private int barcode;
     private static final AtomicInteger count = new AtomicInteger(000000000000);
 
-
-    public Package(double p_height, double p_width, double p_length, Date p_date, Time p_time,
-                   Pair<String,String> p_type)
-    {
-        height = p_height;
-        width = p_width;
-        length = p_length;
-        date = p_date;
-        time = p_time;
-        type = p_type;
-        barcode = count.incrementAndGet();
-    }
-
-    public int getBarcode()
-    {
-        return barcode;
-    }
-
-    public Date getDate()
-    {
-        return date;
+    public Package(
+            double height, double width, double length,
+            LocalDate date, LocalTime time,
+            Pair<String,String> type
+    ) {
+        setHeight(height);
+        setWidth(width);
+        setLength(length);
+        setDate(date);
+        setTime(time);
+        setType(type);
+        setBarcode();
     }
 
     public double getHeight()
@@ -78,8 +71,20 @@ public class Package
         this.type = type;
     }
 
-    public Time getTime()
+    public LocalTime getTime()
     {
         return time;
+    }
+
+    public void setTime(LocalTime time) { this.time = time; }
+
+    public LocalDate getDate() { return this.date; }
+
+    public void setDate(LocalDate date) { this.date = date; }
+
+    public int getBarcode() { return this.barcode; }
+
+    public void setBarcode() {
+        this.barcode = count.incrementAndGet();
     }
 }

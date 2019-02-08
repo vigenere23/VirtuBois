@@ -1,0 +1,34 @@
+.dark {
+    -fx-background-color: #37474f;
+    -fx-text-fill: white;
+}
+
+.darker {
+    -fx-background-color: #263238;
+    -fx-text-fill: white;
+}
+
+.dark-button {
+    -fx-text-fill: white;
+    -fx-background-color: #263238;
+    -fx-font-size: 14px;
+    -fx-padding: 0.5em;
+    -fx-text-alignment: CENTER;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0, 0, 2);
+}
+
+.dark-button:hover {
+    -fx-cursor: hand;
+}
+
+.title {
+    -fx-font-size: 48px;
+    -fx-text-alignment: CENTER;
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+}
+
+.white-text {
+    -fx-text-fill: white;
+}

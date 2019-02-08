@@ -7,8 +7,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
   @Override
-  public void start(Stage stage) throws Exception {
-    JavafxHelper.loadView(stage, "Start", "Virtubois - Welcome");
+  public void start(Stage stage) {
+    JavafxHelper.loadView(stage, "Start", "Welcome", false);
   }
 
   public static void main(String[] args) {

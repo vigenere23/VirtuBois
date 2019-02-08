@@ -12,17 +12,18 @@ public class StartController implements IController {
 
     @FXML AnchorPane root;
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-        System.out.println(stage);
+    public void setStage(Stage stage) { this.stage = stage; }
+
+    public void newFile(ActionEvent actionEvent) {
+        String filename = "NouvelleCour";
+        // TODO demander nom fichier / cour
+        JavafxHelper.loadView(this.stage, "Main", filename, true);
     }
 
-    public void handleButton(ActionEvent actionEvent) {
-        try {
-            JavafxHelper.loadView(this.stage, "Main", "VirtuBois - Editor");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void openFile(ActionEvent actionEvent) {
+    }
+
+    public void quit(ActionEvent actionEvent) {
+        JavafxHelper.quitApplication();
     }
 }

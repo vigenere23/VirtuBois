@@ -1,23 +1,14 @@
 package frontend;
 
+import helpers.JavafxHelper;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
   @Override
-  public void start(Stage primaryStage) throws Exception {
-    FXMLLoader loader = new FXMLLoader(
-            Main.class.getResource("./views/Start.fxml"));
-    AnchorPane page = (AnchorPane) loader.load();
-    Scene scene = new Scene(page);
-
-    primaryStage.setTitle("VirtuBois Editor");
-    primaryStage.setScene(scene);
-    primaryStage.show();
+  public void start(Stage stage) throws Exception {
+    JavafxHelper.loadView(stage, "Start", "VirtuboisEditor");
   }
 
   public static void main(String[] args) {

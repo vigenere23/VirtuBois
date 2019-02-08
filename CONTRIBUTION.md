@@ -4,6 +4,18 @@ Ici sera listé l'ensemble des règles concernant la contribution au projet.
 
 ## Coding
 
+### Spécifier le package
+
+Bien que l'application peut fonctionner sans, il est toujours préférable de spécifier à quel package une classe appartient. 
+
+```java
+package backend.domain;
+
+public class Person {
+  // ...
+}
+```
+
 ### Propriétés de classes (fields)
 
 Les propriétés de classes, ou "variables membres" ou "class fields", ne devraient jamais contenir de préfix ou suffix quelconque. 
@@ -39,16 +51,47 @@ Les paramètres de fonction ne devraient jamais inclure de préfix ou suffix que
 
 ```java
 // NON
-public Person(String p_name, LocalDate p_birthDate)
+public setName(String p_name) {
+  name = p_name;
+}
+
+// OUI
+public setName(String name) {
+  this.name = name;
+}
+```
+
+### Constructeur
+
+Le contructeur ne devrait JAMAIS directement assigner une valeur à un attribut. Il faut TOUJOURS passer par un setter afin d'effectuer les validations nécessaires. 
+
+```java
+// NON
+public Person(String name, LocalDate birthDate) {
+  this.name = name; // name could be invalid
+  this.birthDate = birthDate;
+}
 
 // OUI
 public Person(String name, LocalDate birthDate) {
-  this.name = name;
-  this.birthDate = birthDate;
+  setName(name);
+  setBirthDate(birthDate);
+}
+
+public void setName(String name) {
+  // some validation
+  if (name.length <= 14) {
+    this.name = name;
+  }
+  else {
+    this.name = name.substring(0, 14);
+  }
 }
 ```
 
 ### ...
+
+
 
 ## Git
 

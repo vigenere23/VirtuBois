@@ -13,25 +13,33 @@
 
 <AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" styleClass="dark" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.controllers.StartController">
    <children>
-      <Label layoutX="195.0" layoutY="95.0" text="Virtubois">
-         <styleClass>
-            <String fx:value="white-text" />
-            <String fx:value="title" />
-         </styleClass>
-      </Label>
-      <VBox alignment="CENTER" layoutX="228.0" layoutY="162.0" prefHeight="183.0" prefWidth="149.0" spacing="16.0">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#newFile" prefWidth="100.0" styleClass="dark-button" text="New" />
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#openFile" prefWidth="100.0" styleClass="dark-button" text="Open">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#quit" prefWidth="100.0" styleClass="dark-button" text="Exit">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Virtubois">
+               <styleClass>
+                  <String fx:value="white-text" />
+                  <String fx:value="title" />
+               </styleClass>
+            </Label>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="16.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#newFile" prefWidth="100.0" styleClass="dark-button" text="New" />
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#openFile" prefWidth="100.0" styleClass="dark-button" text="Open">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#quit" prefWidth="100.0" styleClass="dark-button" text="Exit">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
          </children>
       </VBox>
    </children>

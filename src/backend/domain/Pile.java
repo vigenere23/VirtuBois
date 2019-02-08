@@ -1,38 +1,40 @@
-import Coordonnees;
+package backend.domain;
+
+import javafx.geometry.Point3D;
 
 public class Pile {
 
-    private Coordonnees sommet;
-    private int index;
+    private Point3D _sommet;
+    private int _index;
 
     public Pile()
     {
 
     }
 
-    public Pile(Coordonnees p_sommet, int p_index)
+    public Pile(Point3D sommet, int index)
     {
-        sommet = p_sommet;
-        index = p_index;
+        _sommet = sommet;
+        _index = index;
     }
 
-    public Coordonnees getSommet()
+    public Point3D getSommet()
     {
-        return sommet;
+        return _sommet;
     }
 
-    public void setSommet(Coordonnees sommet)
+    public void setSommet(Point3D sommet)
     {
-        this.sommet = sommet;
+        _sommet = sommet;
     }
 
     public int getIndex()
     {
-        return index;
+        return _index;
     }
 
     public void setIndex(int index)
     {
-        this.index = index;
+        _index = index;
     }
 }

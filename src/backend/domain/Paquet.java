@@ -1,88 +1,93 @@
-import java.sql.Date;
-import java.sql.Time;
+package backend.domain;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Paquet
 {
-    private double height;
-    private double width;
-    private double length;
-    private Date date;
-    private Time time;
-    private String type;
-    private String essence;
-    private int codebarre;
+    private double _height;
+    private double _width;
+    private double _length;
+    private LocalDate _date;
+    private LocalTime _time;
+    private String _type;
+    private String _essence;
+    private int _codebarre;
 
 
-    public Paquet(double p_height, double p_width, double p_length, Date p_date, Time p_time, String p_type, String
-                  p_essence, int p_codebarre)
+    public Paquet(
+            double height, double width, double length,
+            LocalDate date, LocalTime time,
+            String type, String essence,
+            int codebarre)
     {
-        height = p_height;
-        width = p_width;
-        length = p_length;
-        date = p_date;
-        time = p_time;
-        type = p_type;
-        essence = p_essence;
-        codebarre = p_codebarre;
+        _height = height;
+        _width = width;
+        _length = length;
+        _date = date;
+        _time = time;
+        _type = type;
+        _essence = essence;
+        _codebarre = codebarre;
     }
 
     public int getCodebarre()
     {
-        return codebarre;
+        return _codebarre;
     }
 
     public String getEssence()
     {
-        return essence;
+        return _essence;
     }
 
-    public Date getDate()
+    public LocalDate getDate()
     {
-        return date;
+        return _date;
     }
 
     public double getHeight()
     {
-        return height;
+        return _height;
     }
 
     public void setHeight(double height)
     {
-        this.height = height;
+        _height = height;
     }
 
     public double getLength()
     {
-        return length;
+        return _length;
     }
 
     public void setLength(double length)
     {
-        this.length = length;
+        _length = length;
     }
 
     public double getWidth()
     {
-        return width;
+        return _width;
     }
 
     public void setWidth(double width)
     {
-        this.width = width;
+        _width = width;
     }
 
     public String getType()
     {
-        return type;
+        return _type;
     }
 
     public void setType(String type)
     {
-        this.type = type;
+        _type = type;
     }
 
-    public Time getTime()
+    public LocalTime getTime()
     {
-        return time;
+        return _time;
     }
 }

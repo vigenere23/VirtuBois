@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" build-on-make="true" name="GLO-2004">
+    <output-path>$PROJECT_DIR$/out/artifacts/GLO_2004</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="frontend.Main" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="GLO-2004" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="GLO_2004.jar">
+        <element id="module-output" name="GLO-2004" />
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -12,15 +12,15 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                        <MenuItem mnemonicParsing="false" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Open" />
-                        <MenuItem mnemonicParsing="false" text="Save" />
-                        <MenuItem mnemonicParsing="false" text="Save As" />
-                        <MenuItem mnemonicParsing="false" text="Export 3D" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="New" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Open" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Save" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Save As" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Export 3D" />
                     <MenuItem mnemonicParsing="false" onAction="#handleMenuFileExit" text="Exit" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
+                <Menu disable="true" mnemonicParsing="false" text="Edit">
                   <items>
                     <MenuItem mnemonicParsing="false" text="Undo" />
                         <MenuItem mnemonicParsing="false" text="Redo" />

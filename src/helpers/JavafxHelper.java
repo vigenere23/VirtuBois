@@ -25,13 +25,20 @@ public class JavafxHelper {
     Scene scene = new Scene(page);
 
     IController controller = loader.getController();
-    controller.setStage(stage);
+    if (controller != null) {
+      controller.setStage(stage);
+    }
 
     stage.setTitle("Virtubois - " + title);
     stage.setScene(scene);
     stage.centerOnScreen();
     stage.setMaximized(maximised);
     stage.show();
+  }
+
+  public static void addView(String viewName, String title, boolean maximised) {
+    Stage stage = new Stage();
+    loadView(stage, viewName, title, maximised);
   }
 
   public static void quitApplication() {

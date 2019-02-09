@@ -38,6 +38,10 @@
     -fx-text-fill: white;
 }
 
+.bold-text {
+    -fx-font-weight: bold;
+}
+
 /* SPECIFIC */
 
 .title {

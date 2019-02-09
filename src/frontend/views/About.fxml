@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="dark" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="32.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="VirtuBois">
+               <styleClass>
+                  <String fx:value="title" />
+                  <String fx:value="white-text" />
+               </styleClass>
+            </Label>
+            <GridPane alignment="CENTER" hgap="32.0" prefHeight="157.0" prefWidth="426.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="34.0" valignment="TOP" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="117.0" minHeight="10.0" prefHeight="34.0" valignment="TOP" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="136.0" minHeight="0.0" prefHeight="94.0" valignment="TOP" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Description" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="white-text" />
+                        <String fx:value="bold-text" />
+                     </styleClass>
+                  </Label>
+                  <Label text="Contributors" GridPane.rowIndex="2">
+                     <styleClass>
+                        <String fx:value="white-text" />
+                        <String fx:value="bold-text" />
+                     </styleClass>
+                  </Label>
+                  <Label styleClass="white-text" text="0.1" GridPane.columnIndex="1" />
+                  <Label styleClass="white-text" text="The most advanced wood yard editor" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <Label styleClass="white-text" text="Martine Deschenes" />
+                        <Label styleClass="white-text" text="Gabriel St-Pierre" />
+                        <Label styleClass="white-text" text="Yoan Chamberland" />
+                        <Label styleClass="white-text" text="Jordan Mayhue" />
+                     </children>
+                  </VBox>
+                  <Label text="Version">
+                     <styleClass>
+                        <String fx:value="white-text" />
+                        <String fx:value="bold-text" />
+                     </styleClass>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

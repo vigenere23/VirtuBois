@@ -1,27 +1,32 @@
 package backend.domain;
 
+import javafx.geometry.Point2D;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Package
+public class Pack
 {
     private double height;
     private double width;
     private double length;
+    private Point2D position;
+    private Point2D z;
     private LocalDate date;
     private LocalTime time;
     private Pair<String, String> type;
     private int barcode;
+    private Stack stack;
     private static final AtomicInteger count = new AtomicInteger(000000000000);
 
-    public Package(
+    public Pack(
             double height, double width, double length,
             LocalDate date, LocalTime time,
-            Pair<String,String> type
-    ) {
+            Pair<String, String> type,
+            Stack stack) {
+        setStack(stack);
         setHeight(height);
         setWidth(width);
         setLength(length);
@@ -86,5 +91,27 @@ public class Package
 
     public void setBarcode() {
         this.barcode = count.incrementAndGet();
+    }
+
+    public Stack getStack() {
+        return stack;
+    }
+
+    public void setStack(Stack stack) { this.stack = stack; }
+
+    public void replaceStackToStackFromPack(Pack pack) {
+        this.stack.removePack(this);
+        this.stack = pack.stack;
+        this.stack.addPack(this);
+    }
+
+    public void move(Point2D position) {
+        this.position = position;
+        /* TODO
+        Pack pack = Inventory.getFirstPackAtPosition(position);
+        if (pack != null) {
+            replaceStackToStackFromPack(pack);
+        }
+        */
     }
 }

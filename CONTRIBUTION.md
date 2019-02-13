@@ -9,7 +9,7 @@ Ici sera listé l'ensemble des règles concernant la contribution au projet.
 Bien que l'application peut fonctionner sans, il est toujours préférable de spécifier à quel package une classe appartient. 
 
 ```java
-package backend.domain;
+package backend.backend;
 
 public class Person {
   // ...

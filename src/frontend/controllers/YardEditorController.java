@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class EditorController implements IController {
+public class YardEditorController implements IController {
 
     private Stage stage;
 

@@ -1,5 +1,5 @@
 package frontend.models;
 
-public class PackageModel {
+public class PackModel {
   
 }

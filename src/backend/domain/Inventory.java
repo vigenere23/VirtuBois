@@ -1,16 +1,27 @@
 package backend.domain;
 
+import javafx.geometry.Point2D;
+
 import java.util.List;
 
 public class Inventory {
-    private List<Pack> packs; // TODO static?
+    private static List<Pack> packs;
 
-    /* TODO
-    public Pack getFirstPackAtPosition(Point2D position, Pack exceptedPack) {
-        use GeomHelper
+    public static void addPack(Pack pack) {
+        if (!packs.contains(pack)) {
+            packs.add(pack);
+        }
+    }
+
+    public static void removePack(Pack pack) {
+        packs.remove(pack);
+    }
+
+    public Pack getFirstPackAtPosition(Point2D position) {
+        // TODO use GeomHelper
     }
 
     public List<Pack> getAllPacksAtPosition(Point2D position) {
-        use GeomHelper
-    }*/
+        // TODO use GeomHelper
+    }
 }

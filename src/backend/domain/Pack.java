@@ -13,7 +13,7 @@ public class Pack
     private double width;
     private double length;
     private Point2D position;
-    private Point2D z;
+    private double z;
     private LocalDate date;
     private LocalTime time;
     private Pair<String, String> type;

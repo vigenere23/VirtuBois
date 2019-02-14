@@ -19,9 +19,11 @@ public class Inventory {
 
     public Pack getFirstPackAtPosition(Point2D position) {
         // TODO use GeomHelper
+        return null;
     }
 
     public List<Pack> getAllPacksAtPosition(Point2D position) {
         // TODO use GeomHelper
+        return null;
     }
 }

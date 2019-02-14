@@ -17,7 +17,7 @@ public class StartController implements IController {
     public void newFile(ActionEvent actionEvent) {
         String filename = "NouvelleCour";
         // TODO demander nom fichier / cour
-        JavafxHelper.loadView(this.stage, "Main", filename, true);
+        JavafxHelper.loadView(this.stage, "Main2", filename, true);
     }
 
     public void openFile(ActionEvent actionEvent) {

@@ -2,7 +2,6 @@ package helpers;
 
 import domain.controllers.Controller;
 import presentation.Main;
-import presentation.controllers.IController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

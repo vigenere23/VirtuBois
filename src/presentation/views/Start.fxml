@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" styleClass="dark" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.controllers.StartController">
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" styleClass="dark" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="domain.controllers.Controller">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" text="Virtubois">
                <styleClass>
                   <String fx:value="white-text" />
-                  <String fx:value="title" />
+                  <String fx:value="big-title" />
                </styleClass>
             </Label>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">

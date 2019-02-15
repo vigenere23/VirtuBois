@@ -1,4 +1,4 @@
-package backend.domain;
+package domain.entities;
 
 public class Charger {
     // TODO

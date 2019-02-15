@@ -1,4 +1,4 @@
-package frontend.models;
+package presentation.models;
 
 public class PackModel {
   

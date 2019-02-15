@@ -1,4 +1,4 @@
-package frontend;
+package presentation;
 
 import helpers.JavafxHelper;
 import javafx.application.Application;

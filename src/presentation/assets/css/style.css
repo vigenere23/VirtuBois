@@ -44,8 +44,8 @@
 
 /* SPECIFIC */
 
-.title {
-    -fx-font-size: 13px;
+.big-title {
+    -fx-font-size: 48px;
     -fx-text-alignment: CENTER;
     -fx-alignment: CENTER;
     -fx-font-weight: bold;

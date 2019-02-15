@@ -1,7 +1,8 @@
 package helpers;
 
-import frontend.Main;
-import frontend.controllers.IController;
+import domain.controllers.Controller;
+import presentation.Main;
+import presentation.controllers.IController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,7 +25,7 @@ public class JavafxHelper {
 
     Scene scene = new Scene(page);
 
-    IController controller = loader.getController();
+    Controller controller = loader.getController();
     if (controller != null) {
       controller.setStage(stage);
     }

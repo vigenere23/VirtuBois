@@ -1,4 +1,4 @@
-package backend.domain;
+package domain.entities;
 
 import javafx.geometry.Point2D;
 import javafx.util.Pair;

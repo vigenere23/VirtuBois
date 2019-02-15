@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="root" prefHeight="1080.0" prefWidth="1920.0" styleClass="dark" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.controllers.MainController">
+<AnchorPane fx:id="root" prefHeight="1080.0" prefWidth="1920.0" styleClass="dark" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="domain.controllers.Controller">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -17,7 +17,7 @@
                         <MenuItem disable="true" mnemonicParsing="false" text="Save" />
                         <MenuItem disable="true" mnemonicParsing="false" text="Save As" />
                         <MenuItem disable="true" mnemonicParsing="false" text="Export 3D" />
-                    <MenuItem mnemonicParsing="false" onAction="#handleMenuFileExit" text="Exit" />
+                    <MenuItem mnemonicParsing="false" onAction="#quit" text="Exit" />
                   </items>
                 </Menu>
                 <Menu disable="true" mnemonicParsing="false" text="Edit">

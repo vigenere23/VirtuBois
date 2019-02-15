@@ -25,7 +25,7 @@ public class JavafxHelper {
 
     Scene scene = new Scene(page);
 
-    Controller controller = loader.getController();
+    IController controller = loader.getController();
     if (controller != null) {
       controller.setStage(stage);
     }

@@ -1,5 +1,6 @@
 package presentation.controllers;
 
+import domain.controllers.Controller;
 import javafx.stage.Stage;
 
 public class MainController extends BaseController implements IController {

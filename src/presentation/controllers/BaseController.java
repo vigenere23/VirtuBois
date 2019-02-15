@@ -4,7 +4,7 @@ import helpers.JavafxHelper;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
-public class BaseController implements IController {
+public abstract class BaseController implements IController {
 
     private Stage stage;
 

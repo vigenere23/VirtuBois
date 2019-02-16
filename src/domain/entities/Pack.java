@@ -66,6 +66,14 @@ public class Pack
         this.width = width;
     }
 
+    public Point2D getPosition() { return position; }
+
+    public void setPosition(Point2D position) { this.position = position; }
+
+    public double getZ() { return z; }
+
+    public void setZ(double z) { this.z = z; }
+
     public Pair<String,String> getType()
     {
         return type;

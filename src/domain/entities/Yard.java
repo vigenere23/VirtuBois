@@ -1,29 +1,34 @@
 package domain.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Yard {
     private List<Stack> stacks;
+    private List<Pack> packs;
     private Charger charger;
 
-    public Yard(List<Stack> stacks, Charger charger) {
-        setCharger(charger);
+    public Yard() {
+        setCharger(new Charger());
+        setStacks(new ArrayList<>());
+        setPacks(new ArrayList<>());
+    }
+
+    public Yard(List<Pack> packs, List<Stack> stacks, Charger charger) {
+        setPacks(packs);
         setStacks(stacks);
+        setCharger(charger);
     }
 
-    public List<Stack> getStacks() {
-        return stacks;
-    }
+    public List<Pack> getPacks() { return packs; }
 
-    public void setStacks(List<Stack> stacks) {
-        this.stacks = stacks;
-    }
+    public void setPacks(List<Pack> packs) { this.packs = packs; }
 
-    public Charger getCharger() {
-        return charger;
-    }
+    public List<Stack> getStacks() { return stacks; }
 
-    public void setCharger(Charger charger) {
-        this.charger = charger;
-    }
+    public void setStacks(List<Stack> stacks) { this.stacks = stacks; }
+
+    public Charger getCharger() { return charger; }
+
+    public void setCharger(Charger charger) { this.charger = charger; }
 }

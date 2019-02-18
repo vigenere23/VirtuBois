@@ -17,10 +17,19 @@ public class Main2Controller extends BaseController implements IController {
     @FXML
     public ListView listView;
     @FXML
-    public TextFlow packProp;
+    public TextFlow packCodeView;
     @FXML
-    public TextFlow packPropValues;
-
+    public TextFlow packLongView;
+    @FXML
+    public TextFlow packLargView;
+    @FXML
+    public TextFlow packHautView;
+    @FXML
+    public TextFlow packDateView;
+    @FXML
+    public TextFlow packHeureView;
+    @FXML
+    public TextFlow packTypeView;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -32,12 +41,33 @@ public class Main2Controller extends BaseController implements IController {
         ObservableList<String> listItems = FXCollections.observableArrayList("Allo","Bonjour");
         listView.setItems(listItems);
 
-        Text packInfo = new Text("Code barre : \nLongeur : \nLargeur : \nHauteur : \nDate de production : \nHeure de production : \nType : ");
-        packInfo.setFont(new Font(15));
-        packInfo.setFill(Color.WHITESMOKE);
-        packProp.setLineSpacing(40.0);
-        packProp.getChildren().add(packInfo);
-
-
+        Text packCode = new Text("Code barre : ");
+        Text packLong = new Text("Longeur : ");
+        Text packLarg = new Text("Largeur : ");
+        Text packHaut = new Text("Hauteur : ");
+        Text packDate = new Text("Date de production : ");
+        Text packHeure = new Text("Heure de production : ");
+        Text packType = new Text("Type : ");
+        packCode.setFont(new Font("System",12));
+        packCode.setFill(Color.WHITESMOKE);
+        packLong.setFont(new Font("System",12));
+        packLong.setFill(Color.WHITESMOKE);
+        packLarg.setFont(new Font("System",12));
+        packLarg.setFill(Color.WHITESMOKE);
+        packHaut.setFont(new Font("System",12));
+        packHaut.setFill(Color.WHITESMOKE);
+        packDate.setFont(new Font("System",12));
+        packDate.setFill(Color.WHITESMOKE);
+        packHeure.setFont(new Font("System",12));
+        packHeure.setFill(Color.WHITESMOKE);
+        packType.setFont(new Font("System",12));
+        packType.setFill(Color.WHITESMOKE);
+        packCodeView.getChildren().add(packCode);
+        packLongView.getChildren().add(packLong);
+        packLargView.getChildren().add(packLarg);
+        packHautView.getChildren().add(packHaut);
+        packDateView.getChildren().add(packDate);
+        packHeureView.getChildren().add(packHeure);
+        packTypeView.getChildren().add(packType);
     }
 }

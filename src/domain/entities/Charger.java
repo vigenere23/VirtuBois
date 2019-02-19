@@ -6,13 +6,13 @@ public class Charger extends Drawable
 {
     private double armsHeight;
     private double armsWidth;
-    private double armsLenght;
+    private double armsLength;
 
     public Charger(Point2D position) {
         super(position);
         setArmsHeight(0.0); //defaultValue
         setArmsWidth(20); //defaultValue
-        setArmsLenght(20); //defaultValue
+        setArmsLength(20); //defaultValue
     }
 
     public double getArmsHeight() {
@@ -31,11 +31,11 @@ public class Charger extends Drawable
         this.armsWidth = armsWidth;
     }
 
-    public double getArmsLenght() {
-        return armsLenght;
+    public double getArmsLength() {
+        return armsLength;
     }
 
-    public void setArmsLenght(double armsLenght) {
-        this.armsLenght = armsLenght;
+    public void setArmsLength(double armsLenght) {
+        this.armsLength = armsLenght;
     }
 }

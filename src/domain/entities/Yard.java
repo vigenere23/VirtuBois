@@ -8,7 +8,6 @@ public class Yard {
     private Charger charger;
 
     public Yard() {
-        setCharger(new Charger());
         setPacks(new ArrayList<>());
     }
 

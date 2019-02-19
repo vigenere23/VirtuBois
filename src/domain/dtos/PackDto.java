@@ -17,14 +17,14 @@ public class PackDto {
     public int barcode;
 
     public PackDto(Pack pack) {
-        this.height = pack.getHeight();
-        this.width = pack.getWidth();
-        this.length = pack.getLength();
-        this.position = pack.getPosition();
-        this.date = pack.getDate();
-        this.time = pack.getTime();
-        this.essence = pack.getEssence();
-        this.plankSize = pack.getPlankSize();
-        this.barcode = pack.getBarcode();
+        height = pack.getHeight();
+        width = pack.getWidth();
+        length = pack.getLength();
+        position = pack.getPosition();
+        date = pack.getDate();
+        time = pack.getTime();
+        essence = pack.getEssence();
+        plankSize = pack.getPlankSize();
+        barcode = pack.getBarcode();
     }
 }

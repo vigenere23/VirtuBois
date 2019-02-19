@@ -1,6 +1,7 @@
 package domain.entities;
 
 import javafx.geometry.Point2D;
+import javafx.scene.shape.Rectangle;
 
 public abstract class Drawable
 {
@@ -8,13 +9,13 @@ public abstract class Drawable
     protected double angle;
     protected double width;
     protected double length;
+    protected Rectangle boundaries;
 
     public Drawable(Point2D position) {
         setWidth(20.0); //defaultValue
         setLength(20.0); //defaultValue
         setAngle(0.0); //defaultValue
         setPosition(position);
-
     }
 
     public double getLength()
@@ -49,6 +50,8 @@ public abstract class Drawable
     public double getAngle() { return angle; }
 
     public void setAngle(double angle) { this.angle = angle; }
+
+    public Rectangle getBoundaries() { return boundaries; }
 
     private void calculateBoudaries() {
         // TODO

@@ -127,6 +127,13 @@
                                                             <TextFlow prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                          </children>
                                                       </HBox>
+                                                      <HBox prefHeight="100.0" prefWidth="200.0">
+                                                         <children>
+                                                            <TextFlow fx:id="packPlankSize" prefHeight="200.0" prefWidth="200.0" />
+                                                            <Region />
+                                                            <TextFlow prefHeight="200.0" prefWidth="200.0" />
+                                                         </children>
+                                                      </HBox>
                                                    </children>
                                                 </VBox>
                                              </children>

@@ -30,6 +30,8 @@ public class Main2Controller extends BaseController implements IController {
     public TextFlow packHeureView;
     @FXML
     public TextFlow packTypeView;
+    @FXML
+    public TextFlow packPlankSize;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -47,7 +49,9 @@ public class Main2Controller extends BaseController implements IController {
         Text packHaut = new Text("Hauteur : ");
         Text packDate = new Text("Date de production : ");
         Text packHeure = new Text("Heure de production : ");
-        Text packType = new Text("Type : ");
+        Text packType = new Text("Essence : ");
+        Text packPlank = new Text("Dimensions des planches : ");
+
         packCode.setFont(new Font("System",12));
         packCode.setFill(Color.WHITESMOKE);
         packLong.setFont(new Font("System",12));
@@ -62,6 +66,9 @@ public class Main2Controller extends BaseController implements IController {
         packHeure.setFill(Color.WHITESMOKE);
         packType.setFont(new Font("System",12));
         packType.setFill(Color.WHITESMOKE);
+        packPlank.setFont(new Font("System",12));
+        packPlank.setFill(Color.WHITESMOKE);
+
         packCodeView.getChildren().add(packCode);
         packLongView.getChildren().add(packLong);
         packLargView.getChildren().add(packLarg);
@@ -69,5 +76,6 @@ public class Main2Controller extends BaseController implements IController {
         packDateView.getChildren().add(packDate);
         packHeureView.getChildren().add(packHeure);
         packTypeView.getChildren().add(packType);
+        packPlankSize.getChildren().add(packPlank);
     }
 }

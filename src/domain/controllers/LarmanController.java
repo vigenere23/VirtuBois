@@ -1,6 +1,6 @@
 package domain.controllers;
 
-public class Controller {
+public class LarmanController {
     /**** PUBLIC METHODS ****/
 
 

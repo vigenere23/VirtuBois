@@ -1,39 +1,29 @@
 package domain.entities;
 
 import javafx.geometry.Point2D;
-import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Pack
+public class Pack extends Drawable
 {
     private double height;
-    private double width;
-    private double length;
-    private Point2D position;
-    private double z;
     private LocalDate date;
     private LocalTime time;
-    private Pair<String, String> type;
+    private String essence;
+    private String plankSize;
     private int barcode;
-    private Stack stack;
-    private static final AtomicInteger count = new AtomicInteger(000000000000);
+    // private static final AtomicInteger count = new AtomicInteger(000000000000);
 
-    public Pack(
-            double height, double width, double length,
-            LocalDate date, LocalTime time,
-            Pair<String, String> type,
-            Stack stack) {
-        setStack(stack);
-        setHeight(height);
-        setWidth(width);
-        setLength(length);
-        setDate(date);
-        setTime(time);
-        setType(type);
-        setBarcode();
+    public Pack(Point2D position) {
+        super(position);
+        setHeight(20.0); //defaultValue
+        setEssence("Érable"); //defaultValue
+        setPlanckSize("3x4"); //defaultValue
+        initDate();
+        initTime();
+        initBarcode();
     }
 
     public double getHeight()
@@ -46,43 +36,19 @@ public class Pack
         this.height = height;
     }
 
-    public double getLength()
+    public String getEssence()
     {
-        return length;
+        return essence;
     }
 
-    public void setLength(double length)
+    public void setEssence(String essence)
     {
-        this.length = length;
+        this.essence = essence;
     }
 
-    public double getWidth()
-    {
-        return width;
-    }
+    public String getPlankSize() { return plankSize; }
 
-    public void setWidth(double width)
-    {
-        this.width = width;
-    }
-
-    public Point2D getPosition() { return position; }
-
-    public void setPosition(Point2D position) { this.position = position; }
-
-    public double getZ() { return z; }
-
-    public void setZ(double z) { this.z = z; }
-
-    public Pair<String,String> getType()
-    {
-        return type;
-    }
-
-    public void setType(Pair<String,String> type)
-    {
-        this.type = type;
-    }
+    public void setPlanckSize(String plankSize) { this.plankSize = plankSize; };
 
     public LocalTime getTime()
     {
@@ -91,35 +57,15 @@ public class Pack
 
     public void setTime(LocalTime time) { this.time = time; }
 
-    public LocalDate getDate() { return this.date; }
+    public LocalDate getDate() { return date; }
 
     public void setDate(LocalDate date) { this.date = date; }
 
-    public int getBarcode() { return this.barcode; }
+    public int getBarcode() { return barcode; }
 
-    public void setBarcode() {
-        this.barcode = count.incrementAndGet();
-    }
+    private void initDate() {}
 
-    public Stack getStack() {
-        return stack;
-    }
+    private void initTime() {}
 
-    public void setStack(Stack stack) { this.stack = stack; }
-
-    public void replaceStackToStackFromPack(Pack pack) {
-        this.stack.removePack(this);
-        this.stack = pack.stack;
-        this.stack.addPack(this);
-    }
-
-    public void move(Point2D position) {
-        this.position = position;
-        /* TODO
-        Pack pack = Inventory.getFirstPackAtPosition(position);
-        if (pack != null) {
-            replaceStackToStackFromPack(pack);
-        }
-        */
-    }
+    private void initBarcode() {}
 }

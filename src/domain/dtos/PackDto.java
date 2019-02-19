@@ -1,34 +1,30 @@
 package domain.dtos;
 
 import domain.entities.Pack;
-import domain.entities.Stack;
 import javafx.geometry.Point2D;
-import javafx.util.Pair;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class PackDto {
-    private double height;
-    private double width;
-    private double length;
-    private Point2D position;
-    private double z;
-    private LocalDate date;
-    private LocalTime time;
-    private Pair<String, String> type;
-    private int barcode;
-    private Stack stack;
+    public double height;
+    public double width;
+    public double length;
+    public Point2D position;
+    public LocalDate date;
+    public LocalTime time;
+    public String essence;
+    public String plankSize;
+    public int barcode;
 
     public PackDto(Pack pack) {
         this.height = pack.getHeight();
         this.width = pack.getWidth();
         this.length = pack.getLength();
         this.position = pack.getPosition();
-        this.z = pack.getZ();
         this.date = pack.getDate();
         this.time = pack.getTime();
-        this.type = pack.getType();
+        this.essence = pack.getEssence();
+        this.plankSize = pack.getPlankSize();
         this.barcode = pack.getBarcode();
-        // this.stack = new StackDTO(pack.stack); TODO really needed?
     }
 }

@@ -1,5 +1,6 @@
 package domain.entities;
 
+import helpers.ConfigHelper;
 import javafx.geometry.Point2D;
 
 import java.time.LocalDate;
@@ -18,9 +19,12 @@ public class Pack extends Drawable
 
     public Pack(Point2D position) {
         super(position);
-        setHeight(20.0); //defaultValue
-        setEssence("Érable"); //defaultValue
-        setPlanckSize("3x4"); //defaultValue
+        setWidth(ConfigHelper.packWidth);
+        setLength(ConfigHelper.packLength);
+        setHeight(ConfigHelper.packHeight);
+        setAngle(ConfigHelper.packAngle);
+        setEssence(ConfigHelper.essence);
+        setPlanckSize(ConfigHelper.plankSize);
         initDate();
         initTime();
         initBarcode();

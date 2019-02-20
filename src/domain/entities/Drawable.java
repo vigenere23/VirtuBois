@@ -12,9 +12,6 @@ public abstract class Drawable
     protected Rectangle boundaries;
 
     public Drawable(Point2D position) {
-        setWidth(20.0); //defaultValue
-        setLength(20.0); //defaultValue
-        setAngle(0.0); //defaultValue
         setPosition(position);
     }
 

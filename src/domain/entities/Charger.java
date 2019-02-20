@@ -1,5 +1,6 @@
 package domain.entities;
 
+import helpers.ConfigHelper;
 import javafx.geometry.Point2D;
 
 public class Charger extends Drawable
@@ -10,9 +11,12 @@ public class Charger extends Drawable
 
     public Charger(Point2D position) {
         super(position);
-        setArmsHeight(0.0); //defaultValue
-        setArmsWidth(20); //defaultValue
-        setArmsLength(20); //defaultValue
+        setWidth(ConfigHelper.chargerWidth);
+        setLength(ConfigHelper.chargerLenth);
+        setArmsHeight(ConfigHelper.armsHeight);
+        setArmsWidth(ConfigHelper.armsWidth);
+        setArmsLength(ConfigHelper.armsLength);
+        setAngle(ConfigHelper.chargerAngle);
     }
 
     public double getArmsHeight() {

@@ -9,6 +9,7 @@ public class PackDto {
     public double height;
     public double width;
     public double length;
+    public double angle;
     public Point2D position;
     public LocalDate date;
     public LocalTime time;
@@ -20,6 +21,7 @@ public class PackDto {
         height = pack.getHeight();
         width = pack.getWidth();
         length = pack.getLength();
+        angle = pack.getAngle();
         position = pack.getPosition();
         date = pack.getDate();
         time = pack.getTime();

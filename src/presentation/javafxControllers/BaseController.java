@@ -1,4 +1,4 @@
-package presentation.controllers;
+package presentation.javafxControllers;
 
 import helpers.JavafxHelper;
 import javafx.event.ActionEvent;

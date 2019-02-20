@@ -1,4 +1,4 @@
-package presentation.controllers;
+package presentation.javafxControllers;
 
 public class StartController extends BaseController {
 }

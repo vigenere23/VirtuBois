@@ -1,4 +1,4 @@
-package presentation.controllers;
+package presentation.javafxControllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,9 +10,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-public class MainController extends BaseController implements IController {
-
-    private Stage stage;
+public class MainController extends BaseController {
 
     @FXML
     public ListView listView;
@@ -32,10 +30,6 @@ public class MainController extends BaseController implements IController {
     public TextFlow packTypeView;
     @FXML
     public TextFlow packPlankSize;
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
 
     @FXML
     public void initialize()

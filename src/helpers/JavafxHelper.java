@@ -1,13 +1,12 @@
 package helpers;
 
-import presentation.controllers.IController;
+import presentation.javafxControllers.IController;
 import presentation.Main;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import presentation.controllers.IController;
 
 public class JavafxHelper {
   public static void loadView(Stage stage, String viewName, String title, boolean maximised) {

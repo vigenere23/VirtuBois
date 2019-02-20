@@ -42,4 +42,16 @@ public class Charger extends Drawable
     public void setArmsLength(double armsLenght) {
         this.armsLength = armsLenght;
     }
+
+    public void moveForward() {}
+
+    public void moveBackward() {}
+
+    public void turnLeft() {}
+
+    public void turnRight() {}
+
+    public void raiseArms() {}
+
+    public void lowerArms() {}
 }

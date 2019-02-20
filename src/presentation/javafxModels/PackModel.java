@@ -1,4 +1,4 @@
-package presentation.models;
+package presentation.javafxModels;
 
 import domain.dtos.PackDto;
 import javafx.geometry.Point2D;

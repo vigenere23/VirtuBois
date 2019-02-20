@@ -4,7 +4,7 @@ import domain.dtos.PackDto;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 
-public class PackModel extends Rectangle {
+public class PackModel extends Rectangle implements IModel {
 
     public PackDto dto;
 
@@ -24,5 +24,9 @@ public class PackModel extends Rectangle {
                 dto.position.getX(),
                 dto.position.getY()
         );
+    }
+
+    public void draw() {
+
     }
 }

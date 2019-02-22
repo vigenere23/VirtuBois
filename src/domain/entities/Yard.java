@@ -5,22 +5,22 @@ import java.util.List;
 
 public class Yard {
     private List<Pack> packs;
-    private Charger charger;
+    private Lift lift;
 
     public Yard() {
         setPacks(new ArrayList<>());
     }
 
-    public Yard(List<Pack> packs, Charger charger) {
+    public Yard(List<Pack> packs, Lift lift) {
         setPacks(packs);
-        setCharger(charger);
+        setLift(lift);
     }
 
     public List<Pack> getPacks() { return packs; }
 
     public void setPacks(List<Pack> packs) { this.packs = packs; }
 
-    public Charger getCharger() { return charger; }
+    public Lift getLift() { return lift; }
 
-    public void setCharger(Charger charger) { this.charger = charger; }
+    public void setLift(Lift lift) { this.lift = lift; }
 }

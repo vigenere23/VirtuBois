@@ -3,13 +3,13 @@ package domain.entities;
 import helpers.ConfigHelper;
 import javafx.geometry.Point2D;
 
-public class Charger extends Drawable
+public class Lift extends Drawable
 {
     private double armsHeight;
     private double armsWidth;
     private double armsLength;
 
-    public Charger(Point2D position) {
+    public Lift(Point2D position) {
         super(position);
         setWidth(ConfigHelper.chargerWidth);
         setLength(ConfigHelper.chargerLenth);

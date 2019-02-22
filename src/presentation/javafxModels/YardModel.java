@@ -7,7 +7,7 @@ import java.util.List;
 
 public class YardModel extends Pane implements IModel {
     private List<PackModel> packModels;
-    private ChargerModel chargerModel;
+    private LiftModel liftModel;
 
     public YardModel() {
         super();

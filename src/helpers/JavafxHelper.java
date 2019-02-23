@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class JavafxHelper {
   public static void loadView(Stage stage, String viewName, String title, boolean maximised) {
-    FXMLLoader loader = new FXMLLoader(Main.class.getResource("./views/" + viewName + ".fxml"));
+    FXMLLoader loader = new FXMLLoader(Main.class.getResource("views/" + viewName + ".fxml"));
     Parent page;
 
     try {

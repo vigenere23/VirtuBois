@@ -1,18 +1,18 @@
-package presentation.javafxModels;
+package presentation.presenters;
 
 import domain.dtos.LiftDto;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 
-public class LiftModel extends Rectangle {
+public class LiftPresenter extends Rectangle implements IPresenter {
     public LiftDto dto;
 
-    public static LiftModel create(LiftDto dto) {
+    public static LiftPresenter create(LiftDto dto) {
         Point2D topLeftCoordinates = getTopLeftCoordinates(dto);
-        return new LiftModel(dto, topLeftCoordinates.getX(), topLeftCoordinates.getY());
+        return new LiftPresenter(dto, topLeftCoordinates.getX(), topLeftCoordinates.getY());
     }
 
-    private LiftModel(LiftDto dto, double leftX, double topY) {
+    private LiftPresenter(LiftDto dto, double leftX, double topY) {
         super(leftX, topY, dto.width, dto.length);
         this.dto = dto;
         this.rotateProperty().setValue(dto.angle);
@@ -23,5 +23,9 @@ public class LiftModel extends Rectangle {
                 dto.position.getX(),
                 dto.position.getY()
         );
+    }
+
+    public void draw() {
+
     }
 }

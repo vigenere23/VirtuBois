@@ -1,4 +1,4 @@
-package presentation.javafxControllers;
+package presentation.controllers;
 
 import helpers.JavafxHelper;
 import javafx.event.ActionEvent;
@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 public abstract class BaseController implements IController {
 
-    private Stage stage;
+    protected Stage stage;
 
     public void setStage(Stage stage) {
         this.stage = stage;

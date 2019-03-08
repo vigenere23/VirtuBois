@@ -1,4 +1,4 @@
-package presentation.javafxControllers;
+package presentation.controllers;
 
 import javafx.stage.Stage;
 

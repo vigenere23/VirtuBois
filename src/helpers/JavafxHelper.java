@@ -1,6 +1,6 @@
 package helpers;
 
-import presentation.javafxControllers.IController;
+import presentation.controllers.IController;
 import presentation.Main;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

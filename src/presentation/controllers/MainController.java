@@ -1,16 +1,21 @@
-package presentation.javafxControllers;
+package presentation.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.Stage;
+import presentation.presenters.YardPresenter;
 
 public class MainController extends BaseController {
+
+    @FXML
+    Pane yardWrapper;
 
     @FXML
     public ListView listView;
@@ -71,5 +76,12 @@ public class MainController extends BaseController {
         packHeureView.getChildren().add(packHeure);
         packTypeView.getChildren().add(packType);
         packPlankSize.getChildren().add(packPlank);
+
+        YardPresenter yardPresenter = new YardPresenter();
+        yardWrapper.getChildren().setAll(yardPresenter);
+        AnchorPane.setRightAnchor(yardPresenter, 0.0);
+        AnchorPane.setLeftAnchor(yardPresenter, 0.0);
+        AnchorPane.setBottomAnchor(yardPresenter, 0.0);
+        AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
 }

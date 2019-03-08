@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Yard {
-    private List<Pack> packs;
+    private List<Bundle> bundles;
     private Lift lift;
 
     public Yard() {
-        setPacks(new ArrayList<>());
+        setBundles(new ArrayList<>());
     }
 
-    public Yard(List<Pack> packs, Lift lift) {
-        setPacks(packs);
+    public Yard(List<Bundle> bundles, Lift lift) {
+        setBundles(bundles);
         setLift(lift);
     }
 
-    public List<Pack> getPacks() { return packs; }
+    public List<Bundle> getBundles() { return bundles; }
 
-    public void setPacks(List<Pack> packs) { this.packs = packs; }
+    public void setBundles(List<Bundle> bundles) { this.bundles = bundles; }
 
     public Lift getLift() { return lift; }
 

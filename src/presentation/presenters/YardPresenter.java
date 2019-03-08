@@ -7,13 +7,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import presentation.controllers.MainController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class YardPresenter extends Pane implements IPresenter {
-    private List<PackPresenter> packs;
+    private List<BundlePresenter> bundles;
     private LiftPresenter lift;
     private List<Rectangle> rectangles;
     private DoubleProperty zoom;
@@ -25,7 +24,7 @@ public class YardPresenter extends Pane implements IPresenter {
         super();
         setFocusTraversable(true);
 
-        packs = new ArrayList<>();
+        bundles = new ArrayList<>();
         rectangles = new ArrayList<>();
         zoom = new SimpleDoubleProperty(1.0);
         dragVector = new Point2D(0, 0);

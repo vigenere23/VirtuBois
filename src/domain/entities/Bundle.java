@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Pack extends Drawable
+public class Bundle extends Drawable
 {
     private double height;
     private LocalDate date;
@@ -17,7 +17,7 @@ public class Pack extends Drawable
     private int barcode;
     // private static final AtomicInteger count = new AtomicInteger(000000000000);
 
-    public Pack(Point2D position) {
+    public Bundle(Point2D position) {
         super(position);
         setWidth(ConfigHelper.packWidth);
         setLength(ConfigHelper.packLength);

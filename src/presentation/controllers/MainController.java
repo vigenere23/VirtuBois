@@ -77,6 +77,10 @@ public class MainController extends BaseController {
         packTypeView.getChildren().add(packType);
         packPlankSize.getChildren().add(packPlank);
 
+        initYard();
+    }
+
+    private void initYard() {
         YardPresenter yardPresenter = new YardPresenter();
         yardWrapper.getChildren().setAll(yardPresenter);
         AnchorPane.setRightAnchor(yardPresenter, 0.0);

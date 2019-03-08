@@ -1,5 +1,7 @@
 package presentation.presenters;
 
+import helpers.ColorHelper;
+import helpers.ConfigHelper;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
@@ -7,6 +9,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.shape.StrokeType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,16 +87,29 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private void initRectangles() {
-        Rectangle rec1 = new Rectangle(40, 40, 20, 60);
-        rec1.setFill(Color.RED);
+        Rectangle rec1 = new Rectangle(40, 40, 80, 60);
         rec1.setRotate(30);
+        initRectangleColors(rec1);
 
-        Rectangle rec2 = new Rectangle(-40, -40,80, 50);
-        rec2.setFill(Color.WHITE);
+        Rectangle rec2 = new Rectangle(-40, -40,80, 120);
         rec2.setRotate(251);
+        initRectangleColors(rec2);
+
+        Rectangle rec3 = new Rectangle(0, 0,70, 60);
+        rec3.setRotate(0);
+        initRectangleColors(rec3);
 
         rectangles.add(rec1);
+        rectangles.add(rec3);
         rectangles.add(rec2);
+    }
+
+    private void initRectangleColors(Rectangle rec) {
+        Color color = ColorHelper.randomColor(ConfigHelper.bundleSaturation, ConfigHelper.bundleBrightness);
+        rec.setStrokeWidth(ConfigHelper.bundleBorderWidth);
+        rec.setStroke(color);
+        rec.setStrokeLineJoin(StrokeLineJoin.ROUND);
+        rec.setFill(ColorHelper.setOpacity(color, ConfigHelper.bundleOpacity));
     }
 
     public void draw() {
@@ -103,6 +121,10 @@ public class YardPresenter extends Pane implements IPresenter {
             recCopy.setY(newPos.getY());
             recCopy.setFill(rec.getFill());
             recCopy.setRotate(rec.getRotate());
+            recCopy.setFill(rec.getFill());
+            recCopy.setStroke(rec.getStroke());
+            recCopy.setStrokeWidth(rec.getStrokeWidth() * zoom.getValue());
+            recCopy.setStrokeLineJoin(rec.getStrokeLineJoin());
             getChildren().add(recCopy);
         }
     }

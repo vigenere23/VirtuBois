@@ -5,7 +5,6 @@ import javafx.geometry.Point2D;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Bundle extends Drawable
 {
@@ -19,10 +18,10 @@ public class Bundle extends Drawable
 
     public Bundle(Point2D position) {
         super(position);
-        setWidth(ConfigHelper.packWidth);
-        setLength(ConfigHelper.packLength);
-        setHeight(ConfigHelper.packHeight);
-        setAngle(ConfigHelper.packAngle);
+        setWidth(ConfigHelper.bundleWidth);
+        setLength(ConfigHelper.bundleLength);
+        setHeight(ConfigHelper.bundleHeight);
+        setAngle(ConfigHelper.bundleAngle);
         setEssence(ConfigHelper.essence);
         setPlanckSize(ConfigHelper.plankSize);
         initDate();

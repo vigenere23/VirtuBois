@@ -6,12 +6,11 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
-import javafx.scene.shape.StrokeType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +59,7 @@ public class YardPresenter extends Pane implements IPresenter {
         });
         setOnScroll(event -> {
             if (event.isControlDown()) handleZoom(event.getDeltaY());
+            else handlePanning(event);
         });
         setOnKeyPressed(event -> {
             if (event.isControlDown()) {
@@ -75,6 +75,14 @@ public class YardPresenter extends Pane implements IPresenter {
         } else if (delta < 0) {
             zoom.setValue(zoom.getValue() * 0.75);
         }
+    }
+
+    private void handlePanning(ScrollEvent event) {
+        Point2D panningVector = new Point2D(
+                event.getDeltaX() * 0.5 * (1 / zoom.getValue()),
+                event.getDeltaY() * 0.5 * (1 / zoom.getValue()));
+        translateVector = translateVector.add(panningVector);
+        draw();
     }
 
     private Point2D transformRealCoordsToPlanCoords(Rectangle rec) {

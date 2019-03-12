@@ -18,6 +18,7 @@ public class ConfigHelper {
     public static final double armsHeight = 0.0;
 
     // DRAWING
+    public static final double zoomFactor = 1.25;
     public static final double bundleOpacity = 0.3;
     public static final double bundleSaturation = 1;
     public static final double bundleBrightness = 0.6;

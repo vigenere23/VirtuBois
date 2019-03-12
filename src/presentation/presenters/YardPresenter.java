@@ -2,6 +2,7 @@ package presentation.presenters;
 
 import helpers.ColorHelper;
 import helpers.ConfigHelper;
+import helpers.GeomHelper;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
@@ -53,7 +54,6 @@ public class YardPresenter extends Pane implements IPresenter {
     private void initEventListeners() {
         widthProperty().addListener(observable -> draw());
         heightProperty().addListener(observable -> draw());
-        zoom.addListener(observable -> draw());
 
         setOnMousePressed(event -> {
             requestFocus();
@@ -76,23 +76,30 @@ public class YardPresenter extends Pane implements IPresenter {
             mousePosition.setText(text);
         });
         setOnScroll(event -> {
-            if (event.isControlDown()) handleZoom(event.getDeltaY());
+            if (event.isControlDown()) handleZoom(event.getDeltaY(), new Point2D(event.getX(), event.getY()));
             else handlePanning(event);
         });
         setOnKeyPressed(event -> {
             if (event.isControlDown()) {
                 double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
-                handleZoom(delta);
+                handleZoom(delta, getPlanCenterCoords());
             }
         });
     }
 
-    private void handleZoom(double delta) {
+    private void handleZoom(double delta, Point2D position) {
+        Point2D panningVector = position.subtract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
         if (delta > 0) {
-            zoom.setValue(zoom.getValue() * 1.25);
+            // ZOOM
+            zoom.setValue(zoom.getValue() * ConfigHelper.zoomFactor);
+            translateVector = translateVector.subtract(panningVector.multiply(1 / zoom.getValue()));
         } else if (delta < 0) {
-            zoom.setValue(zoom.getValue() * 0.75);
-        }
+            // UNZOOM
+            translateVector = translateVector.add(panningVector.multiply(1 / zoom.getValue()));
+            zoom.setValue(zoom.getValue() / ConfigHelper.zoomFactor);
+        } else return;
+
+        draw();
     }
 
     private void handlePanning(ScrollEvent event) {
@@ -110,18 +117,19 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private Point2D transformRealCoordsToPlanCoords(Point2D realPosition) {
-        Point2D invertedPosition = new Point2D(realPosition.getX(), -realPosition.getY());
-        Point2D screenOffsetVector = new Point2D(getWidth() / 2.0, getHeight() / 2.0);
-        Point2D zoomedVector = invertedPosition.add(translateVector).add(dragVector);
-        return zoomedVector.multiply(zoom.getValue()).add(screenOffsetVector);
+        Point2D zoomedVector = GeomHelper.invertY(realPosition).add(translateVector).add(dragVector);
+        return zoomedVector.multiply(zoom.getValue()).add(getPlanCenterCoords());
     }
 
     private Point2D transformPlanCoordsToRealCoords(Point2D planPosition) {
-        Point2D screenOffsetVector = new Point2D(getWidth() / 2.0, getHeight() / 2.0);
-        Point2D withoutScreenOffset = planPosition.subtract(screenOffsetVector);
-        Point2D unzoomed = withoutScreenOffset.multiply(1.0 / zoom.getValue());
+        Point2D withoutPlanOffset = planPosition.subtract(getPlanCenterCoords());
+        Point2D unzoomed = withoutPlanOffset.multiply(1.0 / zoom.getValue());
         Point2D untranslated = unzoomed.subtract(translateVector).subtract(dragVector);
-        return new Point2D(untranslated.getX(), -untranslated.getY());
+        return GeomHelper.invertY(untranslated);
+    }
+
+    private Point2D getPlanCenterCoords() {
+        return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
     }
 
     private void initRectangles() {

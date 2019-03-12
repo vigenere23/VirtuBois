@@ -5,10 +5,13 @@ import helpers.ConfigHelper;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineJoin;
 
@@ -24,6 +27,10 @@ public class YardPresenter extends Pane implements IPresenter {
     private Point2D dragVector;
     private Point2D translateVector;
 
+    private Label mousePosition;
+    private Line xAxis;
+    private Line yAxis;
+
     public YardPresenter() {
         super();
         setFocusTraversable(true);
@@ -33,9 +40,14 @@ public class YardPresenter extends Pane implements IPresenter {
         zoom = new SimpleDoubleProperty(1.0);
         dragVector = new Point2D(0, 0);
         translateVector = new Point2D(0.0, 0.0);
+        mousePosition = new Label("x:0  y:0");
+        mousePosition.setAlignment(Pos.BOTTOM_RIGHT);// TODO Not working...
+        xAxis = new Line();
+        yAxis = new Line();
 
         initRectangles();
         initEventListeners();
+        draw();
     }
 
     private void initEventListeners() {
@@ -56,6 +68,12 @@ public class YardPresenter extends Pane implements IPresenter {
             translateVector = translateVector.add(dragVector);
             dragVector = new Point2D(0, 0);
             draw();
+        });
+        setOnMouseMoved(event -> {
+            Point2D planPosition = new Point2D(event.getX(), event.getY());
+            Point2D realPosition = transformPlanCoordsToRealCoords(planPosition);
+            String text = "x:" + Math.round(realPosition.getX()) + "  " + "y:" + Math.round(realPosition.getY());
+            mousePosition.setText(text);
         });
         setOnScroll(event -> {
             if (event.isControlDown()) handleZoom(event.getDeltaY());
@@ -86,12 +104,24 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private Point2D transformRealCoordsToPlanCoords(Rectangle rec) {
-        //TODO screenOffset may not be multiplied to zoom?
-        Point2D invertedPoint = new Point2D(rec.getX(), -rec.getY());
+        Point2D position = new Point2D(rec.getX(), rec.getY());
+        Point2D centerOffset = new Point2D(rec.getWidth() / 2.0, -rec.getHeight() / 2.0);
+        return transformRealCoordsToPlanCoords(position.subtract(centerOffset));
+    }
+
+    private Point2D transformRealCoordsToPlanCoords(Point2D realPosition) {
+        Point2D invertedPosition = new Point2D(realPosition.getX(), -realPosition.getY());
         Point2D screenOffsetVector = new Point2D(getWidth() / 2.0, getHeight() / 2.0);
-        Point2D objectOffsetVector = new Point2D(rec.getWidth() / 4.0, rec.getHeight() / 4.0);
-        Point2D zoomedVector = invertedPoint.subtract(objectOffsetVector).add(translateVector).add(dragVector);
+        Point2D zoomedVector = invertedPosition.add(translateVector).add(dragVector);
         return zoomedVector.multiply(zoom.getValue()).add(screenOffsetVector);
+    }
+
+    private Point2D transformPlanCoordsToRealCoords(Point2D planPosition) {
+        Point2D screenOffsetVector = new Point2D(getWidth() / 2.0, getHeight() / 2.0);
+        Point2D withoutScreenOffset = planPosition.subtract(screenOffsetVector);
+        Point2D unzoomed = withoutScreenOffset.multiply(1.0 / zoom.getValue());
+        Point2D untranslated = unzoomed.subtract(translateVector).subtract(dragVector);
+        return new Point2D(untranslated.getX(), -untranslated.getY());
     }
 
     private void initRectangles() {
@@ -122,6 +152,37 @@ public class YardPresenter extends Pane implements IPresenter {
 
     public void draw() {
         getChildren().clear();
+
+        drawAxes();
+        drawBundles();
+        drawOtherGraphics();
+    }
+
+    private void drawAxes() {
+        Point2D realOriginOnPlan = transformRealCoordsToPlanCoords(new Point2D(0, 0));
+        double screenWidth = getWidth();
+        double screenHeight = getHeight();
+
+        xAxis.setStartX(0);
+        xAxis.setEndX(screenWidth);
+        xAxis.setStartY(realOriginOnPlan.getY());
+        xAxis.setEndY(realOriginOnPlan.getY());
+
+        yAxis.setStartY(0);
+        yAxis.setEndY(screenHeight);
+        yAxis.setStartX(realOriginOnPlan.getX());
+        yAxis.setEndX(realOriginOnPlan.getX());
+
+        xAxis.setStroke(ColorHelper.setOpacity(Color.WHITE, 0.2));
+        xAxis.getStrokeDashArray().add(10.0);
+        yAxis.setStroke(ColorHelper.setOpacity(Color.WHITE, 0.2));
+        yAxis.getStrokeDashArray().add(10.0);
+
+        getChildren().add(xAxis);
+        getChildren().add(yAxis);
+    }
+
+    private void drawBundles() {
         for (Rectangle rec : rectangles) {
             Rectangle recCopy = new Rectangle(rec.getWidth() * zoom.getValue(), rec.getHeight() * zoom.getValue());
             Point2D newPos = transformRealCoordsToPlanCoords(rec);
@@ -135,5 +196,9 @@ public class YardPresenter extends Pane implements IPresenter {
             recCopy.setStrokeLineJoin(rec.getStrokeLineJoin());
             getChildren().add(recCopy);
         }
+    }
+
+    private void drawOtherGraphics() {
+        getChildren().add(mousePosition);
     }
 }

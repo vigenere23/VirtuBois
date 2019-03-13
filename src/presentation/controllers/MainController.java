@@ -1,8 +1,10 @@
 package presentation.controllers;
 
+import enums.EditorMode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -13,6 +15,8 @@ import javafx.scene.text.TextFlow;
 import presentation.presenters.YardPresenter;
 
 public class MainController extends BaseController {
+
+    public EditorMode editorMode = EditorMode.NONE;
 
     @FXML
     Pane yardWrapper;
@@ -35,10 +39,13 @@ public class MainController extends BaseController {
     public TextFlow packTypeView;
     @FXML
     public TextFlow packPlankSize;
+    @FXML public Button addBundleButton;
 
     @FXML
     public void initialize()
     {
+        setEventHandlers();
+
         ObservableList<String> listItems = FXCollections.observableArrayList("Allo","Bonjour");
         listView.setItems(listItems);
 
@@ -80,8 +87,12 @@ public class MainController extends BaseController {
         initYard();
     }
 
+    private void setEventHandlers() {
+        addBundleButton.setOnAction(event -> editorMode = EditorMode.ADDING_BUNDLE);
+    }
+
     private void initYard() {
-        YardPresenter yardPresenter = new YardPresenter();
+        YardPresenter yardPresenter = new YardPresenter(this);
         yardWrapper.getChildren().setAll(yardPresenter);
         AnchorPane.setRightAnchor(yardPresenter, 0.0);
         AnchorPane.setLeftAnchor(yardPresenter, 0.0);

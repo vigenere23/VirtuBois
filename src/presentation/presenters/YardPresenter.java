@@ -1,5 +1,7 @@
 package presentation.presenters;
 
+import domain.controllers.LarmanController;
+import enums.EditorMode;
 import helpers.ColorHelper;
 import helpers.ConfigHelper;
 import helpers.GeomHelper;
@@ -15,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineJoin;
+import presentation.controllers.MainController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +35,16 @@ public class YardPresenter extends Pane implements IPresenter {
     private Line xAxis;
     private Line yAxis;
 
-    public YardPresenter() {
+    private MainController mainController;
+    private LarmanController larmanController;
+
+    public YardPresenter(MainController mainController) {
         super();
         setFocusTraversable(true);
 
+        this.mainController = mainController;
+
+        larmanController = LarmanController.getInstance();
         bundles = new ArrayList<>();
         rectangles = new ArrayList<>();
         zoom = new SimpleDoubleProperty(1.0);
@@ -58,6 +67,9 @@ public class YardPresenter extends Pane implements IPresenter {
         setOnMousePressed(event -> {
             requestFocus();
             lastClickedPoint = new Point2D(event.getX(), event.getY());
+            if (mainController.editorMode == EditorMode.ADDING_BUNDLE) {
+                createBundle(new Point2D(event.getX(), event.getY()));
+            }
         });
         setOnMouseDragged(event -> {
             Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
@@ -83,6 +95,9 @@ public class YardPresenter extends Pane implements IPresenter {
             if (event.isControlDown()) {
                 double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
                 handleZoom(delta, getPlanCenterCoords());
+            }
+            if (event.getCode() == KeyCode.ESCAPE) {
+                mainController.editorMode = EditorMode.NONE;
             }
         });
     }
@@ -156,6 +171,11 @@ public class YardPresenter extends Pane implements IPresenter {
         rec.setStroke(color);
         rec.setStrokeLineJoin(StrokeLineJoin.ROUND);
         rec.setFill(ColorHelper.setOpacity(color, ConfigHelper.bundleOpacity));
+    }
+
+    private void createBundle(Point2D planPosition) {
+        Point2D realPosition = transformPlanCoordsToRealCoords(planPosition);
+        larmanController.createBundle(realPosition);
     }
 
     public void draw() {

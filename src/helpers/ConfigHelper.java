@@ -1,13 +1,19 @@
 package helpers;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class ConfigHelper {
     // BUNDLE
-    public static final double bundleWidth = 20.0;
-    public static final double bundleLength = 40.0;
-    public static final double bundleHeight = 10.0;
-    public static final double bundleAngle = 0.0;
-    public static final String essence = "Érable";
-    public static final String plankSize = "3x4";
+    public static double bundleWidth = 20.0;
+    public static double bundleLength = 40.0;
+    public static double bundleHeight = 10.0;
+    public static double bundleAngle = 0.0;
+    public static String bundleEssence = "Érable";
+    public static String bundlePlankSize = "3x4";
+    public static LocalDate bundleDate = LocalDate.now();
+    public static LocalTime bundleTime = LocalTime.now();
+    public static String bundleBarcode = "123456789abcdef";
 
     // CHARGER
     public static final double chargerWidth = 20.0;

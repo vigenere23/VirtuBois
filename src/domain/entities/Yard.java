@@ -1,26 +1,39 @@
 package domain.entities;
 
+import javafx.geometry.Point2D;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Yard {
-    private List<Bundle> bundles;
+    private Map<Long, Bundle> bundles;
     private Lift lift;
 
     public Yard() {
-        setBundles(new ArrayList<>());
+        setBundles(new HashMap<>());
     }
 
-    public Yard(List<Bundle> bundles, Lift lift) {
+    public Yard(Map<Long, Bundle> bundles, Lift lift) {
         setBundles(bundles);
         setLift(lift);
     }
 
-    public List<Bundle> getBundles() { return bundles; }
+    public List<Bundle> getBundles() { return new ArrayList<>(bundles.values()); }
 
-    public void setBundles(List<Bundle> bundles) { this.bundles = bundles; }
+    public void setBundles(Map<Long, Bundle> bundles) { this.bundles = bundles; }
 
     public Lift getLift() { return lift; }
 
     public void setLift(Lift lift) { this.lift = lift; }
+
+    public void createBundle(Point2D position) {
+        Bundle bundle = new Bundle(position);
+        bundles.put(bundle.getId(), bundle);
+    }
+
+    public Bundle getBundle(long id) {
+        return bundles.get(id);
+    }
 }

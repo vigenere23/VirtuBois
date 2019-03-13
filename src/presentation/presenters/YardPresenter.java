@@ -7,8 +7,6 @@ import helpers.ColorHelper;
 import helpers.ConfigHelper;
 import helpers.GeomHelper;
 import helpers.MathHelper;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -27,7 +25,7 @@ import java.util.List;
 public class YardPresenter extends Pane implements IPresenter {
     private List<BundlePresenter> bundles;
     private LiftPresenter lift;
-    private DoubleProperty zoom;
+    private double zoom;
     private Point2D lastClickedPoint;
     private Point2D dragVector;
     private Point2D translateVector;
@@ -47,7 +45,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
         larmanController = LarmanController.getInstance();
         bundles = new ArrayList<>();
-        zoom = new SimpleDoubleProperty(ConfigHelper.defaultZoom);
+        zoom = ConfigHelper.defaultZoom;
         dragVector = new Point2D(0, 0);
         translateVector = new Point2D(0.0, 0.0);
         mousePosition = new Label("x:0  y:0");
@@ -76,7 +74,7 @@ public class YardPresenter extends Pane implements IPresenter {
         setOnMouseDragged(event -> {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
-                dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom.getValue());
+                dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
                 draw();
             }
         });
@@ -113,12 +111,12 @@ public class YardPresenter extends Pane implements IPresenter {
         Point2D panningVector = position.subtract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
         if (delta > 0) {
             // ZOOM
-            zoom.setValue(zoom.getValue() * ConfigHelper.zoomFactor);
-            translateVector = translateVector.subtract(panningVector.multiply(1 / zoom.getValue()));
+            zoom *= ConfigHelper.zoomFactor;
+            translateVector = translateVector.subtract(panningVector.multiply(1.0 / zoom));
         } else if (delta < 0) {
             // UNZOOM
-            translateVector = translateVector.add(panningVector.multiply(1 / zoom.getValue()));
-            zoom.setValue(zoom.getValue() / ConfigHelper.zoomFactor);
+            translateVector = translateVector.add(panningVector.multiply(1.0 / zoom));
+            zoom /= ConfigHelper.zoomFactor;
         } else return;
 
         draw();
@@ -126,8 +124,8 @@ public class YardPresenter extends Pane implements IPresenter {
 
     private void handlePanning(ScrollEvent event) {
         Point2D panningVector = new Point2D(
-                event.getDeltaX() * 0.5 * (1 / zoom.getValue()),
-                event.getDeltaY() * 0.5 * (1 / zoom.getValue()));
+                event.getDeltaX() * 0.5 * (1.0 / zoom),
+                event.getDeltaY() * 0.5 * (1.0 / zoom));
         translateVector = translateVector.add(panningVector);
         draw();
     }
@@ -140,12 +138,12 @@ public class YardPresenter extends Pane implements IPresenter {
 
     private Point2D transformRealCoordsToPlanCoords(Point2D realPosition) {
         Point2D zoomedVector = GeomHelper.invertY(realPosition).add(translateVector).add(dragVector);
-        return zoomedVector.multiply(zoom.getValue()).add(getPlanCenterCoords());
+        return zoomedVector.multiply(zoom).add(getPlanCenterCoords());
     }
 
     private Point2D transformPlanCoordsToRealCoords(Point2D planPosition) {
         Point2D withoutPlanOffset = planPosition.subtract(getPlanCenterCoords());
-        Point2D unzoomed = withoutPlanOffset.multiply(1.0 / zoom.getValue());
+        Point2D unzoomed = withoutPlanOffset.multiply(1.0 / zoom);
         Point2D untranslated = unzoomed.subtract(translateVector).subtract(dragVector);
         return GeomHelper.invertY(untranslated);
     }
@@ -199,8 +197,8 @@ public class YardPresenter extends Pane implements IPresenter {
             Point2D planPosition = transformRealCoordsToPlanCoords(bundlePresenter);
             bundlePresenter.setX(planPosition.getX());
             bundlePresenter.setY(planPosition.getY());
-            bundlePresenter.setWidth(bundlePresenter.getWidth() * zoom.getValue());
-            bundlePresenter.setHeight(bundlePresenter.getHeight() * zoom.getValue());
+            bundlePresenter.setWidth(bundlePresenter.getWidth() * zoom);
+            bundlePresenter.setHeight(bundlePresenter.getHeight() * zoom);
             getChildren().add(bundlePresenter);
         }
     }

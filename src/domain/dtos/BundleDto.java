@@ -2,7 +2,6 @@ package domain.dtos;
 
 import domain.entities.Bundle;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

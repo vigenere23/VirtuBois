@@ -16,7 +16,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import presentation.controllers.MainController;
 
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class YardPresenter extends Pane implements IPresenter {
                 createBundle(new Point2D(event.getX(), event.getY()));
                 draw();
             }
-            else if (mainController.editorMode.getValue() == EditorMode.NONE) {
+            else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 getSelectedPacks(new Point2D(event.getX(), event.getY()));
             }
         });
@@ -130,12 +129,6 @@ public class YardPresenter extends Pane implements IPresenter {
         draw();
     }
 
-    private Point2D transformRealCoordsToPlanCoords(Rectangle rec) {
-        Point2D position = new Point2D(rec.getX(), rec.getY());
-        Point2D centerOffset = new Point2D(rec.getWidth() / 2.0, -rec.getHeight() / 2.0);
-        return transformRealCoordsToPlanCoords(position.subtract(centerOffset));
-    }
-
     private Point2D transformRealCoordsToPlanCoords(Point2D realPosition) {
         Point2D zoomedVector = GeomHelper.invertY(realPosition).add(translateVector).add(dragVector);
         return zoomedVector.multiply(zoom).add(getPlanCenterCoords());
@@ -161,7 +154,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private void createBundle(Point2D planPosition) {
         Point2D realPosition = transformPlanCoordsToRealCoords(planPosition);
         larmanController.createBundle(realPosition);
-        mainController.editorMode.setValue(EditorMode.BUNDLE_SELECTED);
+        mainController.editorMode.setValue(EditorMode.POINTER);
     }
 
     public void draw() {
@@ -199,14 +192,12 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private void drawBundles(List<BundleDto> bundles) {
-        for (BundleDto bundle : bundles) {
-            BundlePresenter bundlePresenter = new BundlePresenter(bundle);
-            Point2D planPosition = transformRealCoordsToPlanCoords(bundlePresenter);
-            bundlePresenter.setX(planPosition.getX());
-            bundlePresenter.setY(planPosition.getY());
-            bundlePresenter.setWidth(bundlePresenter.getWidth() * zoom);
-            bundlePresenter.setHeight(bundlePresenter.getHeight() * zoom);
-            getChildren().add(bundlePresenter);
+        for (BundleDto bundleDto : bundles) {
+            BundlePresenter bundlePresenter = new BundlePresenter(bundleDto);
+            Point2D planPosition = transformRealCoordsToPlanCoords(bundleDto.position);
+            bundlePresenter.setScale(zoom);
+            bundlePresenter.setPosition(planPosition);
+            getChildren().add(bundlePresenter.get());
         }
     }
 

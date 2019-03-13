@@ -1,5 +1,6 @@
 package domain.entities;
 
+import helpers.CenteredRectangle;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
@@ -38,8 +39,17 @@ public class Yard {
     }
 
     public List<Bundle> getBundlesAtPosition(Point2D position) {
-        List<Bundle> bundles = new ArrayList<>();
-        // TODO add bundles to list
-        return bundles;
+        List<Bundle> selectedBundles = new ArrayList<>();
+        for (Bundle bundle : new ArrayList<>(bundles.values())) {
+            CenteredRectangle rec = new CenteredRectangle(
+                    bundle.position,
+                    bundle.width,
+                    bundle.length
+            );
+            rec.get().setRotate(bundle.angle);
+            rec.getPoints();
+        }
+
+        return selectedBundles;
     }
 }

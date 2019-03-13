@@ -4,6 +4,9 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GeomHelper {
 
     public static boolean pointIsInsideRectangle(Point2D point, Rectangle2D rectangle) {

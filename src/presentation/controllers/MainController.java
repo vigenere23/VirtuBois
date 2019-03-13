@@ -92,13 +92,13 @@ public class MainController extends BaseController {
     private void setEventHandlers() {
         root.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
-                editorMode.setValue(EditorMode.NONE);
+                editorMode.setValue(EditorMode.POINTER);
             }
         });
     }
 
     private void setupEditorModeToggleButtons() {
-        pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.NONE));
+        pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.POINTER));
         addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
 
         editorModeToggleGroup = new ToggleGroup();
@@ -106,12 +106,12 @@ public class MainController extends BaseController {
         addBundleButton.setToggleGroup(editorModeToggleGroup);
 
         editorMode.addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals(EditorMode.NONE)) editorModeToggleGroup.selectToggle(pointerButton);
+            if (newValue.equals(EditorMode.POINTER)) editorModeToggleGroup.selectToggle(pointerButton);
             else if (newValue.equals(EditorMode.ADDING_BUNDLE)) editorModeToggleGroup.selectToggle(addBundleButton);
             else editorModeToggleGroup.selectToggle(null);
         });
 
-        editorMode.setValue(EditorMode.NONE);
+        editorMode.setValue(EditorMode.POINTER);
     }
 
     private void initYard() {

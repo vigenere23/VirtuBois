@@ -1,14 +1,18 @@
 package domain.entities;
 
+import helpers.ColorHelper;
 import helpers.ConfigHelper;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 public class Bundle extends Drawable3D
 {
-    private long id;
+    private String id;
+    private String color;
     private double height;
     private LocalDate date;
     private LocalTime time;
@@ -19,6 +23,7 @@ public class Bundle extends Drawable3D
     public Bundle(Point2D position) {
         super(position);
         initId();
+        initColor();
         setWidth(ConfigHelper.bundleWidth);
         setLength(ConfigHelper.bundleLength);
         setHeight(ConfigHelper.bundleHeight);
@@ -28,14 +33,20 @@ public class Bundle extends Drawable3D
         setDate(ConfigHelper.bundleDate);
         setTime(ConfigHelper.bundleTime);
         setBarcode(ConfigHelper.bundleBarcode);
-        System.out.println("New bundle created");
     }
 
     private void initId() {
-        // TODO get unique id
+        id = UUID.randomUUID().toString();
     }
 
-    public long getId() { return id; }
+    public String getId() { return id; }
+
+    private void initColor() {
+        Color color = ColorHelper.randomColor(ConfigHelper.bundleSaturation, ConfigHelper.bundleBrightness);
+        this.color = ColorHelper.toWeb(color);
+    }
+
+    public String getColor() { return color; }
 
     public double getHeight()
     {

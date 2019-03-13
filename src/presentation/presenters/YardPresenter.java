@@ -1,22 +1,24 @@
 package presentation.presenters;
 
 import domain.controllers.LarmanController;
+import domain.dtos.BundleDto;
 import enums.EditorMode;
 import helpers.ColorHelper;
 import helpers.ConfigHelper;
 import helpers.GeomHelper;
+import helpers.MathHelper;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineJoin;
 import presentation.controllers.MainController;
 
 import java.util.ArrayList;
@@ -25,7 +27,6 @@ import java.util.List;
 public class YardPresenter extends Pane implements IPresenter {
     private List<BundlePresenter> bundles;
     private LiftPresenter lift;
-    private List<Rectangle> rectangles;
     private DoubleProperty zoom;
     private Point2D lastClickedPoint;
     private Point2D dragVector;
@@ -46,8 +47,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
         larmanController = LarmanController.getInstance();
         bundles = new ArrayList<>();
-        rectangles = new ArrayList<>();
-        zoom = new SimpleDoubleProperty(1.0);
+        zoom = new SimpleDoubleProperty(ConfigHelper.defaultZoom);
         dragVector = new Point2D(0, 0);
         translateVector = new Point2D(0.0, 0.0);
         mousePosition = new Label("x:0  y:0");
@@ -55,7 +55,6 @@ public class YardPresenter extends Pane implements IPresenter {
         xAxis = new Line();
         yAxis = new Line();
 
-        initRectangles();
         initEventListeners();
         draw();
     }
@@ -66,25 +65,33 @@ public class YardPresenter extends Pane implements IPresenter {
 
         setOnMousePressed(event -> {
             requestFocus();
-            lastClickedPoint = new Point2D(event.getX(), event.getY());
-            if (mainController.editorMode == EditorMode.ADDING_BUNDLE) {
+            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+                lastClickedPoint = new Point2D(event.getX(), event.getY());
+            }
+            else if (mainController.editorMode == EditorMode.ADDING_BUNDLE) {
                 createBundle(new Point2D(event.getX(), event.getY()));
+                draw();
             }
         });
         setOnMouseDragged(event -> {
-            Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
-            dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom.getValue());
-            draw();
+            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+                Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
+                dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom.getValue());
+                draw();
+            }
         });
         setOnMouseReleased(event -> {
-            translateVector = translateVector.add(dragVector);
-            dragVector = new Point2D(0, 0);
-            draw();
+            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+                translateVector = translateVector.add(dragVector);
+                dragVector = new Point2D(0, 0);
+                draw();
+            }
         });
         setOnMouseMoved(event -> {
             Point2D planPosition = new Point2D(event.getX(), event.getY());
             Point2D realPosition = transformPlanCoordsToRealCoords(planPosition);
-            String text = "x:" + Math.round(realPosition.getX()) + "  " + "y:" + Math.round(realPosition.getY());
+            String text = "x:" + MathHelper.round(realPosition.getX(), 2) + "  "
+                        + "y:" + MathHelper.round(realPosition.getY(), 2);
             mousePosition.setText(text);
         });
         setOnScroll(event -> {
@@ -147,32 +154,6 @@ public class YardPresenter extends Pane implements IPresenter {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
     }
 
-    private void initRectangles() {
-        Rectangle rec1 = new Rectangle(40, 40, 80, 60);
-        rec1.setRotate(30);
-        initRectangleColors(rec1);
-
-        Rectangle rec2 = new Rectangle(-40, -40,80, 120);
-        rec2.setRotate(251);
-        initRectangleColors(rec2);
-
-        Rectangle rec3 = new Rectangle(0, 0,70, 60);
-        rec3.setRotate(0);
-        initRectangleColors(rec3);
-
-        rectangles.add(rec1);
-        rectangles.add(rec3);
-        rectangles.add(rec2);
-    }
-
-    private void initRectangleColors(Rectangle rec) {
-        Color color = ColorHelper.randomColor(ConfigHelper.bundleSaturation, ConfigHelper.bundleBrightness);
-        rec.setStrokeWidth(ConfigHelper.bundleBorderWidth);
-        rec.setStroke(color);
-        rec.setStrokeLineJoin(StrokeLineJoin.ROUND);
-        rec.setFill(ColorHelper.setOpacity(color, ConfigHelper.bundleOpacity));
-    }
-
     private void createBundle(Point2D planPosition) {
         Point2D realPosition = transformPlanCoordsToRealCoords(planPosition);
         larmanController.createBundle(realPosition);
@@ -181,8 +162,10 @@ public class YardPresenter extends Pane implements IPresenter {
     public void draw() {
         getChildren().clear();
 
+        List<BundleDto> bundles = larmanController.getBundles();
+
         drawAxes();
-        drawBundles();
+        drawBundles(bundles);
         drawOtherGraphics();
     }
 
@@ -210,19 +193,15 @@ public class YardPresenter extends Pane implements IPresenter {
         getChildren().add(yAxis);
     }
 
-    private void drawBundles() {
-        for (Rectangle rec : rectangles) {
-            Rectangle recCopy = new Rectangle(rec.getWidth() * zoom.getValue(), rec.getHeight() * zoom.getValue());
-            Point2D newPos = transformRealCoordsToPlanCoords(rec);
-            recCopy.setX(newPos.getX());
-            recCopy.setY(newPos.getY());
-            recCopy.setFill(rec.getFill());
-            recCopy.setRotate(rec.getRotate());
-            recCopy.setFill(rec.getFill());
-            recCopy.setStroke(rec.getStroke());
-            recCopy.setStrokeWidth(rec.getStrokeWidth() * zoom.getValue());
-            recCopy.setStrokeLineJoin(rec.getStrokeLineJoin());
-            getChildren().add(recCopy);
+    private void drawBundles(List<BundleDto> bundles) {
+        for (BundleDto bundle : bundles) {
+            BundlePresenter bundlePresenter = new BundlePresenter(bundle);
+            Point2D planPosition = transformRealCoordsToPlanCoords(bundlePresenter);
+            bundlePresenter.setX(planPosition.getX());
+            bundlePresenter.setY(planPosition.getY());
+            bundlePresenter.setWidth(bundlePresenter.getWidth() * zoom.getValue());
+            bundlePresenter.setHeight(bundlePresenter.getHeight() * zoom.getValue());
+            getChildren().add(bundlePresenter);
         }
     }
 

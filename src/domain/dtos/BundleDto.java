@@ -2,11 +2,14 @@ package domain.dtos;
 
 import domain.entities.Bundle;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class BundleDto {
-    public long id;
+    public String id;
+    public String color;
     public double height;
     public double width;
     public double length;
@@ -21,6 +24,7 @@ public class BundleDto {
 
     public BundleDto(Bundle bundle) {
         id = bundle.getId();
+        color = bundle.getColor();
         height = bundle.getHeight();
         width = bundle.getWidth();
         length = bundle.getLength();

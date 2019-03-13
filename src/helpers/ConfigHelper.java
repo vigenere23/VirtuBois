@@ -5,9 +5,9 @@ import java.time.LocalTime;
 
 public class ConfigHelper {
     // BUNDLE
-    public static double bundleWidth = 20.0;
-    public static double bundleLength = 40.0;
-    public static double bundleHeight = 10.0;
+    public static double bundleWidth = 2.0;
+    public static double bundleLength = 1.0;
+    public static double bundleHeight = 0.5;
     public static double bundleAngle = 0.0;
     public static String bundleEssence = "Érable";
     public static String bundlePlankSize = "3x4";
@@ -16,14 +16,15 @@ public class ConfigHelper {
     public static String bundleBarcode = "123456789abcdef";
 
     // CHARGER
-    public static final double chargerWidth = 20.0;
-    public static final double chargerLenth = 40.0;
+    public static final double chargerWidth = 1.5;
+    public static final double chargerLenth = 2.0;
     public static final double chargerAngle = 0.0;
-    public static final double armsWidth = 20.0;
-    public static final double armsLength = 20.0;
+    public static final double armsWidth = 1.0;
+    public static final double armsLength = 1.0;
     public static final double armsHeight = 0.0;
 
     // DRAWING
+    public static final double defaultZoom = 100.0;
     public static final double zoomFactor = 1.25;
     public static final double bundleOpacity = 0.3;
     public static final double bundleSaturation = 1;

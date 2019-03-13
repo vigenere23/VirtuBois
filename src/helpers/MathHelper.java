@@ -6,4 +6,9 @@ public class MathHelper {
         else if (value > max) return max;
         else return value;
     }
+
+    public static double round(double value, int decimals) {
+        double roundFactor = Math.pow(10, decimals);
+        return Math.round(value * roundFactor) / roundFactor;
+    }
 }

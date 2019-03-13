@@ -19,4 +19,12 @@ public class ColorHelper {
     public static Color setOpacity(Color color, double opacity) {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
     }
+
+    public static String toWeb(Color color)
+    {
+        return String.format( "#%02X%02X%02X",
+            (int)( color.getRed() * 255 ),
+            (int)( color.getGreen() * 255 ),
+            (int)( color.getBlue() * 255 ) );
+    }
 }

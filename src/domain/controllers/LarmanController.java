@@ -30,11 +30,7 @@ public class LarmanController {
     }
 
     public List<BundleDto> getBundles() {
-        List<BundleDto> dtos = new ArrayList<>();
-        for (Bundle bundle : yard.getBundles()) {
-            dtos.add(new BundleDto(bundle));
-        }
-        return dtos;
+    return convertBundlesToDtos(yard.getBundles());
     }
 
     public BundleDto getBundle(long id) {
@@ -43,6 +39,17 @@ public class LarmanController {
         return new BundleDto(bundle);
     }
 
-    /**** PRIVATE METHODS ****/
+    public List<BundleDto> getSelectedBundles(Point2D position) {
+        List<Bundle> bundles = yard.getBundlesAtPosition(position);
+        return convertBundlesToDtos(bundles);
+    }
 
+    /**** PRIVATE METHODS ****/
+    private List<BundleDto> convertBundlesToDtos(List<Bundle> bundles) {
+        List<BundleDto> dtos = new ArrayList<>();
+        for (Bundle bundle : yard.getBundles()) {
+            dtos.add(new BundleDto(bundle));
+        }
+        return dtos;
+    }
 }

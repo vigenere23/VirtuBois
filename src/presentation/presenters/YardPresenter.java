@@ -70,6 +70,9 @@ public class YardPresenter extends Pane implements IPresenter {
                 createBundle(new Point2D(event.getX(), event.getY()));
                 draw();
             }
+            else if (mainController.editorMode.getValue() == EditorMode.NONE) {
+                getSelectedPacks(new Point2D(event.getX(), event.getY()));
+            }
         });
         setOnMouseDragged(event -> {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
@@ -147,6 +150,12 @@ public class YardPresenter extends Pane implements IPresenter {
 
     private Point2D getPlanCenterCoords() {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
+    }
+
+    private void getSelectedPacks(Point2D position) {
+        List<BundleDto> bundles = larmanController.getSelectedBundles(position);
+        // TODO notify mainController for sideview
+        // TODO Highlight selected bundles
     }
 
     private void createBundle(Point2D planPosition) {

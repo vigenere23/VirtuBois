@@ -85,7 +85,7 @@ public class MainController extends BaseController {
         packPlankSize.getChildren().add(packPlank);
 
         setEventHandlers();
-        setupToggleButtons();
+        setupEditorModeToggleButtons();
         initYard();
     }
 
@@ -97,7 +97,7 @@ public class MainController extends BaseController {
         });
     }
 
-    private void setupToggleButtons() {
+    private void setupEditorModeToggleButtons() {
         pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.NONE));
         addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
 

@@ -36,4 +36,10 @@ public class Yard {
     public Bundle getBundle(long id) {
         return bundles.get(id);
     }
+
+    public List<Bundle> getBundlesAtPosition(Point2D position) {
+        List<Bundle> bundles = new ArrayList<>();
+        // TODO add bundles to list
+        return bundles;
+    }
 }

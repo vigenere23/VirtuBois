@@ -66,7 +66,7 @@ public class YardPresenter extends Pane implements IPresenter {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 lastClickedPoint = new Point2D(event.getX(), event.getY());
             }
-            else if (mainController.editorMode == EditorMode.ADDING_BUNDLE) {
+            else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
                 createBundle(new Point2D(event.getX(), event.getY()));
                 draw();
             }
@@ -100,9 +100,6 @@ public class YardPresenter extends Pane implements IPresenter {
             if (event.isControlDown()) {
                 double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
                 handleZoom(delta, getPlanCenterCoords());
-            }
-            if (event.getCode() == KeyCode.ESCAPE) {
-                mainController.editorMode = EditorMode.NONE;
             }
         });
     }
@@ -155,6 +152,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private void createBundle(Point2D planPosition) {
         Point2D realPosition = transformPlanCoordsToRealCoords(planPosition);
         larmanController.createBundle(realPosition);
+        mainController.editorMode.setValue(EditorMode.BUNDLE_SELECTED);
     }
 
     public void draw() {

@@ -2,6 +2,7 @@ package presentation.controllers;
 
 import helpers.JavafxHelper;
 import javafx.event.ActionEvent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public abstract class BaseController implements IController {

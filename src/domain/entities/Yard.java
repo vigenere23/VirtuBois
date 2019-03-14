@@ -54,6 +54,12 @@ public class Yard {
         return selectedBundles;
     }
 
+    public void deleteBundle(String id) {
+        bundles.remove(id);
+        System.out.print("deleted! \n");
+    }
+
+
     public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,
                                        LocalDate date, String essence, String planksize)
     {

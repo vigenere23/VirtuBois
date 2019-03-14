@@ -52,50 +52,17 @@ public class MainController extends BaseController {
 
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
+    @FXML public ToggleButton deleteButton;
 
     @FXML
     public void initialize()
     {
         editorMode = new SimpleObjectProperty<>();
 
-        ObservableList<String> listItems = FXCollections.observableArrayList("Allo","Bonjour");
+        ObservableList<String> listItems = FXCollections.observableArrayList("Bundle 1","Bundle 2", "Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle");
         listView.setItems(listItems);
 
-        Text packCode = new Text("Code barre : ");
-        Text packLong = new Text("Longeur : ");
-        Text packLarg = new Text("Largeur : ");
-        Text packHaut = new Text("Hauteur : ");
-        Text packDate = new Text("Date de production : ");
-        Text packHeure = new Text("Heure de production : ");
-        Text packType = new Text("Essence : ");
-        Text packPlank = new Text("Dimensions des planches : ");
-
-        packCode.setFont(new Font("System",12));
-        packCode.setFill(Color.WHITESMOKE);
-        packLong.setFont(new Font("System",12));
-        packLong.setFill(Color.WHITESMOKE);
-        packLarg.setFont(new Font("System",12));
-        packLarg.setFill(Color.WHITESMOKE);
-        packHaut.setFont(new Font("System",12));
-        packHaut.setFill(Color.WHITESMOKE);
-        packDate.setFont(new Font("System",12));
-        packDate.setFill(Color.WHITESMOKE);
-        packHeure.setFont(new Font("System",12));
-        packHeure.setFill(Color.WHITESMOKE);
-        packType.setFont(new Font("System",12));
-        packType.setFill(Color.WHITESMOKE);
-        packPlank.setFont(new Font("System",12));
-        packPlank.setFill(Color.WHITESMOKE);
-
-        packCodeView.getChildren().add(packCode);
-        packLongView.getChildren().add(packLong);
-        packLargView.getChildren().add(packLarg);
-        packHautView.getChildren().add(packHaut);
-        packDateView.getChildren().add(packDate);
-        packHeureView.getChildren().add(packHeure);
-        packTypeView.getChildren().add(packType);
-        packPlankSize.getChildren().add(packPlank);
-
+        initBundleInfoView();
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();
@@ -112,14 +79,17 @@ public class MainController extends BaseController {
     private void setupEditorModeToggleButtons() {
         pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.POINTER));
         addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
+        deleteButton.setOnAction(event -> editorMode.setValue(EditorMode.DELETE));
 
         editorModeToggleGroup = new ToggleGroup();
         pointerButton.setToggleGroup(editorModeToggleGroup);
         addBundleButton.setToggleGroup(editorModeToggleGroup);
+        deleteButton.setToggleGroup(editorModeToggleGroup);
 
         editorMode.addListener((observable, oldValue, newValue) -> {
             if (newValue.equals(EditorMode.POINTER)) editorModeToggleGroup.selectToggle(pointerButton);
             else if (newValue.equals(EditorMode.ADDING_BUNDLE)) editorModeToggleGroup.selectToggle(addBundleButton);
+            else if (newValue.equals(EditorMode.DELETE)) editorModeToggleGroup.selectToggle(deleteButton);
             else editorModeToggleGroup.selectToggle(null);
         });
 
@@ -161,5 +131,42 @@ public class MainController extends BaseController {
         bundleEssence.getChildren().add(essence);
         Text plankSize =  new Text(bundle.plankSize);
         bundleSize.getChildren().add(plankSize);
+    }
+
+    private void initBundleInfoView() {
+        Text packCode = new Text("Code barre : ");
+        Text packLong = new Text("Longeur : ");
+        Text packLarg = new Text("Largeur : ");
+        Text packHaut = new Text("Hauteur : ");
+        Text packDate = new Text("Date de production : ");
+        Text packHeure = new Text("Heure de production : ");
+        Text packType = new Text("Essence : ");
+        Text packPlank = new Text("Dimensions des planches : ");
+
+        packCode.setFont(new Font("System", 12));
+        packCode.setFill(Color.WHITESMOKE);
+        packLong.setFont(new Font("System", 12));
+        packLong.setFill(Color.WHITESMOKE);
+        packLarg.setFont(new Font("System", 12));
+        packLarg.setFill(Color.WHITESMOKE);
+        packHaut.setFont(new Font("System", 12));
+        packHaut.setFill(Color.WHITESMOKE);
+        packDate.setFont(new Font("System", 12));
+        packDate.setFill(Color.WHITESMOKE);
+        packHeure.setFont(new Font("System", 12));
+        packHeure.setFill(Color.WHITESMOKE);
+        packType.setFont(new Font("System", 12));
+        packType.setFill(Color.WHITESMOKE);
+        packPlank.setFont(new Font("System", 12));
+        packPlank.setFill(Color.WHITESMOKE);
+
+        packCodeView.getChildren().add(packCode);
+        packLongView.getChildren().add(packLong);
+        packLargView.getChildren().add(packLarg);
+        packHautView.getChildren().add(packHaut);
+        packDateView.getChildren().add(packDate);
+        packHeureView.getChildren().add(packHeure);
+        packTypeView.getChildren().add(packType);
+        packPlankSize.getChildren().add(packPlank);
     }
 }

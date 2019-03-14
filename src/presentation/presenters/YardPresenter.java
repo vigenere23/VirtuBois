@@ -72,6 +72,11 @@ public class YardPresenter extends Pane implements IPresenter {
             else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 getSelectedPacks(new Point2D(event.getX(), event.getY()));
             }
+            else if (mainController.editorMode.getValue() == EditorMode.DELETE){
+                deleteBundle(new Point2D(event.getX(), event.getY()));
+                draw();
+            }
+
         });
         setOnMouseDragged(event -> {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
@@ -157,6 +162,13 @@ public class YardPresenter extends Pane implements IPresenter {
     private void createBundle(Point2D planPosition) {
         Point2D realPosition = transformPlanCoordsToRealCoords(planPosition);
         larmanController.createBundle(realPosition);
+        mainController.editorMode.setValue(EditorMode.POINTER);
+    }
+
+    private void deleteBundle(Point2D planPosition){
+        Point2D realPos = transformPlanCoordsToRealCoords(planPosition);
+        String id = larmanController.getTopBundle(realPos).id;
+        larmanController.deleteBundle(id);
         mainController.editorMode.setValue(EditorMode.POINTER);
     }
 

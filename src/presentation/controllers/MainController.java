@@ -38,6 +38,8 @@ public class MainController extends BaseController {
     @FXML public TextFlow packTypeView;
     @FXML public TextFlow packPlankSize;
 
+    @FXML public TextFlow bundleCode;
+
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
 
@@ -122,4 +124,6 @@ public class MainController extends BaseController {
         AnchorPane.setBottomAnchor(yardPresenter, 0.0);
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
+
+
 }

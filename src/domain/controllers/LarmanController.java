@@ -6,6 +6,8 @@ import domain.entities.Yard;
 import helpers.Converter;
 import javafx.geometry.Point2D;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class LarmanController {
@@ -42,6 +44,17 @@ public class LarmanController {
     public List<BundleDto> getSelectedBundles(Point2D position) {
         List<Bundle> bundles = yard.getBundlesAtPosition(position);
         return Converter.fromBundlesToBundleDtos(bundles);
+    }
+
+    public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,
+                             LocalDate date, String essence, String planksize)
+    {
+        yard.modifyBundleProperties(id, barcode, height, width, length, time, date, essence, planksize);
+    }
+
+    public void modifyBundlePosition(String id, Point2D position, double angle)
+    {
+        yard.modifyBundlePosition(id, position, angle);
     }
 
     /**** PRIVATE METHODS ****/

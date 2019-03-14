@@ -5,6 +5,8 @@ import helpers.Converter;
 import helpers.GeomHelper;
 import javafx.geometry.Point2D;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,5 +52,26 @@ public class Yard {
         }
 
         return selectedBundles;
+    }
+
+    public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,
+                                       LocalDate date, String essence, String planksize)
+    {
+        Bundle bundle = getBundle(id);
+        bundle.setBarcode(barcode);
+        bundle.setHeight(height);
+        bundle.setWidth(width);
+        bundle.setLength(length);
+        bundle.setTime(time);
+        bundle.setDate(date);
+        bundle.setEssence(essence);
+        bundle.setPlanckSize(planksize);
+    }
+
+    public void modifyBundlePosition(String id, Point2D position, double angle)
+    {
+        Bundle bundle = getBundle(id);
+        bundle.setPosition(position);
+        bundle.setAngle(angle);
     }
 }

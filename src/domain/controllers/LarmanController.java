@@ -43,6 +43,12 @@ public class LarmanController {
         List<Bundle> bundles = yard.getBundlesAtPosition(position);
         return Converter.fromBundlesToBundleDtos(bundles);
     }
+    
+    public BundleDto getTopBundle(Point2D position)
+    {
+        int index = getSelectedBundles(position).size()-1;
+        return getSelectedBundles(position).get(index);
+    }
 
     /**** PRIVATE METHODS ****/
 

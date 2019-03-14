@@ -146,7 +146,7 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private void getSelectedPacks(Point2D position) {
-        List<BundleDto> bundles = larmanController.getSelectedBundles(position);
+        List<BundleDto> bundles = larmanController.getSelectedBundles(transformPlanCoordsToRealCoords(position));
         // TODO notify mainController for sideview
         // TODO Highlight selected bundles
     }

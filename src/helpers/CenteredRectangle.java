@@ -85,6 +85,9 @@ public class CenteredRectangle {
         updateY();
     }
 
+    public double area() { return width * height; }
+
+    // https://stackoverflow.com/questions/2259476/rotating-a-point-about-another-point-2d
     public List<Point2D> getPoints() {
         // 0 --- 1
         // |     |

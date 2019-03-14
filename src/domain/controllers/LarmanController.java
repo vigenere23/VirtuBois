@@ -3,9 +3,9 @@ package domain.controllers;
 import domain.dtos.BundleDto;
 import domain.entities.Bundle;
 import domain.entities.Yard;
+import helpers.Converter;
 import javafx.geometry.Point2D;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LarmanController {
@@ -30,10 +30,10 @@ public class LarmanController {
     }
 
     public List<BundleDto> getBundles() {
-    return convertBundlesToDtos(yard.getBundles());
+    return Converter.fromBundlesToBundleDtos(yard.getBundles());
     }
 
-    public BundleDto getBundle(long id) {
+    public BundleDto getBundle(String id) {
         Bundle bundle = yard.getBundle(id);
         if (bundle == null) return null;
         return new BundleDto(bundle);
@@ -41,15 +41,9 @@ public class LarmanController {
 
     public List<BundleDto> getSelectedBundles(Point2D position) {
         List<Bundle> bundles = yard.getBundlesAtPosition(position);
-        return convertBundlesToDtos(bundles);
+        return Converter.fromBundlesToBundleDtos(bundles);
     }
 
     /**** PRIVATE METHODS ****/
-    private List<BundleDto> convertBundlesToDtos(List<Bundle> bundles) {
-        List<BundleDto> dtos = new ArrayList<>();
-        for (Bundle bundle : yard.getBundles()) {
-            dtos.add(new BundleDto(bundle));
-        }
-        return dtos;
-    }
+
 }

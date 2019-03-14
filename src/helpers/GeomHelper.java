@@ -20,9 +20,14 @@ public class GeomHelper {
         for (int i = 0; i < points.size(); i++) {
             totalArea += getTriangleArea(points.get(i), points.get((i+1) % points.size()), point);
         }
-        System.out.println(totalArea);
-        System.out.println(rectangle.area());
         return MathHelper.round(totalArea - rectangle.area(), 2) == 0;
+    }
+
+    public static boolean rectangleCollidesRectangle(CenteredRectangle rectangle1, CenteredRectangle rectangle2) {
+        for (Point2D point : rectangle1.getPoints()) {
+            if (pointIsInsideRectangle(point, rectangle2)) return true;
+        }
+        return false;
     }
 
     public static Point2D invertY(Point2D point) {

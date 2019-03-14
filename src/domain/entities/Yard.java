@@ -1,6 +1,7 @@
 package domain.entities;
 
 import helpers.CenteredRectangle;
+import helpers.Converter;
 import helpers.GeomHelper;
 import javafx.geometry.Point2D;
 
@@ -35,20 +36,17 @@ public class Yard {
         bundles.put(bundle.getId(), bundle);
     }
 
-    public Bundle getBundle(long id) {
+    public Bundle getBundle(String id) {
         return bundles.get(id);
     }
 
     public List<Bundle> getBundlesAtPosition(Point2D position) {
         List<Bundle> selectedBundles = new ArrayList<>();
         for (Bundle bundle : new ArrayList<>(bundles.values())) {
-            CenteredRectangle rectangle = new CenteredRectangle(
-                    bundle.position,
-                    bundle.width,
-                    bundle.length,
-                    bundle.angle
-            );
-            System.out.println(GeomHelper.pointIsInsideRectangle(position, rectangle));
+            CenteredRectangle rectangle = Converter.fromBundleToCenteredRectangle(bundle);
+            if (GeomHelper.pointIsInsideRectangle(position, rectangle)) {
+                selectedBundles.add(bundle);
+            }
         }
 
         return selectedBundles;

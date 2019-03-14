@@ -44,9 +44,9 @@ public class Yard {
             CenteredRectangle rec = new CenteredRectangle(
                     bundle.position,
                     bundle.width,
-                    bundle.length
+                    bundle.length,
+                    bundle.angle
             );
-            rec.get().setRotate(bundle.angle);
             rec.getPoints();
         }
 

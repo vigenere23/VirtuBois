@@ -14,9 +14,8 @@ public class BundlePresenter extends CenteredRectangle implements IPresenter {
     public BundleDto dto;
 
     public BundlePresenter(BundleDto dto) {
-        super(dto.position.getX(), dto.position.getY(), dto.width, dto.length);
+        super(dto.position.getX(), dto.position.getY(), dto.width, dto.length, dto.angle);
         this.dto = dto;
-        rectangle.setRotate(dto.angle);
         draw();
     }
 

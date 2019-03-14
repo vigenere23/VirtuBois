@@ -15,16 +15,17 @@ public class CenteredRectangle {
     private double height;
     private double scale;
 
-    public CenteredRectangle(Point2D centerPos, double width, double height) {
-        this(centerPos.getX(), centerPos.getY(), width, height);
+    public CenteredRectangle(Point2D centerPos, double width, double height, double angle) {
+        this(centerPos.getX(), centerPos.getY(), width, height, angle);
     }
 
-    public CenteredRectangle(double centerX, double centerY, double width, double height) {
+    public CenteredRectangle(double centerX, double centerY, double width, double height, double angle) {
         rectangle = new Rectangle();
         setWidth(width);
         setHeight(height);
         setX(centerX);
         setY(centerY);
+        rectangle.setRotate(angle);
     }
 
     public Rectangle get() { return rectangle; }

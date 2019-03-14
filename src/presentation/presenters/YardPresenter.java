@@ -62,6 +62,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
         setOnMousePressed(event -> {
             requestFocus();
+            mainController.clearAllBundleInfo();
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 lastClickedPoint = new Point2D(event.getX(), event.getY());
             }

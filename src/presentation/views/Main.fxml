@@ -167,7 +167,7 @@
                                                                             <children>
                                                                                 <TextFlow fx:id="packHautView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <Region HBox.hgrow="ALWAYS" />
-                                                                                <TextFlow fx:id="bundleHeigth" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleHeight" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
@@ -193,9 +193,9 @@
                                                                         </HBox>
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
-                                                                                <TextFlow fx:id="packPlankSize" prefHeight="200.0" prefWidth="200.0" />
+                                                                                <TextFlow fx:id="packPlankSize" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <Region />
-                                                                                <TextFlow fx:id="bundleSize" prefHeight="200.0" prefWidth="200.0" />
+                                                                                <TextFlow fx:id="bundleSize" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                                     </children>

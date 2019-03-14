@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -18,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import presentation.presenters.YardPresenter;
 
@@ -28,6 +30,7 @@ public class MainController extends BaseController {
     public ObjectProperty<EditorMode> editorMode;
     public ToggleGroup editorModeToggleGroup;
 
+    private Font windowFont;
     @FXML Pane root;
     @FXML Pane yardWrapper;
 
@@ -44,7 +47,7 @@ public class MainController extends BaseController {
     @FXML public TextFlow bundleCode;
     @FXML public TextFlow bundleLength;
     @FXML public TextFlow bundleWidth;
-    @FXML public TextFlow bundleHeigth;
+    @FXML public TextFlow bundleHeight;
     @FXML public TextFlow bundleDate;
     @FXML public TextFlow bundleHour;
     @FXML public TextFlow bundleEssence;
@@ -61,6 +64,8 @@ public class MainController extends BaseController {
 
         ObservableList<String> listItems = FXCollections.observableArrayList("Bundle 1","Bundle 2", "Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle");
         listView.setItems(listItems);
+
+        windowFont = new Font("System", 12);
 
         initBundleInfoView();
         setEventHandlers();
@@ -105,30 +110,53 @@ public class MainController extends BaseController {
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
 
-    public void updateBundleInfo(BundleDto bundle){
+    public void clearAllBundleInfo(){
         bundleCode.getChildren().clear();
         bundleLength.getChildren().clear();
         bundleWidth.getChildren().clear();
-        bundleHeigth.getChildren().clear();
+        bundleHeight.getChildren().clear();
         bundleDate.getChildren().clear();
         bundleHour.getChildren().clear();
         bundleEssence.getChildren().clear();
         bundleSize.getChildren().clear();
+    }
 
+    public void updateBundleInfo(BundleDto bundle){
+        clearAllBundleInfo();
         Text barcode =  new Text(bundle.barcode);
+        barcode.setFont(windowFont);
+        barcode.setFill(Color.WHITESMOKE);
         bundleCode.getChildren().add(barcode);
+
         Text length =  new Text(Double.toString(bundle.length));
+        length.setFont(windowFont);
+        length.setFill(Color.WHITESMOKE);
         bundleLength.getChildren().add(length);
+
         Text width =  new Text(Double.toString(bundle.width));
+        width.setFont(windowFont);
+        width.setFill(Color.WHITESMOKE);
         bundleWidth.getChildren().add(width);
-        Text heigth =  new Text(Double.toString(bundle.height));
-        bundleHeigth.getChildren().add(heigth);
+
+        Text height =  new Text(Double.toString(bundle.height));
+        height.setFont(windowFont);
+        height.setFill(Color.WHITESMOKE);
+        bundleHeight.getChildren().add(height);
+
+
         Text date =  new Text(bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        date.setFont(windowFont);
+        date.setFill(Color.WHITESMOKE);
         bundleDate.getChildren().add(date);
+
         Text hour =  new Text(bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
         bundleHour.getChildren().add(hour);
+
+
         Text essence =  new Text(bundle.essence);
         bundleEssence.getChildren().add(essence);
+
+
         Text plankSize =  new Text(bundle.plankSize);
         bundleSize.getChildren().add(plankSize);
     }
@@ -143,21 +171,21 @@ public class MainController extends BaseController {
         Text packType = new Text("Essence : ");
         Text packPlank = new Text("Dimensions des planches : ");
 
-        packCode.setFont(new Font("System", 12));
+        packCode.setFont(windowFont);
         packCode.setFill(Color.WHITESMOKE);
-        packLong.setFont(new Font("System", 12));
+        packLong.setFont(windowFont);
         packLong.setFill(Color.WHITESMOKE);
-        packLarg.setFont(new Font("System", 12));
+        packLarg.setFont(windowFont);
         packLarg.setFill(Color.WHITESMOKE);
-        packHaut.setFont(new Font("System", 12));
+        packHaut.setFont(windowFont);
         packHaut.setFill(Color.WHITESMOKE);
-        packDate.setFont(new Font("System", 12));
+        packDate.setFont(windowFont);
         packDate.setFill(Color.WHITESMOKE);
-        packHeure.setFont(new Font("System", 12));
+        packHeure.setFont(windowFont);
         packHeure.setFill(Color.WHITESMOKE);
-        packType.setFont(new Font("System", 12));
+        packType.setFont(windowFont);
         packType.setFill(Color.WHITESMOKE);
-        packPlank.setFont(new Font("System", 12));
+        packPlank.setFont(windowFont);
         packPlank.setFill(Color.WHITESMOKE);
 
         packCodeView.getChildren().add(packCode);
@@ -168,5 +196,15 @@ public class MainController extends BaseController {
         packHeureView.getChildren().add(packHeure);
         packTypeView.getChildren().add(packType);
         packPlankSize.getChildren().add(packPlank);
+
+        bundleCode.setTextAlignment(TextAlignment.RIGHT);
+        bundleLength.setTextAlignment(TextAlignment.RIGHT);
+        bundleHeight.setTextAlignment(TextAlignment.RIGHT);
+        bundleWidth.setTextAlignment(TextAlignment.RIGHT);
+        bundleDate.setTextAlignment(TextAlignment.RIGHT);
+        bundleHour.setTextAlignment(TextAlignment.RIGHT);
+        bundleEssence.setTextAlignment(TextAlignment.RIGHT);
+        bundleSize.setTextAlignment(TextAlignment.RIGHT);
+
     }
 }

@@ -1,5 +1,6 @@
 package presentation.controllers;
 
+import domain.dtos.BundleDto;
 import enums.EditorMode;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -20,6 +21,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import presentation.presenters.YardPresenter;
 
+import java.time.format.DateTimeFormatter;
+
 public class MainController extends BaseController {
 
     public ObjectProperty<EditorMode> editorMode;
@@ -39,6 +42,13 @@ public class MainController extends BaseController {
     @FXML public TextFlow packPlankSize;
 
     @FXML public TextFlow bundleCode;
+    @FXML public TextFlow bundleLength;
+    @FXML public TextFlow bundleWidth;
+    @FXML public TextFlow bundleHeigth;
+    @FXML public TextFlow bundleDate;
+    @FXML public TextFlow bundleHour;
+    @FXML public TextFlow bundleEssence;
+    @FXML public TextFlow bundleSize;
 
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
@@ -125,5 +135,31 @@ public class MainController extends BaseController {
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
 
+    public void updateBundleInfo(BundleDto bundle){
+        bundleCode.getChildren().clear();
+        bundleLength.getChildren().clear();
+        bundleWidth.getChildren().clear();
+        bundleHeigth.getChildren().clear();
+        bundleDate.getChildren().clear();
+        bundleHour.getChildren().clear();
+        bundleEssence.getChildren().clear();
+        bundleSize.getChildren().clear();
 
+        Text barcode =  new Text(bundle.barcode);
+        bundleCode.getChildren().add(barcode);
+        Text length =  new Text(Double.toString(bundle.length));
+        bundleLength.getChildren().add(length);
+        Text width =  new Text(Double.toString(bundle.width));
+        bundleWidth.getChildren().add(width);
+        Text heigth =  new Text(Double.toString(bundle.height));
+        bundleHeigth.getChildren().add(heigth);
+        Text date =  new Text(bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        bundleDate.getChildren().add(date);
+        Text hour =  new Text(bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
+        bundleHour.getChildren().add(hour);
+        Text essence =  new Text(bundle.essence);
+        bundleEssence.getChildren().add(essence);
+        Text plankSize =  new Text(bundle.plankSize);
+        bundleSize.getChildren().add(plankSize);
+    }
 }

@@ -63,6 +63,10 @@ public class LarmanController {
         yard.modifyBundlePosition(id, position, angle);
     }
 
+    public void deleteBundle(String id) {
+        yard.deleteBundle(id);
+    }
+
     /**** PRIVATE METHODS ****/
 
 }

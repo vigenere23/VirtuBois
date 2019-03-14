@@ -42,15 +42,60 @@ public class MainController extends BaseController {
 
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
+    @FXML public ToggleButton deleteButton;
 
     @FXML
     public void initialize()
     {
         editorMode = new SimpleObjectProperty<>();
 
-        ObservableList<String> listItems = FXCollections.observableArrayList("Allo","Bonjour");
+        ObservableList<String> listItems = FXCollections.observableArrayList("Bundle 1","Bundle 2", "Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle");
         listView.setItems(listItems);
 
+        initBundleInfoView();
+        setEventHandlers();
+        setupEditorModeToggleButtons();
+        initYard();
+    }
+
+    private void setEventHandlers() {
+        root.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                editorMode.setValue(EditorMode.POINTER);
+            }
+        });
+    }
+
+    private void setupEditorModeToggleButtons() {
+        pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.POINTER));
+        addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
+        deleteButton.setOnAction(event -> editorMode.setValue(EditorMode.DELETE));
+
+        editorModeToggleGroup = new ToggleGroup();
+        pointerButton.setToggleGroup(editorModeToggleGroup);
+        addBundleButton.setToggleGroup(editorModeToggleGroup);
+        deleteButton.setToggleGroup(editorModeToggleGroup);
+
+        editorMode.addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals(EditorMode.POINTER)) editorModeToggleGroup.selectToggle(pointerButton);
+            else if (newValue.equals(EditorMode.ADDING_BUNDLE)) editorModeToggleGroup.selectToggle(addBundleButton);
+            else if (newValue.equals(EditorMode.DELETE)) editorModeToggleGroup.selectToggle(deleteButton);
+            else editorModeToggleGroup.selectToggle(null);
+        });
+
+        editorMode.setValue(EditorMode.POINTER);
+    }
+
+    private void initYard() {
+        YardPresenter yardPresenter = new YardPresenter(this);
+        yardWrapper.getChildren().setAll(yardPresenter);
+        AnchorPane.setRightAnchor(yardPresenter, 0.0);
+        AnchorPane.setLeftAnchor(yardPresenter, 0.0);
+        AnchorPane.setBottomAnchor(yardPresenter, 0.0);
+        AnchorPane.setTopAnchor(yardPresenter, 0.0);
+    }
+
+    private void initBundleInfoView(){
         Text packCode = new Text("Code barre : ");
         Text packLong = new Text("Longeur : ");
         Text packLarg = new Text("Largeur : ");
@@ -85,44 +130,6 @@ public class MainController extends BaseController {
         packHeureView.getChildren().add(packHeure);
         packTypeView.getChildren().add(packType);
         packPlankSize.getChildren().add(packPlank);
-
-        setEventHandlers();
-        setupEditorModeToggleButtons();
-        initYard();
-    }
-
-    private void setEventHandlers() {
-        root.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                editorMode.setValue(EditorMode.POINTER);
-            }
-        });
-    }
-
-    private void setupEditorModeToggleButtons() {
-        pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.POINTER));
-        addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
-
-        editorModeToggleGroup = new ToggleGroup();
-        pointerButton.setToggleGroup(editorModeToggleGroup);
-        addBundleButton.setToggleGroup(editorModeToggleGroup);
-
-        editorMode.addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals(EditorMode.POINTER)) editorModeToggleGroup.selectToggle(pointerButton);
-            else if (newValue.equals(EditorMode.ADDING_BUNDLE)) editorModeToggleGroup.selectToggle(addBundleButton);
-            else editorModeToggleGroup.selectToggle(null);
-        });
-
-        editorMode.setValue(EditorMode.POINTER);
-    }
-
-    private void initYard() {
-        YardPresenter yardPresenter = new YardPresenter(this);
-        yardWrapper.getChildren().setAll(yardPresenter);
-        AnchorPane.setRightAnchor(yardPresenter, 0.0);
-        AnchorPane.setLeftAnchor(yardPresenter, 0.0);
-        AnchorPane.setBottomAnchor(yardPresenter, 0.0);
-        AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
 
 

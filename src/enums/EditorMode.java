@@ -2,6 +2,7 @@ package enums;
 
 public enum EditorMode {
     POINTER,
-    ADDING_BUNDLE
+    ADDING_BUNDLE,
+    DELETE
 }
 

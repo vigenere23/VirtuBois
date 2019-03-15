@@ -65,7 +65,7 @@ public class MainController extends BaseController {
         ObservableList<String> listItems = FXCollections.observableArrayList("Bundle 1","Bundle 2", "Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle");
         listView.setItems(listItems);
 
-        windowFont = new Font("System", 12);
+        windowFont = new Font("System", 13);
 
         initBundleInfoView();
         setEventHandlers();
@@ -150,14 +150,20 @@ public class MainController extends BaseController {
         bundleDate.getChildren().add(date);
 
         Text hour =  new Text(bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
+        hour.setFont(windowFont);
+        hour.setFill(Color.WHITESMOKE);
         bundleHour.getChildren().add(hour);
 
 
         Text essence =  new Text(bundle.essence);
+        essence.setFont(windowFont);
+        essence.setFill(Color.WHITESMOKE);
         bundleEssence.getChildren().add(essence);
 
 
         Text plankSize =  new Text(bundle.plankSize);
+        plankSize.setFont(windowFont);
+        plankSize.setFill(Color.WHITESMOKE);
         bundleSize.getChildren().add(plankSize);
     }
 

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleButton?>
@@ -13,7 +14,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
@@ -142,62 +142,63 @@
                                                             <children>
                                                                 <VBox layoutX="74.0" layoutY="38.0" prefHeight="275.0" prefWidth="247.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                     <children>
+                                                      <Separator prefWidth="200.0" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packCodeView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <Region HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleCode" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
+                                                      <Separator prefWidth="200.0" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                                                             <children>
                                                                                 <TextFlow fx:id="packLongView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <Region HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleLength" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
+                                                      <Separator prefWidth="200.0" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packLargView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <Region HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleWidth" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
+                                                      <Separator prefWidth="200.0" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packHautView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <Region HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleHeight" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
+                                                      <Separator prefWidth="200.0" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packDateView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <Region HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleDate" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
+                                                      <Separator prefWidth="200.0" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packHeureView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <Region HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleHour" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
+                                                      <Separator prefWidth="200.0" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packTypeView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <Region HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleEssence" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
+                                                      <Separator prefWidth="200.0" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packPlankSize" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <Region />
                                                                                 <TextFlow fx:id="bundleSize" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
+                                                      <Separator prefWidth="200.0" />
                                                                     </children>
                                                                 </VBox>
                                                             </children>

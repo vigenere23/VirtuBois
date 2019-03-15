@@ -53,14 +53,14 @@ public class LarmanController {
     }
 
     public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,
-                             LocalDate date, String essence, String planksize)
+                             LocalDate date, String essence, String planksize, double angle)
     {
-        yard.modifyBundleProperties(id, barcode, height, width, length, time, date, essence, planksize);
+        yard.modifyBundleProperties(id, barcode, height, width, length, time, date, essence, planksize, angle);
     }
 
-    public void modifyBundlePosition(String id, Point2D position, double angle)
+    public void modifyBundlePosition(String id, Point2D position)
     {
-        yard.modifyBundlePosition(id, position, angle);
+        yard.modifyBundlePosition(id, position);
     }
 
     public void deleteBundle(String id) {

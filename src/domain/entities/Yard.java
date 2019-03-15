@@ -61,7 +61,7 @@ public class Yard {
 
 
     public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,
-                                       LocalDate date, String essence, String planksize)
+                                       LocalDate date, String essence, String planksize, double angle)
     {
         Bundle bundle = getBundle(id);
         bundle.setBarcode(barcode);
@@ -72,12 +72,12 @@ public class Yard {
         bundle.setDate(date);
         bundle.setEssence(essence);
         bundle.setPlanckSize(planksize);
+        bundle.setAngle(angle);
     }
 
-    public void modifyBundlePosition(String id, Point2D position, double angle)
+    public void modifyBundlePosition(String id, Point2D position)
     {
         Bundle bundle = getBundle(id);
         bundle.setPosition(position);
-        bundle.setAngle(angle);
     }
 }

@@ -3,10 +3,7 @@ package presentation.presenters;
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import enums.EditorMode;
-import helpers.ColorHelper;
-import helpers.ConfigHelper;
-import helpers.GeomHelper;
-import helpers.MathHelper;
+import helpers.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -77,15 +74,40 @@ public class YardPresenter extends Pane implements IPresenter {
                 deleteBundle(new Point2D(event.getX(), event.getY()));
                 draw();
             }
+            else if (mainController.editorMode.getValue() == EditorMode.EDIT) {
+                Point2D point = transformPlanCoordsToRealCoords(new Point2D(event.getX(), event.getY()));
+                if (larmanController.getSelectedBundles(point).size() != 0) {
+                    larmanController.getTopBundle(point);
+                    JavafxHelper.addView("Editor", "Editor", false);
+                }
+            }
+            });
 
-        });
         setOnMouseDragged(event -> {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
                 dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
                 draw();
             }
+            if (event.getButton() == MouseButton.PRIMARY && mainController.editorMode.getValue() == EditorMode.POINTER) {
+                //TODO
+                Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
+                /*List<BundleDto> bundles = larmanController.getSelectedBundles(transformPlanCoordsToRealCoords(newDraggedPoint));
+                if (bundles.size() == 1){
+                    larmanController.modifyBundlePosition(bundles.get(0).id, transformPlanCoordsToRealCoords(newDraggedPoint));
+                    draw();
+                }*/
+                if (larmanController.getSelectedBundles(transformPlanCoordsToRealCoords(newDraggedPoint)).size() != 0) {
+                    BundleDto bundle = larmanController.getTopBundle(transformPlanCoordsToRealCoords(newDraggedPoint));
+                    String id = getTopBundleStack(transformPlanCoordsToRealCoords(newDraggedPoint));
+                    if (bundle.id == id){
+                        larmanController.modifyBundlePosition(bundle.id, transformPlanCoordsToRealCoords(newDraggedPoint));
+                        draw();
+                    }
+                }
+            }
         });
+
         setOnMouseReleased(event -> {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 translateVector = translateVector.add(dragVector);
@@ -100,10 +122,12 @@ public class YardPresenter extends Pane implements IPresenter {
                         + "y:" + MathHelper.round(realPosition.getY(), 2);
             mousePosition.setText(text);
         });
+
         setOnScroll(event -> {
             if (event.isControlDown()) handleZoom(event.getDeltaY(), new Point2D(event.getX(), event.getY()));
             else handlePanning(event);
         });
+
         setOnKeyPressed(event -> {
             if (event.isControlDown()) {
                 double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
@@ -158,6 +182,23 @@ public class YardPresenter extends Pane implements IPresenter {
         }
         // TODO notify mainController for sideview
         // TODO Highlight selected bundles
+    }
+
+    private String getTopBundleStack(Point2D position) {
+        //TODO
+        BundleDto bundle = larmanController.getTopBundle(position);
+        BundlePresenter maxBundlePresenter = new BundlePresenter(bundle);
+        List<BundleDto> bundlesdto = larmanController.getBundles();
+        for (BundleDto currentDto : bundlesdto){
+            BundlePresenter newBundlePresenter = new BundlePresenter(currentDto);
+            if (GeomHelper.rectangleCollidesRectangle(newBundlePresenter, maxBundlePresenter)){
+                if (maxBundlePresenter.dto.height < currentDto.height){
+                    System.out.println(88);
+                    maxBundlePresenter = newBundlePresenter;
+                }
+            }
+        }
+        return maxBundlePresenter.dto.id;
     }
 
     private void createBundle(Point2D planPosition) {

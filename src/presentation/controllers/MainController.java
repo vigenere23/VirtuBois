@@ -13,8 +13,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -24,6 +26,7 @@ import javafx.scene.text.TextFlow;
 import presentation.presenters.YardPresenter;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class MainController extends BaseController {
 
@@ -56,6 +59,7 @@ public class MainController extends BaseController {
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
     @FXML public ToggleButton deleteButton;
+    @FXML public ToggleButton editButton;
 
     @FXML
     public void initialize()
@@ -85,16 +89,19 @@ public class MainController extends BaseController {
         pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.POINTER));
         addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
         deleteButton.setOnAction(event -> editorMode.setValue(EditorMode.DELETE));
+        editButton.setOnAction(event -> editorMode.setValue(EditorMode.EDIT));
 
         editorModeToggleGroup = new ToggleGroup();
         pointerButton.setToggleGroup(editorModeToggleGroup);
         addBundleButton.setToggleGroup(editorModeToggleGroup);
         deleteButton.setToggleGroup(editorModeToggleGroup);
+        editButton.setToggleGroup(editorModeToggleGroup);
 
         editorMode.addListener((observable, oldValue, newValue) -> {
             if (newValue.equals(EditorMode.POINTER)) editorModeToggleGroup.selectToggle(pointerButton);
             else if (newValue.equals(EditorMode.ADDING_BUNDLE)) editorModeToggleGroup.selectToggle(addBundleButton);
             else if (newValue.equals(EditorMode.DELETE)) editorModeToggleGroup.selectToggle(deleteButton);
+            else if (newValue.equals(EditorMode.EDIT)) editorModeToggleGroup.selectToggle(editButton);
             else editorModeToggleGroup.selectToggle(null);
         });
 

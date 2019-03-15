@@ -35,8 +35,18 @@ public class Yard {
 
     public void createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);
+        adjustBundleHeight(bundle);
         bundles.put(bundle.getId(), bundle);
-        getCollidingBundles(bundle);
+    }
+
+    private void adjustBundleHeight(Bundle bundle) {
+        double maxZ = 0;
+        for (Bundle collidingBundle : getCollidingBundles(bundle)) {
+            double bundleTopZ = collidingBundle.z + collidingBundle.getHeight();
+            if (bundleTopZ > maxZ) maxZ = bundleTopZ;
+        }
+        bundle.setZ(maxZ);
+        System.out.println(maxZ);
     }
 
     public Bundle getBundle(String id) {

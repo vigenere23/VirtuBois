@@ -7,12 +7,15 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -62,6 +65,9 @@
                                             </image>
                                         </ImageView>
                                     </graphic>
+                           <tooltip>
+                              <Tooltip text="Outil de sélection" />
+                           </tooltip>
                                 </ToggleButton>
                                 <ToggleButton fx:id="addBundleButton" mnemonicParsing="false">
                                     <graphic>
@@ -71,6 +77,9 @@
                                             </image>
                                         </ImageView>
                                     </graphic>
+                           <tooltip>
+                              <Tooltip text="Outil de création de paquets" />
+                           </tooltip>
                                 </ToggleButton>
                                 <ToggleButton fx:id="deleteButton" mnemonicParsing="false">
                                     <graphic>
@@ -80,6 +89,9 @@
                                             </image>
                                         </ImageView>
                                     </graphic>
+                           <tooltip>
+                              <Tooltip text="Outil de suppression de paquets" />
+                           </tooltip>
                                 </ToggleButton>
                                 <ToggleButton fx:id="gridButton" mnemonicParsing="false">
                                     <graphic>
@@ -89,6 +101,9 @@
                                             </image>
                                         </ImageView>
                                     </graphic>
+                           <tooltip>
+                              <Tooltip text="Outil de grille magnétique" />
+                           </tooltip>
                                 </ToggleButton>
                                 <Button fx:id="undoButton" mnemonicParsing="false">
                                     <graphic>
@@ -98,6 +113,9 @@
                                             </image>
                                         </ImageView>
                                     </graphic>
+                           <tooltip>
+                              <Tooltip text="Undo" />
+                           </tooltip>
                                 </Button>
                                 <Button fx:id="redoButton" mnemonicParsing="false">
                                     <graphic>
@@ -107,6 +125,9 @@
                                             </image>
                                         </ImageView>
                                     </graphic>
+                           <tooltip>
+                              <Tooltip text="Redo" />
+                           </tooltip>
                                 </Button>
                             </items>
                         </ToolBar>
@@ -125,12 +146,27 @@
                                         <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                             <children>
                                                 <TitledPane collapsible="false" prefHeight="342.0" prefWidth="302.0" text="Inventaire" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                    <content>
-                                                        <AnchorPane minHeight="30.0" prefHeight="200.0" prefWidth="200.0">
-                                                            <children>
-                                                                <ListView fx:id="listView" layoutX="34.0" layoutY="-5.0" prefHeight="317.0" prefWidth="254.0" style="-fx-padding: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                            </children></AnchorPane>
-                                                    </content>
+                                       <content>
+                                          <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                             <center>
+                                                                <ListView fx:id="listView" prefHeight="341.0" prefWidth="278.0" style="-fx-padding: 0;" BorderPane.alignment="CENTER" />
+                                             </center>
+                                             <top>
+                                                <BorderPane BorderPane.alignment="CENTER">
+                                                   <center>
+                                                      <TextField prefHeight="30.0" />
+                                                   </center>
+                                                   <right>
+                                                      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                                         <image>
+                                                            <Image url="@../assets/images/search.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </right>
+                                                </BorderPane>
+                                             </top>
+                                          </BorderPane>
+                                       </content>
                                                 </TitledPane>
                                             </children>
                                         </AnchorPane>
@@ -142,63 +178,62 @@
                                                             <children>
                                                                 <VBox layoutX="74.0" layoutY="38.0" prefHeight="275.0" prefWidth="247.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                     <children>
-                                                      <Separator prefWidth="200.0" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packCodeView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleCode" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
-                                                      <Separator prefWidth="200.0" />
+                                                      <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: White;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                                                             <children>
                                                                                 <TextFlow fx:id="packLongView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleLength" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
-                                                      <Separator prefWidth="200.0" />
+                                                      <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packLargView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleWidth" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
-                                                      <Separator prefWidth="200.0" />
+                                                      <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packHautView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleHeight" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
-                                                      <Separator prefWidth="200.0" />
+                                                      <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packDateView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleDate" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
-                                                      <Separator prefWidth="200.0" />
+                                                      <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packHeureView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleHour" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
-                                                      <Separator prefWidth="200.0" />
+                                                      <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packTypeView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleEssence" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
-                                                      <Separator prefWidth="200.0" />
+                                                      <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
                                                                                 <TextFlow fx:id="packPlankSize" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                                 <TextFlow fx:id="bundleSize" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
-                                                      <Separator prefWidth="200.0" />
+                                                      <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                     </children>
                                                                 </VBox>
                                                             </children>

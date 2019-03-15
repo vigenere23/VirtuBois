@@ -167,9 +167,12 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private void deleteBundle(Point2D planPosition){
+
         Point2D realPos = transformPlanCoordsToRealCoords(planPosition);
-        String id = larmanController.getTopBundle(realPos).id;
-        larmanController.deleteBundle(id);
+        if(larmanController.getSelectedBundles(realPos).size() > 0) {
+            String id = larmanController.getTopBundle(realPos).id;
+            larmanController.deleteBundle(id);
+        }
         mainController.editorMode.setValue(EditorMode.POINTER);
     }
 

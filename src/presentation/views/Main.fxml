@@ -32,9 +32,9 @@
                                 <Menu mnemonicParsing="false" text="File">
                                     <items>
                                         <MenuItem disable="true" mnemonicParsing="false" text="New" />
-                                        <MenuItem disable="true" mnemonicParsing="false" text="Open" />
-                                        <MenuItem disable="true" mnemonicParsing="false" text="Save" />
-                                        <MenuItem disable="true" mnemonicParsing="false" text="Save As" />
+                                        <MenuItem mnemonicParsing="false" onAction="#open" text="Open" />
+                                        <MenuItem mnemonicParsing="false" onAction="#save" text="Save" />
+                                        <MenuItem mnemonicParsing="false" onAction="#saveAs" text="Save As" />
                                         <MenuItem disable="true" mnemonicParsing="false" text="Export 3D" />
                                         <MenuItem mnemonicParsing="false" onAction="#quit" text="Exit" />
                                     </items>

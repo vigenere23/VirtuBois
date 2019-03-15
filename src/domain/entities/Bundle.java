@@ -33,6 +33,7 @@ public class Bundle extends Drawable3D
         setDate(ConfigHelper.bundleDate);
         setTime(ConfigHelper.bundleTime);
         setBarcode(ConfigHelper.bundleBarcode);
+        ConfigHelper.bundleLength = 4;
     }
 
     private void initId() {

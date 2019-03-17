@@ -4,15 +4,23 @@ import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import enums.EditorMode;
 import helpers.*;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
+import presentation.Main;
+import presentation.controllers.EditorController;
+import presentation.controllers.IController;
 import presentation.controllers.MainController;
 
 import java.util.ArrayList;
@@ -62,26 +70,25 @@ public class YardPresenter extends Pane implements IPresenter {
             mainController.clearAllBundleInfo();
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 lastClickedPoint = new Point2D(event.getX(), event.getY());
-            }
-            else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
+            } else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
                 createBundle(new Point2D(event.getX(), event.getY()));
                 draw();
-            }
-            else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
+            } else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 getSelectedPacks(new Point2D(event.getX(), event.getY()));
-            }
-            else if (mainController.editorMode.getValue() == EditorMode.DELETE){
+            } else if (mainController.editorMode.getValue() == EditorMode.DELETE) {
                 deleteBundle(new Point2D(event.getX(), event.getY()));
                 draw();
-            }
-            else if (mainController.editorMode.getValue() == EditorMode.EDIT) {
+            } else if (mainController.editorMode.getValue() == EditorMode.EDIT) {
                 Point2D point = transformPlanCoordsToRealCoords(new Point2D(event.getX(), event.getY()));
                 if (larmanController.getSelectedBundles(point).size() != 0) {
-                    larmanController.getTopBundle(point);
+                    BundleDto dto = larmanController.getTopBundle(point);
                     JavafxHelper.addView("Editor", "Editor", false);
+                    EditorController editorController = new EditorController();
+                    editorController.setBundleDto(dto);
+                    System.out.print(dto.length);
                 }
             }
-            });
+        });
 
         setOnMouseDragged(event -> {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
@@ -100,7 +107,7 @@ public class YardPresenter extends Pane implements IPresenter {
                 if (larmanController.getSelectedBundles(transformPlanCoordsToRealCoords(newDraggedPoint)).size() != 0) {
                     BundleDto bundle = larmanController.getTopBundle(transformPlanCoordsToRealCoords(newDraggedPoint));
                     String id = getTopBundleStack(transformPlanCoordsToRealCoords(newDraggedPoint));
-                    if (bundle.id == id){
+                    if (bundle.id == id) {
                         larmanController.modifyBundlePosition(bundle.id, transformPlanCoordsToRealCoords(newDraggedPoint));
                         draw();
                     }
@@ -119,7 +126,7 @@ public class YardPresenter extends Pane implements IPresenter {
             Point2D planPosition = new Point2D(event.getX(), event.getY());
             Point2D realPosition = transformPlanCoordsToRealCoords(planPosition);
             String text = "x:" + MathHelper.round(realPosition.getX(), 2) + "  "
-                        + "y:" + MathHelper.round(realPosition.getY(), 2);
+                    + "y:" + MathHelper.round(realPosition.getY(), 2);
             mousePosition.setText(text);
         });
 
@@ -177,7 +184,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
     private void getSelectedPacks(Point2D position) {
         List<BundleDto> bundles = larmanController.getSelectedBundles(transformPlanCoordsToRealCoords(position));
-        if (bundles.size() == 1){
+        if (bundles.size() == 1) {
             mainController.updateBundleInfo(bundles.get(0));
         }
         // TODO notify mainController for sideview
@@ -189,10 +196,10 @@ public class YardPresenter extends Pane implements IPresenter {
         BundleDto bundle = larmanController.getTopBundle(position);
         BundlePresenter maxBundlePresenter = new BundlePresenter(bundle);
         List<BundleDto> bundlesdto = larmanController.getBundles();
-        for (BundleDto currentDto : bundlesdto){
+        for (BundleDto currentDto : bundlesdto) {
             BundlePresenter newBundlePresenter = new BundlePresenter(currentDto);
-            if (GeomHelper.rectangleCollidesRectangle(newBundlePresenter, maxBundlePresenter)){
-                if (maxBundlePresenter.dto.height < currentDto.height){
+            if (GeomHelper.rectangleCollidesRectangle(newBundlePresenter, maxBundlePresenter)) {
+                if (maxBundlePresenter.dto.height < currentDto.height) {
                     System.out.println(88);
                     maxBundlePresenter = newBundlePresenter;
                 }
@@ -207,10 +214,10 @@ public class YardPresenter extends Pane implements IPresenter {
         mainController.editorMode.setValue(EditorMode.POINTER);
     }
 
-    private void deleteBundle(Point2D planPosition){
+    private void deleteBundle(Point2D planPosition) {
 
         Point2D realPos = transformPlanCoordsToRealCoords(planPosition);
-        if(larmanController.getSelectedBundles(realPos).size() > 0) {
+        if (larmanController.getSelectedBundles(realPos).size() > 0) {
             String id = larmanController.getTopBundle(realPos).id;
             larmanController.deleteBundle(id);
         }

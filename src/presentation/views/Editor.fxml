@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="459.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="459.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.EditorController">
    <children>
       <BorderPane layoutX="193.0" layoutY="93.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -46,7 +45,7 @@
                   <Label text="    Angle :" GridPane.rowIndex="8" />
                   <AnchorPane GridPane.columnIndex="1">
                      <children>
-                        <TextField fx:id="barcodeTextfield" layoutY="8.0" prefHeight="25.0" prefWidth="164.0" />
+                        <TextField fx:id="barcodeTextField" layoutY="8.0" prefHeight="25.0" prefWidth="164.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="6">
@@ -56,24 +55,28 @@
                   </AnchorPane>
                   <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <children>
-                        <TextField fx:id="dimensionTextfield" layoutY="7.0" prefHeight="25.0" prefWidth="206.0" />
+                        <TextField fx:id="dimensionTextField" layoutY="7.0" prefHeight="25.0" prefWidth="206.0" />
                      </children>
                   </AnchorPane>
                   <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Spinner fx:id="widthSpinner" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Spinner fx:id="lenghtSpinner" prefHeight="25.0" prefWidth="149.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Spinner fx:id="heigthSpinner" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Spinner fx:id="angleSpinner" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                  <Spinner fx:id="widthSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Spinner fx:id="heightSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Spinner fx:id="angleSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <HBox alignment="CENTER" prefHeight="6.0" prefWidth="301.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <children>
-                        <Spinner prefWidth="80.0" />
+                        <Spinner fx:id="hourSpinner" prefWidth="80.0" />
                         <Region HBox.hgrow="ALWAYS" />
                         <Label text=":" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Spinner prefWidth="80.0" />
+                        <Spinner fx:id="minuteSpinner" prefWidth="80.0" />
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <TextField fx:id="lengthTextField" layoutY="7.0" prefHeight="25.0" prefWidth="164.0" />
+                     </children>
+                  </AnchorPane>
                </children>
             </GridPane>
          </center>
@@ -81,9 +84,9 @@
             <HBox alignment="CENTER" prefHeight="45.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" prefWidth="70.0" text="Modifier" />
+                  <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#handleModifyButtonAction" prefWidth="70.0" text="Modifier" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" text="Annuler" />
+                  <Button fx:id="cancelledButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCloseButtonAction" text="Annuler" />
                   <Region HBox.hgrow="ALWAYS" />
                </children>
             </HBox>

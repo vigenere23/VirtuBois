@@ -84,8 +84,6 @@ public class YardPresenter extends Pane implements IPresenter {
                     BundleDto dto = larmanController.getTopBundle(point);
                     JavafxHelper.addView("Editor", "Editor", false);
                     EditorController editorController = new EditorController();
-                    editorController.setBundleDto(dto);
-                    System.out.print(dto.length);
                 }
             }
         });

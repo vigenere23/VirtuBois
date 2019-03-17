@@ -22,9 +22,9 @@ public class EditorController extends BaseController {
     @FXML public TextField essenceTextField;
     @FXML public TextField dimensionTextField;
     @FXML public TextField lengthTextField;
-    @FXML public Spinner<Double> angleSpinner;
-    @FXML public Spinner<Double> widthSpinner;
-    @FXML public Spinner<Double> heightSpinner;
+    @FXML public TextField widthTextField;
+    @FXML public TextField heightTextField;
+    @FXML public TextField angleTextField;
     @FXML public DatePicker datePicker;
     @FXML public Spinner<Integer> hourSpinner;
     @FXML public Spinner<Integer> minuteSpinner;
@@ -33,20 +33,9 @@ public class EditorController extends BaseController {
 
     private BundleDto bundleDto;
 
-
     @FXML
     public void initialize(){
-
-        SpinnerValueFactory.DoubleSpinnerValueFactory widthSpinnerValue = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 100.0, 0.0);
-        widthSpinner.setValueFactory(widthSpinnerValue);
-
-        SpinnerValueFactory.DoubleSpinnerValueFactory heightSpinnerValue = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 100.0, 0.0);
-        heightSpinner.setValueFactory(heightSpinnerValue);
-
-        SpinnerValueFactory.DoubleSpinnerValueFactory angleSpinnerValue = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 360.0, 0.0);
-        angleSpinner.setValueFactory(angleSpinnerValue);
-
-        SpinnerValueFactory.IntegerSpinnerValueFactory hourSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 24, 0);
+        SpinnerValueFactory.IntegerSpinnerValueFactory hourSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 24,0);
         hourSpinner.setValueFactory(hourSpinnerValue);
 
         SpinnerValueFactory.IntegerSpinnerValueFactory minuteSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 0);
@@ -61,24 +50,24 @@ public class EditorController extends BaseController {
 
     @FXML
     public void handleModifyButtonAction(ActionEvent event) {
-        String message = validateInput();
-        if (message == ""){
-            bundleDto.length = parseDouble(lengthTextField.getText());
-            Stage stage = (Stage) modifyButton.getScene().getWindow();
-            stage.close();
-        } else{
-            System.out.print(message);
-        }
     }
 
     private String validateInput(){
         String message = "";
+        if (barcodeTextField.getText().isEmpty()){
+            message = "Le code barre ne doit pas être vide";
+        }
+        if (essenceTextField.getText().isEmpty()){
+            message = "L'essence ne doit pas être vide";
+        }
+        if (dimensionTextField.getText().isEmpty()){
+            message = "L'essence ne doit pas être vide";
+        }
         try {
-
-            double lenght = parseDouble(lengthTextField.getText());
-            double angle = angleSpinner.getValue();
-            double heigth = heightSpinner.getValue();
-            double width = widthSpinner.getValue();
+            double length = parseDouble(lengthTextField.getText());
+            double angle = parseDouble(angleTextField.getText());
+            double height = parseDouble(heightTextField.getText());
+            double width = parseDouble(widthTextField.getText());
 
         } catch (NumberFormatException e){
             message = "La longueur, l'angle, la hauteur et la largeur doivent être des nombres réels.";
@@ -86,13 +75,7 @@ public class EditorController extends BaseController {
         return message;
     }
 
-    public void setBundleDto(BundleDto dto){
-
-    }
-
     public BundleDto getBundleDto() {
         return bundleDto;
     }
 }
-
-

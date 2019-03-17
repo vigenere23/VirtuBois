@@ -35,7 +35,18 @@ public class Yard {
 
     public void createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);
+        adjustBundleHeight(bundle);
         bundles.put(bundle.getId(), bundle);
+    }
+
+    private void adjustBundleHeight(Bundle bundle) {
+        double maxZ = 0;
+        for (Bundle collidingBundle : getCollidingBundles(bundle)) {
+            double bundleTopZ = collidingBundle.z + collidingBundle.getHeight();
+            if (bundleTopZ > maxZ) maxZ = bundleTopZ;
+        }
+        bundle.setZ(maxZ);
+        System.out.println(maxZ);
     }
 
     public Bundle getBundle(String id) {
@@ -79,5 +90,21 @@ public class Yard {
     {
         Bundle bundle = getBundle(id);
         bundle.setPosition(position);
+    }
+
+    private List<Bundle> getCollidingBundles(Bundle bundleToCheck) {
+        List<Bundle> collidingBundles = new ArrayList<>();
+        for (Bundle bundle : getBundles()) {
+            if (bundle != bundleToCheck) {
+                boolean bundleCollides = GeomHelper.rectangleCollidesRectangle(
+                        Converter.fromBundleToCenteredRectangle(bundle),
+                        Converter.fromBundleToCenteredRectangle(bundleToCheck)
+                );
+                if (bundleCollides) {
+                    collidingBundles.add(bundle);
+                }
+            }
+        }
+        return collidingBundles;
     }
 }

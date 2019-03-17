@@ -29,4 +29,5 @@ public abstract class BaseController implements IController {
     public void handleMenuHelpAbout(ActionEvent actionEvent) {
         JavafxHelper.addView("About", "About", false);
     }
+
 }

@@ -1,5 +1,7 @@
 package helpers;
 
+import domain.dtos.BundleDto;
+import presentation.controllers.EditorController;
 import presentation.controllers.IController;
 import presentation.Main;
 import javafx.application.Platform;
@@ -9,39 +11,71 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class JavafxHelper {
-  public static void loadView(Stage stage, String viewName, String title, boolean maximised) {
-    FXMLLoader loader = new FXMLLoader(Main.class.getResource("views/" + viewName + ".fxml"));
-    Parent page;
+    public static void loadView(Stage stage, String viewName, String title, boolean maximised) {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("views/" + viewName + ".fxml"));
+        Parent page;
 
-    try {
-      page = loader.load();
+        try {
+            page = loader.load();
+        }
+        catch (Exception e) {
+            System.out.println("Could not load view");
+            e.printStackTrace();
+            return;
+        }
+
+        Scene scene = new Scene(page);
+
+        IController controller = loader.getController();
+        if (controller != null) {
+            controller.setStage(stage);
+        }
+
+        stage.setTitle("Virtubois - " + title);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setMaximized(maximised);
+        stage.show();
     }
-    catch (Exception e) {
-      System.out.println("Could not load view");
-      e.printStackTrace();
-      return;
+
+    public static void addView(String viewName, String title, boolean maximised) {
+        Stage stage = new Stage();
+        loadView(stage, viewName, title, maximised);
     }
 
-    Scene scene = new Scene(page);
 
-    IController controller = loader.getController();
-    if (controller != null) {
-      controller.setStage(stage);
+    public static void quitApplication() {
+        Platform.exit();
     }
 
-    stage.setTitle("Virtubois - " + title);
-    stage.setScene(scene);
-    stage.centerOnScreen();
-    stage.setMaximized(maximised);
-    stage.show();
-  }
+    public static EditorController addEditorView(String viewName, String title, boolean maximised, BundleDto dtoToInit){
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("views/" + viewName + ".fxml"));
+        Parent page;
 
-  public static void addView(String viewName, String title, boolean maximised) {
-    Stage stage = new Stage();
-    loadView(stage, viewName, title, maximised);
-  }
+        try {
+            page = loader.load();
+        }
+        catch (Exception e) {
+            System.out.println("Could not load view");
+            e.printStackTrace();
+            return null;
+        }
 
-  public static void quitApplication() {
-    Platform.exit();
-  }
+        Scene scene = new Scene(page);
+
+        IController controller = loader.getController();
+        if (controller != null) {
+            controller.setStage(stage);
+        }
+
+        loader.<EditorController>getController().setBundleDto(dtoToInit);
+        stage.setTitle("Virtubois - " + title);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setMaximized(maximised);
+        stage.showAndWait();
+        return loader.getController();
+
+    }
 }

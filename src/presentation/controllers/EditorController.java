@@ -94,6 +94,40 @@ public class EditorController extends BaseController {
         angleTextField.setTextFormatter(new TextFormatter<>(converterAngle, 0.0, filter));
 
 
+        Pattern validPlankSize = Pattern.compile("([1-9][0-9]*)?\\s?([1-9]|1[0-5])?/?([1-9]|1[0-6])?");
+
+        UnaryOperator<TextFormatter.Change> filterplankSize = change -> {
+            String text = change.getControlNewText();
+            if(validPlankSize.matcher(text).matches()){
+                return change;
+            }
+            else
+            {
+                return null;
+            }
+        };
+
+        StringConverter<String> converterPlankSize = new StringConverter<String>() {
+            @Override
+            public String toString(String object) {
+                if(object.isEmpty())
+                {
+                    return "1";
+                }
+                else
+                {
+                    return object;
+                }
+            }
+
+            @Override
+            public String fromString(String string) {
+                return string;
+            }
+        };
+
+        plankSizeTextField1.setTextFormatter(new TextFormatter<>(converterPlankSize, "", filterplankSize));
+
         SpinnerValueFactory.IntegerSpinnerValueFactory hourSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0);
         hourSpinner.setValueFactory(hourSpinnerValue);
 

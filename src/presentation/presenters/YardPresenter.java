@@ -82,7 +82,7 @@ public class YardPresenter extends Pane implements IPresenter {
                 Point2D point = transformPlanCoordsToRealCoords(new Point2D(event.getX(), event.getY()));
                 if (larmanController.getSelectedBundles(point).size() != 0) {
                     BundleDto dto = larmanController.getTopBundle(point);
-                    EditorController editorController = JavafxHelper.addEditorView("Editor", "Editor", false);
+                    EditorController editorController = JavafxHelper.addEditorView("Editor", "Editor", false, dto);
                     String wow = editorController.getBundleDto();
                     System.out.print(wow);
                 }

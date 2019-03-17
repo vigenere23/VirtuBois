@@ -1,5 +1,6 @@
 package helpers;
 
+import domain.dtos.BundleDto;
 import presentation.controllers.EditorController;
 import presentation.controllers.IController;
 import presentation.Main;
@@ -47,7 +48,7 @@ public class JavafxHelper {
         Platform.exit();
     }
 
-    public static EditorController addEditorView(String viewName, String title, boolean maximised){
+    public static EditorController addEditorView(String viewName, String title, boolean maximised, BundleDto dto){
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("views/" + viewName + ".fxml"));
         Parent page;
@@ -68,6 +69,7 @@ public class JavafxHelper {
             controller.setStage(stage);
         }
 
+        loader.<EditorController>getController().setBundleDto(dto);
         stage.setTitle("Virtubois - " + title);
         stage.setScene(scene);
         stage.centerOnScreen();

@@ -29,6 +29,7 @@ import java.util.List;
 
 public class YardPresenter extends Pane implements IPresenter {
     private List<BundlePresenter> bundles;
+    private String idToModify = "";
     private LiftPresenter lift;
     private double zoom;
     private Point2D lastClickedPoint;
@@ -75,7 +76,12 @@ public class YardPresenter extends Pane implements IPresenter {
                 createBundle(new Point2D(event.getX(), event.getY()));
                 draw();
             } else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                getSelectedPacks(new Point2D(event.getX(), event.getY()));
+                Point2D newPoint = new Point2D(event.getX(), event.getY());
+                updateInfoSelectedBundle(newPoint);
+                BundleDto bundle = larmanController.getTopBundle(transformPlanCoordsToRealCoords(newPoint));
+                if (bundle != null) {
+                    idToModify = bundle.id;
+                }
             } else if (mainController.editorMode.getValue() == EditorMode.DELETE) {
                 deleteBundle(new Point2D(event.getX(), event.getY()));
                 draw();
@@ -86,6 +92,7 @@ public class YardPresenter extends Pane implements IPresenter {
                     EditorController editorController = JavafxHelper.addEditorView("Editor", "Editor", false, dto);
                     larmanController.modifyBundleProperties(dto.id, dto.barcode, dto.height, dto.width, dto.length, dto.time, dto.date, dto.essence, dto.plankSize, dto.angle);
                     draw();
+                    mainController.editorMode.setValue(EditorMode.POINTER);
                 }
             }
         });
@@ -96,21 +103,11 @@ public class YardPresenter extends Pane implements IPresenter {
                 dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
                 draw();
             }
-            if (event.getButton() == MouseButton.PRIMARY && mainController.editorMode.getValue() == EditorMode.POINTER) {
-                //TODO
-                Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
-                /*List<BundleDto> bundles = larmanController.getSelectedBundles(transformPlanCoordsToRealCoords(newDraggedPoint));
-                if (bundles.size() == 1){
-                    larmanController.modifyBundlePosition(bundles.get(0).id, transformPlanCoordsToRealCoords(newDraggedPoint));
+            if (mainController.editorMode.getValue() == EditorMode.POINTER) {
+                if (!(idToModify.isEmpty())) {
+                    Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
+                    larmanController.modifyBundlePosition(idToModify, transformPlanCoordsToRealCoords(newDraggedPoint));
                     draw();
-                }*/
-                if (larmanController.getSelectedBundles(transformPlanCoordsToRealCoords(newDraggedPoint)).size() != 0) {
-                    BundleDto bundle = larmanController.getTopBundle(transformPlanCoordsToRealCoords(newDraggedPoint));
-                    String id = getTopBundleStack(transformPlanCoordsToRealCoords(newDraggedPoint));
-                    if (bundle.id == id) {
-                        larmanController.modifyBundlePosition(bundle.id, transformPlanCoordsToRealCoords(newDraggedPoint));
-                        draw();
-                    }
                 }
             }
         });
@@ -120,6 +117,9 @@ public class YardPresenter extends Pane implements IPresenter {
                 translateVector = translateVector.add(dragVector);
                 dragVector = new Point2D(0, 0);
                 draw();
+            }
+            if (event.getButton() == MouseButton.PRIMARY && mainController.editorMode.getValue() == EditorMode.POINTER) {
+                idToModify = "";
             }
         });
         setOnMouseMoved(event -> {
@@ -182,7 +182,7 @@ public class YardPresenter extends Pane implements IPresenter {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
     }
 
-    private void getSelectedPacks(Point2D position) {
+    private void updateInfoSelectedBundle(Point2D position) {
         List<BundleDto> bundles = larmanController.getSelectedBundles(transformPlanCoordsToRealCoords(position));
         if (bundles.size() == 1) {
             mainController.updateBundleInfo(bundles.get(0));

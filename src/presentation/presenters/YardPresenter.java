@@ -2,30 +2,21 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
-import domain.entities.Bundle;
 import enums.EditorMode;
 import helpers.*;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.stage.Stage;
-import presentation.Main;
 import presentation.controllers.EditorController;
-import presentation.controllers.IController;
 import presentation.controllers.MainController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class YardPresenter extends Pane implements IPresenter {
     private List<BundlePresenter> bundles;
@@ -189,23 +180,6 @@ public class YardPresenter extends Pane implements IPresenter {
         }
         // TODO notify mainController for sideview
         // TODO Highlight selected bundles
-    }
-
-    private String getTopBundleStack(Point2D position) {
-        //TODO
-        BundleDto bundle = larmanController.getTopBundle(position);
-        BundlePresenter maxBundlePresenter = new BundlePresenter(bundle);
-        List<BundleDto> bundlesdto = larmanController.getBundles();
-        for (BundleDto currentDto : bundlesdto) {
-            BundlePresenter newBundlePresenter = new BundlePresenter(currentDto);
-            if (GeomHelper.rectangleCollidesRectangle(newBundlePresenter, maxBundlePresenter)) {
-                if (maxBundlePresenter.dto.height < currentDto.height) {
-                    System.out.println(88);
-                    maxBundlePresenter = newBundlePresenter;
-                }
-            }
-        }
-        return maxBundlePresenter.dto.id;
     }
 
     private void createBundle(Point2D planPosition) {

@@ -90,6 +90,7 @@ public class Yard {
     {
         Bundle bundle = getBundle(id);
         bundle.setPosition(position);
+        adjustBundleHeight(bundles.get(id));
     }
 
     private List<Bundle> getCollidingBundles(Bundle bundleToCheck) {

@@ -24,5 +24,4 @@ public class Converter {
                 bundle.getAngle()
         );
     }
-
 }

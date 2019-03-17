@@ -32,10 +32,19 @@ public class EditorController extends BaseController {
     @FXML public Button cancelledButton;
 
     private BundleDto bundleDto;
+    private String length;
 
+    public EditorController(){
+
+    }
+
+    public EditorController(BundleDto dto){
+
+    }
 
     @FXML
     public void initialize(){
+
 
         SpinnerValueFactory.DoubleSpinnerValueFactory widthSpinnerValue = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 100.0, 0.0);
         widthSpinner.setValueFactory(widthSpinnerValue);
@@ -61,14 +70,14 @@ public class EditorController extends BaseController {
 
     @FXML
     public void handleModifyButtonAction(ActionEvent event) {
-        String message = validateInput();
-        if (message == ""){
-            bundleDto.length = parseDouble(lengthTextField.getText());
+        //String message = validateInput();
+        //if (message == ""){
+            length = lengthTextField.getText();
             Stage stage = (Stage) modifyButton.getScene().getWindow();
             stage.close();
-        } else{
-            System.out.print(message);
-        }
+        //} else{
+        //    System.out.print(message);
+        //}
     }
 
     private String validateInput(){
@@ -90,8 +99,8 @@ public class EditorController extends BaseController {
 
     }
 
-    public BundleDto getBundleDto() {
-        return bundleDto;
+    public String getBundleDto() {
+        return length;
     }
 }
 

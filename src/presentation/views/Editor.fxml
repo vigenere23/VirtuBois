@@ -92,7 +92,13 @@
                   </AnchorPane>
                   <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="8">
                      <children>
-                        <TextField fx:id="dimensionTextField" layoutY="4.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0" />
+                        <HBox layoutY="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <TextField fx:id="plankSizeTextField1" prefHeight="25.0" prefWidth="196.0" />
+                              <Label text="x" />
+                              <TextField fx:id="plankSizeTextField2" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="196.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
                   <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="5">

@@ -1,10 +1,17 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
+
 import static javax.xml.bind.DatatypeConverter.parseDouble;
 
 public class EditorController extends BaseController {
@@ -28,10 +35,49 @@ public class EditorController extends BaseController {
 
     @FXML
     public void initialize(){
-        SpinnerValueFactory.IntegerSpinnerValueFactory hourSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 24, 0);
+
+
+        // Source url : https://stackoverflow.com/questions/45977390/how-to-force-a-double-input-in-a-textfield-in-javafx
+        Pattern validEditingStateDouble = Pattern.compile("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
+
+        UnaryOperator<TextFormatter.Change> filterDouble = c -> {
+            String text = c.getControlNewText();
+            if (validEditingStateDouble.matcher(text).matches()) {
+                return c ;
+            } else {
+                return null ;
+            }
+        };
+
+        StringConverter<Double> converterDouble = new StringConverter<Double>() {
+
+            @Override
+            public Double fromString(String s) {
+                if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s)) {
+                    return 0.0 ;
+                } else {
+                    return Double.valueOf(s);
+                }
+            }
+
+
+            @Override
+            public String toString(Double d) {
+                return d.toString();
+            }
+        };
+
+        TextFormatter<Double> formatter = new TextFormatter<>(converterDouble,1.0, filterDouble);
+        lengthTextField.setTextFormatter(formatter);
+        heightTextField.setTextFormatter(formatter);
+        widthTextField.setTextFormatter(formatter);
+        angleTextField.setTextFormatter(formatter);
+
+
+        SpinnerValueFactory.IntegerSpinnerValueFactory hourSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0);
         hourSpinner.setValueFactory(hourSpinnerValue);
 
-        SpinnerValueFactory.IntegerSpinnerValueFactory minuteSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 0);
+        SpinnerValueFactory.IntegerSpinnerValueFactory minuteSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0);
         minuteSpinner.setValueFactory(minuteSpinnerValue);
     }
 

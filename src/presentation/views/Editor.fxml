@@ -13,16 +13,17 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.EditorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="432.0" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.EditorController">
    <children>
       <BorderPane layoutX="193.0" layoutY="93.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <GridPane alignment="CENTER" BorderPane.alignment="CENTER">
+            <GridPane alignment="CENTER" vgap="10.0" BorderPane.alignment="CENTER">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.66668701171875" minWidth="10.0" prefWidth="177.66668701171875" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="455.3333435058594" minWidth="10.0" prefWidth="300.33331298828125" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.66668701171875" minWidth="10.0" prefWidth="189.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="455.3333435058594" minWidth="10.0" prefWidth="243.0" />
               </columnConstraints>
               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -34,66 +35,109 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label alignment="CENTER" text="    Code barre :" />
-                  <Label text="    Longueur :" GridPane.rowIndex="1" />
-                  <Label text="    Largeur :" GridPane.rowIndex="2" />
-                  <Label text="    Hauteur :" GridPane.rowIndex="3" />
-                  <Label text="    Date de production :" GridPane.rowIndex="4" />
-                  <Label text="    Heure de production :" GridPane.rowIndex="5" />
-                  <Label text="    Essence :" GridPane.rowIndex="6" />
-                  <Label text="    Dimension :" GridPane.rowIndex="7" />
-                  <Label text="    Angle :" GridPane.rowIndex="8" />
-                  <AnchorPane GridPane.columnIndex="1">
+                  <AnchorPane GridPane.rowIndex="1">
                      <children>
-                        <TextField fx:id="barcodeTextField" layoutY="8.0" prefHeight="25.0" prefWidth="199.0" />
+                        <Label prefHeight="43.0" prefWidth="154.0" text="Code barre :" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="6">
+                  <AnchorPane GridPane.rowIndex="2">
                      <children>
-                        <TextField fx:id="essenceTextField" layoutY="7.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="7.0" />
+                        <Label prefHeight="43.0" prefWidth="154.0" text="Longueur :" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.rowIndex="3">
+                     <children>
+                        <Label prefHeight="43.0" prefWidth="154.0" text="Largeur :" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.rowIndex="4">
+                     <children>
+                        <Label prefHeight="42.0" prefWidth="154.0" text="Hauteur :" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.rowIndex="5">
+                     <children>
+                        <Label prefHeight="42.0" prefWidth="154.0" text="Date de production :" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.rowIndex="6">
+                     <children>
+                        <Label prefHeight="42.0" prefWidth="162.0" text="Heure de production :" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.rowIndex="7">
+                     <children>
+                        <Label prefHeight="42.0" prefWidth="154.0" text="Essence :" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.rowIndex="8">
+                     <children>
+                        <Label prefHeight="42.0" prefWidth="154.0" text="Dimension :" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.rowIndex="9">
+                     <children>
+                        <Label prefHeight="42.0" prefWidth="154.0" text="Angle :" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <TextField fx:id="barcodeTextField" layoutY="5.0" prefHeight="25.0" prefWidth="199.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <children>
-                        <TextField fx:id="dimensionTextField" layoutY="7.0" prefHeight="25.0" prefWidth="196.0" />
+                        <TextField fx:id="essenceTextField" layoutY="7.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0" />
                      </children>
                   </AnchorPane>
-                  <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <HBox alignment="CENTER" prefHeight="6.0" prefWidth="301.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="8">
                      <children>
-                        <Spinner fx:id="hourSpinner" prefWidth="80.0" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label text=":" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Spinner fx:id="minuteSpinner" prefWidth="80.0" />
-                        <Region HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="dimensionTextField" layoutY="4.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0" />
                      </children>
-                  </HBox>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  </AnchorPane>
+                  <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <children>
-                        <TextField fx:id="lengthTextField" layoutY="7.0" prefHeight="25.0" prefWidth="198.0" />
+                        <DatePicker fx:id="datePicker" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="6.0" prefWidth="301.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <Spinner fx:id="hourSpinner" prefWidth="80.0" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label text=":" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Spinner fx:id="minuteSpinner" prefWidth="80.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <TextField fx:id="widthTextField" layoutX="-3.0" layoutY="8.0" prefHeight="25.0" prefWidth="201.0" />
+                        <TextField fx:id="lengthTextField" layoutY="5.0" prefHeight="25.0" prefWidth="198.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <TextField fx:id="heightTextField" layoutY="8.0" prefHeight="25.0" prefWidth="198.0" />
+                        <TextField fx:id="widthTextField" layoutY="5.0" prefHeight="25.0" prefWidth="201.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
-                        <TextField fx:id="angleTextField" layoutY="7.0" prefHeight="25.0" prefWidth="194.0" />
+                        <TextField fx:id="heightTextField" layoutY="5.0" prefHeight="25.0" prefWidth="198.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                     <children>
+                        <TextField fx:id="angleTextField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="5.0" />
                      </children>
                   </AnchorPane>
                </children>
             </GridPane>
          </center>
          <bottom>
-            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="69.0" prefWidth="430.0" BorderPane.alignment="CENTER">
                <children>
                   <Region HBox.hgrow="ALWAYS" />
                   <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#handleModifyButtonAction" prefWidth="70.0" text="Modifier" />

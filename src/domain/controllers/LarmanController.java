@@ -49,7 +49,10 @@ public class LarmanController {
     public BundleDto getTopBundle(Point2D position)
     {
         int index = getSelectedBundles(position).size()-1;
-        return getSelectedBundles(position).get(index);
+        if (index >= 0) {
+            return getSelectedBundles(position).get(index);
+        }
+        return null;
     }
 
     public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,

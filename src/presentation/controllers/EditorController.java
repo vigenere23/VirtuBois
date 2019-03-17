@@ -7,10 +7,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+<<<<<<< HEAD
 import javafx.util.StringConverter;
 
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
+=======
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+>>>>>>> 5aab36cf60ce84fa800a7d42573bbdf297e47d29
 
 import static javax.xml.bind.DatatypeConverter.parseDouble;
 
@@ -98,6 +104,8 @@ public class EditorController extends BaseController {
             bundleDto.angle = parseDouble(angleTextField.getText());
             bundleDto.height = parseDouble(heightTextField.getText());
             bundleDto.width = parseDouble(widthTextField.getText());
+            bundleDto.time = LocalTime.of(hourSpinner.getValue(), minuteSpinner.getValue());
+            bundleDto.date = datePicker.getValue();
             Stage stage = (Stage) modifyButton.getScene().getWindow();
             stage.close();
         } else{
@@ -137,9 +145,10 @@ public class EditorController extends BaseController {
         widthTextField.setText(Double.toString(bundleDto.width));
         heightTextField.setText(Double.toString(bundleDto.height));
         angleTextField.setText(Double.toString(bundleDto.angle));
-    }
-
-    public BundleDto getBundleDto() {
-        return bundleDto;
+        SpinnerValueFactory.IntegerSpinnerValueFactory hourSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 24, bundleDto.time.getHour());
+        hourSpinner.setValueFactory(hourSpinnerValue);
+        SpinnerValueFactory.IntegerSpinnerValueFactory minuteSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, bundleDto.time.getMinute());
+        minuteSpinner.setValueFactory(minuteSpinnerValue);
+        datePicker.setValue(bundleDto.date);
     }
 }

@@ -12,8 +12,6 @@ import javafx.util.StringConverter;
 
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
-
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -22,7 +20,8 @@ import static javax.xml.bind.DatatypeConverter.parseDouble;
 public class EditorController extends BaseController {
     @FXML public TextField barcodeTextField;
     @FXML public TextField essenceTextField;
-    @FXML public TextField dimensionTextField;
+    @FXML public TextField plankSizeTextField1;
+    @FXML public TextField plankSizeTextField2;
     @FXML public TextField lengthTextField;
     @FXML public TextField widthTextField;
     @FXML public TextField heightTextField;
@@ -43,18 +42,35 @@ public class EditorController extends BaseController {
 
 
         // Source url : https://stackoverflow.com/questions/45977390/how-to-force-a-double-input-in-a-textfield-in-javafx
-        Pattern validEditingStateDouble = Pattern.compile("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
+        Pattern validEditingState = Pattern.compile("(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
 
-        UnaryOperator<TextFormatter.Change> filterDouble = c -> {
+        UnaryOperator<TextFormatter.Change> filter = c -> {
             String text = c.getControlNewText();
-            if (validEditingStateDouble.matcher(text).matches()) {
+            if (validEditingState.matcher(text).matches()) {
                 return c ;
             } else {
                 return null ;
             }
         };
 
-        StringConverter<Double> converterDouble = new StringConverter<Double>() {
+        StringConverter<Double> converter = new StringConverter<Double>() {
+
+            @Override
+            public Double fromString(String s) {
+                if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s)) {
+                    return 1.0 ;
+                } else {
+                    return Double.valueOf(s);
+                }
+            }
+
+
+            @Override
+            public String toString(Double d) {
+                return d.toString();
+            }
+        };
+        StringConverter<Double> converterAngle = new StringConverter<Double>() {
 
             @Override
             public Double fromString(String s) {
@@ -72,11 +88,10 @@ public class EditorController extends BaseController {
             }
         };
 
-        TextFormatter<Double> formatter = new TextFormatter<>(converterDouble,1.0, filterDouble);
-        lengthTextField.setTextFormatter(formatter);
-        heightTextField.setTextFormatter(formatter);
-        widthTextField.setTextFormatter(formatter);
-        angleTextField.setTextFormatter(formatter);
+        lengthTextField.setTextFormatter(new TextFormatter<>(converter, 1.0, filter));
+        heightTextField.setTextFormatter(new TextFormatter<>(converter, 1.0, filter));
+        widthTextField.setTextFormatter(new TextFormatter<>(converter, 1.0, filter));
+        angleTextField.setTextFormatter(new TextFormatter<>(converterAngle, 0.0, filter));
 
 
         SpinnerValueFactory.IntegerSpinnerValueFactory hourSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0);
@@ -96,7 +111,7 @@ public class EditorController extends BaseController {
     public void handleModifyButtonAction(ActionEvent event) {
         String message = validateInput();
         if (message == ""){
-            bundleDto.plankSize = dimensionTextField.getText();
+            bundleDto.plankSize = plankSizeTextField1.getText()+"x"+plankSizeTextField2.getText();
             bundleDto.barcode = barcodeTextField.getText();
             bundleDto.essence = essenceTextField.getText();
             bundleDto.length = parseDouble(lengthTextField.getText());
@@ -120,9 +135,6 @@ public class EditorController extends BaseController {
         if (essenceTextField.getText().isEmpty()){
             message = "L'essence ne doit pas être vide";
         }
-        if (dimensionTextField.getText().isEmpty()){
-            message = "L'essence ne doit pas être vide";
-        }
         try {
             double length = parseDouble(lengthTextField.getText());
             double angle = parseDouble(angleTextField.getText());
@@ -139,7 +151,8 @@ public class EditorController extends BaseController {
         this.bundleDto = dto;
         barcodeTextField.setText(bundleDto.barcode);
         essenceTextField.setText(bundleDto.essence);
-        dimensionTextField.setText(bundleDto.plankSize);
+        plankSizeTextField1.setText(bundleDto.plankSize.substring(0,1));
+        plankSizeTextField2.setText(bundleDto.plankSize.substring(2));
         lengthTextField.setText(Double.toString(bundleDto.length));
         widthTextField.setText(Double.toString(bundleDto.width));
         heightTextField.setText(Double.toString(bundleDto.height));

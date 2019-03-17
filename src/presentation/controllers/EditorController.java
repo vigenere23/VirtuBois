@@ -7,16 +7,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-<<<<<<< HEAD
+
 import javafx.util.StringConverter;
 
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
-=======
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
->>>>>>> 5aab36cf60ce84fa800a7d42573bbdf297e47d29
 
 import static javax.xml.bind.DatatypeConverter.parseDouble;
 

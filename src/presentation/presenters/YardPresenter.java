@@ -183,9 +183,9 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private void updateInfoSelectedBundle(Point2D position) {
-        List<BundleDto> bundles = larmanController.getSelectedBundles(transformPlanCoordsToRealCoords(position));
-        if (bundles.size() == 1) {
-            mainController.updateBundleInfo(bundles.get(0));
+        BundleDto bundle = larmanController.getTopBundle(transformPlanCoordsToRealCoords(position));
+        if (bundle != null) {
+            mainController.updateBundleInfo(bundle);
         }
         // TODO notify mainController for sideview
         // TODO Highlight selected bundles

@@ -2,6 +2,7 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
+import domain.entities.Bundle;
 import enums.EditorMode;
 import helpers.*;
 import javafx.fxml.FXMLLoader;
@@ -83,8 +84,8 @@ public class YardPresenter extends Pane implements IPresenter {
                 if (larmanController.getSelectedBundles(point).size() != 0) {
                     BundleDto dto = larmanController.getTopBundle(point);
                     EditorController editorController = JavafxHelper.addEditorView("Editor", "Editor", false, dto);
-                    String wow = editorController.getBundleDto();
-                    System.out.print(wow);
+                    BundleDto modded = editorController.getBundleDto();
+                    System.out.print(modded.plankSize);
                 }
             }
         });

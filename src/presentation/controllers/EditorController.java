@@ -38,10 +38,6 @@ public class EditorController extends BaseController {
 
     }
 
-    public EditorController(BundleDto dto){
-
-    }
-
     @FXML
     public void initialize(){
 
@@ -72,7 +68,7 @@ public class EditorController extends BaseController {
     public void handleModifyButtonAction(ActionEvent event) {
         //String message = validateInput();
         //if (message == ""){
-            length = lengthTextField.getText();
+            bundleDto.plankSize = dimensionTextField.getText();
             Stage stage = (Stage) modifyButton.getScene().getWindow();
             stage.close();
         //} else{
@@ -96,11 +92,11 @@ public class EditorController extends BaseController {
     }
 
     public void setBundleDto(BundleDto dto){
-
+        this.bundleDto = dto;
     }
 
-    public String getBundleDto() {
-        return length;
+    public BundleDto getBundleDto() {
+        return bundleDto;
     }
 }
 

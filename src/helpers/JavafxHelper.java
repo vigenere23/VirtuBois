@@ -48,7 +48,7 @@ public class JavafxHelper {
         Platform.exit();
     }
 
-    public static EditorController addEditorView(String viewName, String title, boolean maximised, BundleDto dto){
+    public static EditorController addEditorView(String viewName, String title, boolean maximised, BundleDto dtoToInit){
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("views/" + viewName + ".fxml"));
         Parent page;
@@ -69,7 +69,7 @@ public class JavafxHelper {
             controller.setStage(stage);
         }
 
-        loader.<EditorController>getController().setBundleDto(dto);
+        loader.<EditorController>getController().setBundleDto(dtoToInit);
         stage.setTitle("Virtubois - " + title);
         stage.setScene(scene);
         stage.centerOnScreen();

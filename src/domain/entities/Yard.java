@@ -1,5 +1,7 @@
 package domain.entities;
 
+import domain.controllers.LarmanController;
+import domain.dtos.BundleDto;
 import helpers.CenteredRectangle;
 import helpers.Converter;
 import helpers.GeomHelper;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 public class Yard {
     private Map<String, Bundle> bundles;
+    public BundleDto lastBundleCreated;
     private Lift lift;
 
     public Yard() {
@@ -37,6 +40,7 @@ public class Yard {
         Bundle bundle = new Bundle(position);
         adjustBundleHeight(bundle);
         bundles.put(bundle.getId(), bundle);
+        lastBundleCreated = new BundleDto(bundle);
     }
 
     private void adjustBundleHeight(Bundle bundle) {

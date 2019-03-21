@@ -8,6 +8,7 @@ import javafx.geometry.Point2D;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 
 public class LarmanController {
@@ -52,9 +53,12 @@ public class LarmanController {
     
     public BundleDto getTopBundle(Point2D position)
     {
-        int index = getSelectedBundles(position).size()-1;
+        List<BundleDto> bundlesDto = getSelectedBundles(position);
+        bundlesDto.sort(Comparator.comparing(BundleDto::getZ));
+
+        int index = bundlesDto.size()-1;
         if (index >= 0) {
-            return getSelectedBundles(position).get(index);
+            return bundlesDto.get(index);
         }
         return null;
     }

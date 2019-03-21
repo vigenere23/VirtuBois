@@ -199,6 +199,7 @@ public class YardPresenter extends Pane implements IPresenter {
         getChildren().clear();
 
         List<BundleDto> bundles = larmanController.getBundles();
+        bundles.sort(Comparator.comparing(BundleDto::getZ));
 
         drawAxes();
         drawBundles(bundles);

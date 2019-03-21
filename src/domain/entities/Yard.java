@@ -50,6 +50,7 @@ public class Yard implements Serializable {
             double bundleTopZ = collidingBundle.z + collidingBundle.getHeight();
             if (bundleTopZ > maxZ) maxZ = bundleTopZ;
         }
+
         bundle.setZ(maxZ);
     }
 

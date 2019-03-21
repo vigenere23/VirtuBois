@@ -78,6 +78,14 @@ public class LarmanController {
         yard.deleteBundle(id);
     }
 
+    public List<BundleDto> getCollidingBundleDtos(BundleDto bundleToCheckDto){
+        Bundle bundleToCheck = yard.getBundle(bundleToCheckDto.id);
+        List<BundleDto> bundlesDto;
+        List<Bundle> bundles =  yard.getCollidingBundles(bundleToCheck);
+        bundlesDto = Converter.fromBundlesToBundleDtos(bundles);
+        return bundlesDto;
+    }
+
     /**** PRIVATE METHODS ****/
 
 }

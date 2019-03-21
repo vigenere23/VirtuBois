@@ -1,6 +1,7 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
+import domain.entities.Bundle;
 import enums.EditorMode;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -9,6 +10,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
@@ -18,11 +20,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import presentation.presenters.BundlePresenter;
 import presentation.presenters.YardPresenter;
 
 import java.time.format.DateTimeFormatter;
@@ -61,6 +66,7 @@ public class MainController extends BaseController {
     @FXML public ToggleButton deleteButton;
     @FXML public ToggleButton editButton;
 
+    @FXML public VBox elevViewBox;
     @FXML
     public void initialize()
     {
@@ -70,6 +76,8 @@ public class MainController extends BaseController {
         listView.setItems(listItems);
 
         windowFont = new Font("System", 13);
+
+
 
         initBundleInfoView();
         setEventHandlers();

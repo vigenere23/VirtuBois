@@ -98,7 +98,7 @@ public class Yard implements Serializable {
         adjustBundleHeight(bundle);
     }
 
-    private List<Bundle> getCollidingBundles(Bundle bundleToCheck) {
+    public List<Bundle> getCollidingBundles(Bundle bundleToCheck) {
         List<Bundle> collidingBundles = new ArrayList<>();
         for (Bundle bundle : getBundles()) {
             if (bundle != bundleToCheck) {

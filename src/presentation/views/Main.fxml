@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="dark" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.MainController">
+<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="dark" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.MainController">
     <children>
         <VBox prefHeight="26.0" prefWidth="1280.0" AnchorPane.bottomAnchor="694.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -32,9 +32,9 @@
                                 <Menu mnemonicParsing="false" text="File">
                                     <items>
                                         <MenuItem disable="true" mnemonicParsing="false" text="New" />
-                                        <MenuItem disable="true" mnemonicParsing="false" text="Open" />
-                                        <MenuItem disable="true" mnemonicParsing="false" text="Save" />
-                                        <MenuItem disable="true" mnemonicParsing="false" text="Save As" />
+                                        <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open" />
+                                        <MenuItem mnemonicParsing="false" onAction="#save" text="Save" />
+                                        <MenuItem mnemonicParsing="false" onAction="#saveAs" text="Save As" />
                                         <MenuItem disable="true" mnemonicParsing="false" text="Export 3D" />
                                         <MenuItem mnemonicParsing="false" onAction="#quit" text="Exit" />
                                     </items>

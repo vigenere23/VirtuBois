@@ -93,9 +93,17 @@ public class YardPresenter extends Pane implements IPresenter {
             }
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (selectedBundleId != null) {
-                    Point2D planPosition = new Point2D(event.getX(), event.getY());
-                    larmanController.modifyBundlePosition(selectedBundleId, transformPlanCoordsToRealCoords(planPosition));
-                    draw();
+                    boolean canDrag = true;
+                    List<BundleDto> bundlesToCompare = larmanController.getCollidingBundleDtos(larmanController.getBundle(selectedBundleId));
+                    for (BundleDto i : bundlesToCompare)
+                    {
+                        if(i.z > larmanController.getBundle(selectedBundleId).z) {canDrag = false;}
+                    }
+                    if(canDrag) {
+                        Point2D planPosition = new Point2D(event.getX(), event.getY());
+                        larmanController.modifyBundlePosition(selectedBundleId, transformPlanCoordsToRealCoords(planPosition));
+                        draw();
+                    }
                 }
             }
         });

@@ -46,7 +46,6 @@ public class Yard {
             if (bundleTopZ > maxZ) maxZ = bundleTopZ;
         }
         bundle.setZ(maxZ);
-        System.out.println(maxZ);
     }
 
     public Bundle getBundle(String id) {

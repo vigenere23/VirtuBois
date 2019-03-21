@@ -117,7 +117,7 @@ public class MainController extends BaseController {
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
 
-    public void clearAllBundleInfo(){
+    public void clearAllBundleInfo() {
         bundleCode.getChildren().clear();
         bundleLength.getChildren().clear();
         bundleWidth.getChildren().clear();
@@ -128,7 +128,7 @@ public class MainController extends BaseController {
         bundleSize.getChildren().clear();
     }
 
-    public void updateBundleInfo(BundleDto bundle){
+    public void updateBundleInfo(BundleDto bundle) {
         clearAllBundleInfo();
         Text barcode =  new Text(bundle.barcode);
         barcode.setFont(windowFont);

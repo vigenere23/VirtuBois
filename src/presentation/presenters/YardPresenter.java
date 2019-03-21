@@ -20,7 +20,7 @@ import java.util.*;
 
 public class YardPresenter extends Pane implements IPresenter {
     private List<BundlePresenter> bundles;
-    private String idToModify = "";
+    private String selectedBundleId = null;
     private LiftPresenter lift;
     private double zoom;
     private Point2D lastClickedPoint;
@@ -68,11 +68,7 @@ public class YardPresenter extends Pane implements IPresenter {
                 createBundle();
                 draw();
             } else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                updateInfoSelectedBundle();
-                BundleDto bundle = larmanController.getTopBundle(mousePositionInRealCoords);
-                if (bundle != null) {
-                    idToModify = bundle.id;
-                }
+                selectBundle();
             } else if (mainController.editorMode.getValue() == EditorMode.DELETE) {
                 deleteBundle();
                 draw();
@@ -94,8 +90,8 @@ public class YardPresenter extends Pane implements IPresenter {
                 draw();
             }
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                if (!(idToModify.isEmpty())) {
-                    larmanController.modifyBundlePosition(idToModify, mousePositionInRealCoords);
+                if (selectedBundleId != null) {
+                    larmanController.modifyBundlePosition(selectedBundleId, mousePositionInRealCoords);
                     draw();
                 }
             }
@@ -106,9 +102,6 @@ public class YardPresenter extends Pane implements IPresenter {
                 translateVector = translateVector.add(dragVector);
                 dragVector = new Point2D(0, 0);
                 draw();
-            }
-            if (event.getButton() == MouseButton.PRIMARY && mainController.editorMode.getValue() == EditorMode.POINTER) {
-                idToModify = "";
             }
         });
 
@@ -172,10 +165,13 @@ public class YardPresenter extends Pane implements IPresenter {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
     }
 
-    private void updateInfoSelectedBundle() {
+    private void selectBundle() {
         BundleDto bundle = larmanController.getTopBundle(mousePositionInRealCoords);
         if (bundle != null) {
             mainController.updateBundleInfo(bundle);
+            selectedBundleId = bundle.id;
+        } else {
+            selectedBundleId = null;
         }
         // TODO notify mainController for sideview
         // TODO Highlight selected bundles

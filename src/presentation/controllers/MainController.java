@@ -34,39 +34,61 @@ public class MainController extends BaseController {
     public ToggleGroup editorModeToggleGroup;
 
     private Font windowFont;
-    @FXML Pane root;
-    @FXML Pane yardWrapper;
-
-    @FXML public ListView listView;
-    @FXML public TextFlow packCodeView;
-    @FXML public TextFlow packLongView;
-    @FXML public TextFlow packLargView;
-    @FXML public TextFlow packHautView;
-    @FXML public TextFlow packDateView;
-    @FXML public TextFlow packHeureView;
-    @FXML public TextFlow packTypeView;
-    @FXML public TextFlow packPlankSize;
-
-    @FXML public TextFlow bundleCode;
-    @FXML public TextFlow bundleLength;
-    @FXML public TextFlow bundleWidth;
-    @FXML public TextFlow bundleHeight;
-    @FXML public TextFlow bundleDate;
-    @FXML public TextFlow bundleHour;
-    @FXML public TextFlow bundleEssence;
-    @FXML public TextFlow bundleSize;
-
-    @FXML public ToggleButton pointerButton;
-    @FXML public ToggleButton addBundleButton;
-    @FXML public ToggleButton deleteButton;
-    @FXML public ToggleButton editButton;
+    @FXML
+    Pane root;
+    @FXML
+    Pane yardWrapper;
 
     @FXML
-    public void initialize()
-    {
+    public ListView listView;
+    @FXML
+    public TextFlow packCodeView;
+    @FXML
+    public TextFlow packLongView;
+    @FXML
+    public TextFlow packLargView;
+    @FXML
+    public TextFlow packHautView;
+    @FXML
+    public TextFlow packDateView;
+    @FXML
+    public TextFlow packHeureView;
+    @FXML
+    public TextFlow packTypeView;
+    @FXML
+    public TextFlow packPlankSize;
+
+    @FXML
+    public TextFlow bundleCode;
+    @FXML
+    public TextFlow bundleLength;
+    @FXML
+    public TextFlow bundleWidth;
+    @FXML
+    public TextFlow bundleHeight;
+    @FXML
+    public TextFlow bundleDate;
+    @FXML
+    public TextFlow bundleHour;
+    @FXML
+    public TextFlow bundleEssence;
+    @FXML
+    public TextFlow bundleSize;
+
+    @FXML
+    public ToggleButton pointerButton;
+    @FXML
+    public ToggleButton addBundleButton;
+    @FXML
+    public ToggleButton deleteButton;
+    @FXML
+    public ToggleButton editButton;
+
+    @FXML
+    public void initialize() {
         editorMode = new SimpleObjectProperty<>();
 
-        ObservableList<String> listItems = FXCollections.observableArrayList("Bundle 1","Bundle 2", "Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle");
+        ObservableList<String> listItems = FXCollections.observableArrayList("Bundle 1", "Bundle 2", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle", "Bundle");
         listView.setItems(listItems);
 
         windowFont = new Font("System", 13);
@@ -130,45 +152,45 @@ public class MainController extends BaseController {
 
     public void updateBundleInfo(BundleDto bundle) {
         clearAllBundleInfo();
-        Text barcode =  new Text(bundle.barcode);
+        Text barcode = new Text(bundle.barcode);
         barcode.setFont(windowFont);
         barcode.setFill(Color.WHITESMOKE);
         bundleCode.getChildren().add(barcode);
 
-        Text length =  new Text(Double.toString(bundle.length));
+        Text length = new Text(Double.toString(bundle.length));
         length.setFont(windowFont);
         length.setFill(Color.WHITESMOKE);
         bundleLength.getChildren().add(length);
 
-        Text width =  new Text(Double.toString(bundle.width));
+        Text width = new Text(Double.toString(bundle.width));
         width.setFont(windowFont);
         width.setFill(Color.WHITESMOKE);
         bundleWidth.getChildren().add(width);
 
-        Text height =  new Text(Double.toString(bundle.height));
+        Text height = new Text(Double.toString(bundle.height));
         height.setFont(windowFont);
         height.setFill(Color.WHITESMOKE);
         bundleHeight.getChildren().add(height);
 
 
-        Text date =  new Text(bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        Text date = new Text(bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         date.setFont(windowFont);
         date.setFill(Color.WHITESMOKE);
         bundleDate.getChildren().add(date);
 
-        Text hour =  new Text(bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
+        Text hour = new Text(bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
         hour.setFont(windowFont);
         hour.setFill(Color.WHITESMOKE);
         bundleHour.getChildren().add(hour);
 
 
-        Text essence =  new Text(bundle.essence);
+        Text essence = new Text(bundle.essence);
         essence.setFont(windowFont);
         essence.setFill(Color.WHITESMOKE);
         bundleEssence.getChildren().add(essence);
 
 
-        Text plankSize =  new Text(bundle.plankSize);
+        Text plankSize = new Text(bundle.plankSize);
         plankSize.setFont(windowFont);
         plankSize.setFill(Color.WHITESMOKE);
         bundleSize.getChildren().add(plankSize);
@@ -218,6 +240,10 @@ public class MainController extends BaseController {
         bundleHour.setTextAlignment(TextAlignment.RIGHT);
         bundleEssence.setTextAlignment(TextAlignment.RIGHT);
         bundleSize.setTextAlignment(TextAlignment.RIGHT);
+
+    }
+
+    public void updateElevationView(List<BundleDto> bundles) {
 
     }
 }

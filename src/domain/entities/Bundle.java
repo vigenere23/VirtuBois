@@ -35,18 +35,30 @@ public class Bundle extends Drawable3D
         setBarcode(ConfigHelper.bundleBarcode);
     }
 
+    public String getId() { return id; }
+
     private void initId() {
         id = UUID.randomUUID().toString();
     }
 
-    public String getId() { return id; }
+    public String getColor() { return color; }
 
     private void initColor() {
         Color color = ColorHelper.randomColor(ConfigHelper.bundleSaturation, ConfigHelper.bundleBrightness);
         this.color = ColorHelper.toWeb(color);
     }
 
-    public String getColor() { return color; }
+    @Override
+    public void setWidth(double width) {
+        super.setWidth(width);
+        ConfigHelper.bundleWidth = this.width;
+    }
+
+    @Override
+    public void setLength(double length) {
+        super.setLength(length);
+        ConfigHelper.bundleLength = this.length;
+    }
 
     public double getHeight()
     {
@@ -56,6 +68,13 @@ public class Bundle extends Drawable3D
     public void setHeight(double height)
     {
         this.height = height;
+        ConfigHelper.bundleHeight = this.height;
+    }
+
+    @Override
+    public void setAngle(double angle) {
+        super.setAngle(angle);
+        ConfigHelper.bundleAngle = this.angle;
     }
 
     public String getEssence()
@@ -76,6 +95,13 @@ public class Bundle extends Drawable3D
         ConfigHelper.bundlePlankSize = this.plankSize;
     }
 
+    public LocalDate getDate() { return date; }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+        ConfigHelper.bundleDate = this.date;
+    }
+
     public LocalTime getTime()
     {
         return time;
@@ -84,13 +110,6 @@ public class Bundle extends Drawable3D
     public void setTime(LocalTime time) {
         this.time = time;
         ConfigHelper.bundleTime = this.time;
-    }
-
-    public LocalDate getDate() { return date; }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-        ConfigHelper.bundleDate = this.date;
     }
 
     public String getBarcode() { return barcode; }

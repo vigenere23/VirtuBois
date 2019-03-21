@@ -16,7 +16,7 @@ public class CenteredRectangle {
     private double scale;
 
     public CenteredRectangle(Point2D centerPos, double width, double height, double angle) {
-        this(centerPos.getX(), centerPos.getY(), width, height, angle);
+        this(centerPos.getX(), centerPos.getY(), width, height, -angle);
     }
 
     public CenteredRectangle(double centerX, double centerY, double width, double height, double angle) {
@@ -25,7 +25,7 @@ public class CenteredRectangle {
         setHeight(height);
         setX(centerX);
         setY(centerY);
-        rectangle.setRotate(angle);
+        rectangle.setRotate(-angle);
     }
 
     public Rectangle get() { return rectangle; }
@@ -98,8 +98,8 @@ public class CenteredRectangle {
         points.add(new Point2D(x + width / 2.0, y - height / 2.0));
         points.add(new Point2D(x - width / 2.0, y - height / 2.0));
 
-        double cosAngle = Math.cos(rectangle.getRotate());
-        double sinAngle = Math.sin(rectangle.getRotate());
+        double cosAngle = Math.cos((rectangle.getRotate()*2.0*Math.PI)/360.0);
+        double sinAngle = Math.sin((rectangle.getRotate()*2.0*Math.PI)/360.0);
 
         for (int i = 0; i < points.size(); i++) {
             Point2D point = points.get(i).subtract(getPosition());
@@ -111,5 +111,6 @@ public class CenteredRectangle {
         }
 
         return points;
+
     }
 }

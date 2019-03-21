@@ -2,6 +2,7 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
+import domain.entities.Bundle;
 import enums.EditorMode;
 import helpers.*;
 import javafx.geometry.Point2D;
@@ -66,6 +67,8 @@ public class YardPresenter extends Pane implements IPresenter {
                 lastClickedPoint = new Point2D(event.getX(), event.getY());
             } else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
                 createBundle();
+                BundleDto dto = larmanController.getLastBundle();
+                editorWindow(dto);
                 draw();
             } else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 selectBundle();
@@ -75,8 +78,7 @@ public class YardPresenter extends Pane implements IPresenter {
             } else if (mainController.editorMode.getValue() == EditorMode.EDIT) {
                 if (larmanController.getSelectedBundles(mousePositionInRealCoords).size() != 0) {
                     BundleDto dto = larmanController.getTopBundle(mousePositionInRealCoords);
-                    EditorController editorController = JavafxHelper.addEditorView("Editor", "Editor", false, dto);
-                    larmanController.modifyBundleProperties(dto.id, dto.barcode, dto.height, dto.width, dto.length, dto.time, dto.date, dto.essence, dto.plankSize, dto.angle);
+                    editorWindow(dto);
                     mainController.editorMode.setValue(EditorMode.POINTER);
                     draw();
                 }
@@ -127,6 +129,10 @@ public class YardPresenter extends Pane implements IPresenter {
         });
     }
 
+    private void editorWindow(BundleDto dto){
+        JavafxHelper.addEditorView("Editor", "Editor", false, dto);
+        larmanController.modifyBundleProperties(dto.id, dto.barcode, dto.height, dto.width, dto.length, dto.time, dto.date, dto.essence, dto.plankSize, dto.angle);
+    }
     private void handleZoom(double delta, Point2D position) {
         Point2D panningVector = position.subtract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
         if (delta > 0) {

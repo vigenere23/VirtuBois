@@ -15,11 +15,18 @@ public abstract class BaseController implements IController {
 
     public void newFile(ActionEvent actionEvent) {
         String filename = "NouvelleCour";
-        // TODO demander nom fichier / cour
         JavafxHelper.loadView(this.stage, "Main", filename, true);
     }
 
     public void openFile(ActionEvent actionEvent) {
+    }
+
+    public void saveAs(ActionEvent actionEvent){
+
+    }
+
+    public void save(ActionEvent actionEvent){
+
     }
 
     public void quit(ActionEvent actionEvent) {

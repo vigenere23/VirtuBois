@@ -31,6 +31,10 @@ public class LarmanController {
         yard.createBundle(position);
     }
 
+    public BundleDto getLastBundle() {
+        return yard.lastBundleCreated;
+    }
+
     public List<BundleDto> getBundles() {
     return Converter.fromBundlesToBundleDtos(yard.getBundles());
     }

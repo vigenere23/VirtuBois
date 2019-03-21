@@ -1,10 +1,13 @@
 package domain.entities;
 
+import domain.controllers.LarmanController;
+import domain.dtos.BundleDto;
 import helpers.CenteredRectangle;
 import helpers.Converter;
 import helpers.GeomHelper;
 import javafx.geometry.Point2D;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -12,8 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Yard {
+public class Yard implements Serializable {
     private Map<String, Bundle> bundles;
+    public BundleDto lastBundleCreated;
     private Lift lift;
 
     public Yard() {
@@ -37,6 +41,7 @@ public class Yard {
         Bundle bundle = new Bundle(position);
         adjustBundleHeight(bundle);
         bundles.put(bundle.getId(), bundle);
+        lastBundleCreated = new BundleDto(bundle);
     }
 
     private void adjustBundleHeight(Bundle bundle) {

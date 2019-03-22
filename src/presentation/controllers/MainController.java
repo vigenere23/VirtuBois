@@ -239,7 +239,7 @@ public class MainController extends BaseController {
 
     public void updateElevationView(List<BundleDto> bundles) {
         rectanglesId.clear();
-        elevViewBox.getChildren().clear();
+        clearElevationView();
         for (BundleDto bundleDto : bundles) {
             Rectangle rectangle = new Rectangle(200, 50);
             Color color = Color.web(bundleDto.color);
@@ -257,8 +257,7 @@ public class MainController extends BaseController {
 
     }
 
-    private void handleMouseClickedOnElev(Rectangle rectangle){
-        updateBundleInfo(rectanglesId.get(rectangle));
-
+    public void clearElevationView() {
+        elevViewBox.getChildren().clear();
     }
 }

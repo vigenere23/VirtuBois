@@ -25,6 +25,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private Point2D lastClickedPoint;
     private Point2D dragVector;
     private Point2D translateVector;
+    private boolean bundleWasDragged;
 
     private Point2D mousePositionInRealCoords;
     private Label mousePositionLabel;
@@ -61,6 +62,7 @@ public class YardPresenter extends Pane implements IPresenter {
         setOnMousePressed(event -> {
             requestFocus();
             mainController.clearAllBundleInfo();
+            mainController.clearElevationView();
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 lastClickedPoint = new Point2D(event.getX(), event.getY());
             } else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
@@ -101,6 +103,7 @@ public class YardPresenter extends Pane implements IPresenter {
                         Point2D planPosition = new Point2D(event.getX(), event.getY());
                         larmanController.modifyBundlePosition(selectedBundleId, transformPlanCoordsToRealCoords(planPosition));
                         draw();
+                        bundleWasDragged = true;
                     }
                 }
             }
@@ -111,6 +114,10 @@ public class YardPresenter extends Pane implements IPresenter {
                 translateVector = translateVector.add(dragVector);
                 dragVector = new Point2D(0, 0);
                 draw();
+            }
+            if (event.getButton() == MouseButton.PRIMARY && bundleWasDragged) {
+                mainController.clearElevationView();
+                bundleWasDragged = false;
             }
         });
 

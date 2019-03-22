@@ -28,8 +28,8 @@ public class LarmanController {
     }
 
     /**** PUBLIC METHODS ****/
-    public void createBundle(Point2D position) {
-        yard.createBundle(position);
+    public BundleDto createBundle(Point2D position) {
+        return new BundleDto(yard.createBundle(position));
     }
 
     public BundleDto getLastBundle() {

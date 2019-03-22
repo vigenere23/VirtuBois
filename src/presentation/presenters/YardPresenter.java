@@ -62,24 +62,20 @@ public class YardPresenter extends Pane implements IPresenter {
 
         setOnMousePressed(event -> {
             requestFocus();
-            mainController.clearAllBundleInfo();
-            mainController.clearElevationView();
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 lastClickedPoint = new Point2D(event.getX(), event.getY());
-            } else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
-                createBundle();
-                showBundleEditorWindow(larmanController.getLastBundle());
-                draw();
-            } else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                selectBundles();
-            } else if (mainController.editorMode.getValue() == EditorMode.DELETE) {
-                deleteBundle();
-                draw();
-            } else if (mainController.editorMode.getValue() == EditorMode.EDIT) {
-                if (larmanController.getSelectedBundles(mousePositionInRealCoords).size() != 0) {
-                    showBundleEditorWindow(larmanController.getTopBundle(mousePositionInRealCoords));
-                    mainController.editorMode.setValue(EditorMode.POINTER);
-                    draw();
+            } else {
+                if (mainController.editorMode.getValue() == EditorMode.POINTER) {
+                    updateSelectedBundles();
+                } else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
+                    createBundle();
+                } else if (mainController.editorMode.getValue() == EditorMode.DELETE) {
+                    deleteBundle();
+                } else if (mainController.editorMode.getValue() == EditorMode.EDIT) {
+                    updateSelectedBundles();
+                    if (topSelectedBundle != null) {
+                        editBundle();
+                    }
                 }
             }
         });
@@ -116,7 +112,7 @@ public class YardPresenter extends Pane implements IPresenter {
                 draw();
             }
             if (event.getButton() == MouseButton.PRIMARY) {
-                selectBundles();
+                updateSelectedBundles();
             }
         });
 
@@ -188,7 +184,7 @@ public class YardPresenter extends Pane implements IPresenter {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
     }
 
-    private void selectBundles() {
+    private void updateSelectedBundles() {
         List<BundleDto> selectedBundles = larmanController.getSelectedBundles(mousePositionInRealCoords);
         if (!selectedBundles.isEmpty()) {
             topSelectedBundle = larmanController.getTopBundle(mousePositionInRealCoords);
@@ -202,23 +198,40 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private void createBundle() {
-        larmanController.createBundle(mousePositionInRealCoords);
+        BundleDto createdBundle = larmanController.createBundle(mousePositionInRealCoords);
+        showBundleEditorWindow(createdBundle);
+        selectBundle(createdBundle);
+        draw();
+    }
+
+    private void editBundle() {
+        showBundleEditorWindow(topSelectedBundle);
+        selectBundle(topSelectedBundle);
+        draw();
+    }
+
+    private void selectBundle(BundleDto bundleDto) {
         mainController.editorMode.setValue(EditorMode.POINTER);
+        mousePositionInRealCoords = bundleDto.position;
+        updateSelectedBundles();
     }
 
     private void deleteBundle() {
         BundleDto topBundle = larmanController.getTopBundle(mousePositionInRealCoords);
-        if (topBundle != null) larmanController.deleteBundle(topBundle.id);
-        mainController.editorMode.setValue(EditorMode.POINTER);
+        if (topBundle != null) {
+            larmanController.deleteBundle(topBundle.id);
+            mainController.editorMode.setValue(EditorMode.POINTER);
+            mainController.clearAllBundleInfo();
+            mainController.clearElevationView();
+            draw();
+        }
     }
 
     public void draw() {
         getChildren().clear();
 
-        List<BundleDto> bundles = larmanController.getBundlesSorted();
-
         drawAxes();
-        drawBundles(bundles);
+        drawBundles(larmanController.getBundlesSorted());
         drawOtherGraphics();
     }
 

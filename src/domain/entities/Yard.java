@@ -36,11 +36,12 @@ public class Yard implements Serializable {
 
     public void setLift(Lift lift) { this.lift = lift; }
 
-    public void createBundle(Point2D position) {
+    public Bundle createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);
         adjustBundleHeight(bundle);
         bundles.put(bundle.getId(), bundle);
         lastBundleCreated = bundle;
+        return bundle;
     }
 
     private void adjustBundleHeight(Bundle bundle) {

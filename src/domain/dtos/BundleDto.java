@@ -36,8 +36,8 @@ public class BundleDto {
         plankSize = bundle.getPlankSize();
         barcode = bundle.getBarcode();
     }
-    public double getZ() {
-        return z;
-    }
 
+    public boolean equals(BundleDto other) {
+        return id.equals(other.id);
+    }
 }

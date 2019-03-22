@@ -25,4 +25,12 @@ public class BundlePresenter extends CenteredRectangle implements IPresenter {
         rectangle.setStroke(color);
         rectangle.setStrokeWidth(ConfigHelper.bundleBorderWidth);
     }
+
+    public void markAsSelected() {
+        rectangle.getStrokeDashArray().add(5.0);
+    }
+
+    public void markAsTopSelected() {
+        rectangle.setStroke(Color.WHITE);
+    }
 }

@@ -22,6 +22,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -237,6 +238,7 @@ public class MainController extends BaseController {
     }
 
     public void updateElevationView(List<BundleDto> bundles) {
+        rectanglesId.clear();
         elevViewBox.getChildren().clear();
         for (BundleDto bundleDto : bundles) {
             Rectangle rectangle = new Rectangle(200, 50);
@@ -246,12 +248,17 @@ public class MainController extends BaseController {
             rectangle.setStrokeWidth(ConfigHelper.bundleBorderWidth);
             elevViewBox.getChildren().add(0, rectangle);
             rectanglesId.put(rectangle, bundleDto);
-            rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
+            rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event)->{
+                if(event.getButton() == MouseButton.PRIMARY) {
                     updateBundleInfo(rectanglesId.get(rectangle));
                 }
             });
         }
+
+    }
+
+    private void handleMouseClickedOnElev(Rectangle rectangle){
+        updateBundleInfo(rectanglesId.get(rectangle));
+
     }
 }

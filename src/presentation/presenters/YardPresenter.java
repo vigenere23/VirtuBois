@@ -88,20 +88,21 @@ public class YardPresenter extends Pane implements IPresenter {
                 Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
                 dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
                 draw();
-            }
-            if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                if (topSelectedBundle != null) {
-                    boolean bundleCanBeDragged = true;
-                    List<BundleDto> bundlesToCompare = larmanController.getCollidingBundles(larmanController.getBundle(topSelectedBundle.id));
-                    for (BundleDto bundleDto : bundlesToCompare) {
-                        if (topSelectedBundle.z < bundleDto.z) {
-                            bundleCanBeDragged = false;
-                            break;
+            } else {
+                if (mainController.editorMode.getValue() == EditorMode.POINTER) {
+                    if (topSelectedBundle != null) {
+                        boolean bundleCanBeDragged = true;
+                        List<BundleDto> bundlesToCompare = larmanController.getCollidingBundles(larmanController.getBundle(topSelectedBundle.id));
+                        for (BundleDto bundleDto : bundlesToCompare) {
+                            if (topSelectedBundle.z < bundleDto.z) {
+                                bundleCanBeDragged = false;
+                                break;
+                            }
                         }
-                    }
-                    if (bundleCanBeDragged) {
-                        larmanController.modifyBundlePosition(topSelectedBundle.id, mousePositionInRealCoords);
-                        draw();
+                        if (bundleCanBeDragged) {
+                            larmanController.modifyBundlePosition(topSelectedBundle.id, mousePositionInRealCoords);
+                            draw();
+                        }
                     }
                 }
             }
@@ -112,8 +113,7 @@ public class YardPresenter extends Pane implements IPresenter {
                 translateVector = translateVector.add(dragVector);
                 dragVector = new Point2D(0, 0);
                 draw();
-            }
-            if (event.getButton() == MouseButton.PRIMARY) {
+            } else {
                 updateSelectedBundles();
             }
         });

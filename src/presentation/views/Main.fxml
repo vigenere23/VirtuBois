@@ -18,11 +18,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="dark" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.MainController">
+<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="dark" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.MainController">
     <children>
         <VBox prefHeight="26.0" prefWidth="1280.0" AnchorPane.bottomAnchor="694.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -183,9 +184,9 @@
                                             <children>
                                                 <TitledPane collapsible="false" minHeight="30.0" prefHeight="342.0" prefWidth="251.0" text="Paquet" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <content>
-                                                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                        <AnchorPane>
                                                             <children>
-                                                                <VBox layoutX="74.0" layoutY="38.0" prefHeight="275.0" prefWidth="247.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                <VBox layoutX="12.0" layoutY="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                     <children>
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
@@ -265,9 +266,17 @@
                                                     <content>
                                                         <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-                                                <ScrollPane hbarPolicy="NEVER" layoutX="12.0" layoutY="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="12.0" layoutY="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <content>
-                                                      <VBox fx:id="elevViewBox" />
+                                                      <AnchorPane>
+                                                         <children>
+                                                            <VBox fx:id="elevViewBox" alignment="CENTER" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                               <children>
+                                                                  <Region VBox.vgrow="ALWAYS" />
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </AnchorPane>
                                                    </content>
                                                 </ScrollPane>
                                              </children></AnchorPane>

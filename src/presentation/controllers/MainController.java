@@ -77,7 +77,7 @@ public class MainController extends BaseController {
 
         windowFont = new Font("System", 13);
 
-
+        elevViewBox.getChildren().add(new Rectangle(200,50));
 
         initBundleInfoView();
         setEventHandlers();

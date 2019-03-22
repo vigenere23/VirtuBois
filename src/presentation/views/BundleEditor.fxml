@@ -146,9 +146,9 @@
             <HBox alignment="CENTER" prefHeight="69.0" prefWidth="430.0" BorderPane.alignment="CENTER">
                <children>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="applyModificationButton" mnemonicParsing="false" onAction="#handleApplyModificationButton" text="Apply" />
+                  <Button fx:id="applyModificationButton" mnemonicParsing="false" onAction="#handleApplyModificationButton" text="Appliquer" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="cancelModificationButton" mnemonicParsing="false" onAction="#handleCancelModificationButton" text="Cancel" />
+                  <Button fx:id="cancelModificationButton" mnemonicParsing="false" onAction="#handleCancelModificationButton" text="Annuler" />
                   <Region HBox.hgrow="ALWAYS" />
                </children>
             </HBox>

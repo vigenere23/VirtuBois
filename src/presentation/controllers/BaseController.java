@@ -19,8 +19,7 @@ public abstract class BaseController implements IController {
     }
 
     public void newFile(ActionEvent actionEvent) {
-        String filename = "NouvelleCour";
-        JavafxHelper.loadView(this.stage, "Main", filename, true);
+        JavafxHelper.loadView(this.stage, "Main", "Nouvelle Cour", true);
     }
 
     public void openFile(ActionEvent actionEvent) {
@@ -39,7 +38,7 @@ public abstract class BaseController implements IController {
     }
 
     public void handleMenuHelpAbout(ActionEvent actionEvent) {
-        JavafxHelper.popupView("About", "About", false, false);
+        JavafxHelper.popupView("About", "À propos", false, false);
     }
 
 }

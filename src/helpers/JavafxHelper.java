@@ -68,6 +68,6 @@ public class JavafxHelper {
         if (controller instanceof BundleEditorController) {
             ((BundleEditorController) controller).setBundleDto(bundleToEditDto);
         }
-        setupStage(stage, "Edit bundle", false, true);
+        setupStage(stage, "Éditer un paquet", false, true);
     }
 }

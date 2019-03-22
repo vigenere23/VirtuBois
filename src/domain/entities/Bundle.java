@@ -50,14 +50,18 @@ public class Bundle extends Drawable3D
 
     @Override
     public void setWidth(double width) {
-        super.setWidth(width);
-        ConfigHelper.bundleWidth = this.width;
+        if (width > 0) {
+            super.setWidth(width);
+            ConfigHelper.bundleWidth = this.width;
+        }
     }
 
     @Override
     public void setLength(double length) {
-        super.setLength(length);
-        ConfigHelper.bundleLength = this.length;
+        if (length > 0) {
+            super.setLength(length);
+            ConfigHelper.bundleLength = this.length;
+        }
     }
 
     public double getHeight()
@@ -67,8 +71,10 @@ public class Bundle extends Drawable3D
 
     public void setHeight(double height)
     {
-        this.height = height;
-        ConfigHelper.bundleHeight = this.height;
+        if (height > 0) {
+            this.height = height;
+            ConfigHelper.bundleHeight = this.height;
+        }
     }
 
     @Override
@@ -84,15 +90,19 @@ public class Bundle extends Drawable3D
 
     public void setEssence(String essence)
     {
-        this.essence = essence;
-        ConfigHelper.bundleEssence = this.essence;
+        if (!essence.isEmpty()) {
+            this.essence = essence;
+            ConfigHelper.bundleEssence = this.essence;
+        }
     }
 
     public String getPlankSize() { return plankSize; }
 
     public void setPlanckSize(String plankSize) {
-        this.plankSize = plankSize;
-        ConfigHelper.bundlePlankSize = this.plankSize;
+        if (plankSize.matches("^[1-9]+[0-9]*x[1-9]+[0-9]*$")) {
+            this.plankSize = plankSize;
+            ConfigHelper.bundlePlankSize = this.plankSize;
+        }
     }
 
     public LocalDate getDate() { return date; }
@@ -115,7 +125,9 @@ public class Bundle extends Drawable3D
     public String getBarcode() { return barcode; }
 
     public void setBarcode(String barcode) {
-        this.barcode = barcode;
-        ConfigHelper.bundleBarcode = this.barcode;
+        if (!barcode.isEmpty()) {
+            this.barcode = barcode;
+            ConfigHelper.bundleBarcode = this.barcode;
+        }
     }
 }

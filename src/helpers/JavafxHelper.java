@@ -1,6 +1,8 @@
 package helpers;
 
 import domain.dtos.BundleDto;
+import javafx.beans.value.ChangeListener;
+import javafx.scene.control.TextField;
 import presentation.controllers.BundleEditorController;
 import presentation.controllers.IController;
 import presentation.Main;
@@ -9,6 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.text.NumberFormat;
 
 public class JavafxHelper {
 
@@ -69,5 +73,39 @@ public class JavafxHelper {
             ((BundleEditorController) controller).setBundleDto(bundleToEditDto);
         }
         setupStage(stage, "Éditer un paquet", false, true);
+    }
+
+    public static void addStringToDoubleConverter(TextField textfield, Double defaultValue, Double min, Double max) {
+        ChangeListener<String> stringToDoubleConverter = (observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                try {
+                    double value = Double.parseDouble(newValue);
+                    if (min != null && value < min || max != null && value > max)
+                        textfield.setText(oldValue);
+                } catch (Exception e) {
+                    textfield.setText(oldValue);
+                }
+            } else {
+                textfield.setText(String.valueOf(defaultValue));
+            }
+        };
+        textfield.textProperty().addListener(stringToDoubleConverter);
+    }
+
+    public static void addStringToIntegerConverter(TextField textfield, Integer defaultValue, Integer min, Integer max) {
+        ChangeListener<String> stringToIntegerConverter = (observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                try {
+                    int value = Integer.parseInt(newValue);
+                    if (min != null && value < min || max != null && value > max)
+                        textfield.setText(oldValue);
+                } catch (Exception e) {
+                    textfield.setText(oldValue);
+                }
+            } else {
+                textfield.setText(String.valueOf(defaultValue));
+            }
+        };
+        textfield.textProperty().addListener(stringToIntegerConverter);
     }
 }

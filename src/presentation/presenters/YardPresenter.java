@@ -65,17 +65,19 @@ public class YardPresenter extends Pane implements IPresenter {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 lastClickedPoint = new Point2D(event.getX(), event.getY());
             } else {
-                if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                    updateSelectedBundles();
-                } else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
-                    createBundle();
-                } else if (mainController.editorMode.getValue() == EditorMode.DELETE) {
-                    deleteBundle();
-                } else if (mainController.editorMode.getValue() == EditorMode.EDIT) {
-                    updateSelectedBundles();
-                    if (topSelectedBundle != null) {
+                switch (mainController.editorMode.getValue()) {
+                    case POINTER:
+                        updateSelectedBundles();
+                        break;
+                    case ADDING_BUNDLE:
+                        createBundle();
+                        break;
+                    case EDIT:
                         editBundle();
-                    }
+                        break;
+                    case DELETE:
+                        deleteBundle();
+                        break;
                 }
             }
         });
@@ -205,9 +207,12 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private void editBundle() {
-        showBundleEditorWindow(topSelectedBundle);
-        selectBundle(topSelectedBundle);
-        draw();
+        BundleDto topBundle = larmanController.getTopBundle(mousePositionInRealCoords);
+        if (topBundle != null) {
+            showBundleEditorWindow(topBundle);
+            selectBundle(topBundle);
+            draw();
+        }
     }
 
     private void selectBundle(BundleDto bundleDto) {

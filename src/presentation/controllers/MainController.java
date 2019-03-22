@@ -172,6 +172,7 @@ public class MainController extends BaseController {
             Rectangle rectangle = presenter.get();
             rectangle.setWidth(200);
             rectangle.setHeight(50);
+            rectangle.setRotate(0);
             elevationViewBox.getChildren().add(0, rectangle);
             rectanglesId.put(rectangle, bundleDto);
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {

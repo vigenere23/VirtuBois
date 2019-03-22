@@ -9,6 +9,7 @@ import javafx.geometry.Point2D;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 
 public class LarmanController implements Serializable {
@@ -55,17 +56,17 @@ public class LarmanController implements Serializable {
     
     public BundleDto getTopBundle(Point2D position)
     {
-        int index = getSelectedBundles(position).size()-1;
-        if (index >= 0) {
-            return getSelectedBundles(position).get(index);
+        List<BundleDto> bundlesDto = getSelectedBundles(position);
+        if (!bundlesDto.isEmpty()) {
+            bundlesDto.sort(Comparator.comparing(BundleDto::getZ).reversed());
+            return bundlesDto.get(0);
         }
         return null;
     }
 
-    public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,
-                             LocalDate date, String essence, String planksize, double angle)
+    public void modifyBundleProperties(BundleDto bundleDto)
     {
-        yard.modifyBundleProperties(id, barcode, height, width, length, time, date, essence, planksize, angle);
+        yard.modifyBundleProperties(bundleDto);
     }
 
     public void modifyBundlePosition(String id, Point2D position)
@@ -75,6 +76,14 @@ public class LarmanController implements Serializable {
 
     public void deleteBundle(String id) {
         yard.deleteBundle(id);
+    }
+
+    public List<BundleDto> getCollidingBundleDtos(BundleDto bundleToCheckDto){
+        Bundle bundleToCheck = yard.getBundle(bundleToCheckDto.id);
+        List<BundleDto> bundlesDto;
+        List<Bundle> bundles =  yard.getCollidingBundles(bundleToCheck);
+        bundlesDto = Converter.fromBundlesToBundleDtos(bundles);
+        return bundlesDto;
     }
 
     /**** PRIVATE METHODS ****/

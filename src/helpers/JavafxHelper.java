@@ -1,7 +1,9 @@
 package helpers;
 
 import domain.dtos.BundleDto;
-import presentation.controllers.EditorController;
+import javafx.beans.value.ChangeListener;
+import javafx.scene.control.TextField;
+import presentation.controllers.BundleEditorController;
 import presentation.controllers.IController;
 import presentation.Main;
 import javafx.application.Platform;
@@ -10,46 +12,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.text.NumberFormat;
+
 public class JavafxHelper {
+
     public static void loadView(Stage stage, String viewName, String title, boolean maximised) {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("views/" + viewName + ".fxml"));
-        Parent page;
-
-        try {
-            page = loader.load();
-        }
-        catch (Exception e) {
-            System.out.println("Could not load view");
-            e.printStackTrace();
-            return;
-        }
-
-        Scene scene = new Scene(page);
-
-        IController controller = loader.getController();
-        if (controller != null) {
-            controller.setStage(stage);
-        }
-
-        stage.setTitle("Virtubois - " + title);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setMaximized(maximised);
-        stage.show();
+        setupScene(stage, viewName);
+        setupStage(stage, title, maximised, false);
     }
 
-    public static void addView(String viewName, String title, boolean maximised) {
-        Stage stage = new Stage();
-        loadView(stage, viewName, title, maximised);
-    }
-
-
-    public static void quitApplication() {
-        Platform.exit();
-    }
-
-    public static EditorController addEditorView(String viewName, String title, boolean maximised, BundleDto dtoToInit){
-        Stage stage = new Stage();
+    private static IController setupScene(Stage stage, String viewName) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("views/" + viewName + ".fxml"));
         Parent page;
 
@@ -62,20 +34,78 @@ public class JavafxHelper {
             return null;
         }
 
-        Scene scene = new Scene(page);
-
         IController controller = loader.getController();
         if (controller != null) {
             controller.setStage(stage);
         }
 
-        loader.<EditorController>getController().setBundleDto(dtoToInit);
-        stage.setTitle("Virtubois - " + title);
+        Scene scene = new Scene(page);
         stage.setScene(scene);
+
+        return controller;
+    }
+
+    private static void setupStage(Stage stage, String title, boolean maximised, boolean waitForClosing) {
+        stage.setTitle("Virtubois - " + title);
         stage.centerOnScreen();
         stage.setMaximized(maximised);
-        stage.showAndWait();
-        return loader.getController();
+        if (waitForClosing) {
+            stage.showAndWait();
+        } else {
+            stage.show();
+        }
+    }
 
+    public static void popupView(String viewName, String title, boolean maximised, boolean waitForClosing) {
+        Stage stage = new Stage();
+        setupScene(stage, viewName);
+        setupStage(stage, title, maximised, waitForClosing);
+    }
+
+    public static void quitApplication() {
+        Platform.exit();
+    }
+
+    public static void popupBundleEditorView(BundleDto bundleToEditDto) {
+        Stage stage = new Stage();
+        IController controller = setupScene(stage, "BundleEditor");
+        if (controller instanceof BundleEditorController) {
+            ((BundleEditorController) controller).setBundleDto(bundleToEditDto);
+        }
+        setupStage(stage, "Éditer un paquet", false, true);
+    }
+
+    public static void addStringToDoubleConverter(TextField textfield, Double defaultValue, Double min, Double max) {
+        ChangeListener<String> stringToDoubleConverter = (observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                try {
+                    double value = Double.parseDouble(newValue);
+                    if (min != null && value < min || max != null && value > max)
+                        textfield.setText(oldValue);
+                } catch (Exception e) {
+                    textfield.setText(oldValue);
+                }
+            } else {
+                textfield.setText(String.valueOf(defaultValue));
+            }
+        };
+        textfield.textProperty().addListener(stringToDoubleConverter);
+    }
+
+    public static void addStringToIntegerConverter(TextField textfield, Integer defaultValue, Integer min, Integer max) {
+        ChangeListener<String> stringToIntegerConverter = (observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                try {
+                    int value = Integer.parseInt(newValue);
+                    if (min != null && value < min || max != null && value > max)
+                        textfield.setText(oldValue);
+                } catch (Exception e) {
+                    textfield.setText(oldValue);
+                }
+            } else {
+                textfield.setText(String.valueOf(defaultValue));
+            }
+        };
+        textfield.textProperty().addListener(stringToIntegerConverter);
     }
 }

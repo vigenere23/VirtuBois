@@ -37,4 +37,8 @@ public class BundleDto implements Serializable {
         plankSize = bundle.getPlankSize();
         barcode = bundle.getBarcode();
     }
+    public double getZ() {
+        return z;
+    }
+
 }

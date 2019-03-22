@@ -27,6 +27,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private Point2D lastClickedPoint;
     private Point2D dragVector;
     private Point2D translateVector;
+    private boolean bundleWasDragged;
 
     private Point2D mousePositionInRealCoords;
     private Label mousePositionLabel;
@@ -44,7 +45,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
         this.mainController = mainController;
 
-        larmanController = LarmanController.getInstance();
+        larmanController = mainController.larmanController;
         bundles = new ArrayList<>();
         zoom = ConfigHelper.defaultZoom;
         dragVector = new Point2D(0, 0);
@@ -66,14 +67,14 @@ public class YardPresenter extends Pane implements IPresenter {
             //Point2D clippedPoint = snapPointToGrid(new Point2D(event.getX(), event.getY()));
             requestFocus();
             mainController.clearAllBundleInfo();
+            mainController.clearElevationView();
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 lastClickedPoint = new Point2D(event.getX(), event.getY());
             } else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
                 createBundle();
                 BundleDto dto = larmanController.getLastBundle();
-                editorWindow(dto);
-                ObservableList<String> itemList = FXCollections.observableArrayList(dto.id);
-                mainController.getListView().setItems(itemList);
+                showBundleEditorWindow(dto);
+
                 draw();
             } else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 selectBundle();
@@ -83,7 +84,7 @@ public class YardPresenter extends Pane implements IPresenter {
             } else if (mainController.editorMode.getValue() == EditorMode.EDIT) {
                 if (larmanController.getSelectedBundles(mousePositionInRealCoords).size() != 0) {
                     BundleDto dto = larmanController.getTopBundle(mousePositionInRealCoords);
-                    editorWindow(dto);
+                    showBundleEditorWindow(dto);
                     mainController.editorMode.setValue(EditorMode.POINTER);
                     draw();
                 }
@@ -99,9 +100,18 @@ public class YardPresenter extends Pane implements IPresenter {
             }
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (selectedBundleId != null) {
-                    Point2D planPosition = new Point2D(event.getX(), event.getY());
-                    larmanController.modifyBundlePosition(selectedBundleId, transformPlanCoordsToRealCoords(planPosition));
-                    draw();
+                    boolean canDrag = true;
+                    List<BundleDto> bundlesToCompare = larmanController.getCollidingBundleDtos(larmanController.getBundle(selectedBundleId));
+                    for (BundleDto i : bundlesToCompare)
+                    {
+                        if(i.z > larmanController.getBundle(selectedBundleId).z) {canDrag = false;}
+                    }
+                    if(canDrag) {
+                        Point2D planPosition = new Point2D(event.getX(), event.getY());
+                        larmanController.modifyBundlePosition(selectedBundleId, transformPlanCoordsToRealCoords(planPosition));
+                        draw();
+                        bundleWasDragged = true;
+                    }
                 }
             }
         });
@@ -112,6 +122,10 @@ public class YardPresenter extends Pane implements IPresenter {
                 translateVector = translateVector.add(dragVector);
                 dragVector = new Point2D(0, 0);
                 draw();
+            }
+            if (event.getButton() == MouseButton.PRIMARY && bundleWasDragged) {
+                mainController.clearElevationView();
+                bundleWasDragged = false;
             }
         });
 
@@ -136,10 +150,12 @@ public class YardPresenter extends Pane implements IPresenter {
         });
     }
 
-    private void editorWindow(BundleDto dto){
-        JavafxHelper.addEditorView("Editor", "Editor", false, dto);
-        larmanController.modifyBundleProperties(dto.id, dto.barcode, dto.height, dto.width, dto.length, dto.time, dto.date, dto.essence, dto.plankSize, dto.angle);
+    private void showBundleEditorWindow(BundleDto bundleDto) {
+        JavafxHelper.popupBundleEditorView(bundleDto); // BLOCKING!!!
+        larmanController.modifyBundleProperties(bundleDto);
+        draw();
     }
+
     private void handleZoom(double delta, Point2D position) {
         Point2D panningVector = position.subtract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
         if (delta > 0) {
@@ -184,6 +200,9 @@ public class YardPresenter extends Pane implements IPresenter {
         if (bundle != null) {
             mainController.updateBundleInfo(bundle);
             selectedBundleId = bundle.id;
+            List<BundleDto> bundles = larmanController.getSelectedBundles(mousePositionInRealCoords);
+            bundles.sort(Comparator.comparing(BundleDto::getZ));
+            mainController.updateElevationView(bundles);
         } else {
             selectedBundleId = null;
         }
@@ -206,6 +225,7 @@ public class YardPresenter extends Pane implements IPresenter {
         getChildren().clear();
 
         List<BundleDto> bundles = larmanController.getBundles();
+        bundles.sort(Comparator.comparing(BundleDto::getZ));
 
         drawAxes();
         drawBundles(bundles);

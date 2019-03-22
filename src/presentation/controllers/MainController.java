@@ -1,32 +1,46 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
+import domain.entities.Bundle;
 import enums.EditorMode;
+import helpers.ColorHelper;
+import helpers.ConfigHelper;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import presentation.presenters.BundlePresenter;
 import presentation.presenters.YardPresenter;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainController extends BaseController {
 
@@ -34,6 +48,8 @@ public class MainController extends BaseController {
     public ToggleGroup editorModeToggleGroup;
 
     private Font windowFont;
+    private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
+
     @FXML Pane root;
     @FXML Pane yardWrapper;
 
@@ -64,13 +80,14 @@ public class MainController extends BaseController {
 
     //public boolean gridIsOn = false;
 
+    @FXML public VBox elevViewBox;
     @FXML
     public void initialize()
     {
         editorMode = new SimpleObjectProperty<>();
 
         windowFont = new Font("System", 13);
-
+        
         initBundleInfoView();
         setEventHandlers();
         setupEditorModeToggleButtons();
@@ -140,45 +157,45 @@ public class MainController extends BaseController {
 
     public void updateBundleInfo(BundleDto bundle) {
         clearAllBundleInfo();
-        Text barcode =  new Text(bundle.barcode);
+        Text barcode = new Text(bundle.barcode);
         barcode.setFont(windowFont);
         barcode.setFill(Color.WHITESMOKE);
         bundleCode.getChildren().add(barcode);
 
-        Text length =  new Text(Double.toString(bundle.length));
+        Text length = new Text(Double.toString(bundle.length));
         length.setFont(windowFont);
         length.setFill(Color.WHITESMOKE);
         bundleLength.getChildren().add(length);
 
-        Text width =  new Text(Double.toString(bundle.width));
+        Text width = new Text(Double.toString(bundle.width));
         width.setFont(windowFont);
         width.setFill(Color.WHITESMOKE);
         bundleWidth.getChildren().add(width);
 
-        Text height =  new Text(Double.toString(bundle.height));
+        Text height = new Text(Double.toString(bundle.height));
         height.setFont(windowFont);
         height.setFill(Color.WHITESMOKE);
         bundleHeight.getChildren().add(height);
 
 
-        Text date =  new Text(bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        Text date = new Text(bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         date.setFont(windowFont);
         date.setFill(Color.WHITESMOKE);
         bundleDate.getChildren().add(date);
 
-        Text hour =  new Text(bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
+        Text hour = new Text(bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
         hour.setFont(windowFont);
         hour.setFill(Color.WHITESMOKE);
         bundleHour.getChildren().add(hour);
 
 
-        Text essence =  new Text(bundle.essence);
+        Text essence = new Text(bundle.essence);
         essence.setFont(windowFont);
         essence.setFill(Color.WHITESMOKE);
         bundleEssence.getChildren().add(essence);
 
 
-        Text plankSize =  new Text(bundle.plankSize);
+        Text plankSize = new Text(bundle.plankSize);
         plankSize.setFont(windowFont);
         plankSize.setFill(Color.WHITESMOKE);
         bundleSize.getChildren().add(plankSize);
@@ -228,6 +245,29 @@ public class MainController extends BaseController {
         bundleHour.setTextAlignment(TextAlignment.RIGHT);
         bundleEssence.setTextAlignment(TextAlignment.RIGHT);
         bundleSize.setTextAlignment(TextAlignment.RIGHT);
+    }
 
+    public void updateElevationView(List<BundleDto> bundles) {
+        rectanglesId.clear();
+        clearElevationView();
+        for (BundleDto bundleDto : bundles) {
+            Rectangle rectangle = new Rectangle(200, 50);
+            Color color = Color.web(bundleDto.color);
+            rectangle.setFill(ColorHelper.setOpacity(color, ConfigHelper.bundleOpacity));
+            rectangle.setStroke(color);
+            rectangle.setStrokeWidth(ConfigHelper.bundleBorderWidth);
+            elevViewBox.getChildren().add(0, rectangle);
+            rectanglesId.put(rectangle, bundleDto);
+            rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event)->{
+                if(event.getButton() == MouseButton.PRIMARY) {
+                    updateBundleInfo(rectanglesId.get(rectangle));
+                }
+            });
+        }
+
+    }
+
+    public void clearElevationView() {
+        elevViewBox.getChildren().clear();
     }
 }

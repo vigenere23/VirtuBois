@@ -36,6 +36,8 @@ public class Yard implements Serializable {
 
     public List<Bundle> getBundles() { return new ArrayList<>(bundles.values()); }
 
+    public Map<String, Bundle> getMap() { return bundles; }
+
     public void setBundles(Map<String, Bundle> bundles) { this.bundles = bundles; }
 
     //public Lift getLift() { return lift; }
@@ -55,6 +57,7 @@ public class Yard implements Serializable {
             double bundleTopZ = collidingBundle.z + collidingBundle.getHeight();
             if (bundleTopZ > maxZ) maxZ = bundleTopZ;
         }
+
         bundle.setZ(maxZ);
     }
 
@@ -80,19 +83,18 @@ public class Yard implements Serializable {
     }
 
 
-    public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,
-                                       LocalDate date, String essence, String planksize, double angle)
+    public void modifyBundleProperties(BundleDto bundleDto)
     {
-        Bundle bundle = getBundle(id);
-        bundle.setBarcode(barcode);
-        bundle.setHeight(height);
-        bundle.setWidth(width);
-        bundle.setLength(length);
-        bundle.setTime(time);
-        bundle.setDate(date);
-        bundle.setEssence(essence);
-        bundle.setPlanckSize(planksize);
-        bundle.setAngle(angle);
+        Bundle bundle = getBundle(bundleDto.id);
+        bundle.setBarcode(bundleDto.barcode);
+        bundle.setHeight(bundleDto.height);
+        bundle.setWidth(bundleDto.width);
+        bundle.setLength(bundleDto.length);
+        bundle.setTime(bundleDto.time);
+        bundle.setDate(bundleDto.date);
+        bundle.setEssence(bundleDto.essence);
+        bundle.setPlanckSize(bundleDto.plankSize);
+        bundle.setAngle(bundleDto.angle);
     }
 
     public void modifyBundlePosition(String id, Point2D position)
@@ -102,7 +104,7 @@ public class Yard implements Serializable {
         adjustBundleHeight(bundle);
     }
 
-    private List<Bundle> getCollidingBundles(Bundle bundleToCheck) {
+    public List<Bundle> getCollidingBundles(Bundle bundleToCheck) {
         List<Bundle> collidingBundles = new ArrayList<>();
         for (Bundle bundle : getBundles()) {
             if (bundle != bundleToCheck) {

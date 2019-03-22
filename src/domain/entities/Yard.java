@@ -76,19 +76,18 @@ public class Yard implements Serializable {
     }
 
 
-    public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,
-                                       LocalDate date, String essence, String planksize, double angle)
+    public void modifyBundleProperties(BundleDto bundleDto)
     {
-        Bundle bundle = getBundle(id);
-        bundle.setBarcode(barcode);
-        bundle.setHeight(height);
-        bundle.setWidth(width);
-        bundle.setLength(length);
-        bundle.setTime(time);
-        bundle.setDate(date);
-        bundle.setEssence(essence);
-        bundle.setPlanckSize(planksize);
-        bundle.setAngle(angle);
+        Bundle bundle = getBundle(bundleDto.id);
+        bundle.setBarcode(bundleDto.barcode);
+        bundle.setHeight(bundleDto.height);
+        bundle.setWidth(bundleDto.width);
+        bundle.setLength(bundleDto.length);
+        bundle.setTime(bundleDto.time);
+        bundle.setDate(bundleDto.date);
+        bundle.setEssence(bundleDto.essence);
+        bundle.setPlanckSize(bundleDto.plankSize);
+        bundle.setAngle(bundleDto.angle);
     }
 
     public void modifyBundlePosition(String id, Point2D position)

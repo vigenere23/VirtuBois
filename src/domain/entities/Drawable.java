@@ -15,6 +15,8 @@ public abstract class Drawable
         setPosition(position);
     }
 
+    public Drawable() {}
+
     public double getLength()
     {
         return length;
@@ -23,7 +25,7 @@ public abstract class Drawable
     public void setLength(double length)
     {
         this.length = length;
-        calculateBoudaries();
+        calculateBoundaries();
     }
 
     public double getWidth()
@@ -34,14 +36,14 @@ public abstract class Drawable
     public void setWidth(double width)
     {
         this.width = width;
-        calculateBoudaries();
+        calculateBoundaries();
     }
 
     public Point2D getPosition() { return position; }
 
     public void setPosition(Point2D position) {
         this.position = position;
-        calculateBoudaries();
+        calculateBoundaries();
     }
 
     public double getAngle() { return angle; }
@@ -50,7 +52,6 @@ public abstract class Drawable
 
     public Rectangle getBoundaries() { return boundaries; }
 
-    private void calculateBoudaries() {
-        // TODO
+    private void calculateBoundaries() {
     }
 }

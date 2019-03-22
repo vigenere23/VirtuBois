@@ -6,11 +6,12 @@ import domain.entities.Yard;
 import helpers.Converter;
 import javafx.geometry.Point2D;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public class LarmanController {
+public class LarmanController implements Serializable {
     private static final LarmanController instance = new LarmanController();
     private Yard yard;
 
@@ -25,6 +26,8 @@ public class LarmanController {
     public void setYard(Yard yard) {
         instance.yard = yard;
     }
+
+    public Yard getYard() { return yard; }
 
     /**** PUBLIC METHODS ****/
     public void createBundle(Point2D position) {

@@ -11,6 +11,8 @@ public abstract class Drawable3D extends Drawable
         setZ(0.0); //defaultValue
     }
 
+    public Drawable3D() {}
+
     public double getZ() { return z; }
 
     public void setZ(double z) { this.z = z; }

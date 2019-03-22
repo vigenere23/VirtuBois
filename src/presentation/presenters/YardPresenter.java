@@ -2,9 +2,10 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
-import domain.entities.Bundle;
 import enums.EditorMode;
 import helpers.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -14,7 +15,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import presentation.controllers.EditorController;
 import presentation.controllers.MainController;
 
 import java.util.*;
@@ -32,6 +32,8 @@ public class YardPresenter extends Pane implements IPresenter {
     private Label mousePositionLabel;
     private Line xAxis;
     private Line yAxis;
+    private Line xAxisGrid;
+    private Line yAxisGrid;
 
     private MainController mainController;
     private LarmanController larmanController;
@@ -61,6 +63,7 @@ public class YardPresenter extends Pane implements IPresenter {
         heightProperty().addListener(observable -> draw());
 
         setOnMousePressed(event -> {
+            //Point2D clippedPoint = snapPointToGrid(new Point2D(event.getX(), event.getY()));
             requestFocus();
             mainController.clearAllBundleInfo();
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
@@ -69,6 +72,8 @@ public class YardPresenter extends Pane implements IPresenter {
                 createBundle();
                 BundleDto dto = larmanController.getLastBundle();
                 editorWindow(dto);
+                ObservableList<String> itemList = FXCollections.observableArrayList(dto.id);
+                mainController.getListView().setItems(itemList);
                 draw();
             } else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 selectBundle();
@@ -86,6 +91,7 @@ public class YardPresenter extends Pane implements IPresenter {
         });
 
         setOnMouseDragged(event -> {
+            //Point2D clippedPoint = snapPointToGrid(new Point2D(event.getX(), event.getY()));
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
                 dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
@@ -101,6 +107,7 @@ public class YardPresenter extends Pane implements IPresenter {
         });
 
         setOnMouseReleased(event -> {
+            //Point2D clippedPoint = snapPointToGrid(new Point2D(event.getX(), event.getY()));
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 translateVector = translateVector.add(dragVector);
                 dragVector = new Point2D(0, 0);
@@ -242,4 +249,34 @@ public class YardPresenter extends Pane implements IPresenter {
     private void drawOtherGraphics() {
         getChildren().add(mousePositionLabel);
     }
+
+//    private Point2D snapPointToGrid (Point2D point){
+//        if(mainController.gridIsOn){
+//            drawgrid();
+//            Point2D realOriginOnPlan = transformRealCoordsToPlanCoords(new Point2D(point.getX(), point.getY()));
+//
+//    }
+//        return point;
+//    }
+//
+//    private void drawgrid() {
+//        Point2D realOriginOnPlan = transformRealCoordsToPlanCoords(new Point2D(0, 0));
+//        double screenWidth = getWidth();
+//        double screenHeight = getHeight();
+//        double rows = screenWidth / ConfigHelper.gridSquareSize;
+//        double columns = screenHeight / ConfigHelper.gridSquareSize;
+//
+//        for(int i = 0; i < rows; i++)
+//        {
+//            xAxisGrid.setStroke(ColorHelper.setOpacity(Color.WHITE, 0.2));
+//            xAxisGrid.getStrokeDashArray().add(10.0);
+//            getChildren().add(xAxisGrid);
+//        }
+//        for(int j = 0; j < columns; j++)
+//        {
+//            yAxisGrid.setStroke(ColorHelper.setOpacity(Color.WHITE, 0.2));
+//            yAxisGrid.getStrokeDashArray().add(10.0);
+//            getChildren().add(yAxisGrid);
+//        }
+//    }
 }

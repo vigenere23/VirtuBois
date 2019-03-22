@@ -3,17 +3,18 @@ package domain.dtos;
 import domain.entities.Bundle;
 import javafx.geometry.Point2D;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class BundleDto {
+public class BundleDto implements Serializable {
     public String id;
     public String color;
     public double height;
     public double width;
     public double length;
     public double angle;
-    public Point2D position;
+    transient public Point2D position;
     public double z;
     public LocalDate date;
     public LocalTime time;

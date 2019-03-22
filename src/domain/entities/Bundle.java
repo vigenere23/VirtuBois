@@ -5,11 +5,12 @@ import helpers.ConfigHelper;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public class Bundle extends Drawable3D
+public class Bundle extends Drawable3D implements Serializable
 {
     private String id;
     private String color;
@@ -34,6 +35,8 @@ public class Bundle extends Drawable3D
         setTime(ConfigHelper.bundleTime);
         setBarcode(ConfigHelper.bundleBarcode);
     }
+
+    public Bundle(){}
 
     public String getId() { return id; }
 

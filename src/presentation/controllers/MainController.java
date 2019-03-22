@@ -60,14 +60,14 @@ public class MainController extends BaseController {
     @FXML public ToggleButton addBundleButton;
     @FXML public ToggleButton deleteButton;
     @FXML public ToggleButton editButton;
+    @FXML public ToggleButton snapGridButton;
+
+    //public boolean gridIsOn = false;
 
     @FXML
     public void initialize()
     {
         editorMode = new SimpleObjectProperty<>();
-
-        ObservableList<String> listItems = FXCollections.observableArrayList("Bundle 1","Bundle 2", "Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle","Bundle");
-        listView.setItems(listItems);
 
         windowFont = new Font("System", 13);
 
@@ -76,6 +76,8 @@ public class MainController extends BaseController {
         setupEditorModeToggleButtons();
         initYard();
     }
+
+    public ListView getListView() { return listView; }
 
     private void setEventHandlers() {
         root.setOnKeyPressed(event -> {
@@ -86,6 +88,14 @@ public class MainController extends BaseController {
     }
 
     private void setupEditorModeToggleButtons() {
+//        snapGridButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+//            if (!gridIsOn) {
+//                gridIsOn = false;
+//            } else {
+//                gridIsOn = false;
+//            }
+//        });
+//        System.out.println(gridIsOn);
         pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.POINTER));
         addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
         deleteButton.setOnAction(event -> editorMode.setValue(EditorMode.DELETE));

@@ -5,7 +5,12 @@ import domain.dtos.BundleDto;
 import helpers.CenteredRectangle;
 import helpers.Converter;
 import helpers.GeomHelper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
+import presentation.Main;
+import presentation.controllers.MainController;
+import presentation.presenters.YardPresenter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -24,18 +29,18 @@ public class Yard implements Serializable {
         setBundles(new HashMap<>());
     }
 
-    public Yard(Map<String, Bundle> bundles, Lift lift) {
+    public Yard(Map<String, Bundle> bundles) {
         setBundles(bundles);
-        setLift(lift);
+        //setLift(lift);
     }
 
     public List<Bundle> getBundles() { return new ArrayList<>(bundles.values()); }
 
     public void setBundles(Map<String, Bundle> bundles) { this.bundles = bundles; }
 
-    public Lift getLift() { return lift; }
+    //public Lift getLift() { return lift; }
 
-    public void setLift(Lift lift) { this.lift = lift; }
+   // public void setLift(Lift lift) { this.lift = lift; }
 
     public void createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);

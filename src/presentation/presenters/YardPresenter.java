@@ -7,10 +7,7 @@ import helpers.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -60,77 +57,82 @@ public class YardPresenter extends Pane implements IPresenter {
         widthProperty().addListener(observable -> draw());
         heightProperty().addListener(observable -> draw());
 
-        setOnMousePressed(event -> {
-            requestFocus();
-            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
-                lastClickedPoint = new Point2D(event.getX(), event.getY());
-            } else {
-                switch (mainController.editorMode.getValue()) {
-                    case POINTER:
-                        updateSelectedBundles();
-                        break;
-                    case ADDING_BUNDLE:
-                        createBundle();
-                        break;
-                    case EDIT:
-                        editBundle();
-                        break;
-                    case DELETE:
-                        deleteBundle();
-                        break;
-                }
-            }
-        });
+        setOnMousePressed(this::handleOnMousePressedEvent);
+        setOnMouseDragged(this::handleOnMouseDraggedEvent);
+        setOnMouseReleased(this::handleOnMouseReleasedEvent);
+        setOnMouseMoved(this::updateMousePosition);
+        setOnScroll(this::handleOnScrollEvent);
+        setOnKeyPressed(this::handleOnKeyPressedEvent);
+    }
 
-        setOnMouseDragged(event -> {
-            updateMousePosition(event);
-            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
-                Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
-                dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
-                draw();
-            } else {
-                if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                    if (topSelectedBundle != null) {
-                        boolean bundleCanBeDragged = true;
-                        List<BundleDto> bundlesToCompare = larmanController.getCollidingBundles(larmanController.getBundle(topSelectedBundle.id));
-                        for (BundleDto bundleDto : bundlesToCompare) {
-                            if (topSelectedBundle.z < bundleDto.z) {
-                                bundleCanBeDragged = false;
-                                break;
-                            }
+    private void handleOnMousePressedEvent(MouseEvent event) {
+        requestFocus();
+        if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+            lastClickedPoint = new Point2D(event.getX(), event.getY());
+        } else {
+            switch (mainController.editorMode.getValue()) {
+                case POINTER:
+                    updateSelectedBundles();
+                    break;
+                case ADDING_BUNDLE:
+                    createBundle();
+                    break;
+                case EDIT:
+                    editBundle();
+                    break;
+                case DELETE:
+                    deleteBundle();
+                    break;
+            }
+        }
+    }
+
+    private void handleOnMouseDraggedEvent(MouseEvent event) {
+        updateMousePosition(event);
+        if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+            Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
+            dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
+            draw();
+        } else {
+            if (mainController.editorMode.getValue() == EditorMode.POINTER) {
+                if (topSelectedBundle != null) {
+                    boolean bundleCanBeDragged = true;
+                    List<BundleDto> bundlesToCompare = larmanController.getCollidingBundles(larmanController.getBundle(topSelectedBundle.id));
+                    for (BundleDto bundleDto : bundlesToCompare) {
+                        if (topSelectedBundle.z < bundleDto.z) {
+                            bundleCanBeDragged = false;
+                            break;
                         }
-                        if (bundleCanBeDragged) {
-                            larmanController.modifyBundlePosition(topSelectedBundle.id, mousePositionInRealCoords);
-                            draw();
-                        }
+                    }
+                    if (bundleCanBeDragged) {
+                        larmanController.modifyBundlePosition(topSelectedBundle.id, mousePositionInRealCoords);
+                        draw();
                     }
                 }
             }
-        });
+        }
+    }
 
-        setOnMouseReleased(event -> {
-            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
-                translateVector = translateVector.add(dragVector);
-                dragVector = new Point2D(0, 0);
-                draw();
-            } else {
-                updateSelectedBundles();
-            }
-        });
+    private void handleOnMouseReleasedEvent(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+            translateVector = translateVector.add(dragVector);
+            dragVector = new Point2D(0, 0);
+            draw();
+        } else {
+            updateSelectedBundles();
+        }
+    }
 
-        setOnMouseMoved(this::updateMousePosition);
+    private void handleOnScrollEvent(ScrollEvent event) {
+        if (event.isControlDown()) handleZoom(event.getDeltaY(), new Point2D(event.getX(), event.getY()));
+        else handlePanning(event);
+    }
 
-        setOnScroll(event -> {
-            if (event.isControlDown()) handleZoom(event.getDeltaY(), new Point2D(event.getX(), event.getY()));
-            else handlePanning(event);
-        });
-
-        setOnKeyPressed(event -> {
-            if (event.isControlDown()) {
-                double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
-                handleZoom(delta, getPlanCenterCoords());
-            }
-        });
+    private void handleOnKeyPressedEvent(KeyEvent event) {
+        if (event.isControlDown()) {
+            double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
+            handleZoom(delta, getPlanCenterCoords());
+        }
     }
 
     private void updateMousePosition(MouseEvent event) {

@@ -1,8 +1,6 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -12,12 +10,11 @@ import javafx.util.StringConverter;
 
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static javax.xml.bind.DatatypeConverter.parseDouble;
 
-public class EditorController extends BaseController {
+public class BundleEditorController extends BaseController {
     @FXML public TextField barcodeTextField;
     @FXML public TextField essenceTextField;
     @FXML public TextField plankSizeTextField1;
@@ -29,18 +26,13 @@ public class EditorController extends BaseController {
     @FXML public DatePicker datePicker;
     @FXML public Spinner<Integer> hourSpinner;
     @FXML public Spinner<Integer> minuteSpinner;
-    @FXML public Button modifyButton;
-    @FXML public Button cancelledButton;
+    @FXML public Button applyModificationButton;
+    @FXML public Button cancelModificationButton;
 
     private BundleDto bundleDto;
 
-    public EditorController(){
-    }
-
     @FXML
-    public void initialize(){
-
-
+    public void initialize() {
         // Source url : https://stackoverflow.com/questions/45977390/how-to-force-a-double-input-in-a-textfield-in-javafx
         Pattern validEditingState = Pattern.compile("(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
 
@@ -54,7 +46,6 @@ public class EditorController extends BaseController {
         };
 
         StringConverter<Double> converter = new StringConverter<Double>() {
-
             @Override
             public Double fromString(String s) {
                 if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s)) {
@@ -64,14 +55,13 @@ public class EditorController extends BaseController {
                 }
             }
 
-
             @Override
             public String toString(Double d) {
                 return d.toString();
             }
         };
-        StringConverter<Double> converterAngle = new StringConverter<Double>() {
 
+        StringConverter<Double> converterAngle = new StringConverter<Double>() {
             @Override
             public Double fromString(String s) {
                 if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s)) {
@@ -80,7 +70,6 @@ public class EditorController extends BaseController {
                     return Double.valueOf(s);
                 }
             }
-
 
             @Override
             public String toString(Double d) {
@@ -92,7 +81,6 @@ public class EditorController extends BaseController {
         heightTextField.setTextFormatter(new TextFormatter<>(converter, 1.0, filter));
         widthTextField.setTextFormatter(new TextFormatter<>(converter, 1.0, filter));
         angleTextField.setTextFormatter(new TextFormatter<>(converterAngle, 0.0, filter));
-
 
         Pattern validPlankSize = Pattern.compile("([1-9][0-9]*)?\\s?([1-9]|1[0-5])?/?([1-9]|1[0-6])?");
 
@@ -136,16 +124,15 @@ public class EditorController extends BaseController {
     }
 
     @FXML
-    public void handleCloseButtonAction(ActionEvent event) {
-        Stage stage = (Stage) cancelledButton.getScene().getWindow();
+    public void handleCancelModificationButton(ActionEvent event) {
         stage.close();
     }
 
     @FXML
-    public void handleModifyButtonAction(ActionEvent event) {
+    public void handleApplyModificationButton(ActionEvent event) {
         String message = validateInput();
-        if (message == ""){
-            bundleDto.plankSize = plankSizeTextField1.getText()+"x"+plankSizeTextField2.getText();
+        if (message.isEmpty()) {
+            bundleDto.plankSize = plankSizeTextField1.getText() + "x" + plankSizeTextField2.getText();
             bundleDto.barcode = barcodeTextField.getText();
             bundleDto.essence = essenceTextField.getText();
             bundleDto.length = parseDouble(lengthTextField.getText());
@@ -154,16 +141,15 @@ public class EditorController extends BaseController {
             bundleDto.width = parseDouble(widthTextField.getText());
             bundleDto.time = LocalTime.of(hourSpinner.getValue(), minuteSpinner.getValue());
             bundleDto.date = datePicker.getValue();
-            Stage stage = (Stage) modifyButton.getScene().getWindow();
             stage.close();
-        } else{
-            System.out.print(message);
+        } else {
+            System.out.println(message);
         }
     }
 
-    private String validateInput(){
+    private String validateInput() {
         String message = "";
-        if (barcodeTextField.getText().isEmpty()){
+        if (barcodeTextField.getText().isEmpty()) {
             message = "Le code barre ne doit pas être vide";
         }
         if (essenceTextField.getText().isEmpty()){
@@ -181,7 +167,7 @@ public class EditorController extends BaseController {
         return message;
     }
 
-    public void setBundleDto(BundleDto dto){
+    public void setBundleDto(BundleDto dto) {
         this.bundleDto = dto;
         barcodeTextField.setText(bundleDto.barcode);
         essenceTextField.setText(bundleDto.essence);

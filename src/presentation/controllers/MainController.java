@@ -86,7 +86,7 @@ public class MainController extends BaseController {
         listView.setItems(listItems);
 
         windowFont = new Font("System", 13);
-
+        
         initBundleInfoView();
         setEventHandlers();
         setupEditorModeToggleButtons();
@@ -234,7 +234,6 @@ public class MainController extends BaseController {
         bundleHour.setTextAlignment(TextAlignment.RIGHT);
         bundleEssence.setTextAlignment(TextAlignment.RIGHT);
         bundleSize.setTextAlignment(TextAlignment.RIGHT);
-
     }
 
     public void updateElevationView(List<BundleDto> bundles) {

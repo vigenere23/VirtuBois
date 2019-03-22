@@ -93,7 +93,6 @@ public class JavafxHelper {
     public static void addStringToIntegerConverter(TextField textField, Integer defaultValue, Integer min, Integer max) {
         ChangeListener<String> stringToIntegerConverter = (observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
-                System.out.println(newValue);
                 try {
                     int value = Integer.parseInt(newValue);
                     if (min != null && value < min || max != null && value > max)
@@ -109,8 +108,9 @@ public class JavafxHelper {
     private static void addChangeAndFocusListeners(TextField textField, ChangeListener<String> stringConverter, Number defaultValue) {
         textField.textProperty().addListener(stringConverter);
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(newValue);
-            if (!newValue) textField.setText(String.valueOf(defaultValue));
+            if (textField.textProperty().getValue().isEmpty() && !newValue) {
+                textField.setText(String.valueOf(defaultValue));
+            }
         });
     }
 }

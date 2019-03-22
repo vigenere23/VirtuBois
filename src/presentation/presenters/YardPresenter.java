@@ -185,7 +185,9 @@ public class YardPresenter extends Pane implements IPresenter {
         if (bundle != null) {
             mainController.updateBundleInfo(bundle);
             selectedBundleId = bundle.id;
-            mainController.updateElevationView(larmanController.getSelectedBundles(mousePositionInRealCoords));
+            List<BundleDto> bundles = larmanController.getSelectedBundles(mousePositionInRealCoords);
+            bundles.sort(Comparator.comparing(BundleDto::getZ));
+            mainController.updateElevationView(bundles);
         } else {
             selectedBundleId = null;
         }

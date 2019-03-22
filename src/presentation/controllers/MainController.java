@@ -3,12 +3,17 @@ package presentation.controllers;
 import domain.dtos.BundleDto;
 import domain.entities.Bundle;
 import enums.EditorMode;
+import helpers.ColorHelper;
+import helpers.ConfigHelper;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -17,6 +22,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -31,7 +37,9 @@ import presentation.presenters.BundlePresenter;
 import presentation.presenters.YardPresenter;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainController extends BaseController {
 
@@ -39,6 +47,7 @@ public class MainController extends BaseController {
     public ToggleGroup editorModeToggleGroup;
 
     private Font windowFont;
+    private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
 
     @FXML Pane root;
     @FXML Pane yardWrapper;
@@ -77,8 +86,6 @@ public class MainController extends BaseController {
         listView.setItems(listItems);
 
         windowFont = new Font("System", 13);
-
-
 
         initBundleInfoView();
         setEventHandlers();
@@ -231,6 +238,21 @@ public class MainController extends BaseController {
     }
 
     public void updateElevationView(List<BundleDto> bundles) {
-
+        elevViewBox.getChildren().clear();
+        for (BundleDto bundleDto : bundles) {
+            Rectangle rectangle = new Rectangle(200, 50);
+            Color color = Color.web(bundleDto.color);
+            rectangle.setFill(ColorHelper.setOpacity(color, ConfigHelper.bundleOpacity));
+            rectangle.setStroke(color);
+            rectangle.setStrokeWidth(ConfigHelper.bundleBorderWidth);
+            elevViewBox.getChildren().add(0, rectangle);
+            rectanglesId.put(rectangle, bundleDto);
+            rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    updateBundleInfo(rectanglesId.get(rectangle));
+                }
+            });
+        }
     }
 }

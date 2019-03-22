@@ -54,19 +54,16 @@ public class LarmanController {
     public BundleDto getTopBundle(Point2D position)
     {
         List<BundleDto> bundlesDto = getSelectedBundles(position);
-        bundlesDto.sort(Comparator.comparing(BundleDto::getZ));
-
-        int index = bundlesDto.size()-1;
-        if (index >= 0) {
-            return bundlesDto.get(index);
+        if (!bundlesDto.isEmpty()) {
+            bundlesDto.sort(Comparator.comparing(BundleDto::getZ).reversed());
+            return bundlesDto.get(0);
         }
         return null;
     }
 
-    public void modifyBundleProperties(String id, String barcode, double height, double width, double length, LocalTime time,
-                             LocalDate date, String essence, String planksize, double angle)
+    public void modifyBundleProperties(BundleDto bundleDto)
     {
-        yard.modifyBundleProperties(id, barcode, height, width, length, time, date, essence, planksize, angle);
+        yard.modifyBundleProperties(bundleDto);
     }
 
     public void modifyBundlePosition(String id, Point2D position)

@@ -31,24 +31,19 @@
                     <children>
                         <MenuBar prefHeight="25.0" prefWidth="132.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <menus>
-                                <Menu mnemonicParsing="false" text="File">
+                                <Menu mnemonicParsing="false" text="Fichier">
                                     <items>
-                                        <MenuItem disable="true" mnemonicParsing="false" text="New" />
-                                        <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open" />
-                                        <MenuItem mnemonicParsing="false" onAction="#save" text="Save" />
-                                        <MenuItem mnemonicParsing="false" onAction="#saveAs" text="Save As" />
-                                        <MenuItem disable="true" mnemonicParsing="false" text="Export 3D" />
-                                        <MenuItem mnemonicParsing="false" onAction="#quit" text="Exit" />
+                                        <MenuItem disable="true" mnemonicParsing="false" text="Nouveau" />
+                                        <MenuItem mnemonicParsing="false" onAction="#openFile" text="Ouvrir" />
+                                        <MenuItem mnemonicParsing="false" onAction="#save" text="Enregistrer" />
+                                        <MenuItem mnemonicParsing="false" onAction="#saveAs" text="Enregistrer sous" />
+                                        <MenuItem disable="true" mnemonicParsing="false" text="Exporter en 3D" />
+                                        <MenuItem mnemonicParsing="false" onAction="#quit" text="Quitter" />
                                     </items>
                                 </Menu>
-                                <Menu disable="true" mnemonicParsing="false" text="Edit">
+                                <Menu mnemonicParsing="false" text="Aide">
                                     <items>
-                                        <MenuItem disable="true" mnemonicParsing="false" text="Delete" />
-                                    </items>
-                                </Menu>
-                                <Menu mnemonicParsing="false" text="Help">
-                                    <items>
-                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuHelpAbout" text="About" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuHelpAbout" text="À propos" />
                                     </items>
                                 </Menu>
                             </menus>
@@ -80,7 +75,7 @@
                                         </ImageView>
                                     </graphic>
                            <tooltip>
-                              <Tooltip text="Outil de création de paquets" />
+                              <Tooltip text="Création de paquets" />
                            </tooltip>
                                 </ToggleButton>
                         <ToggleButton fx:id="editButton" mnemonicParsing="false">
@@ -100,7 +95,7 @@
                                         </ImageView>
                                     </graphic>
                            <tooltip>
-                              <Tooltip text="Outil de suppression de paquets" />
+                              <Tooltip text="Suppression de paquets" />
                            </tooltip>
                                 </ToggleButton>
                                 <ToggleButton fx:id="gridButton" mnemonicParsing="false">
@@ -112,7 +107,7 @@
                                         </ImageView>
                                     </graphic>
                            <tooltip>
-                              <Tooltip text="Outil de grille magnétique" />
+                              <Tooltip text="Grille magnétique" />
                            </tooltip>
                                 </ToggleButton>
                                 <Button fx:id="undoButton" mnemonicParsing="false">

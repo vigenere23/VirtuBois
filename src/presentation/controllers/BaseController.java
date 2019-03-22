@@ -1,21 +1,25 @@
 package presentation.controllers;
 
+import domain.controllers.LarmanController;
 import helpers.JavafxHelper;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public abstract class BaseController implements IController {
 
     protected Stage stage;
+    public LarmanController larmanController;
+
+    public BaseController() {
+        larmanController = LarmanController.getInstance();
+    }
 
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
     public void newFile(ActionEvent actionEvent) {
-        String filename = "NouvelleCour";
-        JavafxHelper.loadView(this.stage, "Main", filename, true);
+        JavafxHelper.loadView(this.stage, "Main", "Nouvelle Cour", true);
     }
 
     public void openFile(ActionEvent actionEvent) {
@@ -34,7 +38,7 @@ public abstract class BaseController implements IController {
     }
 
     public void handleMenuHelpAbout(ActionEvent actionEvent) {
-        JavafxHelper.addView("About", "About", false);
+        JavafxHelper.popupView("About", "À propos", false, false);
     }
 
 }

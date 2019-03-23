@@ -22,6 +22,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private Point2D lastClickedPoint;
     private Point2D dragVector;
     private Point2D translateVector;
+    private Point2D selectionOffsetVector;
 
     private BundleDto topSelectedBundle;
 
@@ -43,7 +44,8 @@ public class YardPresenter extends Pane implements IPresenter {
         bundles = new ArrayList<>();
         zoom = ConfigHelper.defaultZoom;
         dragVector = new Point2D(0, 0);
-        translateVector = new Point2D(0.0, 0.0);
+        translateVector = new Point2D(0, 0);
+        selectionOffsetVector = new Point2D(0, 0);
         mousePositionLabel = new Label("x:0  y:0");
         mousePositionLabel.setAlignment(Pos.BOTTOM_RIGHT);// TODO Not working...
         xAxis = new Line();
@@ -105,7 +107,7 @@ public class YardPresenter extends Pane implements IPresenter {
                         }
                     }
                     if (bundleCanBeDragged) {
-                        larmanController.modifyBundlePosition(topSelectedBundle.id, mousePositionInRealCoords);
+                        larmanController.modifyBundlePosition(topSelectedBundle.id, mousePositionInRealCoords.subtract(selectionOffsetVector));
                         draw();
                     }
                 }
@@ -194,10 +196,12 @@ public class YardPresenter extends Pane implements IPresenter {
             topSelectedBundle = larmanController.getTopBundle(mousePositionInRealCoords);
             mainController.updateElevationView(selectedBundles);
             mainController.updateBundleInfo(topSelectedBundle);
+            selectionOffsetVector = mousePositionInRealCoords.subtract(topSelectedBundle.position);
         } else {
             topSelectedBundle = null;
             mainController.clearElevationView();
             mainController.clearAllBundleInfo();
+            selectionOffsetVector = new Point2D(0, 0);
         }
     }
 

@@ -1,11 +1,7 @@
 package helpers;
 
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.shape.Rectangle;
-
 import java.awt.geom.Line2D;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GeomHelper {

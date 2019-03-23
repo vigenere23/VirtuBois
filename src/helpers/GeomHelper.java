@@ -26,15 +26,21 @@ public class GeomHelper {
 
     public static boolean rectangleCollidesRectangle(CenteredRectangle rectangle1, CenteredRectangle rectangle2) {
         List<Point2D> points1 = rectangle1.getPoints();
+        List<Point2D> points2 = rectangle2.getPoints();
 
-        // Check if any vertex of rectangle1 is inside rectangle2
-        for (Point2D point : points1) {
-            if (pointIsInsideRectangle(point, rectangle2)) return true;
+        // Check if any vertex of the smallest rectangle
+        // is inside the biggest one
+        if (rectangle1.area() < rectangle2.area()) {
+            for (Point2D point : points1) {
+                if (pointIsInsideRectangle(point, rectangle2)) return true;
+            }
+        } else {
+            for (Point2D point : points2) {
+                if (pointIsInsideRectangle(point, rectangle1)) return true;
+            }
         }
 
         // Also check if any edges of rectangle1 intersects with any of rectangle2
-        List<Point2D> points2 = rectangle2.getPoints();
-
         for (int i = 0; i < points1.size(); i++) {
             for (int j = 0; j < points2.size(); j++) {
                 boolean linesIntersects = lineIntersectsOtherLine(

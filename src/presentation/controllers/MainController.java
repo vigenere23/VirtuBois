@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -34,6 +35,8 @@ public class MainController extends BaseController {
 
     public ObjectProperty<EditorMode> editorMode;
     public ToggleGroup editorModeToggleGroup;
+
+    DropShadow dropShadow;
 
     private Font windowFont;
     private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
@@ -81,6 +84,10 @@ public class MainController extends BaseController {
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();
+
+        dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setColor(Color.LIGHTGRAY);
     }
 
     private void setEventHandlers() {
@@ -176,8 +183,12 @@ public class MainController extends BaseController {
             elevationViewBox.getChildren().add(0, rectangle);
             rectanglesId.put(rectangle, bundleDto);
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
+                for (Map.Entry<Rectangle, BundleDto> entry : rectanglesId.entrySet()) {
+                    entry.getKey().setEffect(null);
+                }
                 if (event.getButton() == MouseButton.PRIMARY) {
                     updateBundleInfo(rectanglesId.get(rectangle));
+                    rectangle.setEffect(dropShadow);
                 }
             });
         }

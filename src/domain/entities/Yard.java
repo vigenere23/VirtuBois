@@ -10,14 +10,11 @@ import javafx.geometry.Point2D;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Yard implements Serializable {
     private Map<String, Bundle> bundles;
-    public BundleDto lastBundleCreated;
+    public Bundle lastBundleCreated;
     private Lift lift;
 
     public Yard() {
@@ -29,7 +26,9 @@ public class Yard implements Serializable {
         setLift(lift);
     }
 
-    public List<Bundle> getBundles() { return new ArrayList<>(bundles.values()); }
+    public List<Bundle> getBundles() {
+        return new ArrayList<>(this.bundles.values());
+    }
 
     public void setBundles(Map<String, Bundle> bundles) { this.bundles = bundles; }
 
@@ -37,11 +36,12 @@ public class Yard implements Serializable {
 
     public void setLift(Lift lift) { this.lift = lift; }
 
-    public void createBundle(Point2D position) {
+    public Bundle createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);
         adjustBundleHeight(bundle);
         bundles.put(bundle.getId(), bundle);
-        lastBundleCreated = new BundleDto(bundle);
+        lastBundleCreated = bundle;
+        return bundle;
     }
 
     private void adjustBundleHeight(Bundle bundle) {
@@ -72,7 +72,6 @@ public class Yard implements Serializable {
 
     public void deleteBundle(String id) {
         bundles.remove(id);
-        System.out.print("deleted! \n");
     }
 
 

@@ -1,31 +1,19 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
-import domain.entities.Bundle;
 import enums.EditorMode;
-import helpers.ColorHelper;
-import helpers.ConfigHelper;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -54,30 +42,31 @@ public class MainController extends BaseController {
     @FXML Pane yardWrapper;
 
     @FXML public ListView listView;
-    @FXML public TextFlow packCodeView;
-    @FXML public TextFlow packLongView;
-    @FXML public TextFlow packLargView;
-    @FXML public TextFlow packHautView;
-    @FXML public TextFlow packDateView;
-    @FXML public TextFlow packHeureView;
-    @FXML public TextFlow packTypeView;
-    @FXML public TextFlow packPlankSize;
 
-    @FXML public TextFlow bundleCode;
-    @FXML public TextFlow bundleLength;
-    @FXML public TextFlow bundleWidth;
-    @FXML public TextFlow bundleHeight;
-    @FXML public TextFlow bundleDate;
-    @FXML public TextFlow bundleHour;
-    @FXML public TextFlow bundleEssence;
-    @FXML public TextFlow bundleSize;
+    @FXML public TextFlow bundleBarcodeLabel;
+    @FXML public TextFlow bundleLengthLabel;
+    @FXML public TextFlow bundleWidthLabel;
+    @FXML public TextFlow bundleHeightLabel;
+    @FXML public TextFlow bundleDateLabel;
+    @FXML public TextFlow bundleTimeLabel;
+    @FXML public TextFlow bundleEssenceLabel;
+    @FXML public TextFlow bundlePlankSizeLabel;
+
+    @FXML public TextFlow bundleBarcodeValue;
+    @FXML public TextFlow bundleLengthValue;
+    @FXML public TextFlow bundleWidthValue;
+    @FXML public TextFlow bundleHeightValue;
+    @FXML public TextFlow bundleDateValue;
+    @FXML public TextFlow bundleTimeValue;
+    @FXML public TextFlow bundleEssenceValue;
+    @FXML public TextFlow bundlePlankSizeValue;
 
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
     @FXML public ToggleButton deleteButton;
     @FXML public ToggleButton editButton;
 
-    @FXML public VBox elevViewBox;
+    @FXML public VBox elevationViewBox;
     @FXML
     public void initialize()
     {
@@ -135,130 +124,66 @@ public class MainController extends BaseController {
     }
 
     public void clearAllBundleInfo() {
-        bundleCode.getChildren().clear();
-        bundleLength.getChildren().clear();
-        bundleWidth.getChildren().clear();
-        bundleHeight.getChildren().clear();
-        bundleDate.getChildren().clear();
-        bundleHour.getChildren().clear();
-        bundleEssence.getChildren().clear();
-        bundleSize.getChildren().clear();
+        bundleBarcodeValue.getChildren().clear();
+        bundleLengthValue.getChildren().clear();
+        bundleWidthValue.getChildren().clear();
+        bundleHeightValue.getChildren().clear();
+        bundleDateValue.getChildren().clear();
+        bundleTimeValue.getChildren().clear();
+        bundleEssenceValue.getChildren().clear();
+        bundlePlankSizeValue.getChildren().clear();
     }
 
     public void updateBundleInfo(BundleDto bundle) {
-        clearAllBundleInfo();
-        Text barcode = new Text(bundle.barcode);
-        barcode.setFont(windowFont);
-        barcode.setFill(Color.WHITESMOKE);
-        bundleCode.getChildren().add(barcode);
+        setText(bundleBarcodeValue, bundle.barcode, false);
+        setText(bundleLengthValue, String.valueOf(bundle.length), false);
+        setText(bundleWidthValue, String.valueOf(bundle.width), false);
+        setText(bundleHeightValue, String.valueOf(bundle.height), false);
+        setText(bundleDateValue, bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), false);
+        setText(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")), false);
+        setText(bundleEssenceValue, bundle.essence, false);
+        setText(bundlePlankSizeValue, bundle.plankSize, false);
+    }
 
-        Text length = new Text(Double.toString(bundle.length));
-        length.setFont(windowFont);
-        length.setFill(Color.WHITESMOKE);
-        bundleLength.getChildren().add(length);
-
-        Text width = new Text(Double.toString(bundle.width));
-        width.setFont(windowFont);
-        width.setFill(Color.WHITESMOKE);
-        bundleWidth.getChildren().add(width);
-
-        Text height = new Text(Double.toString(bundle.height));
-        height.setFont(windowFont);
-        height.setFill(Color.WHITESMOKE);
-        bundleHeight.getChildren().add(height);
-
-
-        Text date = new Text(bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        date.setFont(windowFont);
-        date.setFill(Color.WHITESMOKE);
-        bundleDate.getChildren().add(date);
-
-        Text hour = new Text(bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
-        hour.setFont(windowFont);
-        hour.setFill(Color.WHITESMOKE);
-        bundleHour.getChildren().add(hour);
-
-
-        Text essence = new Text(bundle.essence);
-        essence.setFont(windowFont);
-        essence.setFill(Color.WHITESMOKE);
-        bundleEssence.getChildren().add(essence);
-
-
-        Text plankSize = new Text(bundle.plankSize);
-        plankSize.setFont(windowFont);
-        plankSize.setFill(Color.WHITESMOKE);
-        bundleSize.getChildren().add(plankSize);
+    private void setText(TextFlow textFlow, String textToSet, boolean alignRight) {
+        Text text = new Text(textToSet);
+        text.setFont(windowFont);
+        text.setFill(Color.WHITESMOKE);
+        if (alignRight) text.setTextAlignment(TextAlignment.RIGHT);
+        textFlow.getChildren().setAll(text);
     }
 
     private void initBundleInfoView() {
-        Text packCode = new Text("Code barre : ");
-        Text packLong = new Text("Longeur : ");
-        Text packLarg = new Text("Largeur : ");
-        Text packHaut = new Text("Hauteur : ");
-        Text packDate = new Text("Date de production : ");
-        Text packHeure = new Text("Heure de production : ");
-        Text packType = new Text("Essence : ");
-        Text packPlank = new Text("Dimensions des planches : ");
-
-        packCode.setFont(windowFont);
-        packCode.setFill(Color.WHITESMOKE);
-        packLong.setFont(windowFont);
-        packLong.setFill(Color.WHITESMOKE);
-        packLarg.setFont(windowFont);
-        packLarg.setFill(Color.WHITESMOKE);
-        packHaut.setFont(windowFont);
-        packHaut.setFill(Color.WHITESMOKE);
-        packDate.setFont(windowFont);
-        packDate.setFill(Color.WHITESMOKE);
-        packHeure.setFont(windowFont);
-        packHeure.setFill(Color.WHITESMOKE);
-        packType.setFont(windowFont);
-        packType.setFill(Color.WHITESMOKE);
-        packPlank.setFont(windowFont);
-        packPlank.setFill(Color.WHITESMOKE);
-
-        packCodeView.getChildren().add(packCode);
-        packLongView.getChildren().add(packLong);
-        packLargView.getChildren().add(packLarg);
-        packHautView.getChildren().add(packHaut);
-        packDateView.getChildren().add(packDate);
-        packHeureView.getChildren().add(packHeure);
-        packTypeView.getChildren().add(packType);
-        packPlankSize.getChildren().add(packPlank);
-
-        bundleCode.setTextAlignment(TextAlignment.RIGHT);
-        bundleLength.setTextAlignment(TextAlignment.RIGHT);
-        bundleHeight.setTextAlignment(TextAlignment.RIGHT);
-        bundleWidth.setTextAlignment(TextAlignment.RIGHT);
-        bundleDate.setTextAlignment(TextAlignment.RIGHT);
-        bundleHour.setTextAlignment(TextAlignment.RIGHT);
-        bundleEssence.setTextAlignment(TextAlignment.RIGHT);
-        bundleSize.setTextAlignment(TextAlignment.RIGHT);
+        setText(bundleBarcodeLabel, "Code barre : ", true);
+        setText(bundleLengthLabel, "Longeur : ", true);
+        setText(bundleWidthLabel, "Largeur : ", true);
+        setText(bundleHeightLabel, "Hauteur : ", true);
+        setText(bundleDateLabel, "Date de production : ", true);
+        setText(bundleTimeLabel, "Heure de production : ", true);
+        setText(bundleEssenceLabel, "Essence : ", true);
+        setText(bundlePlankSizeLabel, "Dimensions des planches : ", true);
     }
 
     public void updateElevationView(List<BundleDto> bundles) {
         rectanglesId.clear();
-        elevViewBox.getChildren().clear();
+        clearElevationView();
         for (BundleDto bundleDto : bundles) {
-            Rectangle rectangle = new Rectangle(200, 50);
-            Color color = Color.web(bundleDto.color);
-            rectangle.setFill(ColorHelper.setOpacity(color, ConfigHelper.bundleOpacity));
-            rectangle.setStroke(color);
-            rectangle.setStrokeWidth(ConfigHelper.bundleBorderWidth);
-            elevViewBox.getChildren().add(0, rectangle);
+            BundlePresenter presenter = new BundlePresenter(bundleDto);
+            Rectangle rectangle = presenter.get();
+            rectangle.setWidth(200);
+            rectangle.setHeight(50);
+            rectangle.setRotate(0);
+            elevationViewBox.getChildren().add(0, rectangle);
             rectanglesId.put(rectangle, bundleDto);
-            rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event)->{
-                if(event.getButton() == MouseButton.PRIMARY) {
+            rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
+                if (event.getButton() == MouseButton.PRIMARY) {
                     updateBundleInfo(rectanglesId.get(rectangle));
                 }
             });
         }
-
     }
 
-    private void handleMouseClickedOnElev(Rectangle rectangle){
-        updateBundleInfo(rectanglesId.get(rectangle));
-
+    public void clearElevationView() {
+        elevationViewBox.getChildren().clear();
     }
 }

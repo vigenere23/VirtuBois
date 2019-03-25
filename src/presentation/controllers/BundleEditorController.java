@@ -1,10 +1,11 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
+import helpers.JavafxHelper;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 import javafx.util.StringConverter;
 
@@ -33,94 +34,35 @@ public class BundleEditorController extends BaseController {
 
     @FXML
     public void initialize() {
-        // Source url : https://stackoverflow.com/questions/45977390/how-to-force-a-double-input-in-a-textfield-in-javafx
-        Pattern validEditingState = Pattern.compile("(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
-
-        UnaryOperator<TextFormatter.Change> filter = c -> {
-            String text = c.getControlNewText();
-            if (validEditingState.matcher(text).matches()) {
-                return c ;
-            } else {
-                return null ;
-            }
-        };
-
-        StringConverter<Double> converter = new StringConverter<Double>() {
-            @Override
-            public Double fromString(String s) {
-                if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s)) {
-                    return 1.0 ;
-                } else {
-                    return Double.valueOf(s);
-                }
-            }
-
-            @Override
-            public String toString(Double d) {
-                return d.toString();
-            }
-        };
-
-        StringConverter<Double> converterAngle = new StringConverter<Double>() {
-            @Override
-            public Double fromString(String s) {
-                if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s)) {
-                    return 0.0 ;
-                } else {
-                    return Double.valueOf(s);
-                }
-            }
-
-            @Override
-            public String toString(Double d) {
-                return d.toString();
-            }
-        };
-
-        lengthTextField.setTextFormatter(new TextFormatter<>(converter, 1.0, filter));
-        heightTextField.setTextFormatter(new TextFormatter<>(converter, 1.0, filter));
-        widthTextField.setTextFormatter(new TextFormatter<>(converter, 1.0, filter));
-        angleTextField.setTextFormatter(new TextFormatter<>(converterAngle, 0.0, filter));
-
-        Pattern validPlankSize = Pattern.compile("([1-9][0-9]*)?\\s?([1-9]|1[0-5])?/?([1-9]|1[0-6])?");
-
-        UnaryOperator<TextFormatter.Change> filterplankSize = change -> {
-            String text = change.getControlNewText();
-            if(validPlankSize.matcher(text).matches()){
-                return change;
-            }
-            else
-            {
-                return null;
-            }
-        };
-
-        StringConverter<String> converterPlankSize = new StringConverter<String>() {
-            @Override
-            public String toString(String object) {
-                if(object.isEmpty())
-                {
-                    return "1";
-                }
-                else
-                {
-                    return object;
-                }
-            }
-
-            @Override
-            public String fromString(String string) {
-                return string;
-            }
-        };
-
-        plankSizeTextField1.setTextFormatter(new TextFormatter<>(converterPlankSize, "", filterplankSize));
-
+        JavafxHelper.addStringToIntegerConverter(plankSizeTextField1, 1, 1, null);
+        JavafxHelper.addStringToIntegerConverter(plankSizeTextField2, 1, 1, null);
+        JavafxHelper.addStringToDoubleConverter(lengthTextField, 1.0, 0.0, null);
+        JavafxHelper.addStringToDoubleConverter(widthTextField, 1.0, 0.0, null);
+        JavafxHelper.addStringToDoubleConverter(heightTextField, 1.0, 0.0, null);
+        JavafxHelper.addStringToDoubleConverter(angleTextField, 0.0, 0.0, 359.99);
         SpinnerValueFactory.IntegerSpinnerValueFactory hourSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0);
         hourSpinner.setValueFactory(hourSpinnerValue);
-
         SpinnerValueFactory.IntegerSpinnerValueFactory minuteSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0);
         minuteSpinner.setValueFactory(minuteSpinnerValue);
+    }
+
+    public void setBundleDto(BundleDto dto) {
+        this.bundleDto = dto;
+        setInputValues();
+    }
+
+    private void setInputValues() {
+        barcodeTextField.setText(bundleDto.barcode);
+        essenceTextField.setText(bundleDto.essence);
+        plankSizeTextField1.setText(bundleDto.plankSize.substring(0,1));
+        plankSizeTextField2.setText(bundleDto.plankSize.substring(2));
+        lengthTextField.setText(String.valueOf(bundleDto.length));
+        widthTextField.setText(String.valueOf(bundleDto.width));
+        heightTextField.setText(String.valueOf(bundleDto.height));
+        angleTextField.setText(String.valueOf(bundleDto.angle));
+        hourSpinner.getValueFactory().setValue(bundleDto.time.getHour());
+        minuteSpinner.getValueFactory().setValue(bundleDto.time.getMinute());
+        datePicker.setValue(bundleDto.date);
     }
 
     @FXML
@@ -130,57 +72,19 @@ public class BundleEditorController extends BaseController {
 
     @FXML
     public void handleApplyModificationButton(ActionEvent event) {
-        String message = validateInput();
-        if (message.isEmpty()) {
-            bundleDto.plankSize = plankSizeTextField1.getText() + "x" + plankSizeTextField2.getText();
-            bundleDto.barcode = barcodeTextField.getText();
-            bundleDto.essence = essenceTextField.getText();
-            bundleDto.length = parseDouble(lengthTextField.getText());
-            bundleDto.angle = parseDouble(angleTextField.getText());
-            bundleDto.height = parseDouble(heightTextField.getText());
-            bundleDto.width = parseDouble(widthTextField.getText());
-            bundleDto.time = LocalTime.of(hourSpinner.getValue(), minuteSpinner.getValue());
-            bundleDto.date = datePicker.getValue();
-            stage.close();
-        } else {
-            System.out.println(message);
-        }
+        setDtoValues();
+        stage.close();
     }
 
-    private String validateInput() {
-        String message = "";
-        if (barcodeTextField.getText().isEmpty()) {
-            message = "Le code barre ne doit pas être vide";
-        }
-        if (essenceTextField.getText().isEmpty()){
-            message = "L'essence ne doit pas être vide";
-        }
-        try {
-            double length = parseDouble(lengthTextField.getText());
-            double angle = parseDouble(angleTextField.getText());
-            double height = parseDouble(heightTextField.getText());
-            double width = parseDouble(widthTextField.getText());
-
-        } catch (NumberFormatException e){
-            message = "La longueur, l'angle, la hauteur et la largeur doivent être des nombres réels.";
-        }
-        return message;
-    }
-
-    public void setBundleDto(BundleDto dto) {
-        this.bundleDto = dto;
-        barcodeTextField.setText(bundleDto.barcode);
-        essenceTextField.setText(bundleDto.essence);
-        plankSizeTextField1.setText(bundleDto.plankSize.substring(0,1));
-        plankSizeTextField2.setText(bundleDto.plankSize.substring(2));
-        lengthTextField.setText(Double.toString(bundleDto.length));
-        widthTextField.setText(Double.toString(bundleDto.width));
-        heightTextField.setText(Double.toString(bundleDto.height));
-        angleTextField.setText(Double.toString(bundleDto.angle));
-        SpinnerValueFactory.IntegerSpinnerValueFactory hourSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 24, bundleDto.time.getHour());
-        hourSpinner.setValueFactory(hourSpinnerValue);
-        SpinnerValueFactory.IntegerSpinnerValueFactory minuteSpinnerValue = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, bundleDto.time.getMinute());
-        minuteSpinner.setValueFactory(minuteSpinnerValue);
-        datePicker.setValue(bundleDto.date);
+    private void setDtoValues() {
+        bundleDto.plankSize = plankSizeTextField1.getText() + "x" + plankSizeTextField2.getText();
+        bundleDto.barcode = barcodeTextField.getText();
+        bundleDto.essence = essenceTextField.getText();
+        bundleDto.length = Double.parseDouble(lengthTextField.getText());
+        bundleDto.angle = Double.parseDouble(angleTextField.getText());
+        bundleDto.height = Double.parseDouble(heightTextField.getText());
+        bundleDto.width = Double.parseDouble(widthTextField.getText());
+        bundleDto.time = LocalTime.of(hourSpinner.getValue(), minuteSpinner.getValue());
+        bundleDto.date = datePicker.getValue();
     }
 }

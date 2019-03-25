@@ -8,9 +8,7 @@ import helpers.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -20,12 +18,14 @@ import java.util.*;
 
 public class YardPresenter extends Pane implements IPresenter {
     private List<BundlePresenter> bundles;
-    private String selectedBundleId = null;
     private LiftPresenter lift;
     private double zoom;
     private Point2D lastClickedPoint;
     private Point2D dragVector;
     private Point2D translateVector;
+    private Point2D selectionOffsetVector;
+
+    private BundleDto topSelectedBundle;
 
     private Point2D mousePositionInRealCoords;
     private Label mousePositionLabel;
@@ -45,7 +45,8 @@ public class YardPresenter extends Pane implements IPresenter {
         bundles = new ArrayList<>();
         zoom = ConfigHelper.defaultZoom;
         dragVector = new Point2D(0, 0);
-        translateVector = new Point2D(0.0, 0.0);
+        translateVector = new Point2D(0, 0);
+        selectionOffsetVector = new Point2D(0, 0);
         mousePositionLabel = new Label("x:0  y:0");
         mousePositionLabel.setAlignment(Pos.BOTTOM_RIGHT);// TODO Not working...
         xAxis = new Line();
@@ -59,80 +60,88 @@ public class YardPresenter extends Pane implements IPresenter {
         widthProperty().addListener(observable -> draw());
         heightProperty().addListener(observable -> draw());
 
-        setOnMousePressed(event -> {
-            requestFocus();
-            mainController.clearAllBundleInfo();
-            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
-                lastClickedPoint = new Point2D(event.getX(), event.getY());
-            } else if (mainController.editorMode.getValue() == EditorMode.ADDING_BUNDLE) {
-                createBundle();
-                BundleDto dto = larmanController.getLastBundle();
-                showBundleEditorWindow(dto);
-                draw();
-            } else if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                selectBundle();
-            } else if (mainController.editorMode.getValue() == EditorMode.DELETE) {
-                selectBundle();
-                if(selectedBundleId != null) {
-                    if (anyOver(selectedBundleId)) {
-                        deleteBundle(selectedBundleId);
-                        draw();
-                    }
-                }
-            } else if (mainController.editorMode.getValue() == EditorMode.EDIT) {
-                if (larmanController.getSelectedBundles(mousePositionInRealCoords).size() != 0) {
-                    BundleDto dto = larmanController.getTopBundle(mousePositionInRealCoords);
-                    showBundleEditorWindow(dto);
-                    mainController.editorMode.setValue(EditorMode.POINTER);
-                    draw();
-                }
-            }
-        });
+        setOnMousePressed(this::handleOnMousePressedEvent);
+        setOnMouseDragged(this::handleOnMouseDraggedEvent);
+        setOnMouseReleased(this::handleOnMouseReleasedEvent);
+        setOnMouseMoved(this::updateMousePosition);
+        setOnScroll(this::handleOnScrollEvent);
+        setOnKeyPressed(this::handleOnKeyPressedEvent);
+    }
 
-        setOnMouseDragged(event -> {
-            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
-                Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
-                dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
-                draw();
+    private void handleOnMousePressedEvent(MouseEvent event) {
+        requestFocus();
+        if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+            lastClickedPoint = new Point2D(event.getX(), event.getY());
+        } else {
+            switch (mainController.editorMode.getValue()) {
+                case POINTER:
+                    updateSelectedBundles();
+                    break;
+                case ADDING_BUNDLE:
+                    createBundle();
+                    break;
+                case EDIT:
+                    editBundle();
+                    break;
+                case DELETE:
+                    updateSelectedBundles();
+                    if(topSelectedBundle != null) {
+                        if (isOverAll(topSelectedBundle)) {
+                            deleteBundle(topSelectedBundle.id);
+                        }
+                    }
+                    break;
             }
+        }
+    }
+
+    private void handleOnMouseDraggedEvent(MouseEvent event) {
+        updateMousePosition(event);
+        if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+            Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
+            dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
+            draw();
+        } else {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                if (selectedBundleId != null) {
-                    if(anyOver(selectedBundleId)) {
+                if (topSelectedBundle != null) {
+                    if(isOverAll(topSelectedBundle)) {
                         Point2D planPosition = new Point2D(event.getX(), event.getY());
-                        larmanController.modifyBundlePosition(selectedBundleId, transformPlanCoordsToRealCoords(planPosition));
+                        larmanController.modifyBundlePosition(topSelectedBundle.id, transformPlanCoordsToRealCoords(planPosition));
                         draw();
                     }
                 }
             }
-        });
+        }
+    }
 
-        setOnMouseReleased(event -> {
-            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
-                translateVector = translateVector.add(dragVector);
-                dragVector = new Point2D(0, 0);
-                draw();
-            }
-        });
+    private void handleOnMouseReleasedEvent(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+            translateVector = translateVector.add(dragVector);
+            dragVector = new Point2D(0, 0);
+            draw();
+        } else {
+            updateSelectedBundles();
+        }
+    }
 
-        setOnMouseMoved(event -> {
-            Point2D planPosition = new Point2D(event.getX(), event.getY());
-            mousePositionInRealCoords = transformPlanCoordsToRealCoords(planPosition);
-            String text = "x:" + MathHelper.round(mousePositionInRealCoords.getX(), 2) + "  "
-                    + "y:" + MathHelper.round(mousePositionInRealCoords.getY(), 2);
-            mousePositionLabel.setText(text);
-        });
+    private void handleOnScrollEvent(ScrollEvent event) {
+        if (event.isControlDown()) handleZoom(event.getDeltaY(), new Point2D(event.getX(), event.getY()));
+        else handlePanning(event);
+    }
 
-        setOnScroll(event -> {
-            if (event.isControlDown()) handleZoom(event.getDeltaY(), new Point2D(event.getX(), event.getY()));
-            else handlePanning(event);
-        });
+    private void handleOnKeyPressedEvent(KeyEvent event) {
+        if (event.isControlDown()) {
+            double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
+            handleZoom(delta, getPlanCenterCoords());
+        }
+    }
 
-        setOnKeyPressed(event -> {
-            if (event.isControlDown()) {
-                double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
-                handleZoom(delta, getPlanCenterCoords());
-            }
-        });
+    private void updateMousePosition(MouseEvent event) {
+        Point2D planPosition = new Point2D(event.getX(), event.getY());
+        mousePositionInRealCoords = transformPlanCoordsToRealCoords(planPosition);
+        String text = "x:" + MathHelper.round(mousePositionInRealCoords.getX(), 2) + "  "
+                + "y:" + MathHelper.round(mousePositionInRealCoords.getY(), 2);
+        mousePositionLabel.setText(text);
     }
 
     private void showBundleEditorWindow(BundleDto bundleDto) {
@@ -180,39 +189,54 @@ public class YardPresenter extends Pane implements IPresenter {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
     }
 
-    private void selectBundle() {
-        BundleDto bundle = larmanController.getTopBundle(mousePositionInRealCoords);
-        if (bundle != null) {
-            mainController.updateBundleInfo(bundle);
-            selectedBundleId = bundle.id;
-            List<BundleDto> bundles = larmanController.getSelectedBundles(mousePositionInRealCoords);
-            bundles.sort(Comparator.comparing(BundleDto::getZ));
-            mainController.updateElevationView(bundles);
+    private void updateSelectedBundles() {
+        List<BundleDto> selectedBundles = larmanController.getSelectedBundles(mousePositionInRealCoords);
+        if (!selectedBundles.isEmpty()) {
+            topSelectedBundle = larmanController.getTopBundle(mousePositionInRealCoords);
+            mainController.updateElevationView(selectedBundles);
+            mainController.updateBundleInfo(topSelectedBundle);
+            selectionOffsetVector = mousePositionInRealCoords.subtract(topSelectedBundle.position);
         } else {
-            selectedBundleId = null;
+            topSelectedBundle = null;
+            mainController.clearElevationView();
+            mainController.clearAllBundleInfo();
+            selectionOffsetVector = new Point2D(0, 0);
         }
-        // TODO notify mainController for sideview
-        // TODO Highlight selected bundles
     }
 
     private void createBundle() {
-        larmanController.createBundle(mousePositionInRealCoords);
+        BundleDto createdBundle = larmanController.createBundle(mousePositionInRealCoords);
+        showBundleEditorWindow(createdBundle);
+        selectBundle(createdBundle);
+        draw();
+    }
+
+    private void editBundle() {
+        BundleDto topBundle = larmanController.getTopBundle(mousePositionInRealCoords);
+        if (topBundle != null) {
+            showBundleEditorWindow(topBundle);
+            selectBundle(topBundle);
+            draw();
+        }
+    }
+
+    private void selectBundle(BundleDto bundleDto) {
         mainController.editorMode.setValue(EditorMode.POINTER);
+        mousePositionInRealCoords = bundleDto.position;
+        updateSelectedBundles();
     }
 
     private void deleteBundle(String id) {
         larmanController.deleteBundle(id);
         mainController.editorMode.setValue(EditorMode.POINTER);
+        draw();
     }
 
     public void draw() {
         getChildren().clear();
 
-        List<BundleDto> bundles = larmanController.getBundles();
-        bundles.sort(Comparator.comparing(BundleDto::getZ));
-
         drawAxes();
-        drawBundles(bundles);
+        drawBundles(larmanController.getBundlesSorted());
         drawOtherGraphics();
     }
 
@@ -254,12 +278,12 @@ public class YardPresenter extends Pane implements IPresenter {
         getChildren().add(mousePositionLabel);
     }
 
-    private boolean anyOver(String id)
+    private boolean isOverAll(BundleDto bundle)
     {
-        List<BundleDto> bundlesToCompare = larmanController.getCollidingBundleDtos(larmanController.getBundle(id));
+        List<BundleDto> bundlesToCompare = larmanController.getCollidingBundles(bundle);
         for (BundleDto i : bundlesToCompare)
         {
-            if(i.z > larmanController.getBundle(selectedBundleId).z) {return false;}
+            if(i.z > bundle.z) {return false;}
         }
         return true;
     }

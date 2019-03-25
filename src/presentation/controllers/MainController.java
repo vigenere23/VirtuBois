@@ -180,6 +180,7 @@ public class MainController extends BaseController {
             rectangle.setWidth(200);
             rectangle.setHeight(50);
             rectangle.setRotate(0);
+            if(getYard().getTopSelectedBundle().equals(bundleDto)){rectangle.setEffect(dropShadow);}
             elevationViewBox.getChildren().add(0, rectangle);
             rectanglesId.put(rectangle, bundleDto);
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
@@ -189,6 +190,7 @@ public class MainController extends BaseController {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     updateBundleInfo(rectanglesId.get(rectangle));
                     rectangle.setEffect(dropShadow);
+                    getYard().setTopSelectedBundle(rectanglesId.get(rectangle));
                 }
             });
         }
@@ -196,5 +198,9 @@ public class MainController extends BaseController {
 
     public void clearElevationView() {
         elevationViewBox.getChildren().clear();
+    }
+
+    private YardPresenter getYard() {
+        return (YardPresenter) yardWrapper.getChildren().get(0);
     }
 }

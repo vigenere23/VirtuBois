@@ -7,6 +7,7 @@ import helpers.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -25,6 +26,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private Point2D selectionOffsetVector;
 
     private BundleDto topSelectedBundle;
+    DropShadow dropShadow;
 
     private Point2D mousePositionInRealCoords;
     private Label mousePositionLabel;
@@ -50,6 +52,10 @@ public class YardPresenter extends Pane implements IPresenter {
         mousePositionLabel.setAlignment(Pos.BOTTOM_RIGHT);// TODO Not working...
         xAxis = new Line();
         yAxis = new Line();
+
+        dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setColor(Color.LIGHTGRAY);
 
         initEventListeners();
         draw();
@@ -122,6 +128,7 @@ public class YardPresenter extends Pane implements IPresenter {
             draw();
         } else {
             updateSelectedBundles();
+            draw();
         }
     }
 
@@ -276,6 +283,11 @@ public class YardPresenter extends Pane implements IPresenter {
             Point2D planPosition = transformRealCoordsToPlanCoords(bundleDto.position);
             bundlePresenter.setScale(zoom);
             bundlePresenter.setPosition(planPosition);
+            if (topSelectedBundle != null){
+                if (bundleDto.id == topSelectedBundle.id){
+                    bundlePresenter.get().setEffect(dropShadow);
+                }
+            }
             getChildren().add(bundlePresenter.get());
         }
     }

@@ -5,6 +5,7 @@ import domain.entities.Bundle;
 import domain.entities.Yard;
 import helpers.JavafxHelper;
 import javafx.event.ActionEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -42,14 +43,18 @@ public abstract class BaseController implements IController {
     }
 
     public void saveAs(ActionEvent actionEvent){
-        Map<String, Bundle> bundleMap;
-        bundleMap = LarmanController.getInstance().getYard().getMap();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "(*.ser"));
+        fileChooser.setTitle("Save As");
+        File file = fileChooser.showSaveDialog(stage);
+        Yard yard;
+        yard = LarmanController.getInstance().getYard();
         FileOutputStream fileOutputStream;
         ObjectOutputStream objectOutputStream;
         try{
-            fileOutputStream = new FileOutputStream("C:\\Users\\Yoan Chamberland\\h19-glo-equipe2\\src\\Save\\Cours1.ser");
+            fileOutputStream = new FileOutputStream(file);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(bundleMap);
+            objectOutputStream.writeObject(yard);
             objectOutputStream.close();
         } catch (IOException ex){
             System.out.println(ex);

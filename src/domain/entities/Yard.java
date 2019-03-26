@@ -1,16 +1,11 @@
 package domain.entities;
 
-import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import helpers.CenteredRectangle;
 import helpers.Converter;
 import helpers.GeomHelper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Point2D;
-import presentation.Main;
-import presentation.controllers.MainController;
-import presentation.presenters.YardPresenter;
+
+import helpers.Point2D;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -18,6 +13,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class Yard implements Serializable {
+    private static final long serialVersionUID = 15641321L;
     private Map<String, Bundle> bundles;
     public Bundle lastBundleCreated;
     private Lift lift;
@@ -34,8 +30,6 @@ public class Yard implements Serializable {
     public List<Bundle> getBundles() {
         return new ArrayList<>(this.bundles.values());
     }
-
-    public Map<String, Bundle> getMap() { return bundles; }
 
     public void setBundles(Map<String, Bundle> bundles) { this.bundles = bundles; }
 

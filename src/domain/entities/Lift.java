@@ -1,7 +1,7 @@
 package domain.entities;
 
 import helpers.ConfigHelper;
-import javafx.geometry.Point2D;
+import helpers.Point2D;
 
 public class Lift extends Drawable
 {

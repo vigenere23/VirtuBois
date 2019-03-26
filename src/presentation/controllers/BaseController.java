@@ -29,14 +29,17 @@ public abstract class BaseController implements IController {
     }
 
     public void openFile(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "*.ser"));
+        fileChooser.setTitle("Open File");
+        File file = fileChooser.showOpenDialog(stage);
         FileInputStream fileInputStream;
         ObjectInputStream objectInputStream;
         try {
-            fileInputStream = new FileInputStream("C:\\Users\\Yoan Chamberland\\h19-glo-equipe2\\src\\Save\\Cours1.ser");
+            fileInputStream = new FileInputStream(file);
             objectInputStream = new ObjectInputStream(fileInputStream);
-            Map<String, Bundle> bundleMap = (Map<String, Bundle>) objectInputStream.readObject();
-            Yard yard = new Yard(bundleMap);
-            LarmanController.getInstance().setYard(yard);
+            Yard yardInit = (Yard) objectInputStream.readObject();
+            LarmanController.getInstance().setYard(yardInit);
         } catch (IOException | ClassNotFoundException ex){
             System.out.println(ex);
         }
@@ -44,7 +47,7 @@ public abstract class BaseController implements IController {
 
     public void saveAs(ActionEvent actionEvent){
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "(*.ser"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "*.ser"));
         fileChooser.setTitle("Save As");
         File file = fileChooser.showSaveDialog(stage);
         Yard yard;
@@ -55,6 +58,7 @@ public abstract class BaseController implements IController {
             fileOutputStream = new FileOutputStream(file);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(yard);
+            objectOutputStream.flush();
             objectOutputStream.close();
         } catch (IOException ex){
             System.out.println(ex);

@@ -1,7 +1,7 @@
 package domain.dtos;
 
 import domain.entities.Lift;
-import javafx.geometry.Point2D;
+import helpers.Point2D;
 import javafx.scene.shape.Rectangle;
 
 public class LiftDto {

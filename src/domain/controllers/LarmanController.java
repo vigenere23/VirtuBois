@@ -4,7 +4,7 @@ import domain.dtos.BundleDto;
 import domain.entities.Bundle;
 import domain.entities.Yard;
 import helpers.Converter;
-import javafx.geometry.Point2D;
+import helpers.Point2D;
 
 import java.io.Serializable;
 import java.time.LocalDate;

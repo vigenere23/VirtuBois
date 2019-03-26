@@ -1,9 +1,11 @@
 package domain.entities;
 
-import javafx.geometry.Point2D;
+import helpers.Point2D;
 import javafx.scene.shape.Rectangle;
 
-public abstract class Drawable
+import java.io.Serializable;
+
+public abstract class Drawable implements Serializable
 {
     protected Point2D position;
     protected double angle;

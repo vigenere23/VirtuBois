@@ -2,7 +2,7 @@ package domain.entities;
 
 import helpers.ColorHelper;
 import helpers.ConfigHelper;
-import javafx.geometry.Point2D;
+import helpers.Point2D;
 import javafx.scene.paint.Color;
 
 import java.io.Serializable;
@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class Bundle extends Drawable3D implements Serializable
 {
+    private static final long serialVersionUID = 15641321L;
     private String id;
     private String color;
     private double height;

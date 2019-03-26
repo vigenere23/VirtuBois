@@ -1,6 +1,6 @@
 package helpers;
 
-import javafx.geometry.Point2D;
+import helpers.Point2D;
 import java.awt.geom.Line2D;
 import java.util.List;
 

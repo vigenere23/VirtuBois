@@ -1,8 +1,10 @@
 package domain.entities;
 
-import javafx.geometry.Point2D;
+import helpers.Point2D;
 
-public abstract class Drawable3D extends Drawable
+import java.io.Serializable;
+
+public abstract class Drawable3D extends Drawable implements Serializable
 {
     protected double z;
 

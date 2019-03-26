@@ -2,10 +2,9 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
-import domain.entities.Bundle;
 import enums.EditorMode;
 import helpers.*;
-import javafx.geometry.Point2D;
+import helpers.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;

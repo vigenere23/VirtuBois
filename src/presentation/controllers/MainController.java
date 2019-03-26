@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -70,7 +71,9 @@ public class MainController extends BaseController {
     @FXML public ToggleButton editButton;
     @FXML public ToggleButton snapGridButton;
 
-    //public boolean gridIsOn = false;
+    public boolean gridIsOn;
+
+    public Group group;
 
     @FXML public VBox elevationViewBox;
     @FXML
@@ -88,6 +91,7 @@ public class MainController extends BaseController {
         dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
         dropShadow.setColor(Color.GREY);
+        gridIsOn = false;
     }
 
     public ListView getListView() { return listView; }
@@ -101,14 +105,10 @@ public class MainController extends BaseController {
     }
 
     private void setupEditorModeToggleButtons() {
-//        snapGridButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!gridIsOn) {
-//                gridIsOn = false;
-//            } else {
-//                gridIsOn = false;
-//            }
-//        });
-//        System.out.println(gridIsOn);
+        snapGridButton.setOnAction(event -> {
+            gridIsOn = snapGridButton.isSelected();
+            getYard().draw();
+        });
         pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.POINTER));
         addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
         deleteButton.setOnAction(event -> editorMode.setValue(EditorMode.DELETE));
@@ -138,7 +138,6 @@ public class MainController extends BaseController {
         AnchorPane.setLeftAnchor(yardPresenter, 0.0);
         AnchorPane.setBottomAnchor(yardPresenter, 0.0);
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
-        getYard().draw();
     }
 
     public void clearAllBundleInfo() {

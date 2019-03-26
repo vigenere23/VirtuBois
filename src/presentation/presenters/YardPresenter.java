@@ -6,15 +6,23 @@ import enums.EditorMode;
 import helpers.*;
 import helpers.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.shape.Rectangle;
 import presentation.controllers.MainController;
+import sun.awt.ConstrainableGraphics;
+
 
 import java.util.*;
+import java.util.List;
 
 public class YardPresenter extends Pane implements IPresenter {
     private List<BundlePresenter> bundles;
@@ -240,8 +248,10 @@ public class YardPresenter extends Pane implements IPresenter {
 
     public void draw() {
         getChildren().clear();
-
         drawAxes();
+        if (mainController.gridIsOn) {
+            drawGrid();
+        }
         drawBundles(larmanController.getBundlesSorted());
         drawOtherGraphics();
     }
@@ -287,6 +297,42 @@ public class YardPresenter extends Pane implements IPresenter {
 
     private void drawOtherGraphics() {
         getChildren().add(mousePositionLabel);
+    }
+
+    public void drawGrid() {
+        double screenWidth = getWidth();
+        double screenHeight = getHeight();
+        Point2D coord1 = transformPlanCoordsToRealCoords(new Point2D(0,0));
+        Point2D coord2 = transformPlanCoordsToRealCoords(new Point2D(screenWidth, screenHeight));
+
+        int nextX = (int)(coord1.getX()/1) * 1;
+        int nextY = (int)(coord1.getY()/1) * 1;
+
+        for (int x = nextX; x <= coord2.getX(); x += 1){
+            Point2D pointX = transformRealCoordsToPlanCoords(new Point2D(x, 0));
+            Line line = new Line();
+            line.setStartX(pointX.getX());
+            line.setStartY(0);
+            line.setEndX(pointX.getX());
+            line.setEndY(screenHeight);
+
+            line.setStroke(ColorHelper.setOpacity(Color.WHITE, 0.2));
+            line.getStrokeDashArray().add(3.0);
+            getChildren().add(line);
+        }
+
+        for (int y = nextY; y >= coord2.getY(); y -= 1){
+            Point2D pointY = transformRealCoordsToPlanCoords(new Point2D(0, y));
+            Line line = new Line();
+            line.setStartY(pointY.getY());
+            line.setStartX(0);
+            line.setEndY(pointY.getY());
+            line.setEndX(screenWidth);
+
+            line.setStroke(ColorHelper.setOpacity(Color.WHITE, 0.2));
+            line.getStrokeDashArray().add(3.0);
+            getChildren().add(line);
+        }
     }
 
     private boolean isOverAll(BundleDto bundle)

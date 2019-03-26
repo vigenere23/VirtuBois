@@ -6,7 +6,7 @@ import java.time.LocalTime;
 public class ConfigHelper {
 
     //GRID
-    public static double gridSquareSize = 5.0;
+    public static int gridSquareSize = 1;
 
     // BUNDLE
     public static double bundleWidth = 2.0;

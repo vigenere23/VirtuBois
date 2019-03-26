@@ -55,7 +55,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
         dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
-        dropShadow.setColor(Color.LIGHTGRAY);
+        dropShadow.setColor(Color.GREY);
 
         initEventListeners();
         draw();

@@ -87,7 +87,7 @@ public class MainController extends BaseController {
 
         dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
-        dropShadow.setColor(Color.LIGHTGRAY);
+        dropShadow.setColor(Color.GREY);
     }
 
     public ListView getListView() { return listView; }

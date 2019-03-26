@@ -7,6 +7,7 @@ import helpers.JavafxHelper;
 import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import presentation.Main;
 
 import java.io.*;
 import java.util.Map;
@@ -15,9 +16,11 @@ public abstract class BaseController implements IController {
 
     protected Stage stage;
     public LarmanController larmanController;
+    public File lastPath;
 
     public BaseController() {
         larmanController = LarmanController.getInstance();
+        lastPath = null;
     }
 
     public void setStage(Stage stage) {
@@ -33,6 +36,7 @@ public abstract class BaseController implements IController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "*.ser"));
         fileChooser.setTitle("Open File");
         File file = fileChooser.showOpenDialog(stage);
+        lastPath = file;
         FileInputStream fileInputStream;
         ObjectInputStream objectInputStream;
         try {
@@ -40,16 +44,12 @@ public abstract class BaseController implements IController {
             objectInputStream = new ObjectInputStream(fileInputStream);
             Yard yardInit = (Yard) objectInputStream.readObject();
             LarmanController.getInstance().setYard(yardInit);
+            JavafxHelper.loadView(this.stage, "Main", file.getName(), true);
         } catch (IOException | ClassNotFoundException ex){
             System.out.println(ex);
         }
     }
-
-    public void saveAs(ActionEvent actionEvent){
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "*.ser"));
-        fileChooser.setTitle("Save As");
-        File file = fileChooser.showSaveDialog(stage);
+    public void saving(File file) {
         Yard yard;
         yard = LarmanController.getInstance().getYard();
         FileOutputStream fileOutputStream;
@@ -63,9 +63,23 @@ public abstract class BaseController implements IController {
         } catch (IOException ex){
             System.out.println(ex);
         }
+
+    }
+    public void saveAs(ActionEvent actionEvent){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "*.ser"));
+        fileChooser.setTitle("Save As");
+        File file = fileChooser.showSaveDialog(stage);
+        lastPath = file;
+        saving(file);
     }
 
     public void save(ActionEvent actionEvent){
+        if (lastPath == null){
+            saveAs(actionEvent);
+        } else {
+            saving(lastPath);
+        }
 
     }
 

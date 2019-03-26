@@ -138,6 +138,7 @@ public class MainController extends BaseController {
         AnchorPane.setLeftAnchor(yardPresenter, 0.0);
         AnchorPane.setBottomAnchor(yardPresenter, 0.0);
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
+        getYard().draw();
     }
 
     public void clearAllBundleInfo() {

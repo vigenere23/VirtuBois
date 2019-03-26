@@ -31,6 +31,17 @@ public abstract class BaseController implements IController {
         JavafxHelper.loadView(this.stage, "Main", "Nouvelle Cour", true);
     }
 
+    public void newFileMenu(ActionEvent actionEvent) {
+        if (LarmanController.getInstance().getYard().getBundles().size() == 0){
+            newFile(actionEvent);
+        } else {
+            save(actionEvent);
+            Yard yard = new Yard();
+            LarmanController.getInstance().setYard(yard);
+            JavafxHelper.loadView(this.stage, "Main", "Nouvelle Cour", true);
+        }
+    }
+
     public void openFile(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "*.ser"));

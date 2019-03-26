@@ -33,7 +33,7 @@
                             <menus>
                                 <Menu mnemonicParsing="false" text="Fichier">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" onAction="#newFile" text="Nouveau" />
+                                        <MenuItem mnemonicParsing="false" onAction="#newFileMenu" text="Nouveau" />
                                         <MenuItem mnemonicParsing="false" onAction="#openFile" text="Ouvrir" />
                                         <MenuItem mnemonicParsing="false" onAction="#save" text="Enregistrer" />
                                         <MenuItem mnemonicParsing="false" onAction="#saveAs" text="Enregistrer sous" />

@@ -185,57 +185,57 @@
                                                                     <children>
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
-                                                                                <TextFlow fx:id="packCodeView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <TextFlow fx:id="bundleCode" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleBarcodeLabel" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleBarcodeValue" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                       <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: White;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                                                             <children>
-                                                                                <TextFlow fx:id="packLongView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <TextFlow fx:id="bundleLength" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleWidthLabel" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleLengthValue" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                       <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
-                                                                                <TextFlow fx:id="packLargView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <TextFlow fx:id="bundleWidth" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleLengthLabel" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleWidthValue" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                       <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
-                                                                                <TextFlow fx:id="packHautView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <TextFlow fx:id="bundleHeight" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleHeightLabel" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleHeightValue" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                       <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
-                                                                                <TextFlow fx:id="packDateView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <TextFlow fx:id="bundleDate" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleDateLabel" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleDateValue" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                       <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
-                                                                                <TextFlow fx:id="packHeureView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <TextFlow fx:id="bundleHour" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleTimeLabel" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleTimeValue" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                       <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
-                                                                                <TextFlow fx:id="packTypeView" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <TextFlow fx:id="bundleEssence" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleEssenceLabel" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundleEssenceValue" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                       <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
                                                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                                                             <children>
-                                                                                <TextFlow fx:id="packPlankSize" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                                                <TextFlow fx:id="bundleSize" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundlePlankSizeLabel" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                                                <TextFlow fx:id="bundlePlankSizeValue" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
                                                       <Separator opacity="0.7" prefWidth="200.0" style="-fx-background-color: white;" />
@@ -263,9 +263,9 @@
                                              <children>
                                                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="12.0" layoutY="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <content>
-                                                      <AnchorPane>
+                                                      <AnchorPane prefHeight="264.0" prefWidth="226.0">
                                                          <children>
-                                                            <VBox fx:id="elevViewBox" alignment="CENTER" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <VBox fx:id="elevationViewBox" alignment="BOTTOM_CENTER" fillWidth="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                                                <children>
                                                                   <Region VBox.vgrow="ALWAYS" />
                                                                </children>

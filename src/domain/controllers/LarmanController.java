@@ -31,16 +31,27 @@ public class LarmanController implements Serializable {
     public Yard getYard() { return yard; }
 
     /**** PUBLIC METHODS ****/
-    public void createBundle(Point2D position) {
-        yard.createBundle(position);
+    public BundleDto createBundle(Point2D position) {
+        return new BundleDto(yard.createBundle(position));
     }
 
     public BundleDto getLastBundle() {
-        return yard.lastBundleCreated;
+        return new BundleDto(yard.lastBundleCreated);
+    }
+
+    private List<Bundle> sortBundles(List<Bundle> bundles) {
+        bundles.sort(Comparator.comparing(Bundle::getZ));
+        return bundles;
     }
 
     public List<BundleDto> getBundles() {
-    return Converter.fromBundlesToBundleDtos(yard.getBundles());
+        return Converter.fromBundlesToBundleDtos(yard.getBundles());
+    }
+
+    public List<BundleDto> getBundlesSorted() {
+        return Converter.fromBundlesToBundleDtos(
+                sortBundles(yard.getBundles())
+        );
     }
 
     public BundleDto getBundle(String id) {
@@ -51,15 +62,16 @@ public class LarmanController implements Serializable {
 
     public List<BundleDto> getSelectedBundles(Point2D position) {
         List<Bundle> bundles = yard.getBundlesAtPosition(position);
-        return Converter.fromBundlesToBundleDtos(bundles);
+        return Converter.fromBundlesToBundleDtos(
+                sortBundles(bundles)
+        );
     }
     
     public BundleDto getTopBundle(Point2D position)
     {
         List<BundleDto> bundlesDto = getSelectedBundles(position);
         if (!bundlesDto.isEmpty()) {
-            bundlesDto.sort(Comparator.comparing(BundleDto::getZ).reversed());
-            return bundlesDto.get(0);
+            return bundlesDto.get(bundlesDto.size() - 1);
         }
         return null;
     }
@@ -78,12 +90,14 @@ public class LarmanController implements Serializable {
         yard.deleteBundle(id);
     }
 
-    public List<BundleDto> getCollidingBundleDtos(BundleDto bundleToCheckDto){
-        Bundle bundleToCheck = yard.getBundle(bundleToCheckDto.id);
-        List<BundleDto> bundlesDto;
-        List<Bundle> bundles =  yard.getCollidingBundles(bundleToCheck);
-        bundlesDto = Converter.fromBundlesToBundleDtos(bundles);
-        return bundlesDto;
+    public List<BundleDto> getCollidingBundles(BundleDto bundleDtoToCheck){
+        Bundle bundleToCheck = yard.getBundle(bundleDtoToCheck.id);
+        if (bundleToCheck != null) {
+            return Converter.fromBundlesToBundleDtos(
+                    yard.getCollidingBundles(bundleToCheck)
+            );
+        }
+        return null;
     }
 
     /**** PRIVATE METHODS ****/

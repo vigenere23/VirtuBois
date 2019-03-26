@@ -75,37 +75,42 @@ public class JavafxHelper {
         setupStage(stage, "Éditer un paquet", false, true);
     }
 
-    public static void addStringToDoubleConverter(TextField textfield, Double defaultValue, Double min, Double max) {
+    public static void addStringToDoubleConverter(TextField textField, Double defaultValue, Double min, Double max) {
         ChangeListener<String> stringToDoubleConverter = (observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 try {
                     double value = Double.parseDouble(newValue);
                     if (min != null && value < min || max != null && value > max)
-                        textfield.setText(oldValue);
+                        textField.setText(oldValue);
                 } catch (Exception e) {
-                    textfield.setText(oldValue);
+                    textField.setText(oldValue);
                 }
-            } else {
-                textfield.setText(String.valueOf(defaultValue));
             }
         };
-        textfield.textProperty().addListener(stringToDoubleConverter);
+        addChangeAndFocusListeners(textField, stringToDoubleConverter, defaultValue);
     }
 
-    public static void addStringToIntegerConverter(TextField textfield, Integer defaultValue, Integer min, Integer max) {
+    public static void addStringToIntegerConverter(TextField textField, Integer defaultValue, Integer min, Integer max) {
         ChangeListener<String> stringToIntegerConverter = (observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 try {
                     int value = Integer.parseInt(newValue);
                     if (min != null && value < min || max != null && value > max)
-                        textfield.setText(oldValue);
+                        textField.setText(oldValue);
                 } catch (Exception e) {
-                    textfield.setText(oldValue);
+                    textField.setText(oldValue);
                 }
-            } else {
-                textfield.setText(String.valueOf(defaultValue));
             }
         };
-        textfield.textProperty().addListener(stringToIntegerConverter);
+        addChangeAndFocusListeners(textField, stringToIntegerConverter, defaultValue);
+    }
+
+    private static void addChangeAndFocusListeners(TextField textField, ChangeListener<String> stringConverter, Number defaultValue) {
+        textField.textProperty().addListener(stringConverter);
+        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (textField.textProperty().getValue().isEmpty() && !newValue) {
+                textField.setText(String.valueOf(defaultValue));
+            }
+        });
     }
 }

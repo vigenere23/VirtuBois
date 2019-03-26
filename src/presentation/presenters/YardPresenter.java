@@ -349,11 +349,13 @@ public class YardPresenter extends Pane implements IPresenter {
         }
         return true;
     }
+
     public void setTopSelectedBundle(BundleDto bundle)
     {
         topSelectedBundle = bundle;
         draw();
     }
+
     public BundleDto getTopSelectedBundle(){
         return topSelectedBundle;
     }

@@ -1,6 +1,7 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
+import domain.entities.Bundle;
 import enums.EditorMode;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -9,6 +10,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.*;
+
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -45,7 +48,11 @@ public class MainController extends BaseController {
     @FXML Pane root;
     @FXML Pane yardWrapper;
 
-    @FXML public ListView listView;
+    //@FXML public ListView listView;
+    @FXML public TableView inventoryTable;
+    @FXML public TableColumn codeColumn;
+    @FXML public TableColumn typeColumn;
+    @FXML public TableColumn sizeColumn;
 
     @FXML public TextFlow bundleBarcodeLabel;
     @FXML public TextFlow bundleLengthLabel;
@@ -86,6 +93,7 @@ public class MainController extends BaseController {
         windowFont = new Font("System", 13);
         
         initBundleInfoView();
+        initTableView();
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();
@@ -96,7 +104,6 @@ public class MainController extends BaseController {
         gridIsOn = false;
     }
 
-    public ListView getListView() { return listView; }
 
     private void setEventHandlers() {
         root.setOnKeyPressed(event -> {
@@ -214,6 +221,35 @@ public class MainController extends BaseController {
 
     public void clearElevationView() {
         elevationViewBox.getChildren().clear();
+    }
+
+    public void initTableView() {
+        codeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("barcode"));
+        typeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("essence"));
+        sizeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("plankSize"));
+        inventoryTable.setRowFactory( tv ->{
+            TableRow<BundleDto> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(!row.isEmpty()){
+                    BundleDto bundle = row.getItem();
+                    getYard().setTopSelectedBundle(bundle);
+                    inventoryTable.getSelectionModel().select(bundle);
+                    updateBundleInfo(bundle);
+                    clearElevationView();
+                }
+                else{
+                    getYard().setTopSelectedBundle(null);
+                    clearAllBundleInfo();
+                }
+            });
+            return row;
+        });
+    }
+
+    public void addTableViewBundles(List<BundleDto> bundles) {
+        inventoryTable.getItems().clear();
+        ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
+        inventoryTable.setItems(data);
     }
 
     private YardPresenter getYard() {

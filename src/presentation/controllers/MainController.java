@@ -1,11 +1,14 @@
 package presentation.controllers;
 
+import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import enums.EditorMode;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -32,6 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 public class MainController extends BaseController {
 
@@ -41,13 +45,16 @@ public class MainController extends BaseController {
     DropShadow dropShadow;
 
     private Font windowFont;
+    private YardPresenter yardPresenter;
     private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
+    private ObservableList<BundleDto> observableBundleList;
 
     @FXML Pane root;
     @FXML Pane yardWrapper;
 
     //@FXML public ListView listView;
-    @FXML public TableView inventoryTable;
+    @FXML public TextField inventorySearchBar;
+    @FXML public TableView<BundleDto> inventoryTable;
     @FXML public TableColumn codeColumn;
     @FXML public TableColumn typeColumn;
     @FXML public TableColumn sizeColumn;
@@ -91,6 +98,7 @@ public class MainController extends BaseController {
         
         initBundleInfoView();
         initTableView();
+        //initInventorySearchBar();
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();
@@ -113,7 +121,7 @@ public class MainController extends BaseController {
     private void setupEditorModeToggleButtons() {
         snapGridButton.setOnAction(event -> {
             gridIsOn = snapGridButton.isSelected();
-            getYard().draw();
+            yardPresenter.draw();
         });
         pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.POINTER));
         addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
@@ -135,7 +143,7 @@ public class MainController extends BaseController {
     }
 
     private void initYard() {
-        YardPresenter yardPresenter = new YardPresenter(this);
+        yardPresenter = new YardPresenter(this);
         yardWrapper.getChildren().setAll(yardPresenter);
         AnchorPane.setRightAnchor(yardPresenter, 0.0);
         AnchorPane.setLeftAnchor(yardPresenter, 0.0);
@@ -197,7 +205,7 @@ public class MainController extends BaseController {
             rectangle.setWidth(200);
             rectangle.setHeight(50);
             rectangle.setRotate(0);
-            if(getYard().getTopSelectedBundle().equals(bundleDto)){rectangle.setEffect(dropShadow);}
+            if(yardPresenter.getTopSelectedBundle().equals(bundleDto)){rectangle.setEffect(dropShadow);}
             elevationViewBox.getChildren().add(0, rectangle);
             rectanglesId.put(rectangle, bundleDto);
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
@@ -207,7 +215,7 @@ public class MainController extends BaseController {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     updateBundleInfo(rectanglesId.get(rectangle));
                     rectangle.setEffect(dropShadow);
-                    getYard().setTopSelectedBundle(rectanglesId.get(rectangle));
+                    yardPresenter.setTopSelectedBundle(rectanglesId.get(rectangle));
                 }
             });
         }
@@ -215,6 +223,33 @@ public class MainController extends BaseController {
 
     public void clearElevationView() {
         elevationViewBox.getChildren().clear();
+    }
+
+    private void initInventorySearchBar(){
+            inventorySearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+                FilteredList<BundleDto> filteredData = new FilteredList<>(observableBundleList);
+                filteredData.setPredicate(bundleDto -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (bundleDto.getBarcode().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    } else if (bundleDto.getEssence().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    } else if (bundleDto.getPlankSize().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                });
+                SortedList<BundleDto> sortedData = new SortedList<>(filteredData);
+                sortedData.comparatorProperty().bind(inventoryTable.comparatorProperty());
+                inventoryTable.setItems(sortedData);
+
+            });
     }
 
     public void initTableView() {
@@ -226,15 +261,15 @@ public class MainController extends BaseController {
             row.setOnMouseClicked(event -> {
                 if(!row.isEmpty()){
                     BundleDto bundle = row.getItem();
-                    getYard().setTopSelectedBundle(bundle);
+                    yardPresenter.setTopSelectedBundle(bundle);
                     inventoryTable.getSelectionModel().select(bundle);
                     updateBundleInfo(bundle);
-                    clearElevationView();
                 }
                 else{
-                    getYard().setTopSelectedBundle(null);
+                    yardPresenter.setTopSelectedBundle(null);
                     clearAllBundleInfo();
                 }
+                clearElevationView();
             });
             return row;
         });
@@ -243,10 +278,8 @@ public class MainController extends BaseController {
     public void addTableViewBundles(List<BundleDto> bundles) {
         inventoryTable.getItems().clear();
         ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
+        ObservableList<BundleDto> fullBundleList = FXCollections.observableArrayList(bundles);
+        observableBundleList = fullBundleList;
         inventoryTable.setItems(data);
-    }
-
-    private YardPresenter getYard() {
-        return (YardPresenter) yardWrapper.getChildren().get(0);
     }
 }

@@ -220,9 +220,26 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private void createBundle() {
-        BundleDto createdBundle = larmanController.createBundle(mousePositionInRealCoords);
-        showBundleEditorWindow(createdBundle);
-        selectBundle(createdBundle);
+        if (mainController.gridIsOn) {
+            int x = (int)(mousePositionInRealCoords.getX()/gridDimension) * gridDimension;
+            int y = (int)(mousePositionInRealCoords.getY()/gridDimension) * gridDimension;
+            int prevX = x - gridDimension;
+            int prevY = y + gridDimension;
+            if (Math.abs(mousePositionInRealCoords.getX() - x) > Math.abs(mousePositionInRealCoords.getX() - prevX)) {
+                x = prevX;
+            }
+            if (Math.abs(mousePositionInRealCoords.getY() - y) > Math.abs(mousePositionInRealCoords.getY() - prevY)) {
+                y = prevY;
+            }
+            BundleDto createdBundle = larmanController.createBundle(new Point2D(x, y));
+            showBundleEditorWindow(createdBundle);
+            selectBundle(createdBundle);
+        }
+        else {
+            BundleDto createdBundle = larmanController.createBundle(mousePositionInRealCoords);
+            showBundleEditorWindow(createdBundle);
+            selectBundle(createdBundle);
+        }
         draw();
     }
 

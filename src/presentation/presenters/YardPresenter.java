@@ -29,6 +29,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private BundleDto topSelectedBundle;
     private boolean canDrag;
     DropShadow dropShadow;
+    private int gridDimension = 3;
 
     private Point2D mousePositionInRealCoords;
     private Label mousePositionLabel;
@@ -307,10 +308,10 @@ public class YardPresenter extends Pane implements IPresenter {
         Point2D coord1 = transformPlanCoordsToRealCoords(new Point2D(0,0));
         Point2D coord2 = transformPlanCoordsToRealCoords(new Point2D(screenWidth, screenHeight));
 
-        int nextX = (int)(coord1.getX()/1) * 1;
-        int nextY = (int)(coord1.getY()/1) * 1;
+        int nextX = (int)(coord1.getX()/gridDimension) * gridDimension;
+        int nextY = (int)(coord1.getY()/gridDimension) * gridDimension;
 
-        for (int x = nextX; x <= coord2.getX(); x += 3){
+        for (int x = nextX; x <= coord2.getX(); x += gridDimension){
             Point2D pointX = transformRealCoordsToPlanCoords(new Point2D(x, 0));
             Line line = new Line();
             line.setStartX(pointX.getX());
@@ -324,7 +325,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
         }
 
-        for (int y = nextY; y >= coord2.getY(); y -= 3){
+        for (int y = nextY; y >= coord2.getY(); y -= gridDimension){
             Point2D pointY = transformRealCoordsToPlanCoords(new Point2D(0, y));
             Line line = new Line();
             line.setStartY(pointY.getY());

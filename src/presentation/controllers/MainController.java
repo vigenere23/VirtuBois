@@ -1,6 +1,7 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
+import domain.entities.Bundle;
 import enums.EditorMode;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -8,9 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -45,7 +45,11 @@ public class MainController extends BaseController {
     @FXML Pane root;
     @FXML Pane yardWrapper;
 
-    @FXML public ListView listView;
+    //@FXML public ListView listView;
+    @FXML public TableView inventoryTable;
+    @FXML public TableColumn codeColumn;
+    @FXML public TableColumn typeColumn;
+    @FXML public TableColumn sizeColumn;
 
     @FXML public TextFlow bundleBarcodeLabel;
     @FXML public TextFlow bundleLengthLabel;
@@ -84,6 +88,7 @@ public class MainController extends BaseController {
         windowFont = new Font("System", 13);
         
         initBundleInfoView();
+        initTableView();
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();
@@ -94,7 +99,6 @@ public class MainController extends BaseController {
         gridIsOn = false;
     }
 
-    public ListView getListView() { return listView; }
 
     private void setEventHandlers() {
         root.setOnKeyPressed(event -> {
@@ -208,6 +212,19 @@ public class MainController extends BaseController {
 
     public void clearElevationView() {
         elevationViewBox.getChildren().clear();
+    }
+
+    public void initTableView() {
+        codeColumn.setCellValueFactory( new PropertyValueFactory<Bundle, String>("barcode"));
+        typeColumn.setCellValueFactory( new PropertyValueFactory<Bundle, String>("essence"));
+        sizeColumn.setCellValueFactory( new PropertyValueFactory<Bundle, String>("plankSize"));
+    }
+
+    public void addTableViewBundles(List<Bundle> bundles) {
+        inventoryTable.getItems().clear();
+        ObservableList<Bundle> data = FXCollections.observableArrayList(bundles);
+        inventoryTable.setItems(data);
+
     }
 
     private YardPresenter getYard() {

@@ -226,6 +226,7 @@ public class MainController extends BaseController {
                     getYard().setTopSelectedBundle(bundle);
                     inventoryTable.getSelectionModel().select(bundle);
                     updateBundleInfo(bundle);
+                    clearElevationView();
                 }
                 else{
                     getYard().setTopSelectedBundle(null);

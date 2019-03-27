@@ -1,14 +1,12 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
-import domain.entities.Bundle;
 import enums.EditorMode;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -75,7 +73,6 @@ public class MainController extends BaseController {
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
     @FXML public ToggleButton deleteButton;
-    @FXML public ToggleButton editButton;
     @FXML public ToggleButton snapGridButton;
 
     @FXML public DatePicker datePicker;
@@ -121,19 +118,16 @@ public class MainController extends BaseController {
         pointerButton.setOnAction(event -> editorMode.setValue(EditorMode.POINTER));
         addBundleButton.setOnAction(event -> editorMode.setValue(EditorMode.ADDING_BUNDLE));
         deleteButton.setOnAction(event -> editorMode.setValue(EditorMode.DELETE));
-        editButton.setOnAction(event -> editorMode.setValue(EditorMode.EDIT));
 
         editorModeToggleGroup = new ToggleGroup();
         pointerButton.setToggleGroup(editorModeToggleGroup);
         addBundleButton.setToggleGroup(editorModeToggleGroup);
         deleteButton.setToggleGroup(editorModeToggleGroup);
-        editButton.setToggleGroup(editorModeToggleGroup);
 
         editorMode.addListener((observable, oldValue, newValue) -> {
             if (newValue.equals(EditorMode.POINTER)) editorModeToggleGroup.selectToggle(pointerButton);
             else if (newValue.equals(EditorMode.ADDING_BUNDLE)) editorModeToggleGroup.selectToggle(addBundleButton);
             else if (newValue.equals(EditorMode.DELETE)) editorModeToggleGroup.selectToggle(deleteButton);
-            else if (newValue.equals(EditorMode.EDIT)) editorModeToggleGroup.selectToggle(editButton);
             else editorModeToggleGroup.selectToggle(null);
         });
 

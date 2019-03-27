@@ -38,7 +38,7 @@ public abstract class BaseController implements IController {
             save(actionEvent);
             Yard yard = new Yard();
             LarmanController.getInstance().setYard(yard);
-            JavafxHelper.loadView(this.stage, "Main", "Nouvelle Cour", true);
+            newFile(actionEvent);
         }
     }
 

@@ -8,9 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -27,6 +25,8 @@ import javafx.scene.text.TextFlow;
 import presentation.presenters.BundlePresenter;
 import presentation.presenters.YardPresenter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -56,14 +56,14 @@ public class MainController extends BaseController {
     @FXML public TextFlow bundleEssenceLabel;
     @FXML public TextFlow bundlePlankSizeLabel;
 
-    @FXML public TextFlow bundleBarcodeValue;
-    @FXML public TextFlow bundleLengthValue;
-    @FXML public TextFlow bundleWidthValue;
-    @FXML public TextFlow bundleHeightValue;
-    @FXML public TextFlow bundleDateValue;
-    @FXML public TextFlow bundleTimeValue;
-    @FXML public TextFlow bundleEssenceValue;
-    @FXML public TextFlow bundlePlankSizeValue;
+    @FXML public TextField bundleBarcodeValue;
+    @FXML public TextField bundleLengthValue;
+    @FXML public TextField bundleWidthValue;
+    @FXML public TextField bundleHeightValue;
+    @FXML public TextField bundleDateValue;
+    @FXML public TextField bundleTimeValue;
+    @FXML public TextField bundleEssenceValue;
+    @FXML public TextField bundlePlankSizeValue;
 
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
@@ -71,9 +71,11 @@ public class MainController extends BaseController {
     @FXML public ToggleButton editButton;
     @FXML public ToggleButton snapGridButton;
 
-    public boolean gridIsOn;
+    @FXML public DatePicker datePicker;
+    @FXML public Spinner<Integer> hourSpinner;
+    @FXML public Spinner<Integer> minuteSpinner;
 
-    public Group group;
+    public boolean gridIsOn;
 
     @FXML public VBox elevationViewBox;
     @FXML
@@ -141,44 +143,48 @@ public class MainController extends BaseController {
     }
 
     public void clearAllBundleInfo() {
-        bundleBarcodeValue.getChildren().clear();
-        bundleLengthValue.getChildren().clear();
-        bundleWidthValue.getChildren().clear();
-        bundleHeightValue.getChildren().clear();
-        bundleDateValue.getChildren().clear();
-        bundleTimeValue.getChildren().clear();
-        bundleEssenceValue.getChildren().clear();
-        bundlePlankSizeValue.getChildren().clear();
+        bundleBarcodeValue.clear();
+        bundleLengthValue.clear();
+        bundleWidthValue.clear();
+        bundleHeightValue.clear();
+        bundleDateValue.clear();
+        bundleTimeValue.clear();
+        bundleEssenceValue.clear();
+        bundlePlankSizeValue.clear();
     }
 
     public void updateBundleInfo(BundleDto bundle) {
-        setText(bundleBarcodeValue, bundle.barcode, false);
-        setText(bundleLengthValue, String.valueOf(bundle.length), false);
-        setText(bundleWidthValue, String.valueOf(bundle.width), false);
-        setText(bundleHeightValue, String.valueOf(bundle.height), false);
-        setText(bundleDateValue, bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), false);
-        setText(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")), false);
-        setText(bundleEssenceValue, bundle.essence, false);
-        setText(bundlePlankSizeValue, bundle.plankSize, false);
+        setTextField(bundleBarcodeValue, bundle.barcode);
+        setTextField(bundleLengthValue, String.valueOf(bundle.length));
+        setTextField(bundleWidthValue, String.valueOf(bundle.width));
+        setTextField(bundleHeightValue, String.valueOf(bundle.height));
+        setTextField(bundleDateValue, bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        setTextField(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
+        setTextField(bundleEssenceValue, bundle.essence);
+        setTextField(bundlePlankSizeValue, bundle.plankSize);
     }
 
-    private void setText(TextFlow textFlow, String textToSet, boolean alignRight) {
+    public void setTextField(TextField textField, String textToSet) {
+        textField.setText(String.valueOf(textToSet));
+    }
+
+    private void setText(TextFlow textFlow, String textToSet) {
         Text text = new Text(textToSet);
         text.setFont(windowFont);
         text.setFill(Color.WHITESMOKE);
-        if (alignRight) text.setTextAlignment(TextAlignment.RIGHT);
+        text.setTextAlignment(TextAlignment.RIGHT);
         textFlow.getChildren().setAll(text);
     }
 
     private void initBundleInfoView() {
-        setText(bundleBarcodeLabel, "Code barre : ", true);
-        setText(bundleLengthLabel, "Longeur : ", true);
-        setText(bundleWidthLabel, "Largeur : ", true);
-        setText(bundleHeightLabel, "Hauteur : ", true);
-        setText(bundleDateLabel, "Date de production : ", true);
-        setText(bundleTimeLabel, "Heure de production : ", true);
-        setText(bundleEssenceLabel, "Essence : ", true);
-        setText(bundlePlankSizeLabel, "Dimensions des planches : ", true);
+        setText(bundleBarcodeLabel, "Code barre : ");
+        setText(bundleLengthLabel, "Longeur : ");
+        setText(bundleWidthLabel, "Largeur : ");
+        setText(bundleHeightLabel, "Hauteur : ");
+        setText(bundleDateLabel, "Date de production : ");
+        setText(bundleTimeLabel, "Heure de production : ");
+        setText(bundleEssenceLabel, "Essence : ");
+        setText(bundlePlankSizeLabel, "Dimensions des planches : ");
     }
 
     public void updateElevationView(List<BundleDto> bundles) {

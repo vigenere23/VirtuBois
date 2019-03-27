@@ -88,9 +88,6 @@ public class YardPresenter extends Pane implements IPresenter {
                 case ADDING_BUNDLE:
                     createBundle();
                     break;
-                case EDIT:
-                    editBundle();
-                    break;
                 case DELETE:
                     updateSelectedBundles();
                     if(topSelectedBundle != null) {

@@ -163,7 +163,6 @@ public class MainController extends BaseController {
         setTextField(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
         setTextField(bundleEssenceValue, bundle.essence);
         setTextField(bundlePlankSizeValue, bundle.plankSize);
-        getYard().draw();
     }
 
     public void setTextField(TextField textField, String textToSet) {

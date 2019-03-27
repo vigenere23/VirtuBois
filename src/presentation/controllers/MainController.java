@@ -218,13 +218,28 @@ public class MainController extends BaseController {
         codeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("barcode"));
         typeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("essence"));
         sizeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("plankSize"));
+        inventoryTable.setRowFactory( tv ->{
+            TableRow<BundleDto> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(!row.isEmpty()){
+                    BundleDto bundle = row.getItem();
+                    getYard().setTopSelectedBundle(bundle);
+                    inventoryTable.getSelectionModel().select(bundle);
+                    updateBundleInfo(bundle);
+                }
+                else{
+                    getYard().setTopSelectedBundle(null);
+                    clearAllBundleInfo();
+                }
+            });
+            return row;
+        });
     }
 
     public void addTableViewBundles(List<BundleDto> bundles) {
         inventoryTable.getItems().clear();
         ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
         inventoryTable.setItems(data);
-
     }
 
     private YardPresenter getYard() {

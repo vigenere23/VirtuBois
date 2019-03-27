@@ -41,4 +41,16 @@ public class BundleDto implements Serializable {
     public boolean equals(BundleDto other) {
         return id.equals(other.id);
     }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public String getEssence() {
+        return essence;
+    }
+
+    public String getPlankSize() {
+        return plankSize;
+    }
 }

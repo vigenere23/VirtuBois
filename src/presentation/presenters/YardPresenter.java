@@ -258,7 +258,7 @@ public class YardPresenter extends Pane implements IPresenter {
             drawGrid();
         }
         drawBundles(larmanController.getBundlesSorted());
-        mainController.addTableViewBundles(larmanController.getYard().getBundles());
+        mainController.addTableViewBundles(larmanController.getBundles());
         drawOtherGraphics();
 
     }

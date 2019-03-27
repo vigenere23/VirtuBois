@@ -215,14 +215,14 @@ public class MainController extends BaseController {
     }
 
     public void initTableView() {
-        codeColumn.setCellValueFactory( new PropertyValueFactory<Bundle, String>("barcode"));
-        typeColumn.setCellValueFactory( new PropertyValueFactory<Bundle, String>("essence"));
-        sizeColumn.setCellValueFactory( new PropertyValueFactory<Bundle, String>("plankSize"));
+        codeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("barcode"));
+        typeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("essence"));
+        sizeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("plankSize"));
     }
 
-    public void addTableViewBundles(List<Bundle> bundles) {
+    public void addTableViewBundles(List<BundleDto> bundles) {
         inventoryTable.getItems().clear();
-        ObservableList<Bundle> data = FXCollections.observableArrayList(bundles);
+        ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
         inventoryTable.setItems(data);
 
     }

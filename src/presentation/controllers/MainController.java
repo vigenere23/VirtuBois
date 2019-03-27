@@ -156,13 +156,14 @@ public class MainController extends BaseController {
 
     public void updateBundleInfo(BundleDto bundle) {
         setTextField(bundleBarcodeValue, bundle.barcode);
-        setTextField(bundleLengthValue, String.valueOf(bundle.length));
         setTextField(bundleWidthValue, String.valueOf(bundle.width));
+        setTextField(bundleLengthValue, String.valueOf(bundle.length));
         setTextField(bundleHeightValue, String.valueOf(bundle.height));
         setTextField(bundleDateValue, bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         setTextField(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
         setTextField(bundleEssenceValue, bundle.essence);
         setTextField(bundlePlankSizeValue, bundle.plankSize);
+        getYard().draw();
     }
 
     public void setTextField(TextField textField, String textToSet) {

@@ -117,10 +117,12 @@ public class YardPresenter extends Pane implements IPresenter {
                     }
                     if(canDrag){
                         Point2D planPosition = new Point2D(event.getX(), event.getY());
-                        larmanController.modifyBundlePosition(topSelectedBundle.id, transformPlanCoordsToRealCoords(planPosition));
-                        draw();
-                        if (mainController.gridIsOn) {
+                        if (!mainController.gridIsOn) {
+                            larmanController.modifyBundlePosition(topSelectedBundle.id, transformPlanCoordsToRealCoords(planPosition));
+                        }else {
+                            
                         }
+                        draw();
                     }
                 }
             }

@@ -29,7 +29,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private BundleDto topSelectedBundle;
     private boolean canDrag;
     DropShadow dropShadow;
-    private int gridDimension = 3;
+    private int gridDimension = 1;
 
     private Point2D mousePositionInRealCoords;
     private Label mousePositionLabel;
@@ -113,11 +113,22 @@ public class YardPresenter extends Pane implements IPresenter {
                         canDrag = true;
                     }
                     if(canDrag){
-                        Point2D planPosition = new Point2D(event.getX(), event.getY());
+                        Point2D planPosition = transformPlanCoordsToRealCoords(new Point2D(event.getX(), event.getY()));
                         if (!mainController.gridIsOn) {
-                            larmanController.modifyBundlePosition(topSelectedBundle.id, transformPlanCoordsToRealCoords(planPosition));
+                            larmanController.modifyBundlePosition(topSelectedBundle.id, planPosition);
                         }else {
-                            
+                            int pointX = (int)(planPosition.getX()/gridDimension) * gridDimension;
+                            int pointY = (int)(planPosition.getY()/gridDimension) * gridDimension;
+                            int prevX = pointX - gridDimension;
+                            int prevY = pointY + gridDimension;
+                            if ((Math.abs(planPosition.getX() - pointX) > Math.abs(planPosition.getX() - prevX))) {
+                                pointX = prevX;
+                            }
+                            if (Math.abs(planPosition.getY() - pointY) > Math.abs(planPosition.getY() - prevY)) {
+                                pointY = prevY;
+                            }
+                            larmanController.modifyBundlePosition(topSelectedBundle.id, new Point2D(pointX, pointY));
+
                         }
                         draw();
                     }

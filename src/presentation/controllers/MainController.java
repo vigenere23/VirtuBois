@@ -98,7 +98,7 @@ public class MainController extends BaseController {
         
         initBundleInfoView();
         initTableView();
-        //initInventorySearchBar();
+        initInventorySearchBar();
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();

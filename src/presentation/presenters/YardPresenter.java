@@ -118,17 +118,7 @@ public class YardPresenter extends Pane implements IPresenter {
                         if (!mainController.gridIsOn) {
                             larmanController.modifyBundlePosition(topSelectedBundle.id, planPosition);
                         }else {
-                            int pointX = (int)(planPosition.getX()/gridDimension) * gridDimension;
-                            int pointY = (int)(planPosition.getY()/gridDimension) * gridDimension;
-                            int prevX = pointX - gridDimension;
-                            int prevY = pointY + gridDimension;
-                            if ((Math.abs(planPosition.getX() - pointX) > Math.abs(planPosition.getX() - prevX))) {
-                                pointX = prevX;
-                            }
-                            if (Math.abs(planPosition.getY() - pointY) > Math.abs(planPosition.getY() - prevY)) {
-                                pointY = prevY;
-                            }
-                            larmanController.modifyBundlePosition(topSelectedBundle.id, new Point2D(pointX, pointY));
+                            larmanController.modifyBundlePosition(topSelectedBundle.id, positionInGrid(planPosition));
                         }
                         draw();
                     }
@@ -231,17 +221,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
     private void createBundle() {
         if (mainController.gridIsOn) {
-            int x = (int)(mousePositionInRealCoords.getX()/gridDimension) * gridDimension;
-            int y = (int)(mousePositionInRealCoords.getY()/gridDimension) * gridDimension;
-            int prevX = x - gridDimension;
-            int prevY = y + gridDimension;
-            if (Math.abs(mousePositionInRealCoords.getX() - x) > Math.abs(mousePositionInRealCoords.getX() - prevX)) {
-                x = prevX;
-            }
-            if (Math.abs(mousePositionInRealCoords.getY() - y) > Math.abs(mousePositionInRealCoords.getY() - prevY)) {
-                y = prevY;
-            }
-            BundleDto createdBundle = larmanController.createBundle(new Point2D(x, y));
+            BundleDto createdBundle = larmanController.createBundle(positionInGrid(mousePositionInRealCoords));
             showBundleEditorWindow(createdBundle);
             selectBundle(createdBundle);
         }
@@ -251,6 +231,26 @@ public class YardPresenter extends Pane implements IPresenter {
             selectBundle(createdBundle);
         }
         draw();
+    }
+
+    private Point2D positionInGrid(Point2D point) {
+        int x = (int)(point.getX()/gridDimension) * gridDimension;
+        if (x >= 0) {
+            x += gridDimension;
+        }
+        int y = (int)(point.getY()/gridDimension) * gridDimension;
+        if (y <= 0) {
+            y -= gridDimension;
+        }
+        int prevX = x - gridDimension;
+        int prevY = y + gridDimension;
+        if (Math.abs(point.getX() - x) > Math.abs(point.getX() - prevX)) {
+            x = prevX;
+        }
+        if (Math.abs(point.getY() - y) > Math.abs(point.getY() - prevY)) {
+            y = prevY;
+        }
+        return new Point2D(x, y);
     }
 
     private void selectBundle(BundleDto bundleDto) {

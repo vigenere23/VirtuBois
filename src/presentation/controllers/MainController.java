@@ -1,11 +1,17 @@
 package presentation.controllers;
 
+import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
+import domain.entities.Bundle;
 import enums.EditorMode;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -156,13 +162,38 @@ public class MainController extends BaseController {
 
     public void updateBundleInfo(BundleDto bundle) {
         setTextField(bundleBarcodeValue, bundle.barcode);
+        bundleBarcodeValue.setOnAction(event -> {
+            bundle.barcode = bundleBarcodeValue.getText();
+            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
+        });
         setTextField(bundleWidthValue, String.valueOf(bundle.width));
+        bundleWidthValue.setOnAction(event -> {
+            bundle.width = Double.parseDouble(bundleWidthValue.getText());
+            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
+        });
         setTextField(bundleLengthValue, String.valueOf(bundle.length));
+        bundleLengthValue.setOnAction(event -> {
+            bundle.length = Double.parseDouble(bundleLengthValue.getText());
+            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
+            getYard().draw();
+        });
         setTextField(bundleHeightValue, String.valueOf(bundle.height));
+        bundleHeightValue.setOnAction(event -> {
+            bundle.height = Double.parseDouble(bundleBarcodeValue.getText());
+            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
+        });
         setTextField(bundleDateValue, bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         setTextField(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
         setTextField(bundleEssenceValue, bundle.essence);
+        bundleBarcodeValue.setOnAction(event -> {
+            bundle.essence = bundleBarcodeValue.getText();
+            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
+        });
         setTextField(bundlePlankSizeValue, bundle.plankSize);
+        bundlePlankSizeValue.setOnAction(event -> {
+            bundle.plankSize = bundleBarcodeValue.getText();
+            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
+        });
     }
 
     public void setTextField(TextField textField, String textToSet) {

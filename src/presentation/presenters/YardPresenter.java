@@ -2,6 +2,7 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
+import domain.entities.Yard;
 import enums.EditorMode;
 import helpers.*;
 import helpers.Point2D;
@@ -116,8 +117,10 @@ public class YardPresenter extends Pane implements IPresenter {
                         Point2D planPosition = new Point2D(event.getX(), event.getY());
                         if (!mainController.gridIsOn) {
                             larmanController.modifyBundlePosition(topSelectedBundle.id, transformPlanCoordsToRealCoords(planPosition));
-                        }else {
-                            
+                        }else{
+                            int x = (int)(mousePositionInRealCoords.getX()/gridDimension) * gridDimension;
+                            int y = (int)(mousePositionInRealCoords.getY()/gridDimension) * gridDimension;
+                            larmanController.modifyBundlePosition(topSelectedBundle.id, transformPlanCoordsToRealCoords(new Point2D(x, y)));
                         }
                         draw();
                     }
@@ -242,15 +245,6 @@ public class YardPresenter extends Pane implements IPresenter {
         draw();
     }
 
-    private void editBundle() {
-        BundleDto topBundle = larmanController.getTopBundle(mousePositionInRealCoords);
-        if (topBundle != null) {
-            showBundleEditorWindow(topBundle);
-            selectBundle(topBundle);
-            draw();
-        }
-    }
-
     private void selectBundle(BundleDto bundleDto) {
         mainController.editorMode.setValue(EditorMode.POINTER);
         mousePositionInRealCoords = bundleDto.position;
@@ -373,5 +367,9 @@ public class YardPresenter extends Pane implements IPresenter {
 
     public BundleDto getTopSelectedBundle(){
         return topSelectedBundle;
+    }
+
+    public Yard getYard(){
+        return getYard();
     }
 }

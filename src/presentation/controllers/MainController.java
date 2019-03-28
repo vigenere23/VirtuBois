@@ -47,7 +47,7 @@ public class MainController extends BaseController {
     private Font windowFont;
     private YardPresenter yardPresenter;
     private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
-    private ObservableList<BundleDto> observableBundleList;
+    private List<BundleDto> observableBundleList;
 
     @FXML Pane root;
     @FXML Pane yardWrapper;
@@ -98,7 +98,7 @@ public class MainController extends BaseController {
         
         initBundleInfoView();
         initTableView();
-        //initInventorySearchBar();
+        initInventorySearchBar();
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();
@@ -227,7 +227,7 @@ public class MainController extends BaseController {
 
     private void initInventorySearchBar(){
             inventorySearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-                FilteredList<BundleDto> filteredData = new FilteredList<>(observableBundleList);
+                FilteredList<BundleDto> filteredData = new FilteredList<>(FXCollections.observableArrayList(observableBundleList));
                 filteredData.setPredicate(bundleDto -> {
                     if (newValue == null || newValue.isEmpty()) {
                         return true;
@@ -236,13 +236,15 @@ public class MainController extends BaseController {
                     String lowerCaseFilter = newValue.toLowerCase();
                     if (bundleDto.getBarcode().toLowerCase().contains(lowerCaseFilter)) {
                         return true;
-                    } else if (bundleDto.getEssence().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    } else if (bundleDto.getPlankSize().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    } else {
-                        return false;
                     }
+                    if (bundleDto.getEssence().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    if (bundleDto.getPlankSize().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+
+                        return false;
 
                 });
                 SortedList<BundleDto> sortedData = new SortedList<>(filteredData);
@@ -276,10 +278,9 @@ public class MainController extends BaseController {
     }
 
     public void addTableViewBundles(List<BundleDto> bundles) {
-        inventoryTable.getItems().clear();
+        inventorySearchBar.clear();
+        observableBundleList = bundles;
         ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
-        ObservableList<BundleDto> fullBundleList = FXCollections.observableArrayList(bundles);
-        observableBundleList = fullBundleList;
         inventoryTable.setItems(data);
     }
 }

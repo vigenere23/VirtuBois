@@ -10,9 +10,9 @@ public class Point2D implements Serializable {
         y = 0;
     }
 
-    public Point2D(double xpos, double ypos){
-        x = xpos;
-        y =ypos;
+    public Point2D(double x, double y) {
+        setX(x);
+        setY(y);
     }
 
     public double getX() {
@@ -23,20 +23,20 @@ public class Point2D implements Serializable {
         return y;
     }
 
-    public void setY(double y) {
-        this.y = y;
-    }
-
     public void setX(double x) {
         this.x = x;
     }
 
-    public Point2D add(Point2D pointadd) {
-        return new Point2D(x + pointadd.getX(), y + pointadd.getY());
+    public void setY(double y) {
+        this.y = y;
     }
 
-    public Point2D subtract(Point2D pointsubstract){
-        return new Point2D(x - pointsubstract.getX(), y - pointsubstract.getY());
+    public Point2D add(Point2D point) {
+        return new Point2D(x + point.getX(), y + point.getY());
+    }
+
+    public Point2D subtract(Point2D point){
+        return new Point2D(x - point.getX(), y - point.getY());
 
     }
 

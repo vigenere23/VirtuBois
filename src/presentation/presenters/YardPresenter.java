@@ -2,6 +2,7 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
+import domain.entities.Yard;
 import enums.EditorMode;
 import helpers.*;
 import helpers.Point2D;
@@ -128,7 +129,6 @@ public class YardPresenter extends Pane implements IPresenter {
                                 pointY = prevY;
                             }
                             larmanController.modifyBundlePosition(topSelectedBundle.id, new Point2D(pointX, pointY));
-
                         }
                         draw();
                     }
@@ -253,15 +253,6 @@ public class YardPresenter extends Pane implements IPresenter {
         draw();
     }
 
-    private void editBundle() {
-        BundleDto topBundle = larmanController.getTopBundle(mousePositionInRealCoords);
-        if (topBundle != null) {
-            showBundleEditorWindow(topBundle);
-            selectBundle(topBundle);
-            draw();
-        }
-    }
-
     private void selectBundle(BundleDto bundleDto) {
         mainController.editorMode.setValue(EditorMode.POINTER);
         mousePositionInRealCoords = bundleDto.position;
@@ -281,7 +272,9 @@ public class YardPresenter extends Pane implements IPresenter {
             drawGrid();
         }
         drawBundles(larmanController.getBundlesSorted());
-        mainController.addTableViewBundles(larmanController.getBundles());
+        if(!larmanController.getBundles().isEmpty()) {
+            mainController.addTableViewBundles(larmanController.getBundles());
+        }
         drawOtherGraphics();
 
     }
@@ -384,5 +377,9 @@ public class YardPresenter extends Pane implements IPresenter {
 
     public BundleDto getTopSelectedBundle(){
         return topSelectedBundle;
+    }
+
+    public Yard getYard(){
+        return getYard();
     }
 }

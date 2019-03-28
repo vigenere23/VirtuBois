@@ -56,6 +56,7 @@ public abstract class BaseController implements IController {
             Yard yardInit = (Yard) objectInputStream.readObject();
             LarmanController.getInstance().setYard(yardInit);
             JavafxHelper.loadView(this.stage, "Main", file.getName(), true);
+
         } catch (IOException | ClassNotFoundException ex){
             System.out.println(ex);
         }

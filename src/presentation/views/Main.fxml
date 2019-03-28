@@ -157,7 +157,7 @@
                                                       </ImageView>
                                                    </right>
                                                    <center>
-                                                      <TextField prefHeight="30.0" BorderPane.alignment="CENTER" />
+                                                      <TextField fx:id="inventorySearchBar" prefHeight="30.0" BorderPane.alignment="CENTER" />
                                                    </center>
                                                 </BorderPane>
                                              </top>

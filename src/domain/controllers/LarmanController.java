@@ -9,11 +9,13 @@ import helpers.Point2D;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class LarmanController implements Serializable {
     private static final LarmanController instance = new LarmanController();
+    private List<BundleDto> allCollidingBundles = new ArrayList<>();
     private Yard yard;
 
     private LarmanController() {
@@ -98,6 +100,17 @@ public class LarmanController implements Serializable {
             );
         }
         return null;
+    }
+
+    public List<BundleDto> getAllCollidingBundles(BundleDto bundleDtoToCheck){
+        if (allCollidingBundles.contains(bundleDtoToCheck)) {
+            return allCollidingBundles;
+        }
+        allCollidingBundles.add(bundleDtoToCheck);
+        for (BundleDto bundle : getCollidingBundles(bundleDtoToCheck)) {
+            getAllCollidingBundles(bundle);
+        }
+        return allCollidingBundles;
     }
 
     /**** PRIVATE METHODS ****/

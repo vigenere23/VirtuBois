@@ -59,23 +59,12 @@ public class MainController extends BaseController {
     @FXML public TableColumn typeColumn;
     @FXML public TableColumn sizeColumn;
 
-    @FXML public TextFlow bundleBarcodeLabel;
-    @FXML public TextFlow bundleLengthLabel;
-    @FXML public TextFlow bundleWidthLabel;
-    @FXML public TextFlow bundleHeightLabel;
-    @FXML public TextFlow bundleDateLabel;
-    @FXML public TextFlow bundleTimeLabel;
-    @FXML public TextFlow bundleEssenceLabel;
-    @FXML public TextFlow bundlePlankSizeLabel;
-
     @FXML public TextField bundleBarcodeValue;
     @FXML public TextField bundleLengthValue;
     @FXML public TextField bundleWidthValue;
     @FXML public TextField bundleHeightValue;
-    @FXML public TextField bundleDateValue;
-    @FXML public TextField bundleTimeValue;
+    @FXML public DatePicker bundleDateValue;
     @FXML public TextField bundleEssenceValue;
-    @FXML public TextField bundlePlankSizeValue;
 
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
@@ -95,8 +84,7 @@ public class MainController extends BaseController {
         editorMode = new SimpleObjectProperty<>();
 
         windowFont = new Font("System", 13);
-        
-        initBundleInfoView();
+
         initTableView();
         initInventorySearchBar();
         setEventHandlers();
@@ -156,10 +144,8 @@ public class MainController extends BaseController {
         bundleLengthValue.clear();
         bundleWidthValue.clear();
         bundleHeightValue.clear();
-        bundleDateValue.clear();
-        bundleTimeValue.clear();
         bundleEssenceValue.clear();
-        bundlePlankSizeValue.clear();
+
     }
 
     public void updateBundleInfo(BundleDto bundle) {
@@ -183,18 +169,18 @@ public class MainController extends BaseController {
             bundle.height = Double.parseDouble(bundleBarcodeValue.getText());
             LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
         });
-        setTextField(bundleDateValue, bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        setTextField(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
+        //setTextField(bundleDateValue, bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        //setTextField(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
         setTextField(bundleEssenceValue, bundle.essence);
         bundleBarcodeValue.setOnAction(event -> {
             bundle.essence = bundleBarcodeValue.getText();
             LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
         });
-        setTextField(bundlePlankSizeValue, bundle.plankSize);
-        bundlePlankSizeValue.setOnAction(event -> {
-            bundle.plankSize = bundleBarcodeValue.getText();
-            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
-        });
+        //setTextField(bundlePlankSizeValue, bundle.plankSize);
+        //bundlePlankSizeValue.setOnAction(event -> {
+          //  bundle.plankSize = bundleBarcodeValue.getText();
+            //LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
+        //});
     }
 
     public void setTextField(TextField textField, String textToSet) {
@@ -209,16 +195,6 @@ public class MainController extends BaseController {
         textFlow.getChildren().setAll(text);
     }
 
-    private void initBundleInfoView() {
-        setText(bundleBarcodeLabel, "Code barre : ");
-        setText(bundleLengthLabel, "Longeur : ");
-        setText(bundleWidthLabel, "Largeur : ");
-        setText(bundleHeightLabel, "Hauteur : ");
-        setText(bundleDateLabel, "Date de production : ");
-        setText(bundleTimeLabel, "Heure de production : ");
-        setText(bundleEssenceLabel, "Essence : ");
-        setText(bundlePlankSizeLabel, "Dimensions des planches : ");
-    }
 
     public void updateElevationView(List<BundleDto> bundles) {
         rectanglesId.clear();

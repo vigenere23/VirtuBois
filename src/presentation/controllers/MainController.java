@@ -40,9 +40,9 @@ public class MainController extends BaseController {
     public ObjectProperty<EditorMode> editorMode;
     public ToggleGroup editorModeToggleGroup;
     public boolean gridIsOn;
+    public char elevationViewMode;
 
     private DropShadow dropShadow;
-
     private ElevationViewPresenter elevationViewPresenter;
     private YardPresenter yardPresenter;
 
@@ -121,6 +121,7 @@ public class MainController extends BaseController {
         dropShadow.setRadius(5.0);
         dropShadow.setColor(Color.GREY);
         gridIsOn = false;
+        elevationViewMode = 'x';
     }
 
     private void setEventHandlers() {

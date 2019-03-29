@@ -15,6 +15,7 @@ import javafx.scene.shape.Line;
 import presentation.controllers.MainController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class YardPresenter extends Pane implements IPresenter {
@@ -204,7 +205,12 @@ public class YardPresenter extends Pane implements IPresenter {
         List<BundleDto> selectedBundles = larmanController.getSelectedBundles(mousePositionInRealCoords);
         if (!selectedBundles.isEmpty()) {
             topSelectedBundle = larmanController.getTopBundle(mousePositionInRealCoords);
-            mainController.updateElevationView(larmanController.getAllCollidingBundles(new ArrayList<>(), topSelectedBundle));
+            if (mainController.elevationViewMode == 'y') {
+                mainController.updateElevationView(larmanController.sortBundlesX(larmanController.getAllCollidingBundles(new ArrayList<>(), topSelectedBundle)));
+            }
+            if (mainController.elevationViewMode == 'x') {
+                mainController.updateElevationView(larmanController.sortBundlesY(larmanController.getAllCollidingBundles(new ArrayList<>(), topSelectedBundle)));
+            }
             mainController.updateBundleInfo(topSelectedBundle);
             selectionOffsetVector = mousePositionInRealCoords.subtract(topSelectedBundle.position);
         } else {

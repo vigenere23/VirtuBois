@@ -132,6 +132,11 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
     public void draw() {
         getChildren().clear();
         if (!allBundles.isEmpty())
-            drawBundlesAxisY();
+            if (mainController.elevationViewMode == 'x') {
+                drawBundlesAxisX();
+            }
+            if (mainController.elevationViewMode == 'y') {
+                drawBundlesAxisY();
+            }
     }
 }

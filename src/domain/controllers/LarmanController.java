@@ -8,6 +8,7 @@ import helpers.Point2D;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -42,12 +43,13 @@ public class LarmanController implements Serializable {
         return bundles;
     }
 
-    private List<BundleDto> sortBundlesY(List<BundleDto> bundles) {
+    public List<BundleDto> sortBundlesY(List<BundleDto> bundles) {
         bundles.sort(Comparator.comparing(BundleDto::getY));
+        Collections.reverse(bundles);
         return bundles;
     }
 
-    private List<BundleDto> sortBundlesX(List<BundleDto> bundles) {
+    public List<BundleDto> sortBundlesX(List<BundleDto> bundles) {
         bundles.sort(Comparator.comparing(BundleDto::getX));
         return bundles;
     }

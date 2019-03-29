@@ -2,6 +2,7 @@ package helpers;
 
 import domain.controllers.LarmanController;
 import domain.entities.Yard;
+import enums.DialogAction;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -19,34 +20,46 @@ public class FileHelper {
     private static File lastFile = null;
     private static boolean newFile = true;
 
-    public static boolean newFile(Stage stage, Yard yard) {
-        if (yard.getBundles().size() != 0) {
-            Optional<ButtonType> result = FileHelper.popupConfirmation(
+    public static void newFile(Stage stage, Yard yard) {
+        if (yard != null && yard.getBundles().size() != 0) {
+            DialogAction result = FileHelper.popupConfirmation(
                     "Enregistrer",
                     "Voulez-vous enregistrer avant de continuer?"
             );
 
-            if (result.isPresent()) {
-                switch (result.get().getButtonData()) {
-                    case YES:
-                        saveFile(stage, yard);
-                        newFile();
-                        return true;
-                    case NO:
-                        newFile();
-                        return true;
-                }
+            if (result == DialogAction.YES)
+                saveFile(stage, yard);
+            if (result == DialogAction.YES || result == DialogAction.NO) {
+                LarmanController.getInstance().clearYard();
+                newFile(stage);
             }
         }
         else {
-            newFile();
-            return true;
+            newFile(stage);
         }
-        return false;
     }
 
-    public static void newFile() {
+    public static void newFile(Stage stage) {
         newFile = true;
+        JavafxHelper.loadView(stage, "Main", "Nouvelle Cour", true);
+    }
+
+    public static void openFile(Stage stage, Yard yard) {
+        if (yard != null && yard.getBundles().size() != 0) {
+            DialogAction result = FileHelper.popupConfirmation(
+                    "Enregistrer",
+                    "Voulez-vous enregistrer avant de continuer?"
+            );
+
+            if (result == DialogAction.YES)
+                saveFile(stage, yard);
+            if (result == DialogAction.YES || result == DialogAction.NO) {
+                openFile(stage);
+            }
+        }
+        else {
+            openFile(stage);
+        }
     }
 
     public static void openFile(Stage stage) {
@@ -130,7 +143,7 @@ public class FileHelper {
         return extension;
     }
 
-    public static Optional<ButtonType> popupConfirmation(String title, String header) {
+    private static DialogAction popupConfirmation(String title, String header) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -140,7 +153,18 @@ public class FileHelper {
         ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(cancelButton, noButton, yesButton);
 
-        return alert.showAndWait();
+        return parseDialogResults(alert.showAndWait());
+    }
+
+    private static DialogAction parseDialogResults(Optional<ButtonType> result) {
+        if (result.isPresent()) {
+            switch (result.get().getButtonData()) {
+                case YES: return DialogAction.YES;
+                case NO: return DialogAction.NO;
+                default: return DialogAction.CANCEL;
+            }
+        }
+        return DialogAction.CANCEL;
     }
 
 }

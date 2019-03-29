@@ -38,10 +38,10 @@
                             <menus>
                                 <Menu mnemonicParsing="false" text="Fichier">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Nouveau" />
-                                        <MenuItem mnemonicParsing="false" onAction="#openFile" text="Ouvrir" />
-                                        <MenuItem mnemonicParsing="false" onAction="#save" text="Enregistrer" />
-                                        <MenuItem mnemonicParsing="false" onAction="#saveAs" text="Enregistrer sous" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuFileNew" text="Nouveau" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuFileOpen" text="Ouvrir" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuFileSave" text="Enregistrer" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuSaveAs" text="Enregistrer sous" />
                                         <MenuItem disable="true" mnemonicParsing="false" text="Exporter en 3D" />
                                         <MenuItem mnemonicParsing="false" onAction="#quit" text="Quitter" />
                                     </items>

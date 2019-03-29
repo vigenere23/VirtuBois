@@ -17,11 +17,15 @@ public class LarmanController implements Serializable {
     private Yard yard;
 
     private LarmanController() {
-        yard = new Yard();
+        clearYard();
     }
 
     public static LarmanController getInstance() {
         return instance;
+    }
+
+    public void clearYard() {
+        yard = new Yard();
     }
 
     public void setYard(Yard newYard) {

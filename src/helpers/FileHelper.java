@@ -22,7 +22,7 @@ public class FileHelper {
 
     public static void newFile(Stage stage, Yard yard) {
         if (yard != null && yard.getBundles().size() != 0) {
-            DialogAction result = FileHelper.popupConfirmation(
+            DialogAction result = FileHelper.popupConfirmationDialog(
                     "Enregistrer",
                     "Voulez-vous enregistrer avant de continuer?"
             );
@@ -46,7 +46,7 @@ public class FileHelper {
 
     public static void openFile(Stage stage, Yard yard) {
         if (yard != null && yard.getBundles().size() != 0) {
-            DialogAction result = FileHelper.popupConfirmation(
+            DialogAction result = FileHelper.popupConfirmationDialog(
                     "Enregistrer",
                     "Voulez-vous enregistrer avant de continuer?"
             );
@@ -143,7 +143,7 @@ public class FileHelper {
         return extension;
     }
 
-    private static DialogAction popupConfirmation(String title, String header) {
+    private static DialogAction popupConfirmationDialog(String title, String header) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
         alert.setHeaderText(header);

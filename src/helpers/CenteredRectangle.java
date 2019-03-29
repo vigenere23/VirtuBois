@@ -28,7 +28,7 @@ public class CenteredRectangle {
         rectangle.setRotate(-angle);
     }
 
-    public Rectangle get() { return rectangle; }
+    public Rectangle getRectangle() { return rectangle; }
 
     public Point2D getPosition() {
         return new Point2D(getX(), getY());

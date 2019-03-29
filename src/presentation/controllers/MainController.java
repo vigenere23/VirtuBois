@@ -1,7 +1,6 @@
 package presentation.controllers;
 
 import domain.dtos.BundleDto;
-import domain.entities.Yard;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
@@ -25,7 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 
 import presentation.presenters.BundlePresenter;
 import presentation.presenters.YardPresenter;
@@ -43,7 +41,7 @@ public class MainController extends BaseController {
     DropShadow dropShadow;
 
     private YardPresenter yardPresenter;
-    private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
+    private Map<Rectangle, BundleDto> rectangleBundleDtoMap = new HashMap<>();
     private List<BundleDto> observableBundleList;
     private BundleDto selectedBundle;
 
@@ -442,11 +440,11 @@ public class MainController extends BaseController {
     }
 
     public void updateElevationView(List<BundleDto> bundles) {
-        rectanglesId.clear();
+        rectangleBundleDtoMap.clear();
         clearElevationView();
         for (BundleDto bundleDto : bundles) {
             BundlePresenter presenter = new BundlePresenter(bundleDto);
-            Rectangle rectangle = presenter.get();
+            Rectangle rectangle = presenter.getRectangle();
             rectangle.setWidth(200);
             rectangle.setHeight(50);
             rectangle.setRotate(0);
@@ -454,15 +452,15 @@ public class MainController extends BaseController {
                 rectangle.setEffect(dropShadow);
             }
             elevationViewBox.getChildren().add(0, rectangle);
-            rectanglesId.put(rectangle, bundleDto);
+            rectangleBundleDtoMap.put(rectangle, bundleDto);
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
-                for (Map.Entry<Rectangle, BundleDto> entry : rectanglesId.entrySet()) {
+                for (Map.Entry<Rectangle, BundleDto> entry : rectangleBundleDtoMap.entrySet()) {
                     entry.getKey().setEffect(null);
                 }
                 if (event.getButton() == MouseButton.PRIMARY) {
-                    updateBundleInfo(rectanglesId.get(rectangle));
+                    updateBundleInfo(rectangleBundleDtoMap.get(rectangle));
                     rectangle.setEffect(dropShadow);
-                    yardPresenter.setTopSelectedBundle(rectanglesId.get(rectangle));
+                    yardPresenter.setTopSelectedBundle(rectangleBundleDtoMap.get(rectangle));
                 }
             });
         }

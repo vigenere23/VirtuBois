@@ -307,10 +307,10 @@ public class YardPresenter extends Pane implements IPresenter {
             bundlePresenter.setPosition(planPosition);
             if (topSelectedBundle != null){
                 if (bundleDto.equals(topSelectedBundle)){
-                    bundlePresenter.get().setEffect(dropShadow);
+                    bundlePresenter.getRectangle().setEffect(dropShadow);
                 }
             }
-            getChildren().add(bundlePresenter.get());
+            getChildren().add(bundlePresenter.getRectangle());
         }
     }
 

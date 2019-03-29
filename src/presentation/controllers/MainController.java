@@ -5,6 +5,7 @@ import domain.entities.Yard;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
+import helpers.Point2D;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;

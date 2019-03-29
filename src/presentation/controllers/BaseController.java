@@ -24,18 +24,15 @@ public abstract class BaseController implements IController {
     }
 
     public void newFile(ActionEvent actionEvent) {
-        JavafxHelper.loadView(this.stage, "Main", "Nouvelle Cour", true);
+        larmanController.setYard(new Yard());
+        FileHelper.newFile(stage);
     }
 
     public void newFileMenu(ActionEvent actionEvent) {
-        if (larmanController.getYard().getBundles().size() == 0){
-            newFile(actionEvent);
-        } else {
+        if (larmanController.getYard().getBundles().size() != 0) {
             save(actionEvent);
-            Yard yard = new Yard();
-            LarmanController.getInstance().setYard(yard);
-            newFile(actionEvent);
         }
+        newFile(actionEvent);
     }
 
     public void openFile(ActionEvent actionEvent) {

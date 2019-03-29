@@ -9,37 +9,43 @@ import java.io.*;
 
 public class FileHelper {
 
-    public static File lastPath = null;
+    private static File lastDirectory = new File(System.getProperty("user.home"));
+    private static String lastFilename = "Yard.ser";
+    private static File lastFile = null;
+
+    public static void newFile(Stage stage) {
+        JavafxHelper.loadView(stage, "Main", "Nouvelle Cour", true);
+        lastFile = null;
+    }
 
     public static void openFile(Stage stage) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "*.ser"));
-        fileChooser.setTitle("Open File");
+        FileChooser fileChooser = initFileChooser("Ouvrir");
         File file = fileChooser.showOpenDialog(stage);
-        lastPath = file;
-        FileInputStream fileInputStream;
-        ObjectInputStream objectInputStream;
-        try {
-            fileInputStream = new FileInputStream(file);
-            objectInputStream = new ObjectInputStream(fileInputStream);
-            Yard yardInit = (Yard) objectInputStream.readObject();
-            LarmanController.getInstance().setYard(yardInit);
-            JavafxHelper.loadView(stage, "Main", file.getName(), true);
-
-        } catch (IOException | ClassNotFoundException ex){
-            System.out.println(ex);
+        if (file != null) {
+            FileInputStream fileInputStream;
+            ObjectInputStream objectInputStream;
+            try {
+                fileInputStream = new FileInputStream(file);
+                objectInputStream = new ObjectInputStream(fileInputStream);
+                Yard yardInit = (Yard) objectInputStream.readObject();
+                LarmanController.getInstance().setYard(yardInit);
+                JavafxHelper.loadView(stage, "Main", file.getName(), true);
+                updateLastFile(file);
+            } catch (IOException | ClassNotFoundException ex) {
+                System.out.println(ex);
+            }
         }
     }
 
     public static void saveFile(Stage stage, Yard yard) {
-        if (lastPath == null) {
+        if (lastFile == null) {
             saveFileAs(stage, yard);
         }
         else {
             FileOutputStream fileOutputStream;
             ObjectOutputStream objectOutputStream;
             try {
-                fileOutputStream = new FileOutputStream(lastPath);
+                fileOutputStream = new FileOutputStream(lastFile);
                 objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 objectOutputStream.writeObject(yard);
                 objectOutputStream.flush();
@@ -51,11 +57,29 @@ public class FileHelper {
     }
 
     public static void saveFileAs(Stage stage, Yard yard) {
+        FileChooser fileChooser = initFileChooser("Enregistrer sous");
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            updateLastFile(file);
+            saveFile(stage, yard);
+        }
+    }
+
+    private static void updateLastFile(File file) {
+        lastDirectory = file.getParentFile();
+        lastFilename = file.getName();
+        lastFile = file;
+    }
+
+    private static FileChooser initFileChooser(String title) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "*.ser"));
-        fileChooser.setTitle("Save As");
-        lastPath = fileChooser.showSaveDialog(stage);
-        saveFile(stage, yard);
+        fileChooser.setTitle(title);
+        if (lastFile != null) {
+            fileChooser.setInitialDirectory(lastDirectory);
+            fileChooser.setInitialFileName(lastFilename);
+        }
+        return fileChooser;
     }
 
 }

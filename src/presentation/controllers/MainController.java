@@ -59,7 +59,7 @@ public class MainController extends BaseController {
     @FXML public TableColumn typeColumn;
     @FXML public TableColumn sizeColumn;
 
-    @FXML public TextField bundleBarcodeValue;
+    @FXML public TextField bundleCodeValue;
     @FXML public TextField bundleLengthValue;
     @FXML public TextField bundleWidthValue;
     @FXML public TextField bundleHeightValue;
@@ -140,7 +140,7 @@ public class MainController extends BaseController {
     }
 
     public void clearAllBundleInfo() {
-        bundleBarcodeValue.clear();
+        bundleCodeValue.clear();
         bundleLengthValue.clear();
         bundleWidthValue.clear();
         bundleHeightValue.clear();
@@ -149,9 +149,9 @@ public class MainController extends BaseController {
     }
 
     public void updateBundleInfo(BundleDto bundle) {
-        setTextField(bundleBarcodeValue, bundle.barcode);
-        bundleBarcodeValue.setOnAction(event -> {
-            bundle.barcode = bundleBarcodeValue.getText();
+        setTextField(bundleCodeValue, bundle.barcode);
+        bundleCodeValue.setOnAction(event -> {
+            bundle.barcode = bundleCodeValue.getText();
             LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
         });
         setTextField(bundleWidthValue, String.valueOf(bundle.width));
@@ -166,16 +166,23 @@ public class MainController extends BaseController {
         });
         setTextField(bundleHeightValue, String.valueOf(bundle.height));
         bundleHeightValue.setOnAction(event -> {
-            bundle.height = Double.parseDouble(bundleBarcodeValue.getText());
+            bundle.height = Double.parseDouble(bundleHeightValue.getText());
             LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
         });
+        setTextField(bundleEssenceValue, bundle.essence);
+        bundleEssenceValue.setOnAction(event -> {
+            bundle.essence = bundleEssenceValue.getText();
+            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
+        });
+        bundleDateValue.setValue(bundle.date);
+        bundleDateValue.setOnAction((event -> {
+            bundle.date = bundleDateValue.getValue();
+            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
+        }));
+
         //setTextField(bundleDateValue, bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         //setTextField(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
-        setTextField(bundleEssenceValue, bundle.essence);
-        bundleBarcodeValue.setOnAction(event -> {
-            bundle.essence = bundleBarcodeValue.getText();
-            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
-        });
+
         //setTextField(bundlePlankSizeValue, bundle.plankSize);
         //bundlePlankSizeValue.setOnAction(event -> {
           //  bundle.plankSize = bundleBarcodeValue.getText();

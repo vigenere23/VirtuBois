@@ -413,6 +413,10 @@ public class MainController extends BaseController {
         });
     }
 
+    public YardPresenter getYardPresenter(){
+        return yardPresenter;
+    }
+
     public void clearAllBundleInfo() {
         this.selectedBundle = null;
         bundleBarcodeValue.clear();
@@ -452,6 +456,10 @@ public class MainController extends BaseController {
     public void updateElevationView(List<BundleDto> bundles) {
         elevationViewPresenter.setBundles(bundles);
     }
+
+    public void setFocusedBundleElevView(BundleDto bundle){
+        elevationViewPresenter.setFocusedBundle(bundle);
+    }
     /*
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
                 for (Map.Entry<Rectangle, BundleDto> entry : rectangleBundleDtoMap.entrySet()) {
@@ -464,7 +472,7 @@ public class MainController extends BaseController {
                 }
             });
         }
-    }*/
+    */
 
     public void clearElevationView() {
         elevationViewPresenter.clearBundles();

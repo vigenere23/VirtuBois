@@ -36,11 +36,11 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
         heightProperty().addListener(observable -> draw());
     }
 
-    private void setBundles(List<BundleDto> bundles){
+    public void setBundles(List<BundleDto> bundles){
         allBundles = bundles;
         draw();
     }
-    private void clearBundles(){
+    public void clearBundles(){
         allBundles.clear();
         draw();
     }

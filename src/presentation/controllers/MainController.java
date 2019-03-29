@@ -1,5 +1,6 @@
 package presentation.controllers;
 
+import com.sun.org.apache.bcel.internal.generic.ANEWARRAY;
 import domain.dtos.BundleDto;
 import enums.EditorMode;
 import helpers.FileHelper;
@@ -113,6 +114,7 @@ public class MainController extends BaseController {
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();
+        initElevationView();
         initBundleInfo();
 
         dropShadow = new DropShadow();
@@ -160,6 +162,15 @@ public class MainController extends BaseController {
         AnchorPane.setLeftAnchor(yardPresenter, 0.0);
         AnchorPane.setBottomAnchor(yardPresenter, 0.0);
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
+    }
+
+    private void initElevationView(){
+        elevationViewPresenter = new ElevationViewPresenter(this);
+        elevationViewWrapper.getChildren().setAll(elevationViewPresenter);
+        AnchorPane.setRightAnchor(elevationViewPresenter,0.0);
+        AnchorPane.setLeftAnchor(elevationViewPresenter,0.0);
+        AnchorPane.setBottomAnchor(elevationViewPresenter,0.0);
+        AnchorPane.setTopAnchor(elevationViewPresenter,0.0);
     }
 
     private void initBundleInfo() {
@@ -437,21 +448,10 @@ public class MainController extends BaseController {
         bundleAngleValue.setText(String.valueOf(bundle.angle));
     }
 
-    /*public void updateElevationView(List<BundleDto> bundles) {
-        rectanglesId.clear();
->>>>>>> preparing for elevation view tests
-        clearElevationView();
-        for (BundleDto bundleDto : bundles) {
-            BundlePresenter presenter = new BundlePresenter(bundleDto);
-            Rectangle rectangle = presenter.getRectangle();
-            rectangle.setWidth(200);
-            rectangle.setHeight(50);
-            rectangle.setRotate(0);
-            if (yardPresenter.getTopSelectedBundle().equals(bundleDto)) {
-                rectangle.setEffect(dropShadow);
-            }
-            elevationViewBox.getChildren().add(0, rectangle);
-            rectangleBundleDtoMap.put(rectangle, bundleDto);
+    public void updateElevationView(List<BundleDto> bundles) {
+        elevationViewPresenter.setBundles(bundles);
+    }
+    /*
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
                 for (Map.Entry<Rectangle, BundleDto> entry : rectangleBundleDtoMap.entrySet()) {
                     entry.getKey().setEffect(null);
@@ -465,9 +465,9 @@ public class MainController extends BaseController {
         }
     }*/
 
-    /*public void clearElevationView() {
-        elevationViewBox.getChildren().clear();
-    }*/
+    public void clearElevationView() {
+        elevationViewPresenter.clearBundles();
+    }
 
     public void addTableViewBundles(List<BundleDto> bundles) {
         inventorySearchBar.clear();

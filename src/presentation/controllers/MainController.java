@@ -3,6 +3,7 @@ package presentation.controllers;
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import enums.EditorMode;
+import helpers.JavafxHelper;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -59,21 +60,24 @@ public class MainController extends BaseController {
     @FXML public TableColumn typeColumn;
     @FXML public TableColumn sizeColumn;
 
-    @FXML public TextField bundleCodeValue;
+    @FXML public TextField bundleBarcodeValue;
     @FXML public TextField bundleLengthValue;
     @FXML public TextField bundleWidthValue;
     @FXML public TextField bundleHeightValue;
     @FXML public DatePicker bundleDateValue;
+    @FXML public Spinner<Integer> bundleHourValue;
+    @FXML public Spinner<Integer> bundleMinuteValue;
     @FXML public TextField bundleEssenceValue;
+    @FXML public TextField bundlePlankSizeValue1;
+    @FXML public TextField bundlePlankSizeValue2;
+    @FXML public TextField bundleXPosValue;
+    @FXML public TextField bundleYPosValue;
+    @FXML public TextField bundleAngleValue;
 
     @FXML public ToggleButton pointerButton;
     @FXML public ToggleButton addBundleButton;
     @FXML public ToggleButton deleteButton;
     @FXML public ToggleButton snapGridButton;
-
-    @FXML public DatePicker datePicker;
-    @FXML public Spinner<Integer> hourSpinner;
-    @FXML public Spinner<Integer> minuteSpinner;
 
     public boolean gridIsOn;
 
@@ -90,6 +94,7 @@ public class MainController extends BaseController {
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();
+        initBundleInfo();
 
         dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
@@ -139,69 +144,33 @@ public class MainController extends BaseController {
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
 
+    public void initBundleInfo(){
+        JavafxHelper.addStringToDoubleConverter(bundleLengthValue,1.0,0.0, null);
+        JavafxHelper.addStringToDoubleConverter(bundleWidthValue,1.0,  0.0, null);
+        JavafxHelper.addStringToDoubleConverter(bundleHeightValue,1.0,0.0,null);
+        JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue1,0,1,null);
+        JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue2,0,1,null);
+        JavafxHelper.addStringToDoubleConverter(bundleXPosValue,0.0,null,null);
+        JavafxHelper.addStringToDoubleConverter(bundleYPosValue,0.0,null,null);
+        JavafxHelper.addStringToDoubleConverter(bundleAngleValue,0.0,-360.0,360.0);
+    }
     public void clearAllBundleInfo() {
-        bundleCodeValue.clear();
+        bundleBarcodeValue.clear();
         bundleLengthValue.clear();
         bundleWidthValue.clear();
         bundleHeightValue.clear();
         bundleEssenceValue.clear();
+        bundlePlankSizeValue1.clear();
+        bundlePlankSizeValue2.clear();
+        bundleXPosValue.clear();
+        bundleYPosValue.clear();
+        bundleAngleValue.clear();
 
     }
 
     public void updateBundleInfo(BundleDto bundle) {
-        setTextField(bundleCodeValue, bundle.barcode);
-        bundleCodeValue.setOnAction(event -> {
-            bundle.barcode = bundleCodeValue.getText();
-            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
-        });
-        setTextField(bundleWidthValue, String.valueOf(bundle.width));
-        bundleWidthValue.setOnAction(event -> {
-            bundle.width = Double.parseDouble(bundleWidthValue.getText());
-            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
-        });
-        setTextField(bundleLengthValue, String.valueOf(bundle.length));
-        bundleLengthValue.setOnAction(event -> {
-            bundle.length = Double.parseDouble(bundleLengthValue.getText());
-            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
-        });
-        setTextField(bundleHeightValue, String.valueOf(bundle.height));
-        bundleHeightValue.setOnAction(event -> {
-            bundle.height = Double.parseDouble(bundleHeightValue.getText());
-            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
-        });
-        setTextField(bundleEssenceValue, bundle.essence);
-        bundleEssenceValue.setOnAction(event -> {
-            bundle.essence = bundleEssenceValue.getText();
-            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
-        });
-        bundleDateValue.setValue(bundle.date);
-        bundleDateValue.setOnAction((event -> {
-            bundle.date = bundleDateValue.getValue();
-            LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
-        }));
 
-        //setTextField(bundleDateValue, bundle.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        //setTextField(bundleTimeValue, bundle.time.format(DateTimeFormatter.ofPattern("HH:mm")));
-
-        //setTextField(bundlePlankSizeValue, bundle.plankSize);
-        //bundlePlankSizeValue.setOnAction(event -> {
-          //  bundle.plankSize = bundleBarcodeValue.getText();
-            //LarmanController.getInstance().getYard().modifyBundleProperties(bundle);
-        //});
     }
-
-    public void setTextField(TextField textField, String textToSet) {
-        textField.setText(String.valueOf(textToSet));
-    }
-
-    private void setText(TextFlow textFlow, String textToSet) {
-        Text text = new Text(textToSet);
-        text.setFont(windowFont);
-        text.setFill(Color.WHITESMOKE);
-        text.setTextAlignment(TextAlignment.RIGHT);
-        textFlow.getChildren().setAll(text);
-    }
-
 
     public void updateElevationView(List<BundleDto> bundles) {
         rectanglesId.clear();

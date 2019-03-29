@@ -209,7 +209,7 @@ public class YardPresenter extends Pane implements IPresenter {
         if (!selectedBundles.isEmpty()) {
             topSelectedBundle = larmanController.getTopBundle(mousePositionInRealCoords);
             mainController.updateElevationView(selectedBundles);
-            mainController.updateBundleInfo(topSelectedBundle);
+            //mainController.updateBundleInfo(topSelectedBundle);
             selectionOffsetVector = mousePositionInRealCoords.subtract(topSelectedBundle.position);
         } else {
             topSelectedBundle = null;

@@ -12,8 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.text.NumberFormat;
-
 public class JavafxHelper {
 
     public static void loadView(Stage stage, String viewName, String title, boolean maximised) {

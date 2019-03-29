@@ -7,8 +7,6 @@ import helpers.Converter;
 import helpers.Point2D;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -112,7 +110,5 @@ public class LarmanController implements Serializable {
         }
         return allCollidingBundles;
     }
-
-    /**** PRIVATE METHODS ****/
 
 }

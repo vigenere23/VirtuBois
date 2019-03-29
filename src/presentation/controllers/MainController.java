@@ -154,9 +154,9 @@ public class MainController extends BaseController {
         bundleMinuteValue.getValueFactory().setValue(0);
         JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue1,0,1,null);
         JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue2,0,1,null);
-        JavafxHelper.addStringToDoubleConverter(bundleXPosValue,null,null,null);
-        JavafxHelper.addStringToDoubleConverter(bundleYPosValue,null,null,null);
-        JavafxHelper.addStringToDoubleConverter(bundleAngleValue,null,-360.0,360.0);
+        JavafxHelper.addStringToDoubleConverter(bundleXPosValue,0.0,null,null);
+        JavafxHelper.addStringToDoubleConverter(bundleYPosValue,0.0,null,null);
+        JavafxHelper.addStringToDoubleConverter(bundleAngleValue,0.0,-360.0,360.0);
         initTextFieldsHandlers();
     }
 

@@ -3,6 +3,8 @@ package helpers;
 import domain.dtos.BundleDto;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.util.StringConverter;
 import presentation.controllers.BundleEditorController;
 import presentation.controllers.IController;
 import presentation.Main;
@@ -11,6 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 public class JavafxHelper {
 
@@ -76,6 +81,7 @@ public class JavafxHelper {
     public static void addStringToDoubleConverter(TextField textField, Double defaultValue, Double min, Double max) {
         ChangeListener<String> stringToDoubleConverter = (observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
+                if(!newValue.equals("-") && !newValue.equals(".-") && !newValue.equals("."))
                 try {
                     double value = Double.parseDouble(newValue);
                     if (min != null && value < min || max != null && value > max)
@@ -90,6 +96,7 @@ public class JavafxHelper {
 
     public static void addStringToIntegerConverter(TextField textField, Integer defaultValue, Integer min, Integer max) {
         ChangeListener<String> stringToIntegerConverter = (observable, oldValue, newValue) -> {
+
             if (!newValue.isEmpty()) {
                 try {
                     int value = Integer.parseInt(newValue);
@@ -102,6 +109,7 @@ public class JavafxHelper {
         };
         addChangeAndFocusListeners(textField, stringToIntegerConverter, defaultValue);
     }
+
 
     private static void addChangeAndFocusListeners(TextField textField, ChangeListener<String> stringConverter, Number defaultValue) {
         textField.textProperty().addListener(stringConverter);

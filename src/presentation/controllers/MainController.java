@@ -156,7 +156,11 @@ public class MainController extends BaseController {
     }
     public void clearAllBundleInfo() {
         bundleBarcodeValue.clear();
+<<<<<<< HEAD
         bundleLengthValue.clear();
+=======
+        bundleLengthValue.setText("");
+>>>>>>> fixed clear
         bundleWidthValue.clear();
         bundleHeightValue.clear();
         bundleEssenceValue.clear();

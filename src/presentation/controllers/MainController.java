@@ -44,7 +44,8 @@ public class MainController extends BaseController {
 
     private ElevationViewPresenter elevationViewPresenter;
     private YardPresenter yardPresenter;
-    private Map<Rectangle, BundleDto> rectangleBundleDtoMap = new HashMap<>();
+
+    //private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
     private List<BundleDto> observableBundleList;
     private BundleDto selectedBundle;
 
@@ -102,9 +103,6 @@ public class MainController extends BaseController {
     @FXML
     public ToggleButton snapGridButton;
 
-
-    @FXML
-    public VBox elevationViewBox;
 
     @FXML
     public void initialize() {
@@ -397,7 +395,7 @@ public class MainController extends BaseController {
                     yardPresenter.setTopSelectedBundle(null);
                     clearAllBundleInfo();
                 }
-                clearElevationView();
+                //clearElevationView();
             });
             return row;
         });
@@ -439,8 +437,9 @@ public class MainController extends BaseController {
         bundleAngleValue.setText(String.valueOf(bundle.angle));
     }
 
-    public void updateElevationView(List<BundleDto> bundles) {
-        rectangleBundleDtoMap.clear();
+    /*public void updateElevationView(List<BundleDto> bundles) {
+        rectanglesId.clear();
+>>>>>>> preparing for elevation view tests
         clearElevationView();
         for (BundleDto bundleDto : bundles) {
             BundlePresenter presenter = new BundlePresenter(bundleDto);
@@ -464,30 +463,17 @@ public class MainController extends BaseController {
                 }
             });
         }
-    }
+    }*/
 
-    public void clearElevationView() {
+    /*public void clearElevationView() {
         elevationViewBox.getChildren().clear();
-    }
+    }*/
 
     public void addTableViewBundles(List<BundleDto> bundles) {
         inventorySearchBar.clear();
         observableBundleList = bundles;
         ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
         inventoryTable.setItems(data);
-    }
-
-    private void modifySelectedBundle() {
-        selectedBundle.barcode = bundleBarcodeValue.getText();
-        selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
-        selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
-        selectedBundle.height = Double.parseDouble(bundleHeightValue.getText());
-        selectedBundle.date = bundleDateValue.getValue();
-        selectedBundle.time = LocalTime.of(bundleHourValue.getValue(),bundleMinuteValue.getValue());
-        selectedBundle.essence = bundleEssenceValue.getText();
-        selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
-        selectedBundle.position = new Point2D(Double.parseDouble(bundleXPosValue.getText()),Double.parseDouble(bundleYPosValue.getText()));
-        selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
     }
 
     public void handleMenuFileNew(ActionEvent actionEvent) {

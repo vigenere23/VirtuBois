@@ -78,7 +78,7 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             zPos = (maxHeight - presenter.z)*scaleZ;
 
             BundlePresenter bundlePresenter = new BundlePresenter(presenter);
-            Rectangle rectangle = bundlePresenter.get();
+            Rectangle rectangle = bundlePresenter.getRectangle();
             rectangle.setWidth(presenter.width*scaleX);
             rectangle.setHeight(presenter.height*scaleZ);
             rectangle.setX(xPos - rectangle.getWidth()/2);

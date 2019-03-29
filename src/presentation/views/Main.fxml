@@ -38,7 +38,7 @@
                             <menus>
                                 <Menu mnemonicParsing="false" text="Fichier">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuFileNew" text="Nouveau" />
+                                        <MenuItem mnemonicParsing="false" text="Nouveau" />
                                         <MenuItem mnemonicParsing="false" onAction="#openFile" text="Ouvrir" />
                                         <MenuItem mnemonicParsing="false" onAction="#save" text="Enregistrer" />
                                         <MenuItem mnemonicParsing="false" onAction="#saveAs" text="Enregistrer sous" />
@@ -48,7 +48,7 @@
                                 </Menu>
                                 <Menu mnemonicParsing="false" text="Aide">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuHelpAbout" text="À propos" />
+                                        <MenuItem mnemonicParsing="false" text="À propos" />
                                     </items>
                                 </Menu>
                             </menus>

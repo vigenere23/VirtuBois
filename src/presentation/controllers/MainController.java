@@ -5,7 +5,6 @@ import domain.entities.Yard;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
-import helpers.Point2D;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -15,7 +14,6 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
@@ -30,7 +28,6 @@ import javafx.scene.text.Font;
 
 import presentation.presenters.BundlePresenter;
 import presentation.presenters.YardPresenter;
-
 
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -49,41 +46,65 @@ public class MainController extends BaseController {
     private List<BundleDto> observableBundleList;
     private BundleDto selectedBundle;
 
-    @FXML Pane root;
-    @FXML Pane yardWrapper;
+    @FXML
+    Pane root;
+    @FXML
+    Pane yardWrapper;
 
-    //@FXML public ListView listView;modifySelectedBundle
-    @FXML public TextField inventorySearchBar;
-    @FXML public TableView<BundleDto> inventoryTable;
-    @FXML public TableColumn codeColumn;
-    @FXML public TableColumn typeColumn;
-    @FXML public TableColumn sizeColumn;
+    @FXML
+    public TextField inventorySearchBar;
+    @FXML
+    public TableView<BundleDto> inventoryTable;
+    @FXML
+    public TableColumn codeColumn;
+    @FXML
+    public TableColumn typeColumn;
+    @FXML
+    public TableColumn sizeColumn;
 
-    @FXML public TextField bundleBarcodeValue;
-    @FXML public TextField bundleLengthValue;
-    @FXML public TextField bundleWidthValue;
-    @FXML public TextField bundleHeightValue;
-    @FXML public DatePicker bundleDateValue;
-    @FXML public Spinner<Integer> bundleHourValue;
-    @FXML public Spinner<Integer> bundleMinuteValue;
-    @FXML public TextField bundleEssenceValue;
-    @FXML public TextField bundlePlankSizeValue1;
-    @FXML public TextField bundlePlankSizeValue2;
-    @FXML public TextField bundleXPosValue;
-    @FXML public TextField bundleYPosValue;
-    @FXML public TextField bundleAngleValue;
+    @FXML
+    public TextField bundleBarcodeValue;
+    @FXML
+    public TextField bundleLengthValue;
+    @FXML
+    public TextField bundleWidthValue;
+    @FXML
+    public TextField bundleHeightValue;
+    @FXML
+    public DatePicker bundleDateValue;
+    @FXML
+    public Spinner<Integer> bundleHourValue;
+    @FXML
+    public Spinner<Integer> bundleMinuteValue;
+    @FXML
+    public TextField bundleEssenceValue;
+    @FXML
+    public TextField bundlePlankSizeValue1;
+    @FXML
+    public TextField bundlePlankSizeValue2;
+    @FXML
+    public TextField bundleXPosValue;
+    @FXML
+    public TextField bundleYPosValue;
+    @FXML
+    public TextField bundleAngleValue;
 
-    @FXML public ToggleButton pointerButton;
-    @FXML public ToggleButton addBundleButton;
-    @FXML public ToggleButton deleteButton;
-    @FXML public ToggleButton snapGridButton;
+    @FXML
+    public ToggleButton pointerButton;
+    @FXML
+    public ToggleButton addBundleButton;
+    @FXML
+    public ToggleButton deleteButton;
+    @FXML
+    public ToggleButton snapGridButton;
 
     public boolean gridIsOn;
 
-    @FXML public VBox elevationViewBox;
     @FXML
-    public void initialize()
-    {
+    public VBox elevationViewBox;
+
+    @FXML
+    public void initialize() {
         editorMode = new SimpleObjectProperty<>();
 
         initTableView();
@@ -99,6 +120,7 @@ public class MainController extends BaseController {
         gridIsOn = false;
     }
 
+    //PRIVATE METHODS
 
     private void setEventHandlers() {
         root.setOnKeyPressed(event -> {
@@ -141,26 +163,26 @@ public class MainController extends BaseController {
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
 
-    private void initBundleInfo(){
-        JavafxHelper.addStringToDoubleConverter(bundleLengthValue,null,0.0, null);
-        JavafxHelper.addStringToDoubleConverter(bundleWidthValue,null,  0.0, null);
-        JavafxHelper.addStringToDoubleConverter(bundleHeightValue,null,0.0,null);
-        bundleHourValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23,0));
+    private void initBundleInfo() {
+        JavafxHelper.addStringToDoubleConverter(bundleLengthValue, null, 0.0, null);
+        JavafxHelper.addStringToDoubleConverter(bundleWidthValue, null, 0.0, null);
+        JavafxHelper.addStringToDoubleConverter(bundleHeightValue, null, 0.0, null);
+        bundleHourValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0));
         bundleHourValue.getValueFactory().setValue(0);
-        bundleMinuteValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,59,0));
+        bundleMinuteValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
         bundleMinuteValue.getValueFactory().setValue(0);
-        JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue1,0,1,null);
-        JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue2,0,1,null);
-        JavafxHelper.addStringToDoubleConverter(bundleXPosValue,0.0,null,null);
-        JavafxHelper.addStringToDoubleConverter(bundleYPosValue,0.0,null,null);
-        JavafxHelper.addStringToDoubleConverter(bundleAngleValue,0.0,-360.0,360.0);
+        JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue1, 0, 1, null);
+        JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue2, 0, 1, null);
+        JavafxHelper.addStringToDoubleConverter(bundleXPosValue, 0.0, null, null);
+        JavafxHelper.addStringToDoubleConverter(bundleYPosValue, 0.0, null, null);
+        JavafxHelper.addStringToDoubleConverter(bundleAngleValue, 0.0, -360.0, 360.0);
         initTextFieldsHandlers();
     }
 
-    private void initTextFieldsHandlers(){
+    private void initTextFieldsHandlers() {
 
         bundleBarcodeValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
                     if (!bundleBarcodeValue.getText().isEmpty()) {
                         selectedBundle.barcode = bundleBarcodeValue.getText();
@@ -173,8 +195,8 @@ public class MainController extends BaseController {
         });
 
         bundleLengthValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(selectedBundle != null) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
                     if (!bundleLengthValue.getText().isEmpty() && !bundleLengthValue.getText().equals("-") && !bundleLengthValue.getText().equals(".") && !bundleLengthValue.getText().equals("-.")) {
                         selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
                         larmanController.modifyBundleProperties(selectedBundle);
@@ -187,7 +209,7 @@ public class MainController extends BaseController {
         });
 
         bundleWidthValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
                     if (!bundleWidthValue.getText().isEmpty() && !bundleWidthValue.getText().equals("-") && !bundleWidthValue.getText().equals(".") && !bundleWidthValue.getText().equals("-.")) {
                         selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
@@ -200,7 +222,7 @@ public class MainController extends BaseController {
         });
 
         bundleHeightValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
 
                     if (!bundleHeightValue.getText().isEmpty() && !bundleHeightValue.getText().equals("-") && !bundleHeightValue.getText().equals(".") && !bundleHeightValue.getText().equals("-.")) {
@@ -214,8 +236,8 @@ public class MainController extends BaseController {
         });
 
         bundleDateValue.setOnAction(event -> {
-            if(selectedBundle != null) {
-                if(bundleDateValue.getValue() != null) {
+            if (selectedBundle != null) {
+                if (bundleDateValue.getValue() != null) {
                     if (bundleDateValue.getValue() != selectedBundle.date) {
                         selectedBundle.date = bundleDateValue.getValue();
                         larmanController.modifyBundleProperties(selectedBundle);
@@ -227,9 +249,9 @@ public class MainController extends BaseController {
         });
 
         bundleHourValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
-                    selectedBundle.time = LocalTime.of(bundleHourValue.getValue(),bundleMinuteValue.getValue());
+                    selectedBundle.time = LocalTime.of(bundleHourValue.getValue(), bundleMinuteValue.getValue());
                     larmanController.modifyBundleProperties(selectedBundle);
                     yardPresenter.draw();
                     updateBundleInfo(selectedBundle);
@@ -238,9 +260,9 @@ public class MainController extends BaseController {
         });
 
         bundleMinuteValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
-                    selectedBundle.time = LocalTime.of(bundleHourValue.getValue(),bundleMinuteValue.getValue());
+                    selectedBundle.time = LocalTime.of(bundleHourValue.getValue(), bundleMinuteValue.getValue());
                     larmanController.modifyBundleProperties(selectedBundle);
                     yardPresenter.draw();
                     updateBundleInfo(selectedBundle);
@@ -249,8 +271,8 @@ public class MainController extends BaseController {
         });
 
         bundleEssenceValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(selectedBundle != null) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
                     if (!bundleEssenceValue.getText().isEmpty()) {
                         selectedBundle.essence = bundleEssenceValue.getText();
                         larmanController.modifyBundleProperties(selectedBundle);
@@ -262,9 +284,9 @@ public class MainController extends BaseController {
         });
 
         bundlePlankSizeValue1.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(selectedBundle != null){
-                    if(!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()){
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+                    if (!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()) {
                         selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
                         larmanController.modifyBundleProperties(selectedBundle);
                         yardPresenter.draw();
@@ -275,9 +297,9 @@ public class MainController extends BaseController {
         });
 
         bundlePlankSizeValue2.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(selectedBundle != null){
-                    if(!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()){
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+                    if (!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()) {
                         selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
                         larmanController.modifyBundleProperties(selectedBundle);
                         yardPresenter.draw();
@@ -288,11 +310,11 @@ public class MainController extends BaseController {
         });
 
         bundleXPosValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(selectedBundle != null){
-                    if(!bundleXPosValue.getText().isEmpty() && !bundleXPosValue.getText().equals("-") && !bundleXPosValue.getText().equals(".") && !bundleXPosValue.getText().equals("-.")){
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+                    if (!bundleXPosValue.getText().isEmpty() && !bundleXPosValue.getText().equals("-") && !bundleXPosValue.getText().equals(".") && !bundleXPosValue.getText().equals("-.")) {
                         selectedBundle.position.setX(Double.parseDouble(bundleXPosValue.getText()));
-                        larmanController.modifyBundlePosition(selectedBundle.id,selectedBundle.position);
+                        larmanController.modifyBundlePosition(selectedBundle.id, selectedBundle.position);
                         yardPresenter.draw();
                     }
                     updateBundleInfo(selectedBundle);
@@ -301,11 +323,11 @@ public class MainController extends BaseController {
         });
 
         bundleYPosValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(selectedBundle != null ){
-                    if(!bundleYPosValue.getText().isEmpty() && !bundleYPosValue.getText().equals("-") && !bundleYPosValue.getText().equals(".") && !bundleYPosValue.getText().equals("-.")){
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+                    if (!bundleYPosValue.getText().isEmpty() && !bundleYPosValue.getText().equals("-") && !bundleYPosValue.getText().equals(".") && !bundleYPosValue.getText().equals("-.")) {
                         selectedBundle.position.setY(Double.parseDouble(bundleYPosValue.getText()));
-                        larmanController.modifyBundlePosition(selectedBundle.id,selectedBundle.position);
+                        larmanController.modifyBundlePosition(selectedBundle.id, selectedBundle.position);
                         yardPresenter.draw();
                     }
                     updateBundleInfo(selectedBundle);
@@ -314,9 +336,9 @@ public class MainController extends BaseController {
         });
 
         bundleAngleValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(selectedBundle != null){
-                    if(!bundleAngleValue.getText().isEmpty() && !bundleAngleValue.getText().equals("-") && !bundleAngleValue.getText().equals(".") && !bundleAngleValue.getText().equals("-.")){
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+                    if (!bundleAngleValue.getText().isEmpty() && !bundleAngleValue.getText().equals("-") && !bundleAngleValue.getText().equals(".") && !bundleAngleValue.getText().equals("-.")) {
                         selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
                         larmanController.modifyBundleProperties(selectedBundle);
                         yardPresenter.draw();
@@ -329,7 +351,58 @@ public class MainController extends BaseController {
 
     }
 
+    private void initInventorySearchBar() {
+        inventorySearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            FilteredList<BundleDto> filteredData = new FilteredList<>(FXCollections.observableArrayList(observableBundleList));
+            filteredData.setPredicate(bundleDto -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
 
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (bundleDto.getBarcode().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                if (bundleDto.getEssence().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                if (bundleDto.getPlankSize().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+
+                return false;
+
+            });
+            SortedList<BundleDto> sortedData = new SortedList<>(filteredData);
+            sortedData.comparatorProperty().bind(inventoryTable.comparatorProperty());
+            inventoryTable.setItems(sortedData);
+
+        });
+    }
+
+    private void initTableView() {
+        codeColumn.setCellValueFactory(new PropertyValueFactory<BundleDto, String>("barcode"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<BundleDto, String>("essence"));
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<BundleDto, String>("plankSize"));
+        inventoryTable.setRowFactory(tv -> {
+            TableRow<BundleDto> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty()) {
+                    BundleDto bundle = row.getItem();
+                    yardPresenter.setTopSelectedBundle(bundle);
+                    inventoryTable.getSelectionModel().select(bundle);
+                    updateBundleInfo(bundle);
+                } else {
+                    yardPresenter.setTopSelectedBundle(null);
+                    clearAllBundleInfo();
+                }
+                clearElevationView();
+            });
+            return row;
+        });
+    }
+
+    //PUBLIC METHODS
 
     public void clearAllBundleInfo() {
         this.selectedBundle = null;
@@ -376,7 +449,9 @@ public class MainController extends BaseController {
             rectangle.setWidth(200);
             rectangle.setHeight(50);
             rectangle.setRotate(0);
-            if(yardPresenter.getTopSelectedBundle().equals(bundleDto)){rectangle.setEffect(dropShadow);}
+            if (yardPresenter.getTopSelectedBundle().equals(bundleDto)) {
+                rectangle.setEffect(dropShadow);
+            }
             elevationViewBox.getChildren().add(0, rectangle);
             rectanglesId.put(rectangle, bundleDto);
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
@@ -396,87 +471,10 @@ public class MainController extends BaseController {
         elevationViewBox.getChildren().clear();
     }
 
-    private void initInventorySearchBar(){
-            inventorySearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-                FilteredList<BundleDto> filteredData = new FilteredList<>(FXCollections.observableArrayList(observableBundleList));
-                filteredData.setPredicate(bundleDto -> {
-                    if (newValue == null || newValue.isEmpty()) {
-                        return true;
-                    }
-
-                    String lowerCaseFilter = newValue.toLowerCase();
-                    if (bundleDto.getBarcode().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    }
-                    if (bundleDto.getEssence().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    }
-                    if (bundleDto.getPlankSize().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    }
-
-                        return false;
-
-                });
-                SortedList<BundleDto> sortedData = new SortedList<>(filteredData);
-                sortedData.comparatorProperty().bind(inventoryTable.comparatorProperty());
-                inventoryTable.setItems(sortedData);
-
-            });
-    }
-
-    private void initTableView() {
-        codeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("barcode"));
-        typeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("essence"));
-        sizeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("plankSize"));
-        inventoryTable.setRowFactory( tv ->{
-            TableRow<BundleDto> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(!row.isEmpty()){
-                    BundleDto bundle = row.getItem();
-                    yardPresenter.setTopSelectedBundle(bundle);
-                    inventoryTable.getSelectionModel().select(bundle);
-                    updateBundleInfo(bundle);
-                }
-                else{
-                    yardPresenter.setTopSelectedBundle(null);
-                    clearAllBundleInfo();
-                }
-                clearElevationView();
-            });
-            return row;
-        });
-    }
-
     public void addTableViewBundles(List<BundleDto> bundles) {
         inventorySearchBar.clear();
         observableBundleList = bundles;
         ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
         inventoryTable.setItems(data);
-    }
-
-    private void modifySelectedBundle() {
-        selectedBundle.barcode = bundleBarcodeValue.getText();
-        selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
-        selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
-        selectedBundle.height = Double.parseDouble(bundleHeightValue.getText());
-        selectedBundle.date = bundleDateValue.getValue();
-        selectedBundle.time = LocalTime.of(bundleHourValue.getValue(),bundleMinuteValue.getValue());
-        selectedBundle.essence = bundleEssenceValue.getText();
-        selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
-        selectedBundle.position = new Point2D(Double.parseDouble(bundleXPosValue.getText()),Double.parseDouble(bundleYPosValue.getText()));
-        selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
-    }
-
-    public void handleMenuFileNew(ActionEvent actionEvent) {
-        boolean shouldClearYard = FileHelper.newFile(stage, larmanController.getYard());
-        if (shouldClearYard) {
-            larmanController.setYard(new Yard());
-            newFile(actionEvent);
-        }
-    }
-
-    public void handleMenuHelpAbout(ActionEvent actionEvent) {
-        JavafxHelper.popupView("About", "À propos", false, false);
     }
 }

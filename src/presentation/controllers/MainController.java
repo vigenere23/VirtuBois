@@ -5,6 +5,7 @@ import domain.entities.Yard;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
+import helpers.Point2D;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -476,5 +477,38 @@ public class MainController extends BaseController {
         observableBundleList = bundles;
         ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
         inventoryTable.setItems(data);
+    }
+
+    private void modifySelectedBundle() {
+        selectedBundle.barcode = bundleBarcodeValue.getText();
+        selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
+        selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
+        selectedBundle.height = Double.parseDouble(bundleHeightValue.getText());
+        selectedBundle.date = bundleDateValue.getValue();
+        selectedBundle.time = LocalTime.of(bundleHourValue.getValue(),bundleMinuteValue.getValue());
+        selectedBundle.essence = bundleEssenceValue.getText();
+        selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
+        selectedBundle.position = new Point2D(Double.parseDouble(bundleXPosValue.getText()),Double.parseDouble(bundleYPosValue.getText()));
+        selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
+    }
+
+    public void handleMenuFileNew(ActionEvent actionEvent) {
+        FileHelper.newFile(stage, larmanController.getYard());
+    }
+
+    public void handleMenuFileOpen(ActionEvent actionEvent) {
+        FileHelper.openFile(stage, larmanController.getYard());
+    }
+
+    public void handleMenuFileSave(ActionEvent actionEvent) {
+        FileHelper.saveFile(stage, larmanController.getYard());
+    }
+
+    public void handleMenuSaveAs(ActionEvent actionEvent) {
+        FileHelper.saveFileAs(stage, larmanController.getYard());
+    }
+
+    public void handleMenuHelpAbout(ActionEvent actionEvent) {
+        JavafxHelper.popupView("About", "À propos", false, false);
     }
 }

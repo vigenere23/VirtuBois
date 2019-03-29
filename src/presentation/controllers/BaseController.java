@@ -1,6 +1,7 @@
 package presentation.controllers;
 
 import domain.controllers.LarmanController;
+import domain.entities.Yard;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
 import javafx.event.ActionEvent;
@@ -17,22 +18,6 @@ public abstract class BaseController implements IController {
 
     public void setStage(Stage stage) {
         this.stage = stage;
-    }
-
-    public void newFile(ActionEvent actionEvent) {
-        JavafxHelper.loadView(stage, "Main", "Nouvelle Cour", true);
-    }
-
-    public void openFile(ActionEvent actionEvent) {
-        FileHelper.openFile(stage);
-    }
-
-    public void saveAs(ActionEvent actionEvent) {
-        FileHelper.saveFileAs(stage, larmanController.getYard());
-    }
-
-    public void save(ActionEvent actionEvent) {
-        FileHelper.saveFile(stage, larmanController.getYard());
     }
 
     public void quit(ActionEvent actionEvent) {

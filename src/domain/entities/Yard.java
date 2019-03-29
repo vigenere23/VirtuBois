@@ -18,7 +18,9 @@ public class Yard implements Serializable {
 
     public Yard() {
         setBundles(new HashMap<>());
+        //setLift(new Lift());
     }
+
     public Yard(Map<String, Bundle> bundles) {
         setBundles(bundles);
         //setLift(lift);

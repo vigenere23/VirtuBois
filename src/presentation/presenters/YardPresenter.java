@@ -15,7 +15,6 @@ import javafx.scene.shape.Line;
 import presentation.controllers.MainController;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class YardPresenter extends Pane implements IPresenter {
@@ -50,7 +49,7 @@ public class YardPresenter extends Pane implements IPresenter {
         translateVector = new Point2D(0, 0);
         selectionOffsetVector = new Point2D(0, 0);
         mousePositionLabel = new Label("x:0  y:0");
-        mousePositionLabel.setAlignment(Pos.BOTTOM_RIGHT);// TODO Not working...
+        mousePositionLabel.setAlignment(Pos.BOTTOM_RIGHT);
         xAxis = new Line();
         yAxis = new Line();
 

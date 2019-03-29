@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public abstract class Drawable implements Serializable
 {
+    private static final long serialVersionUID = 8150050354543139242L;
     protected Point2D position;
     protected double angle;
     protected double width;

@@ -6,13 +6,11 @@ import domain.entities.Yard;
 import helpers.Converter;
 import helpers.Point2D;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class LarmanController implements Serializable {
+public class LarmanController {
     private static final LarmanController instance = new LarmanController();
     private Yard yard;
 

@@ -3,11 +3,10 @@ package domain.dtos;
 import domain.entities.Bundle;
 import helpers.Point2D;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class BundleDto implements Serializable {
+public class BundleDto {
     public String id;
     public String color;
     public double height;

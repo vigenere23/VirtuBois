@@ -9,10 +9,6 @@ public class GeomHelper {
     public static boolean pointIsInsideRectangle(Point2D point, CenteredRectangle rectangle) {
         List<Point2D> points = rectangle.getPoints();
 
-        Point2D a = new Point2D(-1, -1);
-        Point2D b = new Point2D(2, -1);
-        Point2D c = new Point2D(-1, -1);
-
         double totalArea = 0;
         for (int i = 0; i < points.size(); i++) {
             totalArea += getTriangleArea(points.get(i), points.get((i+1) % points.size()), point);

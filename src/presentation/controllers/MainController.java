@@ -1,11 +1,9 @@
 package presentation.controllers;
 
-import com.sun.org.apache.bcel.internal.generic.ANEWARRAY;
 import domain.dtos.BundleDto;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
-import helpers.Point2D;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -18,22 +16,15 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
-import presentation.presenters.BundlePresenter;
 import presentation.presenters.ElevationViewPresenter;
 import presentation.presenters.YardPresenter;
 
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainController extends BaseController {
 
@@ -62,11 +53,11 @@ public class MainController extends BaseController {
     @FXML
     public TableView<BundleDto> inventoryTable;
     @FXML
-    public TableColumn codeColumn;
+    public TableColumn<BundleDto, String> codeColumn;
     @FXML
-    public TableColumn typeColumn;
+    public TableColumn<BundleDto, String> typeColumn;
     @FXML
-    public TableColumn sizeColumn;
+    public TableColumn<BundleDto, String> sizeColumn;
 
     @FXML
     public TextField bundleBarcodeValue;

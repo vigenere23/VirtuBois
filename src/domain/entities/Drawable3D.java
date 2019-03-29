@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public abstract class Drawable3D extends Drawable implements Serializable
 {
+    private static final long serialVersionUID = 4468277169307936906L;
     protected double z;
 
     public Drawable3D(Point2D position) {

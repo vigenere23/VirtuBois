@@ -3,8 +3,9 @@ package domain.entities;
 import helpers.ConfigHelper;
 import helpers.Point2D;
 
-public class Lift extends Drawable3D
-{
+public class Lift extends Drawable3D {
+    
+    private static final long serialVersionUID = -8784286275740861451L;
     private double armsHeight;
     private double armsWidth;
     private double armsLength;

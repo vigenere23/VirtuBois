@@ -2,6 +2,7 @@ package helpers;
 import java.io.Serializable;
 
 public class Point2D implements Serializable {
+    private static final long serialVersionUID = -1349713650584710055L;
     private double x;
     private double y;
 

@@ -2,18 +2,11 @@ package presentation.controllers;
 
 import domain.dtos.BundleDto;
 import helpers.JavafxHelper;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import javafx.util.StringConverter;
-
-import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 import java.time.LocalTime;
-
-import static javax.xml.bind.DatatypeConverter.parseDouble;
 
 public class BundleEditorController extends BaseController {
     @FXML public TextField barcodeTextField;

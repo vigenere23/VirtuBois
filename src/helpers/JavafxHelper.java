@@ -3,8 +3,6 @@ package helpers;
 import domain.dtos.BundleDto;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.util.StringConverter;
 import presentation.controllers.BundleEditorController;
 import presentation.controllers.IController;
 import presentation.Main;
@@ -13,9 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 
 public class JavafxHelper {
 

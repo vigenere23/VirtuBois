@@ -3,7 +3,7 @@ package domain.entities;
 import helpers.ConfigHelper;
 import helpers.Point2D;
 
-public class Lift extends Drawable
+public class Lift extends Drawable3D
 {
     private double armsHeight;
     private double armsWidth;

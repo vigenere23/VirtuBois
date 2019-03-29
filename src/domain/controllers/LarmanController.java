@@ -7,8 +7,6 @@ import helpers.Converter;
 import helpers.Point2D;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -26,8 +24,8 @@ public class LarmanController implements Serializable {
         return instance;
     }
 
-    public void setYard(Yard yard) {
-        instance.yard = yard;
+    public void setYard(Yard newYard) {
+        yard = newYard;
     }
 
     public Yard getYard() { return yard; }
@@ -117,7 +115,5 @@ public class LarmanController implements Serializable {
         }
         return bundles;
     }
-
-    /**** PRIVATE METHODS ****/
 
 }

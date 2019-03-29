@@ -8,8 +8,6 @@ import helpers.GeomHelper;
 import helpers.Point2D;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 public class Yard implements Serializable {
@@ -21,7 +19,6 @@ public class Yard implements Serializable {
     public Yard() {
         setBundles(new HashMap<>());
     }
-
     public Yard(Map<String, Bundle> bundles) {
         setBundles(bundles);
         //setLift(lift);

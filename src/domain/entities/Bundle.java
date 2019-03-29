@@ -37,8 +37,6 @@ public class Bundle extends Drawable3D implements Serializable
         setBarcode(ConfigHelper.bundleBarcode);
     }
 
-    public Bundle(){}
-
     public String getId() { return id; }
 
     private void initId() {

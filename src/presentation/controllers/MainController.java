@@ -26,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import presentation.presenters.BundlePresenter;
+import presentation.presenters.ElevationViewPresenter;
 import presentation.presenters.YardPresenter;
 
 import java.time.LocalTime;
@@ -40,6 +41,8 @@ public class MainController extends BaseController {
     public boolean gridIsOn;
 
     private DropShadow dropShadow;
+
+    private ElevationViewPresenter elevationViewPresenter;
     private YardPresenter yardPresenter;
     private Map<Rectangle, BundleDto> rectangleBundleDtoMap = new HashMap<>();
     private List<BundleDto> observableBundleList;

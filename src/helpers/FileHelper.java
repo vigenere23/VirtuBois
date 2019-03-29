@@ -62,6 +62,7 @@ public class FileHelper {
                 LarmanController.getInstance().setYard(yardInit);
                 JavafxHelper.loadView(stage, "Main", file.getName(), true);
                 lastFile = file;
+                newFile = false;
             } catch (IOException | ClassNotFoundException ex) {
                 System.out.println(ex);
             }

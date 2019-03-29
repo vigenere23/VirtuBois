@@ -2,7 +2,9 @@ package presentation.controllers;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
+import domain.entities.Yard;
 import enums.EditorMode;
+import helpers.FileHelper;
 import helpers.JavafxHelper;
 import helpers.Point2D;
 import javafx.beans.property.ObjectProperty;
@@ -11,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -471,5 +474,17 @@ public class MainController extends BaseController {
         selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
         selectedBundle.position = new Point2D(Double.parseDouble(bundleXPosValue.getText()),Double.parseDouble(bundleYPosValue.getText()));
         selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
+    }
+
+    public void handleMenuFileNew(ActionEvent actionEvent) {
+        boolean shouldClearYard = FileHelper.newFile(stage, larmanController.getYard());
+        if (shouldClearYard) {
+            larmanController.setYard(new Yard());
+            yardPresenter.draw();
+        }
+    }
+
+    public void handleMenuHelpAbout(ActionEvent actionEvent) {
+        JavafxHelper.popupView("About", "À propos", false, false);
     }
 }

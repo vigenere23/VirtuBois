@@ -2,16 +2,47 @@ package helpers;
 
 import domain.controllers.LarmanController;
 import domain.entities.Yard;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.Optional;
 
 public class FileHelper {
 
     private static final String FILE_DESCRIPTOR = "SER";
     private static final String EXTENSION = ".ser";
+
     private static File lastFile = null;
+
+    public static boolean newFile(Stage stage, Yard yard) {
+        if (yard.getBundles().size() != 0) {
+            Optional<ButtonType> result = FileHelper.popupConfirmation(
+                    "Enregistrer",
+                    "Voulez-vous enregistrer avant de continuer?"
+            );
+
+            if (result.isPresent()) {
+                switch (result.get().getButtonData()) {
+                    case YES:
+                        saveFile(stage, yard);
+                        newFile(stage);
+                        return true;
+                    case NO:
+                        newFile(stage);
+                        return true;
+                }
+            }
+        }
+        else {
+            newFile(stage);
+            return true;
+        }
+        return false;
+    }
 
     public static void newFile(Stage stage) {
         JavafxHelper.loadView(stage, "Main", "Nouvelle Cour", true);
@@ -87,7 +118,7 @@ public class FileHelper {
         return file;
     }
 
-    public static String getExtension(File file) {
+    private static String getExtension(File file) {
         String extension = "";
 
         int i = file.getName().lastIndexOf('.');
@@ -95,6 +126,19 @@ public class FileHelper {
             extension = file.getName().substring(i);
         }
         return extension;
+    }
+
+    public static Optional<ButtonType> popupConfirmation(String title, String header) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+
+        ButtonType yesButton = new ButtonType("Oui", ButtonBar.ButtonData.YES);
+        ButtonType noButton = new ButtonType("Non", ButtonBar.ButtonData.NO);
+        ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(cancelButton, noButton, yesButton);
+
+        return alert.showAndWait();
     }
 
 }

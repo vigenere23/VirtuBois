@@ -37,9 +37,9 @@ public class MainController extends BaseController {
 
     public ObjectProperty<EditorMode> editorMode;
     public ToggleGroup editorModeToggleGroup;
+    public boolean gridIsOn;
 
-    DropShadow dropShadow;
-
+    private DropShadow dropShadow;
     private YardPresenter yardPresenter;
     private Map<Rectangle, BundleDto> rectangleBundleDtoMap = new HashMap<>();
     private List<BundleDto> observableBundleList;
@@ -97,7 +97,6 @@ public class MainController extends BaseController {
     @FXML
     public ToggleButton snapGridButton;
 
-    public boolean gridIsOn;
 
     @FXML
     public VBox elevationViewBox;
@@ -118,8 +117,6 @@ public class MainController extends BaseController {
         dropShadow.setColor(Color.GREY);
         gridIsOn = false;
     }
-
-    //PRIVATE METHODS
 
     private void setEventHandlers() {
         root.setOnKeyPressed(event -> {
@@ -400,8 +397,6 @@ public class MainController extends BaseController {
             return row;
         });
     }
-
-    //PUBLIC METHODS
 
     public void clearAllBundleInfo() {
         this.selectedBundle = null;

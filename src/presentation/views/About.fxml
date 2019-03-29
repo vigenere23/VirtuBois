@@ -41,7 +41,7 @@
                         <String fx:value="bold-text" />
                      </styleClass>
                   </Label>
-                  <Label styleClass="white-text" text="0.1" GridPane.columnIndex="1" />
+                  <Label styleClass="white-text" text="0.3" GridPane.columnIndex="1" />
                   <Label styleClass="white-text" text="L'éditeur de cours à bois le plus avancé!" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>

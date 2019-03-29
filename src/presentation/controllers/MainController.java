@@ -1,6 +1,5 @@
 package presentation.controllers;
 
-import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import domain.entities.Yard;
 import enums.EditorMode;
@@ -33,8 +32,6 @@ import presentation.presenters.BundlePresenter;
 import presentation.presenters.YardPresenter;
 
 
-import java.beans.EventHandler;
-import java.security.Key;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +44,6 @@ public class MainController extends BaseController {
 
     DropShadow dropShadow;
 
-    private Font windowFont;
     private YardPresenter yardPresenter;
     private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
     private List<BundleDto> observableBundleList;
@@ -56,7 +52,7 @@ public class MainController extends BaseController {
     @FXML Pane root;
     @FXML Pane yardWrapper;
 
-    //@FXML public ListView listView;
+    //@FXML public ListView listView;modifySelectedBundle
     @FXML public TextField inventorySearchBar;
     @FXML public TableView<BundleDto> inventoryTable;
     @FXML public TableColumn codeColumn;
@@ -89,8 +85,6 @@ public class MainController extends BaseController {
     public void initialize()
     {
         editorMode = new SimpleObjectProperty<>();
-
-        windowFont = new Font("System", 13);
 
         initTableView();
         initInventorySearchBar();
@@ -373,8 +367,6 @@ public class MainController extends BaseController {
         bundleAngleValue.setText(String.valueOf(bundle.angle));
     }
 
-
-
     public void updateElevationView(List<BundleDto> bundles) {
         rectanglesId.clear();
         clearElevationView();
@@ -463,7 +455,7 @@ public class MainController extends BaseController {
         inventoryTable.setItems(data);
     }
 
-    private void modifySelectedBundle(){
+    private void modifySelectedBundle() {
         selectedBundle.barcode = bundleBarcodeValue.getText();
         selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
         selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
@@ -480,7 +472,7 @@ public class MainController extends BaseController {
         boolean shouldClearYard = FileHelper.newFile(stage, larmanController.getYard());
         if (shouldClearYard) {
             larmanController.setYard(new Yard());
-            yardPresenter.draw();
+            newFile(actionEvent);
         }
     }
 

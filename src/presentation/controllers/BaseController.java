@@ -20,7 +20,7 @@ public abstract class BaseController implements IController {
     }
 
     public void newFile(ActionEvent actionEvent) {
-        FileHelper.newFile(stage);
+        JavafxHelper.loadView(stage, "Main", "Nouvelle Cour", true);
     }
 
     public void openFile(ActionEvent actionEvent) {

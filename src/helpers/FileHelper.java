@@ -17,6 +17,7 @@ public class FileHelper {
     private static final String EXTENSION = ".ser";
 
     private static File lastFile = null;
+    private static boolean newFile = true;
 
     public static boolean newFile(Stage stage, Yard yard) {
         if (yard.getBundles().size() != 0) {
@@ -29,24 +30,23 @@ public class FileHelper {
                 switch (result.get().getButtonData()) {
                     case YES:
                         saveFile(stage, yard);
-                        newFile(stage);
+                        newFile();
                         return true;
                     case NO:
-                        newFile(stage);
+                        newFile();
                         return true;
                 }
             }
         }
         else {
-            newFile(stage);
+            newFile();
             return true;
         }
         return false;
     }
 
-    public static void newFile(Stage stage) {
-        JavafxHelper.loadView(stage, "Main", "Nouvelle Cour", true);
-        lastFile = null;
+    public static void newFile() {
+        newFile = true;
     }
 
     public static void openFile(Stage stage) {
@@ -69,7 +69,7 @@ public class FileHelper {
     }
 
     public static void saveFile(Stage stage, Yard yard) {
-        if (lastFile == null) {
+        if (newFile) {
             saveFileAs(stage, yard);
         }
         else {
@@ -92,6 +92,7 @@ public class FileHelper {
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
             lastFile = ensureExtension(file);
+            newFile = false;
             saveFile(stage, yard);
         }
     }

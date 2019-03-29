@@ -24,8 +24,8 @@ public class LarmanController implements Serializable {
         return instance;
     }
 
-    public void setYard(Yard yard) {
-        instance.yard = yard;
+    public void setYard(Yard newYard) {
+        yard = newYard;
     }
 
     public Yard getYard() { return yard; }

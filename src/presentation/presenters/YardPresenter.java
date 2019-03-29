@@ -2,7 +2,6 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
-import domain.entities.Yard;
 import enums.EditorMode;
 import helpers.*;
 import helpers.Point2D;
@@ -200,7 +199,7 @@ public class YardPresenter extends Pane implements IPresenter {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
     }
 
-    private void updateSelectedBundles() {
+    public void updateSelectedBundles() {
         List<BundleDto> selectedBundles = larmanController.getSelectedBundles(mousePositionInRealCoords);
         if (!selectedBundles.isEmpty()) {
             topSelectedBundle = larmanController.getTopBundle(mousePositionInRealCoords);
@@ -273,7 +272,6 @@ public class YardPresenter extends Pane implements IPresenter {
             mainController.addTableViewBundles(larmanController.getBundles());
         }
         drawOtherGraphics();
-
     }
 
     private void drawAxes() {
@@ -374,9 +372,5 @@ public class YardPresenter extends Pane implements IPresenter {
 
     public BundleDto getTopSelectedBundle(){
         return topSelectedBundle;
-    }
-
-    public Yard getYard(){
-        return getYard();
     }
 }

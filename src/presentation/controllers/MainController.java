@@ -30,6 +30,8 @@ import presentation.presenters.BundlePresenter;
 import presentation.presenters.YardPresenter;
 
 
+import java.beans.EventHandler;
+import java.security.Key;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
@@ -155,21 +157,181 @@ public class MainController extends BaseController {
         JavafxHelper.addStringToDoubleConverter(bundleXPosValue,null,null,null);
         JavafxHelper.addStringToDoubleConverter(bundleYPosValue,null,null,null);
         JavafxHelper.addStringToDoubleConverter(bundleAngleValue,null,-360.0,360.0);
+        initTextFieldsHandlers();
+    }
+
+    private void initTextFieldsHandlers(){
 
         bundleBarcodeValue.setOnKeyPressed(event -> {
             if(event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
                     if (!bundleBarcodeValue.getText().isEmpty()) {
-                        modifySelectedBundle();
+                        selectedBundle.barcode = bundleBarcodeValue.getText();
                         larmanController.modifyBundleProperties(selectedBundle);
                         yardPresenter.draw();
-                    } else {
-                        bundleBarcodeValue.setText(selectedBundle.barcode);
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundleLengthValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                if(selectedBundle != null) {
+                    if (!bundleLengthValue.getText().isEmpty()) {
+                        selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
+                        larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+
+            }
+        });
+
+        bundleWidthValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+                    if (!bundleWidthValue.getText().isEmpty()) {
+                        selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
+                        larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundleHeightValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+
+                    if (!bundleHeightValue.getText().isEmpty()) {
+                        selectedBundle.height = Double.parseDouble(bundleHeightValue.getText());
+                        larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundleDateValue.setOnAction(event -> {
+            if(selectedBundle != null) {
+                if(bundleDateValue.getValue() != null) {
+                    if (bundleDateValue.getValue() != selectedBundle.date) {
+                        selectedBundle.date = bundleDateValue.getValue();
+                        larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
+                        updateBundleInfo(selectedBundle);
                     }
                 }
             }
         });
+
+        bundleHourValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+                    selectedBundle.time = LocalTime.of(bundleHourValue.getValue(),bundleMinuteValue.getValue());
+                    larmanController.modifyBundleProperties(selectedBundle);
+                    yardPresenter.draw();
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundleMinuteValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+                    selectedBundle.time = LocalTime.of(bundleHourValue.getValue(),bundleMinuteValue.getValue());
+                    larmanController.modifyBundleProperties(selectedBundle);
+                    yardPresenter.draw();
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundleEssenceValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                if(selectedBundle != null) {
+                    if (!bundleEssenceValue.getText().isEmpty()) {
+                        selectedBundle.essence = bundleEssenceValue.getText();
+                        larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundlePlankSizeValue1.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                if(selectedBundle != null){
+                    if(!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()){
+                        selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
+                        larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundlePlankSizeValue2.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                if(selectedBundle != null){
+                    if(!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()){
+                        selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
+                        larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundleXPosValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                if(selectedBundle != null){
+                    if(!bundleXPosValue.getText().isEmpty()){
+                        selectedBundle.position.setX(Double.parseDouble(bundleXPosValue.getText()));
+                        larmanController.modifyBundlePosition(selectedBundle.id,selectedBundle.position);
+                        yardPresenter.draw();
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundleYPosValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                if(selectedBundle != null){
+                    if(!bundleYPosValue.getText().isEmpty()){
+                        selectedBundle.position.setY(Double.parseDouble(bundleYPosValue.getText()));
+                        larmanController.modifyBundlePosition(selectedBundle.id,selectedBundle.position);
+                        yardPresenter.draw();
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+        bundleAngleValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                if(selectedBundle != null){
+                    if(!bundleAngleValue.getText().isEmpty()){
+                        selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
+                        larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
+                    }
+                    updateBundleInfo(selectedBundle);
+                }
+            }
+        });
+
+
     }
+
 
 
     public void clearAllBundleInfo() {

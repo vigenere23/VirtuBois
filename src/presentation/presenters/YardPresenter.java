@@ -262,6 +262,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private void deleteBundle(String id) {
         larmanController.deleteBundle(id);
         mainController.editorMode.setValue(EditorMode.POINTER);
+        mainController.clearAllBundleInfo();
         draw();
     }
 

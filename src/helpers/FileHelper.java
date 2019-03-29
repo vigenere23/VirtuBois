@@ -9,8 +9,8 @@ import java.io.*;
 
 public class FileHelper {
 
-    private static File lastDirectory = new File(System.getProperty("user.home"));
-    private static String lastFilename = "Yard.ser";
+    private static final String FILE_DESCRIPTOR = "SER";
+    private static final String EXTENSION = ".ser";
     private static File lastFile = null;
 
     public static void newFile(Stage stage) {
@@ -30,7 +30,7 @@ public class FileHelper {
                 Yard yardInit = (Yard) objectInputStream.readObject();
                 LarmanController.getInstance().setYard(yardInit);
                 JavafxHelper.loadView(stage, "Main", file.getName(), true);
-                updateLastFile(file);
+                lastFile = file;
             } catch (IOException | ClassNotFoundException ex) {
                 System.out.println(ex);
             }
@@ -60,26 +60,41 @@ public class FileHelper {
         FileChooser fileChooser = initFileChooser("Enregistrer sous");
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
-            updateLastFile(file);
+            lastFile = ensureExtension(file);
             saveFile(stage, yard);
         }
     }
 
-    private static void updateLastFile(File file) {
-        lastDirectory = file.getParentFile();
-        lastFilename = file.getName();
-        lastFile = file;
-    }
-
     private static FileChooser initFileChooser(String title) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER", "*.ser"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(FILE_DESCRIPTOR + " files (*" + EXTENSION + ")", "*" + EXTENSION));
         fileChooser.setTitle(title);
         if (lastFile != null) {
-            fileChooser.setInitialDirectory(lastDirectory);
-            fileChooser.setInitialFileName(lastFilename);
+            fileChooser.setInitialDirectory(lastFile.getParentFile());
+            fileChooser.setInitialFileName(lastFile.getName());
+        }
+        else {
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            fileChooser.setInitialFileName("Yard.ser");
         }
         return fileChooser;
+    }
+
+    private static File ensureExtension(File file) {
+        if (!getExtension(file).equals(EXTENSION)) {
+            file = new File(file.getPath() + EXTENSION);
+        }
+        return file;
+    }
+
+    public static String getExtension(File file) {
+        String extension = "";
+
+        int i = file.getName().lastIndexOf('.');
+        if (i > 0) {
+            extension = file.getName().substring(i);
+        }
+        return extension;
     }
 
 }

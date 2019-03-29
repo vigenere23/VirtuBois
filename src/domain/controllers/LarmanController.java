@@ -39,8 +39,18 @@ public class LarmanController implements Serializable {
         return new BundleDto(yard.lastBundleCreated);
     }
 
-    private List<Bundle> sortBundles(List<Bundle> bundles) {
+    private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));
+        return bundles;
+    }
+
+    private List<BundleDto> sortBundlesY(List<BundleDto> bundles) {
+        bundles.sort(Comparator.comparing(BundleDto::getY));
+        return bundles;
+    }
+
+    private List<BundleDto> sortBundlesX(List<BundleDto> bundles) {
+        bundles.sort(Comparator.comparing(BundleDto::getX));
         return bundles;
     }
 
@@ -48,9 +58,9 @@ public class LarmanController implements Serializable {
         return Converter.fromBundlesToBundleDtos(yard.getBundles());
     }
 
-    public List<BundleDto> getBundlesSorted() {
+    public List<BundleDto> getBundlesSortedZ() {
         return Converter.fromBundlesToBundleDtos(
-                sortBundles(yard.getBundles())
+                sortBundlesZ(yard.getBundles())
         );
     }
 
@@ -63,7 +73,7 @@ public class LarmanController implements Serializable {
     public List<BundleDto> getSelectedBundles(Point2D position) {
         List<Bundle> bundles = yard.getBundlesAtPosition(position);
         return Converter.fromBundlesToBundleDtos(
-                sortBundles(bundles)
+                sortBundlesZ(bundles)
         );
     }
     

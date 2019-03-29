@@ -53,4 +53,9 @@ public class BundleDto implements Serializable {
     public String getPlankSize() {
         return plankSize;
     }
+
+    public double getX() {return position.getX();}
+
+    public double getY() {return position.getY();}
+
 }

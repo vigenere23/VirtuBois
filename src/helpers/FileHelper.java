@@ -18,7 +18,7 @@ public class FileHelper {
     private static final String EXTENSION = ".ser";
 
     private static File lastFile = null;
-    private static boolean newFile = true;
+    private static boolean savedOnce = false;
 
     public static void newFile(Stage stage, Yard yard) {
         if (yard != null && yard.getBundles().size() != 0) {
@@ -40,7 +40,7 @@ public class FileHelper {
     }
 
     public static void newFile(Stage stage) {
-        newFile = true;
+        savedOnce = false;
         JavafxHelper.loadView(stage, "Main", "Nouvelle Cour", true);
     }
 
@@ -75,7 +75,7 @@ public class FileHelper {
                 LarmanController.getInstance().setYard(yardInit);
                 JavafxHelper.loadView(stage, "Main", file.getName(), true);
                 lastFile = file;
-                newFile = false;
+                savedOnce = true;
             } catch (IOException | ClassNotFoundException ex) {
                 System.out.println(ex);
             }
@@ -83,7 +83,7 @@ public class FileHelper {
     }
 
     public static void saveFile(Stage stage, Yard yard) {
-        if (newFile) {
+        if (!savedOnce) {
             saveFileAs(stage, yard);
         }
         else {
@@ -106,7 +106,7 @@ public class FileHelper {
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
             lastFile = ensureExtension(file);
-            newFile = false;
+            savedOnce = true;
             saveFile(stage, yard);
         }
     }

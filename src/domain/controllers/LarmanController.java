@@ -13,7 +13,6 @@ import java.util.List;
 
 public class LarmanController implements Serializable {
     private static final LarmanController instance = new LarmanController();
-    private List<BundleDto> allCollidingBundles = new ArrayList<>();
     private Yard yard;
 
     private LarmanController() {
@@ -34,13 +33,8 @@ public class LarmanController implements Serializable {
 
     public Yard getYard() { return yard; }
 
-    /**** PUBLIC METHODS ****/
     public BundleDto createBundle(Point2D position) {
         return new BundleDto(yard.createBundle(position));
-    }
-
-    public BundleDto getLastBundle() {
-        return new BundleDto(yard.lastBundleCreated);
     }
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {

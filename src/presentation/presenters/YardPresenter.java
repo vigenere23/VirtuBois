@@ -26,7 +26,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
     private BundleDto topSelectedBundle;
     private boolean canDrag;
-    DropShadow dropShadow;
+    private DropShadow dropShadow;
     private int gridDimension = 1;
 
     private Point2D mousePositionInRealCoords;
@@ -106,14 +106,14 @@ public class YardPresenter extends Pane implements IPresenter {
         } else {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (topSelectedBundle != null) {
-                    if(isOverAll(topSelectedBundle)) {
+                    if (isOverAll(topSelectedBundle)) {
                         canDrag = true;
                     }
-                    if(canDrag){
+                    if (canDrag){
                         Point2D planPosition = transformPlanCoordsToRealCoords(new Point2D(event.getX(), event.getY()));
                         if (!mainController.gridIsOn) {
                             larmanController.modifyBundlePosition(topSelectedBundle.id, planPosition);
-                        }else {
+                        } else {
                             larmanController.modifyBundlePosition(topSelectedBundle.id, positionInGrid(planPosition));
                         }
                         draw();
@@ -200,7 +200,7 @@ public class YardPresenter extends Pane implements IPresenter {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
     }
 
-    public void updateSelectedBundles() {
+    private void updateSelectedBundles() {
         List<BundleDto> selectedBundles = larmanController.getSelectedBundles(mousePositionInRealCoords);
         if (!selectedBundles.isEmpty()) {
             topSelectedBundle = larmanController.getTopBundle(mousePositionInRealCoords);
@@ -327,7 +327,7 @@ public class YardPresenter extends Pane implements IPresenter {
         int nextX = (int)(coord1.getX()/gridDimension) * gridDimension;
         int nextY = (int)(coord1.getY()/gridDimension) * gridDimension;
 
-        for (int x = nextX; x <= coord2.getX(); x += gridDimension){
+        for (int x = nextX; x <= coord2.getX(); x += gridDimension) {
             Point2D pointX = transformRealCoordsToPlanCoords(new Point2D(x, 0));
             Line line = new Line();
             line.setStartX(pointX.getX());
@@ -360,7 +360,7 @@ public class YardPresenter extends Pane implements IPresenter {
         List<BundleDto> bundlesToCompare = larmanController.getCollidingBundles(bundleToCheck);
         for (BundleDto bundleDto : bundlesToCompare)
         {
-            if (bundleDto.z > bundleToCheck.z) {return false;}
+            if (bundleDto.z > bundleToCheck.z) return false;
         }
         return true;
     }

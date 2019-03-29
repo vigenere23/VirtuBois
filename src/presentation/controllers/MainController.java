@@ -4,6 +4,7 @@ import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import enums.EditorMode;
 import helpers.JavafxHelper;
+import helpers.Point2D;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -24,19 +25,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
+
 import presentation.presenters.BundlePresenter;
 import presentation.presenters.YardPresenter;
 
-import java.time.LocalDate;
+
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 
 public class MainController extends BaseController {
 
@@ -49,6 +46,7 @@ public class MainController extends BaseController {
     private YardPresenter yardPresenter;
     private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
     private List<BundleDto> observableBundleList;
+    private BundleDto selectedBundle;
 
     @FXML Pane root;
     @FXML Pane yardWrapper;
@@ -144,21 +142,45 @@ public class MainController extends BaseController {
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
 
-    public void initBundleInfo(){
-        JavafxHelper.addStringToDoubleConverter(bundleLengthValue,1.0,0.0, null);
-        JavafxHelper.addStringToDoubleConverter(bundleWidthValue,1.0,  0.0, null);
-        JavafxHelper.addStringToDoubleConverter(bundleHeightValue,1.0,0.0,null);
+    private void initBundleInfo(){
+        JavafxHelper.addStringToDoubleConverter(bundleLengthValue,null,0.0, null);
+        JavafxHelper.addStringToDoubleConverter(bundleWidthValue,null,  0.0, null);
+        JavafxHelper.addStringToDoubleConverter(bundleHeightValue,null,0.0,null);
+        bundleHourValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23,0));
+        bundleHourValue.getValueFactory().setValue(0);
+        bundleMinuteValue.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,59,0));
+        bundleMinuteValue.getValueFactory().setValue(0);
         JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue1,0,1,null);
         JavafxHelper.addStringToIntegerConverter(bundlePlankSizeValue2,0,1,null);
-        JavafxHelper.addStringToDoubleConverter(bundleXPosValue,0.0,null,null);
-        JavafxHelper.addStringToDoubleConverter(bundleYPosValue,0.0,null,null);
-        JavafxHelper.addStringToDoubleConverter(bundleAngleValue,0.0,-360.0,360.0);
+        JavafxHelper.addStringToDoubleConverter(bundleXPosValue,null,null,null);
+        JavafxHelper.addStringToDoubleConverter(bundleYPosValue,null,null,null);
+        JavafxHelper.addStringToDoubleConverter(bundleAngleValue,null,-360.0,360.0);
+
+        bundleBarcodeValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)) {
+                if (selectedBundle != null) {
+                    if (!bundleBarcodeValue.getText().isEmpty()) {
+                        modifySelectedBundle();
+                        larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
+                    } else {
+                        bundleBarcodeValue.setText(selectedBundle.barcode);
+                    }
+                }
+            }
+        });
     }
+
+
     public void clearAllBundleInfo() {
+        this.selectedBundle = null;
         bundleBarcodeValue.clear();
         bundleLengthValue.clear();
         bundleWidthValue.clear();
         bundleHeightValue.clear();
+        bundleDateValue.setValue(null);
+        bundleHourValue.getValueFactory().setValue(0);
+        bundleMinuteValue.getValueFactory().setValue(0);
         bundleEssenceValue.clear();
         bundlePlankSizeValue1.clear();
         bundlePlankSizeValue2.clear();
@@ -169,8 +191,24 @@ public class MainController extends BaseController {
     }
 
     public void updateBundleInfo(BundleDto bundle) {
-
+        this.selectedBundle = bundle;
+        bundleBarcodeValue.setText(bundle.barcode);
+        bundleLengthValue.setText(String.valueOf(bundle.length));
+        bundleWidthValue.setText(String.valueOf(bundle.width));
+        bundleHeightValue.setText(String.valueOf(bundle.height));
+        bundleDateValue.setValue(bundle.date);
+        bundleHourValue.getValueFactory().setValue(bundle.time.getHour());
+        bundleMinuteValue.getValueFactory().setValue(bundle.time.getMinute());
+        bundleEssenceValue.setText(bundle.essence);
+        String[] plankSize = bundle.plankSize.split("x");
+        bundlePlankSizeValue1.setText(plankSize[0]);
+        bundlePlankSizeValue2.setText(plankSize[1]);
+        bundleXPosValue.setText(String.valueOf(bundle.position.getX()));
+        bundleYPosValue.setText(String.valueOf(bundle.position.getY()));
+        bundleAngleValue.setText(String.valueOf(bundle.angle));
     }
+
+
 
     public void updateElevationView(List<BundleDto> bundles) {
         rectanglesId.clear();
@@ -230,7 +268,7 @@ public class MainController extends BaseController {
             });
     }
 
-    public void initTableView() {
+    private void initTableView() {
         codeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("barcode"));
         typeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("essence"));
         sizeColumn.setCellValueFactory( new PropertyValueFactory<BundleDto, String>("plankSize"));
@@ -258,5 +296,18 @@ public class MainController extends BaseController {
         observableBundleList = bundles;
         ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
         inventoryTable.setItems(data);
+    }
+
+    private void modifySelectedBundle(){
+        selectedBundle.barcode = bundleBarcodeValue.getText();
+        selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
+        selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
+        selectedBundle.height = Double.parseDouble(bundleHeightValue.getText());
+        selectedBundle.date = bundleDateValue.getValue();
+        selectedBundle.time = LocalTime.of(bundleHourValue.getValue(),bundleMinuteValue.getValue());
+        selectedBundle.essence = bundleEssenceValue.getText();
+        selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
+        selectedBundle.position = new Point2D(Double.parseDouble(bundleXPosValue.getText()),Double.parseDouble(bundleYPosValue.getText()));
+        selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
     }
 }

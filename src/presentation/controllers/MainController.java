@@ -178,7 +178,7 @@ public class MainController extends BaseController {
         bundleLengthValue.setOnKeyPressed(event -> {
             if(event.getCode().equals(KeyCode.ENTER)){
                 if(selectedBundle != null) {
-                    if (!bundleLengthValue.getText().isEmpty()) {
+                    if (!bundleLengthValue.getText().isEmpty() && !bundleLengthValue.getText().equals("-") && !bundleLengthValue.getText().equals(".") && !bundleLengthValue.getText().equals("-.")) {
                         selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
                         larmanController.modifyBundleProperties(selectedBundle);
                         yardPresenter.draw();
@@ -192,7 +192,7 @@ public class MainController extends BaseController {
         bundleWidthValue.setOnKeyPressed(event -> {
             if(event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
-                    if (!bundleWidthValue.getText().isEmpty()) {
+                    if (!bundleWidthValue.getText().isEmpty() && !bundleWidthValue.getText().equals("-") && !bundleWidthValue.getText().equals(".") && !bundleWidthValue.getText().equals("-.")) {
                         selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
                         larmanController.modifyBundleProperties(selectedBundle);
                         yardPresenter.draw();
@@ -206,7 +206,7 @@ public class MainController extends BaseController {
             if(event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
 
-                    if (!bundleHeightValue.getText().isEmpty()) {
+                    if (!bundleHeightValue.getText().isEmpty() && !bundleHeightValue.getText().equals("-") && !bundleHeightValue.getText().equals(".") && !bundleHeightValue.getText().equals("-.")) {
                         selectedBundle.height = Double.parseDouble(bundleHeightValue.getText());
                         larmanController.modifyBundleProperties(selectedBundle);
                         yardPresenter.draw();

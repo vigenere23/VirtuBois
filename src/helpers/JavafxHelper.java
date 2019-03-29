@@ -81,7 +81,7 @@ public class JavafxHelper {
     public static void addStringToDoubleConverter(TextField textField, Double defaultValue, Double min, Double max) {
         ChangeListener<String> stringToDoubleConverter = (observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
-                if(!newValue.equals("-") && !newValue.equals(".-") && !newValue.equals("."))
+                if(!newValue.equals("-") && !newValue.equals("-.") && !newValue.equals("."))
                 try {
                     double value = Double.parseDouble(newValue);
                     if (min != null && value < min || max != null && value > max)

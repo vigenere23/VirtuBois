@@ -338,10 +338,9 @@ public class YardPresenter extends Pane implements IPresenter {
             line.setStroke(ColorHelper.setOpacity(Color.WHITE, 0.2));
             line.getStrokeDashArray().add(3.0);
             getChildren().add(line);
-
         }
 
-        for (int y = nextY; y >= coord2.getY(); y -= gridDimension){
+        for (int y = nextY; y >= coord2.getY(); y -= gridDimension) {
             Point2D pointY = transformRealCoordsToPlanCoords(new Point2D(0, y));
             Line line = new Line();
             line.setStartY(pointY.getY());
@@ -369,9 +368,5 @@ public class YardPresenter extends Pane implements IPresenter {
     {
         topSelectedBundle = bundle;
         draw();
-    }
-
-    public BundleDto getTopSelectedBundle(){
-        return topSelectedBundle;
     }
 }

@@ -52,6 +52,8 @@ public class MainController extends BaseController {
     Pane root;
     @FXML
     Pane yardWrapper;
+    @FXML
+    Pane elevationViewWrapper;
 
     @FXML
     public TextField inventorySearchBar;

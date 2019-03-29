@@ -102,15 +102,20 @@ public class LarmanController implements Serializable {
         return null;
     }
 
-    public List<BundleDto> getAllCollidingBundles(BundleDto bundleDtoToCheck){
-        if (allCollidingBundles.contains(bundleDtoToCheck)) {
-            return allCollidingBundles;
+    public List<BundleDto> getAllCollidingBundles(List<BundleDto> bundles, BundleDto bundleToCheck){
+        bundles.add(bundleToCheck);
+        for (BundleDto bundle : getCollidingBundles(bundleToCheck)) {
+            int count = 0;
+            for (BundleDto bundleInBundles : bundles) {
+                if (bundleInBundles.id != bundle.id) {
+                    count++;
+                }
+            }
+            if (count == bundles.size()){
+                bundles = getAllCollidingBundles(bundles, bundle);
+            }
         }
-        allCollidingBundles.add(bundleDtoToCheck);
-        for (BundleDto bundle : getCollidingBundles(bundleDtoToCheck)) {
-            getAllCollidingBundles(bundle);
-        }
-        return allCollidingBundles;
+        return bundles;
     }
 
     /**** PRIVATE METHODS ****/

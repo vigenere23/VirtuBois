@@ -25,7 +25,6 @@ public class YardPresenter extends Pane implements IPresenter {
     private Point2D selectionOffsetVector;
 
     private BundleDto topSelectedBundle;
-    private boolean canDrag;
     private DropShadow dropShadow;
     private int gridDimension = 1;
 
@@ -107,15 +106,11 @@ public class YardPresenter extends Pane implements IPresenter {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (topSelectedBundle != null) {
                     if (isOverAll(topSelectedBundle)) {
-                        canDrag = true;
-                    }
-                    if (canDrag){
-                        Point2D planPosition = transformPlanCoordsToRealCoords(new Point2D(event.getX(), event.getY()));
-                        if (!mainController.gridIsOn) {
-                            larmanController.modifyBundlePosition(topSelectedBundle.id, planPosition);
-                        } else {
-                            larmanController.modifyBundlePosition(topSelectedBundle.id, positionInGrid(planPosition));
-                        }
+                        Point2D newBundlePosition = mainController.gridIsOn
+                            ? positionInGrid(mousePositionInRealCoords)
+                            : mousePositionInRealCoords.subtract(selectionOffsetVector);
+
+                        larmanController.modifyBundlePosition(topSelectedBundle.id, newBundlePosition);
                         draw();
                     }
                 }
@@ -130,7 +125,6 @@ public class YardPresenter extends Pane implements IPresenter {
             draw();
         } else {
             updateSelectedBundles();
-            canDrag = false;
             draw();
         }
     }

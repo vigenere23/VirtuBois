@@ -24,6 +24,7 @@ import presentation.presenters.ElevationViewPresenter;
 import presentation.presenters.YardPresenter;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainController extends BaseController {
@@ -392,6 +393,10 @@ public class MainController extends BaseController {
                 if (!row.isEmpty()) {
                     BundleDto bundle = row.getItem();
                     yardPresenter.setTopSelectedBundle(bundle);
+                    clearElevationView();
+                    elevationViewPresenter.setBundles(larmanController.getAllCollidingBundles(new ArrayList<>(), bundle));
+                    //TODO Order depending on angle chosen for view
+                    elevationViewPresenter.setFocusedBundle(bundle);
                     inventoryTable.getSelectionModel().select(bundle);
                     updateBundleInfo(bundle);
                 } else {

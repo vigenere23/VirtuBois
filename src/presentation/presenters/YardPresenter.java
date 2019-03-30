@@ -82,6 +82,11 @@ public class YardPresenter extends Pane implements IPresenter {
             switch (mainController.editorMode.getValue()) {
                 case POINTER:
                     updateSelectedBundles();
+                    if (topSelectedBundle != null) {
+                        if (isOverAll(topSelectedBundle)) {
+                            canDrag = true;
+                        }
+                    }
                     break;
                 case ADDING_BUNDLE:
                     createBundle();
@@ -106,18 +111,13 @@ public class YardPresenter extends Pane implements IPresenter {
             draw();
         } else {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
-                if (topSelectedBundle != null) {
-                    if (isOverAll(topSelectedBundle)) {
-                        canDrag = true;
-                    }
-                    if (canDrag) {
-                        Point2D newBundlePosition = mainController.gridIsOn
-                            ? positionInGrid(mousePositionInRealCoords)
-                            : mousePositionInRealCoords.subtract(selectionOffsetVector);
+                if (canDrag) {
+                    Point2D newBundlePosition = mainController.gridIsOn
+                        ? positionInGrid(mousePositionInRealCoords)
+                        : mousePositionInRealCoords.subtract(selectionOffsetVector);
 
-                        larmanController.modifyBundlePosition(topSelectedBundle.id, newBundlePosition);
-                        draw();
-                    }
+                    larmanController.modifyBundlePosition(topSelectedBundle.id, newBundlePosition);
+                    draw();
                 }
             }
         }

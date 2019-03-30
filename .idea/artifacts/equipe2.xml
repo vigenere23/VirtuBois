@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" build-on-make="true" name="GLO-2004">
-    <output-path>$PROJECT_DIR$/out/artifacts/GLO_2004</output-path>
+  <artifact type="javafx" build-on-make="true" name="equipe2">
+    <output-path>$PROJECT_DIR$/out/artifacts/equipe2</output-path>
     <properties id="javafx-properties">
       <options>
         <option name="appClass" value="presentation.Main" />

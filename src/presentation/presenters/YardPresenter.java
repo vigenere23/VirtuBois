@@ -25,6 +25,7 @@ public class YardPresenter extends Pane implements IPresenter {
     private Point2D selectionOffsetVector;
 
     private BundleDto topSelectedBundle;
+    private boolean canDrag;
     private DropShadow dropShadow;
     private int gridDimension = 1;
 
@@ -44,6 +45,7 @@ public class YardPresenter extends Pane implements IPresenter {
 
         larmanController = mainController.larmanController;
         zoom = ConfigHelper.defaultZoom;
+        canDrag = true;
         dragVector = new Point2D(0, 0);
         translateVector = new Point2D(0, 0);
         selectionOffsetVector = new Point2D(0, 0);
@@ -86,7 +88,7 @@ public class YardPresenter extends Pane implements IPresenter {
                     break;
                 case DELETE:
                     updateSelectedBundles();
-                    if(topSelectedBundle != null) {
+                    if (topSelectedBundle != null) {
                         if (isOverAll(topSelectedBundle)) {
                             deleteBundle(topSelectedBundle.id);
                         }
@@ -106,6 +108,9 @@ public class YardPresenter extends Pane implements IPresenter {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (topSelectedBundle != null) {
                     if (isOverAll(topSelectedBundle)) {
+                        canDrag = true;
+                    }
+                    if (canDrag) {
                         Point2D newBundlePosition = mainController.gridIsOn
                             ? positionInGrid(mousePositionInRealCoords)
                             : mousePositionInRealCoords.subtract(selectionOffsetVector);
@@ -125,6 +130,7 @@ public class YardPresenter extends Pane implements IPresenter {
             draw();
         } else {
             updateSelectedBundles();
+            canDrag = false;
             draw();
         }
     }

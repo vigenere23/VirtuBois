@@ -371,4 +371,7 @@ public class YardPresenter extends Pane implements IPresenter {
         topSelectedBundle = bundle;
         draw();
     }
+    public BundleDto getTopSelectedBundle(){
+        return topSelectedBundle;
+    }
 }

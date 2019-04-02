@@ -120,6 +120,10 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             rectangle.setHeight(presenter.height*scaleZ);
             rectangle.setX(xPos - rectangle.getWidth()/2);
             rectangle.setY(zPos - rectangle.getHeight());
+            if (presenter.id == mainController.getYardPresenter().getTopSelectedBundle().id)
+            {
+                rectangle.setEffect(dropShadow);
+            }
             presenter.angle = oldAngle;
             rectangleBundleDtoMap.put(rectangle,presenter);
             dtoToRectangleMap.put(presenter,rectangle);
@@ -194,6 +198,10 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             rectangle.setHeight(presenter.height*scaleZ);
             rectangle.setX(yPos - rectangle.getWidth()/2);
             rectangle.setY(zPos - rectangle.getHeight());
+            if (presenter.id == mainController.getYardPresenter().getTopSelectedBundle().id)
+            {
+                rectangle.setEffect(dropShadow);
+            }
             presenter.angle = oldAngle;
             rectangleBundleDtoMap.put(rectangle,presenter);
             dtoToRectangleMap.put(presenter,rectangle);

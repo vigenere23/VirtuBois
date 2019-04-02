@@ -71,7 +71,7 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
         double maxHeight = allBundles.get(0).z+allBundles.get(0).height;
         for (BundleDto bundle : allBundles) {
             BundlePresenter presenter = new BundlePresenter(bundle);
-            for(Point2D position :presenter.getPoints()) {
+            for(Point2D position : presenter.getPoints()) {
                 if (position.getX() < minWidth) {
                     minWidth = position.getX();
                 }
@@ -100,13 +100,13 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             zPos = (maxHeight - presenter.z) * scaleZ;
 
             BundlePresenter bundlePresenter = new BundlePresenter(presenter);
-            double minX = 0;
-            double maxX = 0;
+            double minX = bundlePresenter.getPoints().get(0).getX();
+            double maxX = bundlePresenter.getPoints().get(0).getX();
             for(Point2D summit : bundlePresenter.getPoints()) {
-                if(summit.getX()<minX){
+                if(summit.getX() < minX){
                     minX = summit.getX();
                 }
-                else if(summit.getX()>maxX){
+                else if(summit.getX() > maxX){
                     maxX = summit.getX();
 
                 }
@@ -177,10 +177,10 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             double minY = bundlePresenter.getPoints().get(0).getY();
             double maxY = bundlePresenter.getPoints().get(0).getY();
             for(Point2D summit : bundlePresenter.getPoints()) {
-                if(summit.getY()<minY){
+                if(summit.getY() < minY){
                     minY = summit.getY();
                 }
-                else if(summit.getY()>maxY){
+                else if(summit.getY() > maxY){
                     maxY = summit.getY();
 
                 }
@@ -213,12 +213,13 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
 
     public void draw() {
         getChildren().clear();
-        if (!allBundles.isEmpty())
+        if (!allBundles.isEmpty()) {
             if (mainController.elevationViewMode == 'x') {
                 drawBundlesAxisX();
             }
-        if (mainController.elevationViewMode == 'y') {
-            drawBundlesAxisY();
+            if (mainController.elevationViewMode == 'y') {
+                drawBundlesAxisY();
+            }
         }
     }
 }

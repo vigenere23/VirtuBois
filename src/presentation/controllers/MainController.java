@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -48,6 +50,11 @@ public class MainController extends BaseController {
     Pane yardWrapper;
     @FXML
     Pane elevationViewWrapper;
+
+    @FXML
+    public Button FOVButton;
+    @FXML
+    public ImageView FOVImage;
 
     @FXML
     public TextField inventorySearchBar;
@@ -113,7 +120,7 @@ public class MainController extends BaseController {
         dropShadow.setRadius(5.0);
         dropShadow.setColor(Color.GREY);
         gridIsOn = false;
-        elevationViewMode = 'y';
+        elevationViewMode = 'x';
     }
 
     private void setEventHandlers() {
@@ -525,5 +532,19 @@ public class MainController extends BaseController {
 
     public void handleMenuHelpAbout(ActionEvent actionEvent) {
         JavafxHelper.popupView("About", "À propos", false, false);
+    }
+    public void handleFOVButton(ActionEvent actionEvent){
+        if(elevationViewMode == 'x')
+        {
+            FOVImage.setRotate(-90);
+            elevationViewMode = 'y';
+            elevationViewPresenter.draw();
+        }
+        else if(elevationViewMode == 'y')
+        {
+            FOVImage.setRotate(0);
+            elevationViewMode = 'x';
+            elevationViewPresenter.draw();
+        }
     }
 }

@@ -4,6 +4,7 @@ import domain.dtos.BundleDto;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
+import helpers.STLWriter;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -22,9 +23,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import javafx.stage.FileChooser;
 import presentation.presenters.ElevationViewPresenter;
 import presentation.presenters.YardPresenter;
 
+import java.io.File;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -545,6 +548,16 @@ public class MainController extends BaseController {
             FOVImage.setRotate(0);
             elevationViewMode = 'x';
             elevationViewPresenter.draw();
+        }
+    }
+
+    public void handleExport3D() {
+        if (!larmanController.getBundles().isEmpty()){
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("STL files (*.stl)", "*.stl");
+            fileChooser.getExtensionFilters().add(extFilter);
+            File file = fileChooser.showSaveDialog(stage);
+            STLWriter exportView = new STLWriter(larmanController.getBundles(), file.getPath());
         }
     }
 }

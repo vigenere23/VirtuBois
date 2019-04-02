@@ -28,13 +28,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="dark" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.MainController">
+<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="dark" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.MainController">
     <children>
         <VBox prefHeight="26.0" prefWidth="1280.0" AnchorPane.bottomAnchor="694.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <AnchorPane prefHeight="26.0" prefWidth="132.0">
                     <children>
-                        <MenuBar prefHeight="25.0" prefWidth="132.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <MenuBar layoutX="-11.0" prefHeight="25.0" prefWidth="132.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="0.0">
                             <menus>
                                 <Menu mnemonicParsing="false" text="Fichier">
                                     <items>
@@ -42,7 +42,7 @@
                                         <MenuItem mnemonicParsing="false" onAction="#handleMenuFileOpen" text="Ouvrir" />
                                         <MenuItem mnemonicParsing="false" onAction="#handleMenuFileSave" text="Enregistrer" />
                                         <MenuItem mnemonicParsing="false" onAction="#handleMenuSaveAs" text="Enregistrer sous" />
-                                        <MenuItem disable="true" mnemonicParsing="false" text="Exporter en 3D" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleExport3D" text="Exporter en 3D" />
                                         <MenuItem mnemonicParsing="false" onAction="#quit" text="Quitter" />
                                     </items>
                                 </Menu>

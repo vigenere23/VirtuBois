@@ -1,5 +1,6 @@
 package presentation.presenters;
 
+import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import domain.entities.Bundle;
 import helpers.Point2D;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ElevationViewPresenter extends Pane implements IPresenter {
-
+    private LarmanController larmanController;
     private MainController mainController;
     private DropShadow dropShadow;
     private List<BundleDto> allBundles;
@@ -27,7 +28,7 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
     public ElevationViewPresenter(MainController mainController) {
         super();
         setFocusTraversable(true);
-
+        this.larmanController = mainController.larmanController;
         this.mainController = mainController;
 
         allBundles = new ArrayList<>();
@@ -215,9 +216,11 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
         getChildren().clear();
         if (!allBundles.isEmpty()) {
             if (mainController.elevationViewMode == 'x') {
+                allBundles = larmanController.sortBundlesY(allBundles);
                 drawBundlesAxisX();
             }
             if (mainController.elevationViewMode == 'y') {
+                allBundles = larmanController.sortBundlesX(allBundles);
                 drawBundlesAxisY();
             }
         }

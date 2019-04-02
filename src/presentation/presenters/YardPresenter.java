@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import presentation.controllers.MainController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

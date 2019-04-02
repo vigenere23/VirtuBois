@@ -354,7 +354,26 @@
                                                     <content>
                                                         <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-                                                <StackPane fx:id="elevationViewWrapper" prefHeight="282.0" prefWidth="248.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                <BorderPane layoutX="12.0" layoutY="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <center>
+                                                      <AnchorPane>
+                                                         <children>
+                                                            <StackPane fx:id="elevationViewWrapper" alignment="TOP_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </center>
+                                                   <top>
+                                                      <Button fx:id="FOVButton" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#handleFOVButton" BorderPane.alignment="CENTER">
+                                                         <graphic>
+                                                            <ImageView fx:id="FOVImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../assets/images/FOVdeDeriere.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </top>
+                                                </BorderPane>
                                              </children></AnchorPane>
                                                     </content>
                                                 </TitledPane>

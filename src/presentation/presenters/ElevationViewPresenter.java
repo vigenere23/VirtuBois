@@ -111,7 +111,7 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
 
                 }
             }
-            double oldAngle = new Double(presenter.angle);
+            double oldAngle = presenter.angle;
             presenter.angle = 0.;
             BundlePresenter bundleToShow = new BundlePresenter(presenter);
             Rectangle rectangle = bundleToShow.getRectangle();
@@ -140,18 +140,21 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
     private void drawBundlesAxisY() {
         double height = getHeight();
         double width = getWidth();
-        double minLength = allBundles.get(0).getY() - (allBundles.get(0).length/2);
-        double maxLength = allBundles.get(0).getY() + (allBundles.get(0).length/2);
-        double maxHeight = allBundles.get(0).z + allBundles.get(0).height;
+        double minLength = allBundles.get(0).position.getY();
+        double maxLength = allBundles.get(0).position.getY();
+        double maxHeight = allBundles.get(0).z+allBundles.get(0).height;
         for (BundleDto bundle : allBundles) {
-            if ((bundle.position.getY()-(bundle.length/2)) < minLength){
-                minLength = bundle.position.getY() - (bundle.length/2);
-            }
-            if((bundle.position.getY() + (bundle.length/2) > maxLength)){
-                maxLength = bundle.position.getY() + (bundle.length/2);
-            }
-            if ((bundle.height + bundle.z > maxHeight)){
-                maxHeight = bundle.height + bundle.z;
+            BundlePresenter presenter = new BundlePresenter(bundle);
+            for(Point2D position : presenter.getPoints()) {
+                if (position.getY() < minLength) {
+                    minLength = position.getY();
+                }
+                if (position.getY() > maxLength) {
+                    maxLength = position.getY() ;
+                }
+                if ((bundle.height + bundle.z > maxHeight)) {
+                    maxHeight = bundle.height + bundle.z;
+                }
             }
         }
 
@@ -171,11 +174,39 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             zPos = (maxHeight - presenter.z)*scaleZ;
 
             BundlePresenter bundlePresenter = new BundlePresenter(presenter);
-            Rectangle rectangle = bundlePresenter.getRectangle();
-            rectangle.setWidth(presenter.length*scaleY);
+            double minY = bundlePresenter.getPoints().get(0).getY();
+            double maxY = bundlePresenter.getPoints().get(0).getY();
+            for(Point2D summit : bundlePresenter.getPoints()) {
+                if(summit.getY()<minY){
+                    minY = summit.getY();
+                }
+                else if(summit.getY()>maxY){
+                    maxY = summit.getY();
+
+                }
+            }
+            double oldAngle = presenter.angle;
+            presenter.angle = 0.;
+            BundlePresenter bundleToShow = new BundlePresenter(presenter);
+            Rectangle rectangle = bundleToShow.getRectangle();
+            rectangle.setWidth((maxY-minY)*scaleY);
             rectangle.setHeight(presenter.height*scaleZ);
             rectangle.setX(yPos - rectangle.getWidth()/2);
             rectangle.setY(zPos - rectangle.getHeight());
+            presenter.angle = oldAngle;
+            rectangleBundleDtoMap.put(rectangle,presenter);
+            dtoToRectangleMap.put(presenter,rectangle);
+
+            rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
+                for (Map.Entry<Rectangle, BundleDto> entry : rectangleBundleDtoMap.entrySet()) {
+                    entry.getKey().setEffect(null);
+                }
+                if (event.getButton() == MouseButton.PRIMARY) {
+                    mainController.updateBundleInfo(rectangleBundleDtoMap.get(rectangle));
+                    rectangle.setEffect(dropShadow);
+                    mainController.getYardPresenter().setTopSelectedBundle(rectangleBundleDtoMap.get(rectangle));
+                }
+            });
             getChildren().add(rectangle);
         }
     }

@@ -113,7 +113,7 @@ public class MainController extends BaseController {
         dropShadow.setRadius(5.0);
         dropShadow.setColor(Color.GREY);
         gridIsOn = false;
-        elevationViewMode = 'x';
+        elevationViewMode = 'y';
     }
 
     private void setEventHandlers() {

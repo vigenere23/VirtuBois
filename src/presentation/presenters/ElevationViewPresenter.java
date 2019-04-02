@@ -1,6 +1,8 @@
 package presentation.presenters;
 
 import domain.dtos.BundleDto;
+import domain.entities.Bundle;
+import helpers.Point2D;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -64,18 +66,21 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
     private void drawBundlesAxisX() {
         double height = getHeight();
         double width = getWidth();
-        double minWidth = allBundles.get(0).getX() - (allBundles.get(0).width/2);
-        double maxWidth = allBundles.get(0).getX() + (allBundles.get(0).width/2);
-        double maxHeight = allBundles.get(0).z + allBundles.get(0).height;
+        double minWidth = allBundles.get(0).position.getX();
+        double maxWidth = allBundles.get(0).position.getX();
+        double maxHeight = allBundles.get(0).z+allBundles.get(0).height;
         for (BundleDto bundle : allBundles) {
-            if ((bundle.position.getX()-(bundle.width/2)) < minWidth){
-                   minWidth = bundle.position.getX() - (bundle.width/2);
+            BundlePresenter presenter = new BundlePresenter(bundle);
+            for(Point2D position :presenter.getPoints()) {
+                if (position.getX() < minWidth) {
+                    minWidth = position.getX();
                 }
-            if((bundle.position.getX() + (bundle.width/2) > maxWidth)){
-                maxWidth = bundle.position.getX() + (bundle.width/2);
-            }
-            if ((bundle.height + bundle.z > maxHeight)){
-                maxHeight = bundle.height + bundle.z;
+                if (position.getX() > maxWidth) {
+                    maxWidth = position.getX() ;
+                }
+                if ((bundle.height + bundle.z > maxHeight)) {
+                    maxHeight = bundle.height + bundle.z;
+                }
             }
         }
 
@@ -95,11 +100,26 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             zPos = (maxHeight - presenter.z) * scaleZ;
 
             BundlePresenter bundlePresenter = new BundlePresenter(presenter);
-            Rectangle rectangle = bundlePresenter.getRectangle();
-            rectangle.setWidth(presenter.width*scaleX);
+            double minX = 0;
+            double maxX = 0;
+            for(Point2D summit : bundlePresenter.getPoints()) {
+                if(summit.getX()<minX){
+                    minX = summit.getX();
+                }
+                else if(summit.getX()>maxX){
+                    maxX = summit.getX();
+
+                }
+            }
+            double oldAngle = new Double(presenter.angle);
+            presenter.angle = 0.;
+            BundlePresenter bundleToShow = new BundlePresenter(presenter);
+            Rectangle rectangle = bundleToShow.getRectangle();
+            rectangle.setWidth((maxX-minX) * scaleX);
             rectangle.setHeight(presenter.height*scaleZ);
             rectangle.setX(xPos - rectangle.getWidth()/2);
             rectangle.setY(zPos - rectangle.getHeight());
+            presenter.angle = oldAngle;
             rectangleBundleDtoMap.put(rectangle,presenter);
             dtoToRectangleMap.put(presenter,rectangle);
 

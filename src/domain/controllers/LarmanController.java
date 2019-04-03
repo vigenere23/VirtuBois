@@ -6,6 +6,7 @@ import domain.entities.Yard;
 import helpers.Converter;
 import helpers.Point2D;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -86,12 +87,22 @@ public class LarmanController {
 
     public void modifyBundleProperties(BundleDto bundleDto)
     {
+        double zChange = bundleDto.height - getBundle(bundleDto.id).height;
         yard.modifyBundleProperties(bundleDto);
+        List<BundleDto> bundlesInStack = new ArrayList<>();
+        getAllCollidingBundles(bundlesInStack,bundleDto);
+        for(BundleDto bundle : bundlesInStack){
+            if(bundleDto.z <= bundle.z && bundleDto.id != bundle.id){
+                bundle.z = bundle.z + zChange ;
+                yard.modifyBundleProperties(bundle);
+            }
+        }
     }
 
     public void modifyBundlePosition(String id, Point2D position)
     {
         yard.modifyBundlePosition(id, position);
+        //TODO modify z if bundle doesn't collide anymore
     }
 
     public void deleteBundle(String id) {

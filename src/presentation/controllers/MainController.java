@@ -242,13 +242,12 @@ public class MainController extends BaseController {
         bundleHeightValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
-
                     if (!bundleHeightValue.getText().isEmpty() && !bundleHeightValue.getText().equals("-") && !bundleHeightValue.getText().equals(".") && !bundleHeightValue.getText().equals("-.")) {
                         selectedBundle.height = Double.parseDouble(bundleHeightValue.getText());
                         larmanController.modifyBundleProperties(selectedBundle);
-                        elevationViewPresenter.draw();
-                        setFocusedBundleElevView(selectedBundle);
                         yardPresenter.draw();
+                        elevationViewPresenter.setBundles(selectedBundle);
+                        setFocusedBundleElevView(selectedBundle);
                     }
                     updateBundleInfo(selectedBundle);
                 }
@@ -332,9 +331,9 @@ public class MainController extends BaseController {
                     if (!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()) {
                         selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
                         larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
                         elevationViewPresenter.draw();
                         setFocusedBundleElevView(selectedBundle);
-                        yardPresenter.draw();
                     }
                     updateBundleInfo(selectedBundle);
                 }
@@ -429,7 +428,7 @@ public class MainController extends BaseController {
                     BundleDto bundle = row.getItem();
                     yardPresenter.setTopSelectedBundle(bundle);
                     clearElevationView();
-                    elevationViewPresenter.setBundles(larmanController.getAllCollidingBundles(new ArrayList<>(), bundle));
+                    elevationViewPresenter.setBundles(bundle);
                     elevationViewPresenter.setFocusedBundle(bundle);
                     inventoryTable.getSelectionModel().select(bundle);
                     updateBundleInfo(bundle);
@@ -483,8 +482,8 @@ public class MainController extends BaseController {
         bundleAngleValue.setText(String.valueOf(bundle.angle));
     }
 
-    public void updateElevationView(List<BundleDto> bundles) {
-        elevationViewPresenter.setBundles(bundles);
+    public void updateElevationView(BundleDto bundle) {
+        elevationViewPresenter.setBundles(bundle);
     }
 
     public void setFocusedBundleElevView(BundleDto bundle){

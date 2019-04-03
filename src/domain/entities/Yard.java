@@ -92,6 +92,7 @@ public class Yard implements Serializable {
         bundle.setEssence(bundleDto.essence);
         bundle.setPlanckSize(bundleDto.plankSize);
         bundle.setAngle(bundleDto.angle);
+        bundle.setZ(bundleDto.z);
         //TODO recalculate z on call
     }
 

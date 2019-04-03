@@ -480,6 +480,15 @@ public class MainController extends BaseController {
         bundleXPosValue.setText(String.valueOf(bundle.position.getX()));
         bundleYPosValue.setText(String.valueOf(bundle.position.getY()));
         bundleAngleValue.setText(String.valueOf(bundle.angle));
+        boolean canChange = true;
+        for(BundleDto bundleDto : larmanController.getCollidingBundles(bundle)){
+            if(bundleDto.z > bundle.z){
+                canChange = false;
+            }
+        }
+        bundleXPosValue.setEditable(canChange);
+        bundleYPosValue.setEditable(canChange);
+        bundleAngleValue.setEditable(canChange);
     }
 
     public void updateElevationView(BundleDto bundle) {

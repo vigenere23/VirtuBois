@@ -63,6 +63,11 @@ public class LarmanController {
         );
     }
 
+    public List<BundleDto> sortBundlesDtoZ(List<BundleDto> bundleDtos){
+        bundleDtos.sort(Comparator.comparing(BundleDto::getZ));
+        return bundleDtos;
+    }
+
     public BundleDto getBundle(String id) {
         Bundle bundle = yard.getBundle(id);
         if (bundle == null) return null;
@@ -99,8 +104,7 @@ public class LarmanController {
         }
     }
 
-    public void modifyBundlePosition(String id, Point2D position)
-    {
+    public void modifyBundlePosition(String id, Point2D position) {
         yard.modifyBundlePosition(id, position);
         //TODO modify z if bundle doesn't collide anymore
     }

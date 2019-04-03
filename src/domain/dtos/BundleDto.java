@@ -57,4 +57,7 @@ public class BundleDto {
 
     public double getY() {return position.getY();}
 
+    public double getZ() {
+        return z;
+    }
 }

@@ -2,7 +2,6 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
-import domain.entities.Bundle;
 import helpers.Point2D;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseButton;

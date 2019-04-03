@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -431,7 +430,6 @@ public class MainController extends BaseController {
                     yardPresenter.setTopSelectedBundle(bundle);
                     clearElevationView();
                     elevationViewPresenter.setBundles(larmanController.getAllCollidingBundles(new ArrayList<>(), bundle));
-                    //TODO Order depending on angle chosen for view
                     elevationViewPresenter.setFocusedBundle(bundle);
                     inventoryTable.getSelectionModel().select(bundle);
                     updateBundleInfo(bundle);
@@ -492,19 +490,6 @@ public class MainController extends BaseController {
     public void setFocusedBundleElevView(BundleDto bundle){
         elevationViewPresenter.setFocusedBundle(bundle);
     }
-    /*
-            rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
-                for (Map.Entry<Rectangle, BundleDto> entry : rectangleBundleDtoMap.entrySet()) {
-                    entry.getKey().setEffect(null);
-                }
-                if (event.getButton() == MouseButton.PRIMARY) {
-                    updateBundleInfo(rectangleBundleDtoMap.get(rectangle));
-                    rectangle.setEffect(dropShadow);
-                    yardPresenter.setTopSelectedBundle(rectangleBundleDtoMap.get(rectangle));
-                }
-            });
-        }
-    */
 
     public void clearElevationView() {
         elevationViewPresenter.clearBundles();

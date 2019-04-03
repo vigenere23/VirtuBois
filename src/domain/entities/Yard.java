@@ -26,6 +26,11 @@ public class Yard implements Serializable {
         //setLift(lift);
     }
 
+    private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
+        bundles.sort(Comparator.comparing(Bundle::getZ));
+        return bundles;
+    }
+
     public List<Bundle> getBundles() {
         return new ArrayList<>(this.bundles.values());
     }
@@ -87,6 +92,7 @@ public class Yard implements Serializable {
         bundle.setEssence(bundleDto.essence);
         bundle.setPlanckSize(bundleDto.plankSize);
         bundle.setAngle(bundleDto.angle);
+        //TODO recalculate z on call
     }
 
     public void modifyBundlePosition(String id, Point2D position)

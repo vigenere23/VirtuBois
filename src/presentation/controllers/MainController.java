@@ -343,12 +343,12 @@ public class MainController extends BaseController {
         bundleXPosValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
-                    if (!bundleXPosValue.getText().isEmpty() && !bundleXPosValue.getText().equals("-") && !bundleXPosValue.getText().equals(".") && !bundleXPosValue.getText().equals("-.") && Double.parseDouble(bundleXPosValue.getText()) != 0.0) {
+                    if (!bundleXPosValue.getText().isEmpty() && !bundleXPosValue.getText().equals("-") && !bundleXPosValue.getText().equals(".") && !bundleXPosValue.getText().equals("-.")) {
                         selectedBundle.position.setX(Double.parseDouble(bundleXPosValue.getText()));
                         larmanController.modifyBundlePosition(selectedBundle.id, selectedBundle.position);
+                        yardPresenter.draw();
                         elevationViewPresenter.setBundles(selectedBundle);
                         setFocusedBundleElevView(selectedBundle);
-                        yardPresenter.draw();
                     }
                     updateBundleInfo(selectedBundle);
                 }
@@ -358,7 +358,7 @@ public class MainController extends BaseController {
         bundleYPosValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
-                    if (!bundleYPosValue.getText().isEmpty() && !bundleYPosValue.getText().equals("-") && !bundleYPosValue.getText().equals(".") && !bundleYPosValue.getText().equals("-.") && Double.parseDouble(bundleYPosValue.getText()) != 0.0) {
+                    if (!bundleYPosValue.getText().isEmpty() && !bundleYPosValue.getText().equals("-") && !bundleYPosValue.getText().equals(".") && !bundleYPosValue.getText().equals("-.")) {
                         selectedBundle.position.setY(Double.parseDouble(bundleYPosValue.getText()));
                         larmanController.modifyBundlePosition(selectedBundle.id, selectedBundle.position);
                         elevationViewPresenter.setBundles(selectedBundle);
@@ -373,12 +373,12 @@ public class MainController extends BaseController {
         bundleAngleValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
-                    if (!bundleAngleValue.getText().isEmpty() && !bundleAngleValue.getText().equals("-") && !bundleAngleValue.getText().equals(".") && !bundleAngleValue.getText().equals("-.") && Double.parseDouble(bundleAngleValue.getText()) != 0.0) {
+                    if (!bundleAngleValue.getText().isEmpty() && !bundleAngleValue.getText().equals("-") && !bundleAngleValue.getText().equals(".") && !bundleAngleValue.getText().equals("-.")) {
                         selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
                         larmanController.modifyBundleProperties(selectedBundle);
+                        yardPresenter.draw();
                         elevationViewPresenter.setBundles(selectedBundle);
                         setFocusedBundleElevView(selectedBundle);
-                        yardPresenter.draw();
                     }
                     updateBundleInfo(selectedBundle);
                 }
@@ -505,9 +505,14 @@ public class MainController extends BaseController {
 
     public void addTableViewBundles(List<BundleDto> bundles) {
         inventorySearchBar.clear();
-        observableBundleList = bundles;
-        ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
-        inventoryTable.setItems(data);
+        if(!bundles.isEmpty()) {
+            observableBundleList = bundles;
+            ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
+            inventoryTable.setItems(data);
+        }
+        else{
+            inventoryTable.getItems().clear();
+        }
     }
 
     public void handleMenuFileNew(ActionEvent actionEvent) {

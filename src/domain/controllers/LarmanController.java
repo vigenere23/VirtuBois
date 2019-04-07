@@ -97,7 +97,7 @@ public class LarmanController {
         List<BundleDto> bundlesInStack = new ArrayList<>();
         getAllCollidingBundles(bundlesInStack,bundleDto);
         for(BundleDto bundle : bundlesInStack){
-            if(bundleDto.z <= bundle.z && bundleDto.id != bundle.id){
+            if(bundleDto.z < bundle.z && bundleDto.id != bundle.id){
                 bundle.z = bundle.z + zChange ;
                 yard.modifyBundleProperties(bundle);
             }

@@ -486,6 +486,9 @@ public class MainController extends BaseController {
                 canChange = false;
             }
         }
+        bundleLengthValue.setEditable(canChange);
+        bundleWidthValue.setEditable(canChange);
+        bundleHeightValue.setEditable(canChange);
         bundleXPosValue.setEditable(canChange);
         bundleYPosValue.setEditable(canChange);
         bundleAngleValue.setEditable(canChange);

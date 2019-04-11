@@ -50,6 +50,7 @@ public class UndoRedo {
             return yard;
         } else {
             return LarmanController.getInstance().getYard();
+            
         }
     }
 }

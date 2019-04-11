@@ -2,6 +2,7 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
+import domain.entities.Yard;
 import enums.EditorMode;
 import helpers.*;
 import helpers.Point2D;
@@ -12,10 +13,13 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import presentation.controllers.BaseController;
 import presentation.controllers.MainController;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 public class YardPresenter extends Pane implements IPresenter {
@@ -228,6 +232,7 @@ public class YardPresenter extends Pane implements IPresenter {
             showBundleEditorWindow(createdBundle);
             selectBundle(createdBundle);
         }
+        UndoRedo.add(larmanController.getYard());
         draw();
     }
 

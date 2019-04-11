@@ -18,12 +18,12 @@ public class Yard implements Serializable {
 
     public Yard() {
         setBundles(new HashMap<>());
-        //setLift(new Lift());
+        setLift(new Lift(new Point2D(0,0)));
     }
 
     public Yard(Map<String, Bundle> bundles) {
         setBundles(bundles);
-        //setLift(lift);
+        setLift(lift);
     }
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
@@ -37,9 +37,9 @@ public class Yard implements Serializable {
 
     public void setBundles(Map<String, Bundle> bundles) { this.bundles = bundles; }
 
-    //public Lift getLift() { return lift; }
+    public Lift getLift() { return lift; }
 
-   // public void setLift(Lift lift) { this.lift = lift; }
+    public void setLift(Lift lift) { this.lift = lift; }
 
     public Bundle createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);

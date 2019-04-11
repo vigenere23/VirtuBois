@@ -1,10 +1,12 @@
 package presentation.controllers;
 
+import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
 import helpers.STLWriter;
+import helpers.UndoRedo;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -28,7 +30,6 @@ import presentation.presenters.YardPresenter;
 
 import java.io.File;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainController extends BaseController {
@@ -57,6 +58,14 @@ public class MainController extends BaseController {
     public Button FOVButton;
     @FXML
     public ImageView FOVImage;
+    @FXML
+    public Button undoButton;
+    @FXML
+    public ImageView undoImage;
+    @FXML
+    public Button redoButton;
+    @FXML
+    public ImageView redoImage;
 
     @FXML
     public TextField inventorySearchBar;
@@ -394,8 +403,6 @@ public class MainController extends BaseController {
                 }
             }
         });
-
-
     }
 
     private void initInventorySearchBar() {
@@ -547,6 +554,7 @@ public class MainController extends BaseController {
     public void handleMenuHelpAbout(ActionEvent actionEvent) {
         JavafxHelper.popupView("About", "À propos", false, false);
     }
+
     public void handleFOVButton(ActionEvent actionEvent){
         if(elevationViewMode == 'x')
         {
@@ -571,4 +579,15 @@ public class MainController extends BaseController {
             STLWriter exportView = new STLWriter(larmanController.getBundles(), file.getPath());
         }
     }
+
+    public void handleUndoButton(ActionEvent actionEvent) {
+        larmanController.setYard(UndoRedo.undo());
+        yardPresenter.draw();
+    }
+
+    public void handleRedoButton(ActionEvent actionEvent) {
+        larmanController.setYard(UndoRedo.redo());
+        yardPresenter.draw();
+    }
+
 }

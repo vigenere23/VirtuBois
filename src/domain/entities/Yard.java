@@ -30,7 +30,6 @@ public class Yard implements Serializable {
         this.bundles = new HashMap<>(yard.getBundlesMap());
         this.lift = yard.getLift();
     }
-    
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));

@@ -258,6 +258,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private void deleteBundle(String id) {
+        UndoRedo.add(larmanController.getYard());
         larmanController.deleteBundle(id);
         mainController.editorMode.setValue(EditorMode.POINTER);
         mainController.clearAllBundleInfo();

@@ -35,6 +35,14 @@ public class UndoRedo {
         }
     }
 
+    public static int getUndo() {
+        return undo.size();
+    }
+
+    public static int getRedo() {
+        return redo.size();
+    }
+
     public static Yard redo() {
         if(!redo.isEmpty()) {
             Yard yard = redo.pop();

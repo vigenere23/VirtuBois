@@ -13,16 +13,11 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import presentation.controllers.BaseController;
 import presentation.controllers.MainController;
 
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
-public class YardPresenter extends Pane implements IPresenter {
+public class YardPresenter extends Pane implements IPresenter, Cloneable {
     private double zoom;
     private Point2D lastClickedPoint;
     private Point2D dragVector;
@@ -272,6 +267,16 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     public void draw() {
+        if(UndoRedo.getUndo() == 0) {
+            mainController.undoButton.setDisable(true);
+        } else {
+            mainController.undoButton.setDisable(false);
+        }
+        if (UndoRedo.getRedo() == 0) {
+            mainController.redoButton.setDisable(true);
+        } else {
+            mainController.redoButton.setDisable(false);
+        }
         getChildren().clear();
         drawAxes();
         if (mainController.gridIsOn) {

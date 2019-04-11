@@ -27,8 +27,8 @@ public class UndoRedo {
 
     public static Yard undo() {
         if(!undo.isEmpty()) {
+            redo.push(LarmanController.getInstance().getYard());
             Yard yard = undo.pop();
-            redo.push(yard);
             return yard;
         } else {
             return LarmanController.getInstance().getYard();
@@ -46,7 +46,7 @@ public class UndoRedo {
     public static Yard redo() {
         if(!redo.isEmpty()) {
             Yard yard = redo.pop();
-            undo.push(yard);
+            undo.push(LarmanController.getInstance().getYard());
             return yard;
         } else {
             return LarmanController.getInstance().getYard();

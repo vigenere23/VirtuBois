@@ -523,6 +523,10 @@ public class MainController extends BaseController {
         elevationViewPresenter.clearBundles();
     }
 
+    public void clearTableView(){
+        inventoryTable.getItems().clear();
+    }
+
     public void addTableViewBundles(List<BundleDto> bundles) {
         inventorySearchBar.clear();
         if(!bundles.isEmpty()) {

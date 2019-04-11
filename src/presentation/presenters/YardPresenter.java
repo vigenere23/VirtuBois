@@ -284,6 +284,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             drawGrid();
         }
         drawBundles(larmanController.getBundlesSortedZ());
+        mainController.clearTableView();
         if(!larmanController.getBundles().isEmpty()) {
             mainController.addTableViewBundles(larmanController.getBundles());
         }

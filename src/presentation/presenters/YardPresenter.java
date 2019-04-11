@@ -222,6 +222,7 @@ public class YardPresenter extends Pane implements IPresenter {
     }
 
     private void createBundle() {
+        UndoRedo.add(larmanController.getYard());
         if (mainController.gridIsOn) {
             BundleDto createdBundle = larmanController.createBundle(positionInGrid(mousePositionInRealCoords));
             showBundleEditorWindow(createdBundle);
@@ -232,7 +233,6 @@ public class YardPresenter extends Pane implements IPresenter {
             showBundleEditorWindow(createdBundle);
             selectBundle(createdBundle);
         }
-        UndoRedo.add(larmanController.getYard());
         draw();
     }
 

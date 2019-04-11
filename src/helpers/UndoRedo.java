@@ -19,8 +19,8 @@ public class UndoRedo {
             if(undo.size() == sizeMax) {
                 undo.removeLast();
             }
-            undo.push(yard);
-            System.out.println(undo);
+            Yard prevYard = new Yard(yard);
+            undo.push(prevYard);
             redo.clear();
         }
     }

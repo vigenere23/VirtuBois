@@ -26,6 +26,11 @@ public class Yard implements Serializable {
         setLift(lift);
     }
 
+    public Yard(Yard yard){
+        this.bundles = new HashMap<>(yard.getBundlesMap());
+        this.lift = yard.getLift();
+    }
+
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));
         return bundles;
@@ -33,6 +38,10 @@ public class Yard implements Serializable {
 
     public List<Bundle> getBundles() {
         return new ArrayList<>(this.bundles.values());
+    }
+
+    public Map<String,Bundle> getBundlesMap(){
+        return bundles;
     }
 
     public void setBundles(Map<String, Bundle> bundles) { this.bundles = bundles; }

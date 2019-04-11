@@ -25,11 +25,12 @@ public class Yard implements Serializable {
         setBundles(bundles);
         setLift(lift);
     }
-    
+
     public Yard(Yard yard) {
         this.bundles = new HashMap<>(yard.getBundlesMap());
         this.lift = yard.getLift();
     }
+    
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));

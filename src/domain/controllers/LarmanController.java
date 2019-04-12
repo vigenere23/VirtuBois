@@ -139,4 +139,19 @@ public class LarmanController {
         return bundles;
     }
 
+    public List<BundleDto> getAllCollidingBundlesZMin(List<BundleDto> bundles, BundleDto bundleToCheck, float zMin) {
+        List<BundleDto> bundlesZMin = new ArrayList<>();
+        for (BundleDto bundle : getAllCollidingBundles(bundles, bundleToCheck)) {
+            if (bundle.z >= zMin) {
+                bundlesZMin.add(bundle);
+            }
+        }
+        return bundlesZMin;
+    }
+
+    public void modifyBundlesPositionUsingLift(List<BundleDto> bundles, Point2D position) {
+        for (BundleDto bundle : bundles) {
+            yard.modifyBundlePosition(bundle.id, position);
+        }
+    }
 }

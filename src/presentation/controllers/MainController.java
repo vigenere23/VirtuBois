@@ -120,8 +120,6 @@ public class MainController extends BaseController {
     public ToggleButton snapGridButton;
 
     @FXML
-    public SubScene elevViewScene;
-    @FXML
     public AnchorPane subSceneAnchor;
     @FXML
     public StackPane subScenePane;
@@ -188,7 +186,7 @@ public class MainController extends BaseController {
     }
 
     private void initElevationView(){
-        elevationViewPresenter3D = new ElevationViewPresenter3D(subScenePane, elevViewScene);
+        elevationViewPresenter3D = new ElevationViewPresenter3D(subScenePane);
     }
 
     private void initBundleInfo() {

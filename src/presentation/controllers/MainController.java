@@ -15,6 +15,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.PerspectiveCamera;
+import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
@@ -22,8 +24,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+import javafx.scene.shape.Sphere;
 import javafx.stage.FileChooser;
 import presentation.presenters.ElevationViewPresenter;
 import presentation.presenters.YardPresenter;
@@ -114,6 +118,13 @@ public class MainController extends BaseController {
     @FXML
     public ToggleButton snapGridButton;
 
+    @FXML
+    public SubScene elevViewScene;
+    @FXML
+    public AnchorPane subSceneAnchor;
+    @FXML
+    public StackPane subScenePane;
+
 
     @FXML
     public void initialize() {
@@ -124,7 +135,7 @@ public class MainController extends BaseController {
         setEventHandlers();
         setupEditorModeToggleButtons();
         initYard();
-        initElevationView();
+        //initElevationView();
         initBundleInfo();
 
         dropShadow = new DropShadow();
@@ -132,6 +143,8 @@ public class MainController extends BaseController {
         dropShadow.setColor(Color.GREY);
         gridIsOn = false;
         elevationViewMode = 'x';
+        elevViewScene.widthProperty().bind(subScenePane.widthProperty());
+        elevViewScene.heightProperty().bind(subScenePane.heightProperty());
     }
 
     private void setEventHandlers() {

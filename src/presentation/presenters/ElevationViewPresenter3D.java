@@ -18,7 +18,9 @@ import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import presentation.controllers.MainController;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static helpers.ColorHelper.hex2Rgb;
 
@@ -38,11 +40,12 @@ public class ElevationViewPresenter3D implements IPresenter {
     private Point2D lastPoint;
     private Point2D groupTranslate;
     private Point2D initGroupTranslate;
-
+    private Map<Box, BundleDto> boxToBundleDtoMap;
 
     public ElevationViewPresenter3D(StackPane parent, MainController mainController) {
         this.mainController = mainController;
         this.larmanController = mainController.larmanController;
+        boxToBundleDtoMap = new HashMap<>();
         allBundles = new ArrayList<>();
         group = new Group();
         scene = new SubScene(group, 1, 1, true, null);
@@ -128,8 +131,13 @@ public class ElevationViewPresenter3D implements IPresenter {
             material.setDiffuseMap(new Image(getClass().getResourceAsStream("/presentation/assets/images/bois.jpg")));
             box.setMaterial(material);
 
+            boxToBundleDtoMap.put(box, bundle);
+
             box.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
                 if (event.getButton() == MouseButton.PRIMARY) {
+                    mainController.updateBundleInfo(boxToBundleDtoMap.get(box));
+                    //box.setEffect();
+                    mainController.getYardPresenter().setTopSelectedBundle(boxToBundleDtoMap.get(box));
                 }
             });
             group.getChildren().add(box);
@@ -147,6 +155,7 @@ public class ElevationViewPresenter3D implements IPresenter {
     public void clearBundles() {
         allBundles.clear();
         group.getChildren().clear();
+        boxToBundleDtoMap.clear();
         draw();
     }
 

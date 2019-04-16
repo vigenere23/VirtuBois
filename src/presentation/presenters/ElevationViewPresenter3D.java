@@ -36,6 +36,8 @@ public class ElevationViewPresenter3D implements IPresenter {
     private List<BundleDto> allBundles;
     private Point2D lastPoint;
     private Point2D groupTranslate;
+    private Point2D initGroupTranslate;
+
 
     public ElevationViewPresenter3D(StackPane parent, MainController mainController) {
         this.mainController = mainController;
@@ -138,9 +140,9 @@ public class ElevationViewPresenter3D implements IPresenter {
             Box box = new Box(bundle.width, bundle.height, bundle.length);
             box.setRotationAxis(new Point3D(0.0, 1.0, 0.0));
             box.setRotate(-bundle.angle);
-            box.setTranslateX(bundle.getX());
-            box.setTranslateY(-bundle.getZ());
-            box.setTranslateZ(bundle.getY());
+            box.setTranslateX(bundle.getX() - initGroupTranslate.getX());
+            box.setTranslateY(-bundle.getZ() + 1);
+            box.setTranslateZ(bundle.getY() - initGroupTranslate.getY());
 
             PhongMaterial material = new PhongMaterial();
             material.setDiffuseColor(hex2Rgb(bundle.color));
@@ -152,12 +154,14 @@ public class ElevationViewPresenter3D implements IPresenter {
                 }
             });
             group.getChildren().add(box);
+
         }
     }
 
     public void setFocusedBundle(BundleDto bundle) {
         clearBundles();
         larmanController.getAllCollidingBundles(allBundles,bundle);
+        setInitialGroupTranslate();
         draw();
     }
 
@@ -165,6 +169,39 @@ public class ElevationViewPresenter3D implements IPresenter {
         allBundles.clear();
         group.getChildren().clear();
         draw();
+    }
+
+    private void setInitialGroupTranslate() {
+        double minX = allBundles.get(0).position.getX();
+        double maxX = allBundles.get(0).position.getX();
+        double minY = allBundles.get(0).position.getY();
+        double maxY = allBundles.get(0).position.getY();
+        double maxZ = allBundles.get(0).z+allBundles.get(0).height;
+
+        for (BundleDto bundle : allBundles) {
+            BundlePresenter presenter = new BundlePresenter(bundle);
+            for(helpers.Point2D position : presenter.getPoints()) {
+                if (position.getX() < minX) {
+                    minX = position.getX();
+                }
+                if (position.getX() > maxX) {
+                    maxX = position.getX() ;
+                }
+                if ((bundle.height + bundle.z > maxZ)) {
+                    maxZ = bundle.height + bundle.z;
+                }
+                if (position.getY() < minY) {
+                    minY = position.getY();
+                }
+                if (position.getY() > maxY) {
+                    maxY = position.getY() ;
+                }
+            }
+        }
+        double moyX = (maxX + minX)/2.0;
+        double moyY = (maxY + minY)/2.0;
+        double moyZ = maxZ/2.0;
+        initGroupTranslate = new Point2D(moyX, moyY);
     }
 
 }

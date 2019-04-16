@@ -13,8 +13,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import presentation.controllers.MainController;
 import java.util.ArrayList;
@@ -113,7 +115,6 @@ public class ElevationViewPresenter3D implements IPresenter {
         });
     }
 
-
 //https://github.com/afsalashyana/JavaFX-3D/blob/master/src/gc/tutorial/chapt4/Rotation3DWithMouse.java
 
     @Override
@@ -141,7 +142,6 @@ public class ElevationViewPresenter3D implements IPresenter {
                 }
             });
             group.getChildren().add(box);
-
         }
     }
 
@@ -165,6 +165,7 @@ public class ElevationViewPresenter3D implements IPresenter {
         double minY = allBundles.get(0).position.getY();
         double maxY = allBundles.get(0).position.getY();
         double maxZ = allBundles.get(0).z+allBundles.get(0).height;
+        double minHeight = allBundles.get(0).height;
 
         for (BundleDto bundle : allBundles) {
             BundlePresenter presenter = new BundlePresenter(bundle);
@@ -184,6 +185,11 @@ public class ElevationViewPresenter3D implements IPresenter {
                 if (position.getY() > maxY) {
                     maxY = position.getY() ;
                 }
+                if (bundle.z == 0.0) {
+                    if (bundle.height < minHeight) {
+                        minHeight = bundle.height;
+                    }
+                }
             }
         }
         double moyX = (maxX + minX)/2.0;
@@ -198,6 +204,12 @@ public class ElevationViewPresenter3D implements IPresenter {
         }else{
             camera.translateZProperty().set(-cameraTranslateY);
         }
+        Rectangle rectangle = new Rectangle(-10.0, -10.0, 20.0, 20.0);
+        rectangle.setRotationAxis(new Point3D(1.0, 0.0, 0.0));
+        rectangle.setRotate(90);
+        rectangle.setTranslateY(1 + minHeight/2.0);
+        rectangle.setFill(Color.rgb(133, 79, 71));
+        group.getChildren().add(rectangle);
 
     }
 }

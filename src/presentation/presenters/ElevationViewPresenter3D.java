@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -54,7 +55,6 @@ public class ElevationViewPresenter3D implements IPresenter {
         scene.setCamera(camera);
         camera.translateXProperty().set(0);
         camera.translateYProperty().set(0);
-        camera.translateZProperty().set(-10);
         camera.setNearClip(1);
         camera.setFarClip(1000);
         initControl(group, scene);
@@ -69,27 +69,6 @@ public class ElevationViewPresenter3D implements IPresenter {
         );
         xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
-
-        /*scene.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case W: {
-                    transY.set(transY.get() + 5.0);
-                    break;
-                }
-                case S: {
-                    transY.set(transY.get() - 5.0);
-                    break;
-                }
-                case A: {
-                    transX.set(transX.get() - 5.0);
-                    break;
-                }
-                case D: {
-                    transX.set(transX.get() + 5.0);
-                    break;
-                }
-            }
-        });*/
 
         scene.setOnMousePressed(event -> {
             switch (event.getButton()) {
@@ -146,11 +125,11 @@ public class ElevationViewPresenter3D implements IPresenter {
 
             PhongMaterial material = new PhongMaterial();
             material.setDiffuseColor(hex2Rgb(bundle.color));
+            material.setDiffuseMap(new Image(getClass().getResourceAsStream("/presentation/assets/images/bois.jpg")));
             box.setMaterial(material);
 
             box.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
                 if (event.getButton() == MouseButton.PRIMARY) {
-
                 }
             });
             group.getChildren().add(box);
@@ -200,8 +179,16 @@ public class ElevationViewPresenter3D implements IPresenter {
         }
         double moyX = (maxX + minX)/2.0;
         double moyY = (maxY + minY)/2.0;
-        double moyZ = maxZ/2.0;
         initGroupTranslate = new Point2D(moyX, moyY);
-    }
+        double deltaX = maxX - minX;
+        double cameraTranslateX = (11.0/3.3) * deltaX;
+        double cameraTranslateY = (11.0/3.0) * maxZ;
 
+        if (cameraTranslateX > cameraTranslateY) {
+            camera.translateZProperty().set(-cameraTranslateX);
+        }else{
+            camera.translateZProperty().set(-cameraTranslateY);
+        }
+
+    }
 }

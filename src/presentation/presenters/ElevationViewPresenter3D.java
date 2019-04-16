@@ -96,8 +96,10 @@ public class ElevationViewPresenter3D implements IPresenter {
         scene.setOnMouseDragged(event -> {
             switch (event.getButton()) {
                 case SECONDARY: {
-                    angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
-                    angleY.set(anchorAngleY + anchorX - event.getSceneX());
+                    if (anchorAngleX - (anchorY - event.getSceneY()) > -3.0) {
+                        angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
+                        angleY.set(anchorAngleY + anchorX - event.getSceneX());
+                    }
                     break;
                 }
                 case PRIMARY: {
@@ -147,7 +149,8 @@ public class ElevationViewPresenter3D implements IPresenter {
 
     public void setFocusedBundle(BundleDto bundle) {
         clearBundles();
-        larmanController.getAllCollidingBundles(allBundles,bundle);
+        allBundles = larmanController.getBundles();
+        //larmanController.getAllCollidingBundles(allBundles,bundle);
         setInitialGroupTranslate();
         draw();
     }

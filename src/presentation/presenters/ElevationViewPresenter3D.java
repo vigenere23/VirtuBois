@@ -4,6 +4,7 @@ import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.input.MouseButton;
@@ -14,7 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import presentation.controllers.MainController;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +31,11 @@ public class ElevationViewPresenter3D implements IPresenter {
     private double anchorAngleY = 0;
     private final DoubleProperty angleX = new SimpleDoubleProperty(0);
     private final DoubleProperty angleY = new SimpleDoubleProperty(0);
-    private final DoubleProperty transX = new SimpleDoubleProperty(0);
-    private final DoubleProperty transY = new SimpleDoubleProperty(0);
     private LarmanController larmanController;
     private MainController mainController;
     private List<BundleDto> allBundles;
+    private Point2D lastPoint;
+    private Point2D groupTranslate;
 
     public ElevationViewPresenter3D(StackPane parent, MainController mainController) {
         this.mainController = mainController;
@@ -61,18 +61,14 @@ public class ElevationViewPresenter3D implements IPresenter {
     private void initControl(Group group, SubScene scene) {
         Rotate xRotate;
         Rotate yRotate;
-        Translate translate;
         group.getTransforms().addAll(
                 xRotate = new Rotate(0, Rotate.X_AXIS),
-                yRotate = new Rotate(0, Rotate.Y_AXIS),
-                translate = new Translate(0, 0)
+                yRotate = new Rotate(0, Rotate.Y_AXIS)
         );
         xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
-        translate.xProperty().bind(transX);
-        translate.yProperty().bind(transY);
 
-        scene.setOnKeyPressed(event -> {
+        /*scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case W: {
                     transY.set(transY.get() + 5.0);
@@ -91,18 +87,40 @@ public class ElevationViewPresenter3D implements IPresenter {
                     break;
                 }
             }
-        });
+        });*/
 
         scene.setOnMousePressed(event -> {
-            anchorX = event.getSceneX();
-            anchorY = event.getSceneY();
-            anchorAngleX = angleX.get();
-            anchorAngleY = angleY.get();
+            switch (event.getButton()) {
+                case SECONDARY: {
+                    anchorX = event.getSceneX();
+                    anchorY = event.getSceneY();
+                    anchorAngleX = angleX.get();
+                    anchorAngleY = angleY.get();
+                    break;
+                }
+                case PRIMARY: {
+                    lastPoint = new Point2D(event.getSceneX(), event.getSceneY());
+                    groupTranslate = new Point2D(group.getTranslateX(), group.getTranslateY());
+                    break;
+                }
+            }
+
         });
 
         scene.setOnMouseDragged(event -> {
-            angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
-            angleY.set(anchorAngleY + anchorX - event.getSceneX());
+            switch (event.getButton()) {
+                case SECONDARY: {
+                    angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
+                    angleY.set(anchorAngleY + anchorX - event.getSceneX());
+                    break;
+                }
+                case PRIMARY: {
+                    Point2D direction = new Point2D((event.getSceneX() - lastPoint.getX())/50.0, (event.getSceneY() - lastPoint.getY())/50.0);
+                    group.translateXProperty().set(groupTranslate.getX() + direction.getX());
+                    group.translateYProperty().set(groupTranslate.getY() + direction.getY());
+                    break;
+                }
+            }
         });
 
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {

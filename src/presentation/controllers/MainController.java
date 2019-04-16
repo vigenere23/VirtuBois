@@ -186,7 +186,7 @@ public class MainController extends BaseController {
     }
 
     private void initElevationView(){
-        elevationViewPresenter3D = new ElevationViewPresenter3D(subScenePane);
+        elevationViewPresenter3D = new ElevationViewPresenter3D(subScenePane, this);
     }
 
     private void initBundleInfo() {
@@ -521,7 +521,7 @@ public class MainController extends BaseController {
     }
 
     public void setFocusedBundleElevView(BundleDto bundle){
-        //elevationViewPresenter.setFocusedBundle(bundle);
+        elevationViewPresenter3D.setFocusedBundle(bundle);
     }
 
     public void clearElevationView() {

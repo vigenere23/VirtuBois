@@ -96,10 +96,10 @@ public class ElevationViewPresenter3D implements IPresenter {
         scene.setOnMouseDragged(event -> {
             switch (event.getButton()) {
                 case SECONDARY: {
-                    if (anchorAngleX - (anchorY - event.getSceneY()) > -3.0) {
+                    if ( 90.0 > anchorAngleX - (anchorY - event.getSceneY()) && anchorAngleX - (anchorY - event.getSceneY()) > -3.0) {
                         angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
-                        angleY.set(anchorAngleY + anchorX - event.getSceneX());
                     }
+                    angleY.set(anchorAngleY + anchorX - event.getSceneX());
                     break;
                 }
                 case PRIMARY: {
@@ -113,7 +113,7 @@ public class ElevationViewPresenter3D implements IPresenter {
 
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
             double delta = event.getDeltaY();
-            group.translateZProperty().set(group.getTranslateZ() + delta / 100.0d);
+            group.translateZProperty().set(group.getTranslateZ() - delta / 100.0d);
         });
     }
 

@@ -45,7 +45,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
 
         larmanController = mainController.larmanController;
         zoom = ConfigHelper.defaultZoom;
-        canDrag = true;
+        canDrag = false;
         dragVector = new Point2D(0, 0);
         translateVector = new Point2D(0, 0);
         selectionOffsetVector = new Point2D(0, 0);

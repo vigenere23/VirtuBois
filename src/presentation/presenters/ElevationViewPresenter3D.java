@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -43,6 +44,7 @@ public class ElevationViewPresenter3D implements IPresenter {
     private Point2D groupTranslate;
     private Point2D initGroupTranslate;
     private Map<Box, BundleDto> boxToBundleDtoMap;
+    private BundleDto focusedBundle;
 
     public ElevationViewPresenter3D(StackPane parent, MainController mainController) {
         this.mainController = mainController;
@@ -136,10 +138,23 @@ public class ElevationViewPresenter3D implements IPresenter {
 
             boxToBundleDtoMap.put(box, bundle);
 
+            if (bundle == focusedBundle) {
+                PhongMaterial phongMaterial = (PhongMaterial) box.getMaterial();
+                Color color = phongMaterial.getDiffuseColor();
+                phongMaterial.setDiffuseColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 0.5));
+            }
+
             box.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
+                for (Map.Entry<Box, BundleDto> entry : boxToBundleDtoMap.entrySet()) {
+                    PhongMaterial phongMaterial = (PhongMaterial) entry.getKey().getMaterial();
+                    Color color = phongMaterial.getDiffuseColor();
+                    phongMaterial.setDiffuseColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 1.0));
+                }
                 if (event.getButton() == MouseButton.PRIMARY) {
                     mainController.updateBundleInfo(boxToBundleDtoMap.get(box));
-                    //box.setEffect();
+                    PhongMaterial phongMaterial = (PhongMaterial) box.getMaterial();
+                    Color color = phongMaterial.getDiffuseColor();
+                    phongMaterial.setDiffuseColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 0.5));
                     mainController.getYardPresenter().setTopSelectedBundle(boxToBundleDtoMap.get(box));
                 }
             });
@@ -149,8 +164,9 @@ public class ElevationViewPresenter3D implements IPresenter {
 
     public void setFocusedBundle(BundleDto bundle) {
         clearBundles();
-        allBundles = larmanController.getBundles();
-        //larmanController.getAllCollidingBundles(allBundles,bundle);
+        focusedBundle = bundle;
+        //allBundles = larmanController.getBundles();
+        larmanController.getAllCollidingBundles(allBundles,bundle);
         setInitialGroupTranslate();
         draw();
     }
@@ -159,6 +175,11 @@ public class ElevationViewPresenter3D implements IPresenter {
         allBundles.clear();
         group.getChildren().clear();
         boxToBundleDtoMap.clear();
+        camera.translateXProperty().set(0);
+        camera.translateYProperty().set(0);
+        angleX.set(0.0);
+        angleY.set(0.0);
+        focusedBundle = null;
         draw();
     }
 
@@ -211,7 +232,7 @@ public class ElevationViewPresenter3D implements IPresenter {
         rectangle.setRotationAxis(new Point3D(1.0, 0.0, 0.0));
         rectangle.setRotate(90);
         rectangle.setTranslateY(1 + minHeight/2.0);
-        rectangle.setFill(Color.rgb(133, 79, 71));
+        rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/presentation/assets/images/bois.jpg"))));
         group.getChildren().add(rectangle);
 
     }

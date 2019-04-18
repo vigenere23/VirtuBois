@@ -161,7 +161,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
             handleZoom(delta, getPlanCenterCoords());
         }
-        if (event.getCode().equals(KeyCode.CHANNEL_UP)){
+        if (event.getCode().equals(KeyCode.UP)){
             UndoRedo.add(larmanController.getYard());
             Lift liftUp = lift.moveForward();
             larmanController.getYard().setLift(liftUp);

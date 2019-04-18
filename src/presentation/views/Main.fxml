@@ -52,6 +52,11 @@
                                         <MenuItem mnemonicParsing="false" onAction="#handleMenuHelpAbout" text="À propos" />
                                     </items>
                                 </Menu>
+                        <Menu mnemonicParsing="false" text="Grille Magnétique">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#handleGridSize" text="Changer Grille" />
+                          </items>
+                        </Menu>
                             </menus>
                         </MenuBar>
                     </children>

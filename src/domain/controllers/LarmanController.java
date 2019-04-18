@@ -1,6 +1,7 @@
 package domain.controllers;
 
 import domain.dtos.BundleDto;
+import domain.dtos.LiftDto;
 import domain.entities.Bundle;
 import domain.entities.Yard;
 import helpers.Converter;

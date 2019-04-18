@@ -2,10 +2,12 @@ package domain.entities;
 
 import helpers.ConfigHelper;
 import helpers.Point2D;
+import java.io.Serializable;
 
-public class Lift extends Drawable3D {
+public class Lift extends Drawable3D implements Serializable {
     
-    private static final long serialVersionUID = -8784286275740861451L;
+    private static final long serialVersionUID = 15641321L;
+    private double dy = 0, dx = 0;
     private double armsHeight;
     private double armsWidth;
     private double armsLength;
@@ -44,15 +46,51 @@ public class Lift extends Drawable3D {
         this.armsLength = armsLenght;
     }
 
-    public void moveForward() {}
+    @Override
+    public void setAngle(double angle) {
+        super.setAngle(angle);
+        ConfigHelper.chargerAngle = this.angle;
+    }
 
-    public void moveBackward() {}
+    public Lift moveForward() {
+       dx += Math.cos((this.angle * (Math.PI/180)) + Math.PI/2);
+       dy += Math.sin((this.angle * (Math.PI/180))+ Math.PI/2);
+       return new Lift(new Point2D(dx, dy));
+    }
 
-    public void turnLeft() {}
+    public Lift moveBackward() {
+        dx -= Math.cos((this.angle * (Math.PI/180)) + Math.PI/2);
+        dy -= Math.sin((this.angle * (Math.PI/180))+ Math.PI/2);
+        return new Lift(new Point2D(dx, dy));
+    }
 
-    public void turnRight() {}
+    public Lift turnLeft() {
+        double angle = getAngle();
+        angle += 2;
+        setAngle(angle);
+        return new Lift(new Point2D(dx, dy));
+    }
 
-    public void raiseArms() {}
+    public Lift turnRight() {
+        double angle = getAngle();
+        angle -= 2;
+        setAngle(angle);
+        return new Lift(new Point2D(dx, dy));
+    }
 
-    public void lowerArms() {}
+    public Lift raiseArms() {
+        double height = getArmsHeight();
+        height += 1;
+        setArmsHeight(height);
+        return new Lift(new Point2D(dx, dy));
+
+    }
+
+    public Lift lowerArms() {
+        double height = getArmsHeight();
+        height -= 1;
+        setArmsHeight(height);
+        return new Lift(new Point2D(dx, dy));
+
+    }
 }

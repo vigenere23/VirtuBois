@@ -22,10 +22,10 @@ public class ConfigHelper {
     // CHARGER
     public static final double chargerWidth = 1.5;
     public static final double chargerLenth = 2.0;
-    public static final double chargerAngle = 0.0;
+    public static double chargerAngle = 0.0;
     public static final double armsWidth = 1.0;
     public static final double armsLength = 1.0;
-    public static final double armsHeight = 0.0;
+    public static double armsHeight = 0.0;
 
     // DRAWING
     public static final double defaultZoom = 50.0;

@@ -591,8 +591,12 @@ public class MainController extends BaseController {
 
     public void handleRedoButton(ActionEvent actionEvent) {
         larmanController.setYard(UndoRedo.redo());
-        System.out.println(larmanController.getYard());
         yardPresenter.draw();
     }
+
+    public void handleGridSize(ActionEvent actionEvent) {
+        JavafxHelper.popupGrid();
+    }
+
 
 }

@@ -1,31 +1,26 @@
 package presentation.presenters;
 
 import domain.dtos.LiftDto;
+import helpers.CenteredRectangle;
+import helpers.ColorHelper;
+import helpers.ConfigHelper;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-public class LiftPresenter extends Rectangle implements IPresenter {
+public class LiftPresenter extends CenteredRectangle implements IPresenter {
     public LiftDto dto;
 
-    public static LiftPresenter create(LiftDto dto) {
-        Point2D topLeftCoordinates = getTopLeftCoordinates(dto);
-        return new LiftPresenter(dto, topLeftCoordinates.getX(), topLeftCoordinates.getY());
-    }
-
-    private LiftPresenter(LiftDto dto, double leftX, double topY) {
-        super(leftX, topY, dto.width, dto.length);
+    public LiftPresenter(LiftDto dto) {
+        super(dto.position.getX(), dto.position.getY(), dto.width, dto.length, dto.angle);
         this.dto = dto;
-        this.rotateProperty().setValue(dto.angle);
-    }
-
-    public static Point2D getTopLeftCoordinates(LiftDto dto) {
-        return new Point2D(
-                dto.position.getX(),
-                dto.position.getY()
-        );
+        draw();
     }
 
     public void draw() {
-
+        Image image = new Image("presentation/assets/images/Lift.png");
+        rectangle.setFill(new ImagePattern(image));
     }
 }

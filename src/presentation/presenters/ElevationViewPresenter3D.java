@@ -7,7 +7,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -145,12 +144,12 @@ public class ElevationViewPresenter3D implements IPresenter {
             }
 
             box.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
-                for (Map.Entry<Box, BundleDto> entry : boxToBundleDtoMap.entrySet()) {
-                    PhongMaterial phongMaterial = (PhongMaterial) entry.getKey().getMaterial();
-                    Color color = phongMaterial.getDiffuseColor();
-                    phongMaterial.setDiffuseColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 1.0));
-                }
                 if (event.getButton() == MouseButton.PRIMARY) {
+                    for (Map.Entry<Box, BundleDto> entry : boxToBundleDtoMap.entrySet()) {
+                        PhongMaterial phongMaterial = (PhongMaterial) entry.getKey().getMaterial();
+                        Color color = phongMaterial.getDiffuseColor();
+                        phongMaterial.setDiffuseColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 1.0));
+                    }
                     mainController.updateBundleInfo(boxToBundleDtoMap.get(box));
                     PhongMaterial phongMaterial = (PhongMaterial) box.getMaterial();
                     Color color = phongMaterial.getDiffuseColor();

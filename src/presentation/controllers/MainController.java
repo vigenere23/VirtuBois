@@ -15,8 +15,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
@@ -26,10 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-
-import javafx.scene.shape.Sphere;
 import javafx.stage.FileChooser;
-import presentation.presenters.ElevationViewPresenter;
 import presentation.presenters.ElevationViewPresenter3D;
 import presentation.presenters.YardPresenter;
 

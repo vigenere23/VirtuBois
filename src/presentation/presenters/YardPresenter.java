@@ -36,16 +36,17 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
 
     private MainController mainController;
     private LarmanController larmanController;
+    private boolean shouldUpdate;
 
     public YardPresenter(MainController mainController) {
         super();
         setFocusTraversable(true);
-
         this.mainController = mainController;
 
         larmanController = mainController.larmanController;
         zoom = ConfigHelper.defaultZoom;
         canDrag = false;
+        shouldUpdate = false;
         dragVector = new Point2D(0, 0);
         translateVector = new Point2D(0, 0);
         selectionOffsetVector = new Point2D(0, 0);
@@ -112,6 +113,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         } else {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (canDrag) {
+                    shouldUpdate = true;
                     Point2D newBundlePosition = mainController.gridIsOn
                         ? positionInGrid(mousePositionInRealCoords)
                         : mousePositionInRealCoords.subtract(selectionOffsetVector);
@@ -129,7 +131,9 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             dragVector = new Point2D(0, 0);
             draw();
         } else {
-            updateSelectedBundles();
+            if (shouldUpdate) {
+                updateSelectedBundles();
+            }
             canDrag = false;
             draw();
         }

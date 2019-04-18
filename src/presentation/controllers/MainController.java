@@ -446,7 +446,7 @@ public class MainController extends BaseController {
                     yardPresenter.setTopSelectedBundle(bundle);
                     clearElevationView();
                     //elevationViewPresenter.setBundles(bundle);
-                    //elevationViewPresenter.setFocusedBundle(bundle);
+                    elevationViewPresenter3D.setFocusedBundle(bundle);
                     inventoryTable.getSelectionModel().select(bundle);
                     updateBundleInfo(bundle);
                 } else {

@@ -79,6 +79,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         setOnMouseMoved(this::updateMousePosition);
         setOnScroll(this::handleOnScrollEvent);
         setOnKeyPressed(this::handleOnKeyPressedEvent);
+        setOnKeyReleased(this::handleOnKeyReleasedEvent);
     }
 
     private void handleOnMousePressedEvent(MouseEvent event) {
@@ -155,22 +156,28 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
             handleZoom(delta, getPlanCenterCoords());
         }
-        if(event.getCode().equals(KeyCode.D)){
+        if(event.getCode().equals(KeyCode.RIGHT)){
            liftPresenter.turnRight();
            draw();
+           event.consume();
         }
-        if(event.getCode().equals(KeyCode.A)){
+        if(event.getCode().equals(KeyCode.LEFT)){
             liftPresenter.turnLeft();
             draw();
+            event.consume();
         }
-        if(event.getCode().equals(KeyCode.W)){
+        if(event.getCode().equals(KeyCode.UP)){
             liftPresenter.forward();
             draw();
+            event.consume();
         }
-        if(event.getCode().equals(KeyCode.S)){
+        if(event.getCode().equals(KeyCode.DOWN)){
             liftPresenter.backward();
             draw();
+            event.consume();
         }
+
+
         /*if (event.getCode().equals(KeyCode.UP)){
             UndoRedo.add(larmanController.getYard());
             LiftDto liftDtoUp = new LiftDto(larmanController.getYard().getLift());
@@ -196,6 +203,13 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             draw();
         }
         */
+    }
+
+    private void handleOnKeyReleasedEvent(KeyEvent event){
+        KeyCode code = event.getCode();
+        if(code == KeyCode.DOWN || code == KeyCode.UP || code == KeyCode.LEFT || code == KeyCode.RIGHT){
+            larmanController.setLiftMovement(liftPresenter.dto);
+        }
     }
 
     private void updateMousePosition(MouseEvent event) {

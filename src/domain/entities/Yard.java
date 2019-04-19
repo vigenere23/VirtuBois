@@ -1,6 +1,7 @@
 package domain.entities;
 
 import domain.dtos.BundleDto;
+import domain.dtos.LiftDto;
 import helpers.CenteredRectangle;
 import helpers.Converter;
 import helpers.GeomHelper;
@@ -50,6 +51,9 @@ public class Yard implements Serializable {
 
     public void setLift(Point2D position) {
         this.lift = new Lift(position);
+    }
+    public void setLiftMovement(LiftDto liftDto){
+        lift.setMovement(liftDto);
     }
 
     public Bundle createBundle(Point2D position) {

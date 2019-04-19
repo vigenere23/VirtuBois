@@ -16,12 +16,12 @@ public class LiftPresenter extends CenteredRectangle implements IPresenter {
     }
 
     public void turnRight(){
-        dto.angle += 4.0;
+        dto.angle = (dto.angle + 4.0)%360;
         getRectangle().setRotate(dto.angle);
     }
 
     public void turnLeft(){
-        dto.angle -= 4.0;
+        dto.angle = (dto.angle - 4.0)%360;
         getRectangle().setRotate(dto.angle);
     }
 
@@ -30,11 +30,11 @@ public class LiftPresenter extends CenteredRectangle implements IPresenter {
         dto.position.setY(dto.position.getY() + 0.2 * Math.sin((- dto.angle + 90 )* 2*Math.PI /360));
         setPosition(dto.position);
     }
-     public void backward(){
+    public void backward(){
          dto.position.setX(dto.position.getX() - 0.2 * Math.cos((- dto.angle + 90 )* 2*Math.PI /360));
          dto.position.setY(dto.position.getY() - 0.2 * Math.sin((- dto.angle + 90 )* 2*Math.PI /360));
          setPosition(dto.position);
-     }
+    }
 
     @Override
     public void draw() {

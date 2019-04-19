@@ -1,5 +1,7 @@
 package domain.entities;
 
+import domain.dtos.BundleDto;
+import domain.dtos.LiftDto;
 import helpers.ConfigHelper;
 import helpers.Point2D;
 
@@ -65,48 +67,11 @@ public class Lift extends Drawable3D implements Serializable {
         ConfigHelper.chargerAngle = this.angle;
     }
 
-    public Lift moveForward(Point2D position) {
-       dx += Math.cos((this.angle * (Math.PI/180)) + Math.PI/2);
-       dy += Math.sin((this.angle * (Math.PI/180))+ Math.PI/2);
-       xArms += Math.cos(angle);
-       yArms += Math.sin(angle) + length/2;
-       setArmsPosition(new Point2D(xArms, yArms));
-       return new Lift(new Point2D(position.getX() + dx, position.getY() + dy));
-    }
-
-    public Lift moveBackward(Point2D position) {
-        dx -= Math.cos((this.angle * (Math.PI/180)) + Math.PI/2);
-        dy -= Math.sin((this.angle * (Math.PI/180))+ Math.PI/2);
-        return new Lift(new Point2D(dx + position.getX(), dy + position.getY()));
-    }
-
-    public Lift turnLeft(Point2D position) {
-        double angle = getAngle();
-        angle += 2;
-        setAngle(angle);
-        return new Lift(new Point2D(dx + position.getX(), dy + position.getY()));
-    }
-
-    public Lift turnRight(Point2D position) {
-        double angle = getAngle();
-        angle -= 2;
-        setAngle(angle);
-        return new Lift(new Point2D(dx + position.getX(), dy + position.getY()));
-    }
-
-    public Lift raiseArms() {
-        double height = getArmsHeight();
-        height += 1;
-        setArmsHeight(height);
-        return new Lift(new Point2D(dx, dy));
-
-    }
-
-    public Lift lowerArms() {
-        double height = getArmsHeight();
-        height -= 1;
-        setArmsHeight(height);
-        return new Lift(new Point2D(dx, dy));
-
+    public void setMovement(LiftDto newLift){
+        setPosition(newLift.position);
+        setAngle(newLift.angle);
+        System.out.println(position.getX());
+        System.out.println(position.getY());
+        System.out.println(angle);
     }
 }

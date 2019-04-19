@@ -39,14 +39,6 @@ public class LarmanController {
         return new BundleDto(yard.createBundle(position));
     }
 
-    public LiftDto moveForward(LiftDto liftDto) { return new LiftDto(yard.getLift().moveForward(liftDto.position));}
-
-    public LiftDto moveBackward(LiftDto liftDto) { return new LiftDto(yard.getLift().moveBackward(liftDto.position)); }
-
-    public LiftDto turnLeft(LiftDto liftDto) { return new LiftDto(yard.getLift().turnLeft(liftDto.position));}
-
-    public LiftDto turnRight(LiftDto liftDto) {return new LiftDto(yard.getLift().turnRight(liftDto.position));}
-
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));
         return bundles;
@@ -81,6 +73,11 @@ public class LarmanController {
     public LiftDto getLift(){
         Lift lift = getYard().getLift();
         return new LiftDto(lift);
+    }
+
+    public void setLiftMovement(LiftDto liftDto){
+        getYard().setLiftMovement(liftDto);
+
     }
 
     public BundleDto getBundle(String id) {

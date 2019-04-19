@@ -70,8 +70,5 @@ public class Lift extends Drawable3D implements Serializable {
     public void setMovement(LiftDto newLift){
         setPosition(newLift.position);
         setAngle(newLift.angle);
-        System.out.println(position.getX());
-        System.out.println(position.getY());
-        System.out.println(angle);
     }
 }

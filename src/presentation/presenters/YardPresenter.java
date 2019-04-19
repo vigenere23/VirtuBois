@@ -9,6 +9,7 @@ import enums.EditorMode;
 import helpers.*;
 import helpers.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.*;
@@ -402,6 +403,8 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         liftPresenter.setScale(zoom);
         liftPresenter.setPosition(planPosition);
         getChildren().add(liftPresenter.getRectangle());
+        liftPresenter.getArms().setPosition(planPosition);
+        getChildren().add(liftPresenter.getArms().getRectangle());
     }
 
     private void drawOtherGraphics() {

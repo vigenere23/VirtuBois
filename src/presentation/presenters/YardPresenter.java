@@ -437,7 +437,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     private boolean checkIfColliding(LiftDto lift) {
         boolean isColliding = false;
         List<BundleDto> bundlesToCheck = larmanController.getBundles();
-        CenteredRectangle rectangleLiftArms = new CenteredRectangle(lift.position.getX() + lift.length/2, lift.position.getY() + lift.length/2, lift.armsWidth, lift.armsLength, lift.angle);
+        CenteredRectangle rectangleLiftArms = new CenteredRectangle(lift.armsPosition.getX() + lift.armsLength/2, lift.armsPosition.getY() + lift.armsLength/2, lift.armsWidth, lift.armsLength, lift.angle);
         for(BundleDto bundleDto: bundlesToCheck){
             CenteredRectangle rectangleBundle = new CenteredRectangle(bundleDto.position.getX(), bundleDto.position.getY(), bundleDto.width, bundleDto.length, bundleDto.angle);
             if (GeomHelper.rectangleCollidesRectangle(rectangleLiftArms, rectangleBundle)){

@@ -28,7 +28,7 @@ public class Lift extends Drawable3D implements Serializable {
     }
 
     private void setArmsPosition(Point2D position) {
-        this.armsPosition = position;
+        this.armsPosition = new Point2D(position.getX(), position.getY() + length/2);
     }
 
     public Point2D getArmsPosition() {
@@ -68,8 +68,8 @@ public class Lift extends Drawable3D implements Serializable {
     public Lift moveForward(Point2D position) {
        dx += Math.cos((this.angle * (Math.PI/180)) + Math.PI/2);
        dy += Math.sin((this.angle * (Math.PI/180))+ Math.PI/2);
-       xArms += Math.sin(angle);
-       yArms += Math.cos(angle) + getLength()/2;
+       xArms += Math.cos(angle);
+       yArms += Math.sin(angle) + length/2;
        setArmsPosition(new Point2D(xArms, yArms));
        return new Lift(new Point2D(position.getX() + dx, position.getY() + dy));
     }

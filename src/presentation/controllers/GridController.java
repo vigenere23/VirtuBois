@@ -15,7 +15,7 @@ public class GridController extends BaseController {
     public Button cancelGridButton;
 
     public void handleModificationGridApply(ActionEvent actionEvent) {
-         ConfigHelper.gridSquareSize = Integer.parseInt(gridTextField.getText());
+        ConfigHelper.gridSquareSize = Integer.parseInt(gridTextField.getText());
         stage.close();
     }
 

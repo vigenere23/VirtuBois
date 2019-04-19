@@ -2,15 +2,19 @@ package domain.entities;
 
 import helpers.ConfigHelper;
 import helpers.Point2D;
+
+import java.awt.*;
 import java.io.Serializable;
 
 public class Lift extends Drawable3D implements Serializable {
     
     private static final long serialVersionUID = 15641321L;
     private double dy = 0, dx = 0;
+    private double xArms = 0, yArms = 0;
     private double armsHeight;
     private double armsWidth;
     private double armsLength;
+    private Point2D armsPosition;
 
     public Lift(Point2D position) {
         super(position);
@@ -20,6 +24,15 @@ public class Lift extends Drawable3D implements Serializable {
         setArmsWidth(ConfigHelper.armsWidth);
         setArmsLength(ConfigHelper.armsLength);
         setAngle(ConfigHelper.chargerAngle);
+        setArmsPosition(position);
+    }
+
+    private void setArmsPosition(Point2D position) {
+        this.armsPosition = position;
+    }
+
+    public Point2D getArmsPosition() {
+        return armsPosition;
     }
 
     public double getArmsHeight() {
@@ -52,30 +65,33 @@ public class Lift extends Drawable3D implements Serializable {
         ConfigHelper.chargerAngle = this.angle;
     }
 
-    public Lift moveForward() {
+    public Lift moveForward(Point2D position) {
        dx += Math.cos((this.angle * (Math.PI/180)) + Math.PI/2);
        dy += Math.sin((this.angle * (Math.PI/180))+ Math.PI/2);
-       return new Lift(new Point2D(dx, dy));
+       xArms += Math.sin(angle);
+       yArms += Math.cos(angle) + getLength()/2;
+       setArmsPosition(new Point2D(xArms, yArms));
+       return new Lift(new Point2D(position.getX() + dx, position.getY() + dy));
     }
 
-    public Lift moveBackward() {
+    public Lift moveBackward(Point2D position) {
         dx -= Math.cos((this.angle * (Math.PI/180)) + Math.PI/2);
         dy -= Math.sin((this.angle * (Math.PI/180))+ Math.PI/2);
-        return new Lift(new Point2D(dx, dy));
+        return new Lift(new Point2D(dx + position.getX(), dy + position.getY()));
     }
 
-    public Lift turnLeft() {
+    public Lift turnLeft(Point2D position) {
         double angle = getAngle();
         angle += 2;
         setAngle(angle);
-        return new Lift(new Point2D(dx, dy));
+        return new Lift(new Point2D(dx + position.getX(), dy + position.getY()));
     }
 
-    public Lift turnRight() {
+    public Lift turnRight(Point2D position) {
         double angle = getAngle();
         angle -= 2;
         setAngle(angle);
-        return new Lift(new Point2D(dx, dy));
+        return new Lift(new Point2D(dx + position.getX(), dy + position.getY()));
     }
 
     public Lift raiseArms() {

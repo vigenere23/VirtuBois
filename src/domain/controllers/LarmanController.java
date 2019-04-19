@@ -3,6 +3,7 @@ package domain.controllers;
 import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
 import domain.entities.Bundle;
+import domain.entities.Lift;
 import domain.entities.Yard;
 import helpers.Converter;
 import helpers.Point2D;
@@ -37,6 +38,14 @@ public class LarmanController {
     public BundleDto createBundle(Point2D position) {
         return new BundleDto(yard.createBundle(position));
     }
+
+    public LiftDto moveForward(LiftDto liftDto) { return new LiftDto(yard.getLift().moveForward(liftDto.position));}
+
+    public LiftDto moveBackward(LiftDto liftDto) { return new LiftDto(yard.getLift().moveBackward(liftDto.position)); }
+
+    public LiftDto turnLeft(LiftDto liftDto) { return new LiftDto(yard.getLift().turnLeft(liftDto.position));}
+
+    public LiftDto turnRight(LiftDto liftDto) {return new LiftDto(yard.getLift().turnRight(liftDto.position));}
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));

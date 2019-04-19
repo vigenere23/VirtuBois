@@ -2,13 +2,8 @@ package presentation.presenters;
 
 import domain.dtos.LiftDto;
 import helpers.CenteredRectangle;
-import helpers.ColorHelper;
-import helpers.ConfigHelper;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 
 public class LiftPresenter extends CenteredRectangle implements IPresenter {
     public LiftDto dto;

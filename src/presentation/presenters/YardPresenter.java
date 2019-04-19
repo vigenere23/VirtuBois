@@ -400,10 +400,12 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
 
     private void drawLift(){
         Point2D planPosition = transformRealCoordsToPlanCoords(liftPresenter.dto.position);
+        Point2D armsPlanPosition = transformRealCoordsToPlanCoords(liftPresenter.getArmsPosition());
         liftPresenter.setScale(zoom);
         liftPresenter.setPosition(planPosition);
         getChildren().add(liftPresenter.getRectangle());
-        liftPresenter.getArms().setPosition(planPosition);
+        liftPresenter.getArms().setScale(zoom);
+        liftPresenter.getArms().setPosition(armsPlanPosition);
         getChildren().add(liftPresenter.getArms().getRectangle());
     }
 

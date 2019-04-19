@@ -78,6 +78,11 @@ public class LarmanController {
         return bundleDtos;
     }
 
+    public LiftDto getLift(){
+        Lift lift = getYard().getLift();
+        return new LiftDto(lift);
+    }
+
     public BundleDto getBundle(String id) {
         Bundle bundle = yard.getBundle(id);
         if (bundle == null) return null;

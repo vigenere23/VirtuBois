@@ -122,6 +122,7 @@ public class MainController extends BaseController {
 
     @FXML
     public void initialize() {
+        root.setFocusTraversable(false);
         editorMode = new SimpleObjectProperty<>();
 
         initTableView();

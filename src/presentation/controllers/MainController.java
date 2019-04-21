@@ -99,6 +99,8 @@ public class MainController extends BaseController {
     @FXML
     public TextField bundleYPosValue;
     @FXML
+    public Label bundleZPosValue;
+    @FXML
     public TextField bundleAngleValue;
 
     @FXML
@@ -474,6 +476,7 @@ public class MainController extends BaseController {
         bundlePlankSizeValue2.clear();
         bundleXPosValue.clear();
         bundleYPosValue.clear();
+        bundleZPosValue.textProperty().setValue("");
         bundleAngleValue.clear();
 
     }
@@ -493,6 +496,7 @@ public class MainController extends BaseController {
         bundlePlankSizeValue2.setText(plankSize[1]);
         bundleXPosValue.setText(String.valueOf(bundle.position.getX()));
         bundleYPosValue.setText(String.valueOf(bundle.position.getY()));
+        bundleZPosValue.setText(String.valueOf(bundle.z));
         bundleAngleValue.setText(String.valueOf(bundle.angle));
         boolean canChange = true;
         for (BundleDto bundleDto : larmanController.getCollidingBundles(bundle)) {

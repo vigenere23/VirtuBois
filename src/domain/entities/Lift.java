@@ -1,18 +1,14 @@
 package domain.entities;
 
-import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
 import helpers.ConfigHelper;
 import helpers.Point2D;
 
-import java.awt.*;
 import java.io.Serializable;
 
 public class Lift extends Drawable3D implements Serializable {
-    
+
     private static final long serialVersionUID = 15641321L;
-    private double dy = 0, dx = 0;
-    private double xArms = 0, yArms = 0;
     private double armsHeight;
     private double armsWidth;
     private double armsLength;
@@ -20,17 +16,17 @@ public class Lift extends Drawable3D implements Serializable {
 
     public Lift(Point2D position) {
         super(position);
-        setWidth(ConfigHelper.chargerWidth);
-        setLength(ConfigHelper.chargerLenth);
+        setWidth(ConfigHelper.liftWidth);
+        setLength(ConfigHelper.liftLenth);
         setArmsHeight(ConfigHelper.armsHeight);
         setArmsWidth(ConfigHelper.armsWidth);
         setArmsLength(ConfigHelper.armsLength);
-        setAngle(ConfigHelper.chargerAngle);
+        setAngle(ConfigHelper.liftAngle);
         setArmsPosition(position);
     }
 
     private void setArmsPosition(Point2D position) {
-        this.armsPosition = new Point2D(position.getX(), position.getY() + length/2);
+        this.armsPosition = new Point2D(position.getX(), position.getY() + length / 2);
     }
 
     public Point2D getArmsPosition() {
@@ -64,10 +60,10 @@ public class Lift extends Drawable3D implements Serializable {
     @Override
     public void setAngle(double angle) {
         super.setAngle(angle);
-        ConfigHelper.chargerAngle = this.angle;
+        ConfigHelper.liftAngle = this.angle;
     }
 
-    public void setMovement(LiftDto newLift){
+    public void setMovement(LiftDto newLift) {
         setPosition(newLift.position);
         setAngle(newLift.angle);
     }

@@ -2,6 +2,8 @@ package presentation.presenters;
 
 import domain.dtos.LiftDto;
 import helpers.CenteredRectangle;
+import helpers.ConfigHelper;
+import helpers.GeomHelper;
 import helpers.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -24,27 +26,33 @@ public class LiftPresenter extends CenteredRectangle implements IPresenter {
     }
 
     public void turnRight() {
-        dto.angle = (dto.angle + 5.0) % 360;
-        getRectangle().setRotate(dto.angle);
-        calculateArmsPosition();
+        turn(true);
     }
 
     public void turnLeft() {
-        dto.angle = (dto.angle - 5.0) % 360;
+        turn(false);
+    }
+
+    private void turn(boolean turnRight) {
+        if (turnRight) dto.angle += ConfigHelper.liftAngleIncrement;
+        else dto.angle -= ConfigHelper.liftAngleIncrement;
         getRectangle().setRotate(dto.angle);
         calculateArmsPosition();
     }
 
     public void forward() {
-        dto.position.setX(dto.position.getX() + 0.2 * Math.cos((-dto.angle + 90) * 2 * Math.PI / 360));
-        dto.position.setY(dto.position.getY() + 0.2 * Math.sin((-dto.angle + 90) * 2 * Math.PI / 360));
-        setPosition(dto.position);
-        calculateArmsPosition();
+        move(true);
     }
 
     public void backward() {
-        dto.position.setX(dto.position.getX() - 0.2 * Math.cos((-dto.angle + 90) * 2 * Math.PI / 360));
-        dto.position.setY(dto.position.getY() - 0.2 * Math.sin((-dto.angle + 90) * 2 * Math.PI / 360));
+        move(false);
+    }
+
+    private void move(boolean moveForward) {
+        Point2D increment = new Point2D(ConfigHelper.liftPositionIncrement, ConfigHelper.liftPositionIncrement);
+        Point2D rotatedIncrement = GeomHelper.getRotatedVector(increment, -dto.angle + 90);
+        if (moveForward) dto.position = dto.position.add(rotatedIncrement);
+        else dto.position = dto.position.subtract(rotatedIncrement);
         setPosition(dto.position);
         calculateArmsPosition();
     }

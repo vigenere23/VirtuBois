@@ -1,5 +1,6 @@
 package domain.entities;
 
+import com.sun.jmx.remote.internal.ArrayQueue;
 import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
 import helpers.CenteredRectangle;
@@ -63,7 +64,7 @@ public class Yard implements Serializable {
 
     private void adjustBundleHeight(Bundle bundle) {
         double maxZ = 0;
-        for (Bundle collidingBundle : getCollidingBundles(bundle)) {
+        for (Bundle collidingBundle : getCollidingBundles(bundle, null)) {
             double bundleTopZ = collidingBundle.z + collidingBundle.getHeight();
             if (bundleTopZ > maxZ) maxZ = bundleTopZ;
         }
@@ -95,6 +96,7 @@ public class Yard implements Serializable {
     public void modifyBundleProperties(BundleDto bundleDto)
     {
         Bundle bundle = getBundle(bundleDto.id);
+        List<Bundle> beforeCollidingBundles = getCollidingBundles(bundle, null);
         bundle.setBarcode(bundleDto.barcode);
         bundle.setHeight(bundleDto.height);
         bundle.setWidth(bundleDto.width);
@@ -105,7 +107,7 @@ public class Yard implements Serializable {
         bundle.setPlanckSize(bundleDto.plankSize);
         bundle.setAngle(bundleDto.angle);
         bundle.setZ(bundleDto.z);
-        //TODO recalculate z on call
+        List<Bundle> afterCollidingBundles = getCollidingBundles(bundle, null);
     }
 
     public void modifyBundlePosition(String id, Point2D position)
@@ -115,10 +117,13 @@ public class Yard implements Serializable {
         adjustBundleHeight(bundle);
     }
 
-    public List<Bundle> getCollidingBundles(Bundle bundleToCheck) {
+    public List<Bundle> getCollidingBundles(Bundle bundleToCheck, Set<Bundle> exceptionList) {
         List<Bundle> collidingBundles = new ArrayList<>();
         for (Bundle bundle : getBundles()) {
             if (bundle != bundleToCheck) {
+                if (exceptionList != null && exceptionList.contains(bundle)) {
+                    continue;
+                }
                 boolean bundleCollides = GeomHelper.rectangleCollidesRectangle(
                         Converter.fromBundleToCenteredRectangle(bundle),
                         Converter.fromBundleToCenteredRectangle(bundleToCheck)
@@ -129,6 +134,32 @@ public class Yard implements Serializable {
             }
         }
         return collidingBundles;
+    }
+
+    public List<Bundle> getAllCollidingBundles(BundleDto bundleToCheck) {
+        Bundle originBundle = getBundle(bundleToCheck.id);
+        Set<Bundle> allCollidingBundles = new HashSet<>();
+        Set<Bundle> bundlesToCheck = new HashSet<>();
+
+        if (originBundle != null) {
+            bundlesToCheck.add(originBundle);
+
+            while (!bundlesToCheck.isEmpty()) {
+                Bundle bundle = bundlesToCheck.iterator().next();
+                bundlesToCheck.remove(bundle);
+                allCollidingBundles.add(bundle);
+                Set<Bundle> exceptedBundles = new HashSet<>();
+                exceptedBundles.addAll(allCollidingBundles);
+                exceptedBundles.addAll(bundlesToCheck);
+                for (Bundle collidingBundle : getCollidingBundles(bundle, exceptedBundles)) {
+                    if (!allCollidingBundles.contains(collidingBundle)) {
+                        bundlesToCheck.add(collidingBundle);
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>(allCollidingBundles);
     }
 
     public void moveLiftForward() {

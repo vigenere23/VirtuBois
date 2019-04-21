@@ -236,7 +236,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (!selectedBundles.isEmpty()) {
             topSelectedBundle = larmanController.getTopBundle(mousePositionInRealCoords);
             //mainController.updateElevationView(topSelectedBundle);
-            mainController.setFocusedBundleElevView(topSelectedBundle);
             mainController.updateBundleInfo(topSelectedBundle);
             mainController.setFocusedBundleElevView(topSelectedBundle);
             selectionOffsetVector = mousePositionInRealCoords.substract(topSelectedBundle.position);

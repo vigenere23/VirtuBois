@@ -100,8 +100,7 @@ public class LarmanController {
     public void modifyBundleProperties(BundleDto bundleDto) {
         double zChange = bundleDto.height - getBundle(bundleDto.id).height;
         yard.modifyBundleProperties(bundleDto);
-        List<BundleDto> bundlesInStack = new ArrayList<>();
-        getAllCollidingBundles(bundlesInStack, bundleDto);
+        List<BundleDto> bundlesInStack = getAllCollidingBundles(bundleDto);
         for (BundleDto bundle : bundlesInStack) {
             if (bundleDto.z < bundle.z && !bundleDto.equals(bundle)) {
                 bundle.z = bundle.z + zChange;
@@ -123,31 +122,20 @@ public class LarmanController {
         Bundle bundleToCheck = yard.getBundle(bundleDtoToCheck.id);
         if (bundleToCheck != null) {
             return Converter.fromBundlesToBundleDtos(
-                    yard.getCollidingBundles(bundleToCheck)
+                    yard.getCollidingBundles(bundleToCheck, null)
             );
         }
         return null;
     }
 
-    public List<BundleDto> getAllCollidingBundles(List<BundleDto> bundles, BundleDto bundleToCheck) {
-        bundles.add(bundleToCheck);
-        for (BundleDto bundle : getCollidingBundles(bundleToCheck)) {
-            int count = 0;
-            for (BundleDto bundleInBundles : bundles) {
-                if (!bundleInBundles.equals(bundle)) {
-                    count++;
-                }
-            }
-            if (count == bundles.size()) {
-                bundles = getAllCollidingBundles(bundles, bundle);
-            }
-        }
-        return bundles;
+    public List<BundleDto> getAllCollidingBundles(BundleDto bundleToCheck) {
+        List<Bundle> collidingBundles = yard.getAllCollidingBundles(bundleToCheck);
+        return Converter.fromBundlesToBundleDtos(collidingBundles);
     }
 
-    public List<BundleDto> getAllCollidingBundlesZMin(List<BundleDto> bundles, BundleDto bundleToCheck, float zMin) {
+    public List<BundleDto> getAllCollidingBundlesZMin(BundleDto bundleToCheck, float zMin) {
         List<BundleDto> bundlesZMin = new ArrayList<>();
-        for (BundleDto bundle : getAllCollidingBundles(bundles, bundleToCheck)) {
+        for (BundleDto bundle : getAllCollidingBundles(bundleToCheck)) {
             if (bundle.z >= zMin) {
                 bundlesZMin.add(bundle);
             }

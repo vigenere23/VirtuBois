@@ -46,7 +46,7 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
 
     public void setBundles(BundleDto bundle) {
         clearBundles();
-        larmanController.getAllCollidingBundles(allBundles, bundle);
+        allBundles = larmanController.getAllCollidingBundles(bundle);
         draw();
     }
 

@@ -498,18 +498,19 @@ public class MainController extends BaseController {
         bundleYPosValue.setText(String.valueOf(bundle.position.getY()));
         bundleZPosValue.setText(String.valueOf(bundle.z));
         bundleAngleValue.setText(String.valueOf(bundle.angle));
+
         boolean canChange = true;
         for (BundleDto bundleDto : larmanController.getCollidingBundles(bundle)) {
             if (bundleDto.z > bundle.z) {
                 canChange = false;
             }
         }
-        bundleLengthValue.setEditable(canChange);
+        /*bundleLengthValue.setEditable(canChange);
         bundleWidthValue.setEditable(canChange);
         bundleHeightValue.setEditable(canChange);
+        bundleAngleValue.setEditable(canChange);*/
         bundleXPosValue.setEditable(canChange);
         bundleYPosValue.setEditable(canChange);
-        bundleAngleValue.setEditable(canChange);
     }
 
     public void updateElevationView(BundleDto bundle) {

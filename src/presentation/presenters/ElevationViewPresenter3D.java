@@ -141,7 +141,7 @@ public class ElevationViewPresenter3D implements IPresenter {
 
             boxToBundleDtoMap.put(box, bundle);
 
-            if (bundle == focusedBundle) {
+            if (bundle.equals(focusedBundle)) {
                 PhongMaterial phongMaterial = (PhongMaterial) box.getMaterial();
                 Color color = phongMaterial.getDiffuseColor();
                 phongMaterial.setDiffuseColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 0.5));
@@ -169,7 +169,7 @@ public class ElevationViewPresenter3D implements IPresenter {
         clearBundles();
         focusedBundle = bundle;
         //allBundles = larmanController.getBundles();
-        larmanController.getAllCollidingBundles(allBundles, bundle);
+        allBundles = larmanController.getAllCollidingBundles(bundle);
         setInitialGroupTranslate();
         draw();
     }

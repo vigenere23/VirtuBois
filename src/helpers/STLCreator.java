@@ -4,32 +4,12 @@ import domain.dtos.BundleDto;
 import javafx.geometry.Point3D;
 import presentation.presenters.BundlePresenter;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-public class STLWriter{
-    private List<BundlePresenter> bundles = new ArrayList<>();
-    private String filename;
+public class STLCreator {
 
-    public STLWriter(List<BundleDto> bundlesDto, String filename) {
-        this.filename = filename;
-        createBundlePresenter(bundlesDto);
-        writeInSTLFile();
-    }
-
-    private void createBundlePresenter(List<BundleDto> bundlesDto) {
-        for (BundleDto bundle : bundlesDto) {
-            bundles.add(new BundlePresenter(bundle));
-        }
-    }
-
-    private List<Point3D> generateBundlePoints3D(BundlePresenter bundle) {
+    private static List<Point3D> generateBundlePoints3D(BundlePresenter bundle) {
         List<Point2D> bundlePoints2D = bundle.getPoints();
         List<Point3D> bundlePoints3D = new ArrayList<>();
         bundlePoints3D.add(new Point3D(bundlePoints2D.get(0).getX(), bundlePoints2D.get(0).getY(), bundle.dto.z));
@@ -43,7 +23,7 @@ public class STLWriter{
         return bundlePoints3D;
     }
 
-    private List<Point3D> generateTriangle(Point3D p1, Point3D p2, Point3D p3) {
+    private static List<Point3D> generateTriangle(Point3D p1, Point3D p2, Point3D p3) {
         List<Point3D> triangle = new ArrayList<>();
         triangle.add(p1);
         triangle.add(p2);
@@ -51,7 +31,7 @@ public class STLWriter{
         return triangle;
     }
 
-    private List<List<Point3D>> generateBundleTriangles(List<Point3D> bundlePoints3D) {
+    private static List<List<Point3D>> generateBundleTriangles(List<Point3D> bundlePoints3D) {
         List<List<Point3D>> triangles = new ArrayList<>();
         triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(2), bundlePoints3D.get(3)));
         triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(1), bundlePoints3D.get(2)));
@@ -68,7 +48,8 @@ public class STLWriter{
         return triangles;
     }
 
-    private void writeInSTLFile() {
+    public static String generateSTL(List<BundleDto> bundleDtos) {
+        List<BundlePresenter> bundles = Converter.fromBundleDtosToBundlePresenters(bundleDtos);
         StringBuilder sb = new StringBuilder();
         sb.append("solid stl\n");
         for (BundlePresenter bundle : bundles) {
@@ -86,11 +67,6 @@ public class STLWriter{
             }
         }
         sb.append("endsolid stl");
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filename), Charset.forName("UTF-8"),
-                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
-            writer.write(sb.toString());
-        } catch (IOException e) {
-
-        }
+        return sb.toString();
     }
 }

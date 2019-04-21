@@ -2,6 +2,7 @@ package helpers;
 
 import domain.dtos.BundleDto;
 import domain.entities.Bundle;
+import presentation.presenters.BundlePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,5 +24,13 @@ public class Converter {
                 bundle.getLength(),
                 bundle.getAngle()
         );
+    }
+
+    public static List<BundlePresenter> fromBundleDtosToBundlePresenters(List<BundleDto> bundleDtos) {
+        List<BundlePresenter> presenters = new ArrayList<>();
+        for (BundleDto bundleDto : bundleDtos) {
+            presenters.add(new BundlePresenter(bundleDto));
+        }
+        return presenters;
     }
 }

@@ -33,7 +33,9 @@ public class LarmanController {
         yard = newYard;
     }
 
-    public Yard getYard() { return yard; }
+    public Yard getYard() {
+        return yard;
+    }
 
     public BundleDto createBundle(Point2D position) {
         return new BundleDto(yard.createBundle(position));
@@ -65,17 +67,17 @@ public class LarmanController {
         );
     }
 
-    public List<BundleDto> sortBundlesDtoZ(List<BundleDto> bundleDtos){
+    public List<BundleDto> sortBundlesDtoZ(List<BundleDto> bundleDtos) {
         bundleDtos.sort(Comparator.comparing(BundleDto::getZ));
         return bundleDtos;
     }
 
-    public LiftDto getLift(){
+    public LiftDto getLift() {
         Lift lift = getYard().getLift();
         return new LiftDto(lift);
     }
 
-    public void setLiftMovement(LiftDto liftDto){
+    public void setLiftMovement(LiftDto liftDto) {
         getYard().setLiftMovement(liftDto);
 
     }
@@ -92,9 +94,8 @@ public class LarmanController {
                 sortBundlesZ(bundles)
         );
     }
-    
-    public BundleDto getTopBundle(Point2D position)
-    {
+
+    public BundleDto getTopBundle(Point2D position) {
         List<BundleDto> bundlesDto = getSelectedBundles(position);
         if (!bundlesDto.isEmpty()) {
             return bundlesDto.get(bundlesDto.size() - 1);
@@ -102,15 +103,14 @@ public class LarmanController {
         return null;
     }
 
-    public void modifyBundleProperties(BundleDto bundleDto)
-    {
+    public void modifyBundleProperties(BundleDto bundleDto) {
         double zChange = bundleDto.height - getBundle(bundleDto.id).height;
         yard.modifyBundleProperties(bundleDto);
         List<BundleDto> bundlesInStack = new ArrayList<>();
-        getAllCollidingBundles(bundlesInStack,bundleDto);
-        for(BundleDto bundle : bundlesInStack){
-            if(bundleDto.z < bundle.z && bundleDto.id != bundle.id){
-                bundle.z = bundle.z + zChange ;
+        getAllCollidingBundles(bundlesInStack, bundleDto);
+        for (BundleDto bundle : bundlesInStack) {
+            if (bundleDto.z < bundle.z && bundleDto.id != bundle.id) {
+                bundle.z = bundle.z + zChange;
                 yard.modifyBundleProperties(bundle);
             }
         }
@@ -125,7 +125,7 @@ public class LarmanController {
         yard.deleteBundle(id);
     }
 
-    public List<BundleDto> getCollidingBundles(BundleDto bundleDtoToCheck){
+    public List<BundleDto> getCollidingBundles(BundleDto bundleDtoToCheck) {
         Bundle bundleToCheck = yard.getBundle(bundleDtoToCheck.id);
         if (bundleToCheck != null) {
             return Converter.fromBundlesToBundleDtos(
@@ -135,7 +135,7 @@ public class LarmanController {
         return null;
     }
 
-    public List<BundleDto> getAllCollidingBundles(List<BundleDto> bundles, BundleDto bundleToCheck){
+    public List<BundleDto> getAllCollidingBundles(List<BundleDto> bundles, BundleDto bundleToCheck) {
         bundles.add(bundleToCheck);
         for (BundleDto bundle : getCollidingBundles(bundleToCheck)) {
             int count = 0;
@@ -144,7 +144,7 @@ public class LarmanController {
                     count++;
                 }
             }
-            if (count == bundles.size()){
+            if (count == bundles.size()) {
                 bundles = getAllCollidingBundles(bundles, bundle);
             }
         }

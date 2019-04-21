@@ -9,19 +9,32 @@ import javafx.scene.control.*;
 import java.time.LocalTime;
 
 public class BundleEditorController extends BaseController {
-    @FXML public TextField barcodeTextField;
-    @FXML public TextField essenceTextField;
-    @FXML public TextField plankSizeTextField1;
-    @FXML public TextField plankSizeTextField2;
-    @FXML public TextField lengthTextField;
-    @FXML public TextField widthTextField;
-    @FXML public TextField heightTextField;
-    @FXML public TextField angleTextField;
-    @FXML public DatePicker datePicker;
-    @FXML public Spinner<Integer> hourSpinner;
-    @FXML public Spinner<Integer> minuteSpinner;
-    @FXML public Button applyModificationButton;
-    @FXML public Button cancelModificationButton;
+    @FXML
+    public TextField barcodeTextField;
+    @FXML
+    public TextField essenceTextField;
+    @FXML
+    public TextField plankSizeTextField1;
+    @FXML
+    public TextField plankSizeTextField2;
+    @FXML
+    public TextField lengthTextField;
+    @FXML
+    public TextField widthTextField;
+    @FXML
+    public TextField heightTextField;
+    @FXML
+    public TextField angleTextField;
+    @FXML
+    public DatePicker datePicker;
+    @FXML
+    public Spinner<Integer> hourSpinner;
+    @FXML
+    public Spinner<Integer> minuteSpinner;
+    @FXML
+    public Button applyModificationButton;
+    @FXML
+    public Button cancelModificationButton;
 
     private BundleDto bundleDto;
 
@@ -47,7 +60,7 @@ public class BundleEditorController extends BaseController {
     private void setInputValues() {
         barcodeTextField.setText(bundleDto.barcode);
         essenceTextField.setText(bundleDto.essence);
-        plankSizeTextField1.setText(bundleDto.plankSize.substring(0,1));
+        plankSizeTextField1.setText(bundleDto.plankSize.substring(0, 1));
         plankSizeTextField2.setText(bundleDto.plankSize.substring(2));
         lengthTextField.setText(String.valueOf(bundleDto.length));
         widthTextField.setText(String.valueOf(bundleDto.width));

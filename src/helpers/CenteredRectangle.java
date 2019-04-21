@@ -27,7 +27,9 @@ public class CenteredRectangle {
         rectangle.setRotate(-angle);
     }
 
-    public Rectangle getRectangle() { return rectangle; }
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
 
     public Point2D getPosition() {
         return new Point2D(getX(), getY());
@@ -38,7 +40,9 @@ public class CenteredRectangle {
         setY(position.getY());
     }
 
-    public double getX() { return x; }
+    public double getX() {
+        return x;
+    }
 
     public void setX(double x) {
         this.x = x;
@@ -50,7 +54,9 @@ public class CenteredRectangle {
         rectangle.setX(x - width * scale / 2.0);
     }
 
-    public double getY() { return y; }
+    public double getY() {
+        return y;
+    }
 
     public void setY(double y) {
         this.y = y;
@@ -62,7 +68,9 @@ public class CenteredRectangle {
         rectangle.setY(y - height * scale / 2.0);
     }
 
-    public double getScale () { return scale; }
+    public double getScale() {
+        return scale;
+    }
 
     public void setScale(double scale) {
         this.scale = scale;
@@ -70,21 +78,27 @@ public class CenteredRectangle {
         updateY();
     }
 
-    public double getWidth() { return width; }
+    public double getWidth() {
+        return width;
+    }
 
     public void setWidth(double width) {
         this.width = width;
         updateX();
     }
 
-    public double getHeight() { return height; }
+    public double getHeight() {
+        return height;
+    }
 
     public void setHeight(double height) {
         this.height = height;
         updateY();
     }
 
-    public double area() { return width * height; }
+    public double area() {
+        return width * height;
+    }
 
     // https://stackoverflow.com/questions/2259476/rotating-a-point-about-another-point-2d
     public List<Point2D> getPoints() {
@@ -97,8 +111,8 @@ public class CenteredRectangle {
         points.add(new Point2D(x + width / 2.0, y - height / 2.0));
         points.add(new Point2D(x - width / 2.0, y - height / 2.0));
 
-        double cosAngle = Math.cos((rectangle.getRotate()*2.0*Math.PI)/360.0);
-        double sinAngle = Math.sin((rectangle.getRotate()*2.0*Math.PI)/360.0);
+        double cosAngle = Math.cos((rectangle.getRotate() * 2.0 * Math.PI) / 360.0);
+        double sinAngle = Math.sin((rectangle.getRotate() * 2.0 * Math.PI) / 360.0);
 
         for (int i = 0; i < points.size(); i++) {
             Point2D point = points.get(i).subtract(getPosition());

@@ -1,10 +1,10 @@
 package presentation.controllers;
 
 import helpers.ConfigHelper;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
-import javafx.event.*;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 public class GridController extends BaseController {
     @FXML
@@ -19,5 +19,7 @@ public class GridController extends BaseController {
         stage.close();
     }
 
-    public void handleGridModificationCancel(ActionEvent actionEvent) { stage.close(); }
+    public void handleGridModificationCancel(ActionEvent actionEvent) {
+        stage.close();
+    }
 }

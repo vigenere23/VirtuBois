@@ -46,7 +46,7 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
 
     public void setBundles(BundleDto bundle) {
         clearBundles();
-        larmanController.getAllCollidingBundles(allBundles,bundle);
+        larmanController.getAllCollidingBundles(allBundles, bundle);
         draw();
     }
 
@@ -69,15 +69,15 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
         double width = getWidth();
         double minWidth = allBundles.get(0).position.getX();
         double maxWidth = allBundles.get(0).position.getX();
-        double maxHeight = allBundles.get(0).z+allBundles.get(0).height;
+        double maxHeight = allBundles.get(0).z + allBundles.get(0).height;
         for (BundleDto bundle : allBundles) {
             BundlePresenter presenter = new BundlePresenter(bundle);
-            for(Point2D position : presenter.getPoints()) {
+            for (Point2D position : presenter.getPoints()) {
                 if (position.getX() < minWidth) {
                     minWidth = position.getX();
                 }
                 if (position.getX() > maxWidth) {
-                    maxWidth = position.getX() ;
+                    maxWidth = position.getX();
                 }
                 if ((bundle.height + bundle.z > maxHeight)) {
                     maxHeight = bundle.height + bundle.z;
@@ -85,16 +85,15 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             }
         }
 
-        double scaleZ = height/maxHeight;
-        double scaleX = width/(maxWidth - minWidth);
+        double scaleZ = height / maxHeight;
+        double scaleX = width / (maxWidth - minWidth);
 
         for (BundleDto presenter : allBundles) {
             double xPos = 0;
             double zPos = 0;
             if (minWidth < 0) {
                 xPos = (presenter.position.getX() + Math.abs(minWidth)) * scaleX;
-            }
-            else {
+            } else {
                 xPos = (presenter.position.getX() - minWidth) * scaleX;
             }
 
@@ -103,11 +102,10 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             BundlePresenter bundlePresenter = new BundlePresenter(presenter);
             double minX = bundlePresenter.getPoints().get(0).getX();
             double maxX = bundlePresenter.getPoints().get(0).getX();
-            for(Point2D summit : bundlePresenter.getPoints()) {
-                if(summit.getX() < minX){
+            for (Point2D summit : bundlePresenter.getPoints()) {
+                if (summit.getX() < minX) {
                     minX = summit.getX();
-                }
-                else if(summit.getX() > maxX){
+                } else if (summit.getX() > maxX) {
                     maxX = summit.getX();
 
                 }
@@ -116,17 +114,16 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             presenter.angle = 0.;
             BundlePresenter bundleToShow = new BundlePresenter(presenter);
             Rectangle rectangle = bundleToShow.getRectangle();
-            rectangle.setWidth((maxX-minX) * scaleX);
-            rectangle.setHeight(presenter.height*scaleZ);
-            rectangle.setX(xPos - rectangle.getWidth()/2);
+            rectangle.setWidth((maxX - minX) * scaleX);
+            rectangle.setHeight(presenter.height * scaleZ);
+            rectangle.setX(xPos - rectangle.getWidth() / 2);
             rectangle.setY(zPos - rectangle.getHeight());
-            if (presenter.id == mainController.getYardPresenter().getTopSelectedBundle().id)
-            {
+            if (presenter.id == mainController.getYardPresenter().getTopSelectedBundle().id) {
                 rectangle.setEffect(dropShadow);
             }
             presenter.angle = oldAngle;
-            rectangleBundleDtoMap.put(rectangle,presenter);
-            dtoToRectangleMap.put(presenter,rectangle);
+            rectangleBundleDtoMap.put(rectangle, presenter);
+            dtoToRectangleMap.put(presenter, rectangle);
 
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
                 for (Map.Entry<Rectangle, BundleDto> entry : rectangleBundleDtoMap.entrySet()) {
@@ -147,15 +144,15 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
         double width = getWidth();
         double minLength = allBundles.get(0).position.getY();
         double maxLength = allBundles.get(0).position.getY();
-        double maxHeight = allBundles.get(0).z+allBundles.get(0).height;
+        double maxHeight = allBundles.get(0).z + allBundles.get(0).height;
         for (BundleDto bundle : allBundles) {
             BundlePresenter presenter = new BundlePresenter(bundle);
-            for(Point2D position : presenter.getPoints()) {
+            for (Point2D position : presenter.getPoints()) {
                 if (position.getY() < minLength) {
                     minLength = position.getY();
                 }
                 if (position.getY() > maxLength) {
-                    maxLength = position.getY() ;
+                    maxLength = position.getY();
                 }
                 if ((bundle.height + bundle.z > maxHeight)) {
                     maxHeight = bundle.height + bundle.z;
@@ -163,29 +160,27 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             }
         }
 
-        double scaleZ = height/maxHeight;
-        double scaleY = width/(maxLength - minLength);
+        double scaleZ = height / maxHeight;
+        double scaleY = width / (maxLength - minLength);
 
         for (BundleDto presenter : allBundles) {
             double yPos = 0;
             double zPos = 0;
             if (minLength < 0) {
                 yPos = (presenter.position.getY() + Math.abs(minLength)) * scaleY;
-            }
-            else {
+            } else {
                 yPos = (presenter.position.getY() - minLength) * scaleY;
             }
 
-            zPos = (maxHeight - presenter.z)*scaleZ;
+            zPos = (maxHeight - presenter.z) * scaleZ;
 
             BundlePresenter bundlePresenter = new BundlePresenter(presenter);
             double minY = bundlePresenter.getPoints().get(0).getY();
             double maxY = bundlePresenter.getPoints().get(0).getY();
-            for(Point2D summit : bundlePresenter.getPoints()) {
-                if(summit.getY() < minY){
+            for (Point2D summit : bundlePresenter.getPoints()) {
+                if (summit.getY() < minY) {
                     minY = summit.getY();
-                }
-                else if(summit.getY() > maxY){
+                } else if (summit.getY() > maxY) {
                     maxY = summit.getY();
 
                 }
@@ -194,17 +189,16 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
             presenter.angle = 0.;
             BundlePresenter bundleToShow = new BundlePresenter(presenter);
             Rectangle rectangle = bundleToShow.getRectangle();
-            rectangle.setWidth((maxY-minY)*scaleY);
-            rectangle.setHeight(presenter.height*scaleZ);
-            rectangle.setX(yPos - rectangle.getWidth()/2);
+            rectangle.setWidth((maxY - minY) * scaleY);
+            rectangle.setHeight(presenter.height * scaleZ);
+            rectangle.setX(yPos - rectangle.getWidth() / 2);
             rectangle.setY(zPos - rectangle.getHeight());
-            if (presenter.id == mainController.getYardPresenter().getTopSelectedBundle().id)
-            {
+            if (presenter.id == mainController.getYardPresenter().getTopSelectedBundle().id) {
                 rectangle.setEffect(dropShadow);
             }
             presenter.angle = oldAngle;
-            rectangleBundleDtoMap.put(rectangle,presenter);
-            dtoToRectangleMap.put(presenter,rectangle);
+            rectangleBundleDtoMap.put(rectangle, presenter);
+            dtoToRectangleMap.put(presenter, rectangle);
 
             rectangle.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
                 for (Map.Entry<Rectangle, BundleDto> entry : rectangleBundleDtoMap.entrySet()) {

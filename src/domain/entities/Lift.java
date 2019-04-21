@@ -22,11 +22,7 @@ public class Lift extends Drawable3D implements Serializable {
         setArmsWidth(ConfigHelper.armsWidth);
         setArmsLength(ConfigHelper.armsLength);
         setAngle(ConfigHelper.liftAngle);
-        setArmsPosition(position);
-    }
-
-    private void setArmsPosition(Point2D position) {
-        this.armsPosition = new Point2D(position.getX(), position.getY() + length / 2);
+        repositionArms();
     }
 
     public Point2D getArmsPosition() {
@@ -91,7 +87,7 @@ public class Lift extends Drawable3D implements Serializable {
 
     private void repositionArms() {
         Point2D halfLiftVector = new Point2D(width / 2, length /2);
-        Point2D distanceVector = new Point2D(ConfigHelper.armsLength / 2).add(halfLiftVector);
+        Point2D distanceVector = new Point2D(armsLength / 2).add(halfLiftVector);
         Point2D rotatedDistanceVector = GeomHelper.getRotatedVector(distanceVector, -angle + 90);
         armsPosition = position.add(rotatedDistanceVector);
     }

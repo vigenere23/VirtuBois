@@ -11,7 +11,6 @@ public class LiftPresenter extends CenteredRectangle implements IPresenter {
     public LiftDto dto;
     private CenteredRectangle arms;
 
-
     public LiftPresenter(LiftDto dto) {
         super(dto.position, dto.width, dto.length, dto.angle);
         this.dto = dto;

@@ -4,7 +4,6 @@ import domain.dtos.BundleDto;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TextField;
 import presentation.controllers.BundleEditorController;
-import presentation.controllers.GridController;
 import presentation.controllers.IController;
 import presentation.Main;
 import javafx.application.Platform;

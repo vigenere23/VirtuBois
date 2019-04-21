@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class STLWriter{
-    List<BundlePresenter> bundles = new ArrayList<>();
-    String filename;
+    private List<BundlePresenter> bundles = new ArrayList<>();
+    private String filename;
 
     public STLWriter(List<BundleDto> bundlesDto, String filename) {
         this.filename = filename;
@@ -29,95 +29,53 @@ public class STLWriter{
         }
     }
 
-    private void writeInSTLFile(){
+    private List<Point3D> generateBundlePoints3D(BundlePresenter bundle) {
+        List<Point2D> bundlePoints2D = bundle.getPoints();
+        List<Point3D> bundlePoints3D = new ArrayList<>();
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(0).getX(), bundlePoints2D.get(0).getY(), bundle.dto.z));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(1).getX(), bundlePoints2D.get(1).getY(), bundle.dto.z));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(2).getX(), bundlePoints2D.get(2).getY(), bundle.dto.z));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(3).getX(), bundlePoints2D.get(3).getY(), bundle.dto.z));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(0).getX(), bundlePoints2D.get(0).getY(), bundle.dto.z + bundle.dto.height));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(1).getX(), bundlePoints2D.get(1).getY(), bundle.dto.z + bundle.dto.height));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(2).getX(), bundlePoints2D.get(2).getY(), bundle.dto.z + bundle.dto.height));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(3).getX(), bundlePoints2D.get(3).getY(), bundle.dto.z + bundle.dto.height));
+        return bundlePoints3D;
+    }
+
+    private List<Point3D> generateTriangle(Point3D p1, Point3D p2, Point3D p3) {
+        List<Point3D> triangle = new ArrayList<>();
+        triangle.add(p1);
+        triangle.add(p2);
+        triangle.add(p3);
+        return triangle;
+    }
+
+    private List<List<Point3D>> generateBundleTriangles(List<Point3D> bundlePoints3D) {
+        List<List<Point3D>> triangles = new ArrayList<>();
+        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(2), bundlePoints3D.get(3)));
+        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(1), bundlePoints3D.get(2)));
+        triangles.add(generateTriangle(bundlePoints3D.get(4), bundlePoints3D.get(7), bundlePoints3D.get(6)));
+        triangles.add(generateTriangle(bundlePoints3D.get(4), bundlePoints3D.get(5), bundlePoints3D.get(6)));
+        triangles.add(generateTriangle(bundlePoints3D.get(2), bundlePoints3D.get(3), bundlePoints3D.get(7)));
+        triangles.add(generateTriangle(bundlePoints3D.get(2), bundlePoints3D.get(6), bundlePoints3D.get(7)));
+        triangles.add(generateTriangle(bundlePoints3D.get(1), bundlePoints3D.get(4), bundlePoints3D.get(5)));
+        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(1), bundlePoints3D.get(4)));
+        triangles.add(generateTriangle(bundlePoints3D.get(3), bundlePoints3D.get(4), bundlePoints3D.get(7)));
+        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(3), bundlePoints3D.get(4)));
+        triangles.add(generateTriangle(bundlePoints3D.get(2), bundlePoints3D.get(6), bundlePoints3D.get(5)));
+        triangles.add(generateTriangle(bundlePoints3D.get(1), bundlePoints3D.get(2), bundlePoints3D.get(5)));
+        return triangles;
+    }
+
+    private void writeInSTLFile() {
         StringBuilder sb = new StringBuilder();
         sb.append("solid stl\n");
         for (BundlePresenter bundle : bundles) {
-            List<Point2D> points = bundle.getPoints();
-            List<List<Point3D>> triangles = new ArrayList<>(new ArrayList<>());
-            Point3D point1 = new Point3D(points.get(0).getX(), points.get(0).getY(), bundle.dto.z);
-            Point3D point2 = new Point3D(points.get(1).getX(), points.get(1).getY(), bundle.dto.z);
-            Point3D point3 = new Point3D(points.get(2).getX(), points.get(2).getY(), bundle.dto.z);
-            Point3D point4 = new Point3D(points.get(3).getX(), points.get(3).getY(), bundle.dto.z);
-            Point3D point5 = new Point3D(points.get(0).getX(), points.get(0).getY(), bundle.dto.z + bundle.dto.height);
-            Point3D point6 = new Point3D(points.get(1).getX(), points.get(1).getY(), bundle.dto.z + bundle.dto.height);
-            Point3D point7 = new Point3D(points.get(2).getX(), points.get(2).getY(), bundle.dto.z + bundle.dto.height);
-            Point3D point8 = new Point3D(points.get(3).getX(), points.get(3).getY(), bundle.dto.z + bundle.dto.height);
+            List<Point3D> bundlePoints3D = generateBundlePoints3D(bundle);
 
-            ArrayList<Point3D> triangle1 = new ArrayList<>();
-            triangle1.add(point1);
-            triangle1.add(point3);
-            triangle1.add(point4);
-            triangles.add(triangle1);
-
-            ArrayList<Point3D> triangle2 = new ArrayList<>();
-            triangle2.add(point1);
-            triangle2.add(point2);
-            triangle2.add(point3);
-            triangles.add(triangle2);
-
-            ArrayList<Point3D> triangle3 = new ArrayList<>();
-            triangle3.add(point5);
-            triangle3.add(point8);
-            triangle3.add(point7);
-            triangles.add(triangle3);
-
-            ArrayList<Point3D> triangle4 = new ArrayList<>();
-            triangle4.add(point5);
-            triangle4.add(point6);
-            triangle4.add(point7);
-            triangles.add(triangle4);
-
-            ArrayList<Point3D> triangle5 = new ArrayList<>();
-            triangle5.add(point3);
-            triangle5.add(point4);
-            triangle5.add(point8);
-            triangles.add(triangle5);
-
-            ArrayList<Point3D> triangle6 = new ArrayList<>();
-            triangle6.add(point3);
-            triangle6.add(point7);
-            triangle6.add(point8);
-            triangles.add(triangle6);
-
-            ArrayList<Point3D> triangle7 = new ArrayList<>();
-            triangle7.add(point2);
-            triangle7.add(point5);
-            triangle7.add(point6);
-            triangles.add(triangle7);
-
-            ArrayList<Point3D> triangle8 = new ArrayList<>();
-            triangle8.add(point1);
-            triangle8.add(point2);
-            triangle8.add(point5);
-            triangles.add(triangle8);
-
-            ArrayList<Point3D> triangle9 = new ArrayList<>();
-            triangle9.add(point4);
-            triangle9.add(point5);
-            triangle9.add(point8);
-            triangles.add(triangle9);
-
-            ArrayList<Point3D> triangle10 = new ArrayList<>();
-            triangle10.add(point1);
-            triangle10.add(point4);
-            triangle10.add(point5);
-            triangles.add(triangle10);
-
-            ArrayList<Point3D> triangle11 = new ArrayList<>();
-            triangle11.add(point3);
-            triangle11.add(point7);
-            triangle11.add(point6);
-            triangles.add(triangle11);
-
-            ArrayList<Point3D> triangle12 = new ArrayList<>();
-            triangle12.add(point2);
-            triangle12.add(point3);
-            triangle12.add(point6);
-            triangles.add(triangle12);
-
-            for (List<Point3D> triangle : triangles) {
-                Point3D normal =triangle.get(0).subtract(triangle.get(2)).crossProduct(triangle.get(1).subtract(triangle.get(2))).normalize();
+            for (List<Point3D> triangle : generateBundleTriangles(bundlePoints3D)) {
+                Point3D normal = triangle.get(0).subtract(triangle.get(2)).crossProduct(triangle.get(1).subtract(triangle.get(2))).normalize();
                 sb.append("  facet normal ").append(normal.getX()).append(" ").append(normal.getY()).append(" ").append(normal.getZ()).append("\n");
                 sb.append("    outer loop\n");
                 sb.append("      vertex ").append(triangle.get(0).getX()).append(" ").append(triangle.get(0).getY()).append(" ").append(triangle.get(0).getZ()).append("\n");

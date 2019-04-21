@@ -1,6 +1,5 @@
 package helpers;
 
-import helpers.Point2D;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;

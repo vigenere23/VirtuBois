@@ -1,7 +1,7 @@
 package domain.entities;
 
-import domain.dtos.LiftDto;
 import helpers.ConfigHelper;
+import helpers.GeomHelper;
 import helpers.Point2D;
 
 import java.io.Serializable;
@@ -63,8 +63,36 @@ public class Lift extends Drawable3D implements Serializable {
         ConfigHelper.liftAngle = this.angle;
     }
 
-    public void setMovement(LiftDto newLift) {
-        setPosition(newLift.position);
-        setAngle(newLift.angle);
+    public void turnRight() {
+        angle += ConfigHelper.liftAngleIncrement;
+        repositionArms();
+    }
+
+    public void turnLeft() {
+        angle -= ConfigHelper.liftAngleIncrement;
+        repositionArms();
+    }
+
+    public void moveForward() {
+        move(true);
+    }
+
+    public void moveBackward() {
+        move(false);
+    }
+
+    private void move(boolean moveForward) {
+        Point2D increment = new Point2D(ConfigHelper.liftPositionIncrement);
+        Point2D rotatedIncrement = GeomHelper.getRotatedVector(increment, -angle + 90);
+        if (moveForward) setPosition(position.add(rotatedIncrement));
+        else setPosition(position.substract(rotatedIncrement));
+        repositionArms();
+    }
+
+    private void repositionArms() {
+        Point2D halfLiftVector = new Point2D(width / 2, length /2);
+        Point2D distanceVector = new Point2D(ConfigHelper.armsLength / 2).add(halfLiftVector);
+        Point2D rotatedDistanceVector = GeomHelper.getRotatedVector(distanceVector, -angle + 90);
+        armsPosition = position.add(rotatedDistanceVector);
     }
 }

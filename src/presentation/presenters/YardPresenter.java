@@ -2,6 +2,7 @@ package presentation.presenters;
 
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
+import domain.dtos.LiftDto;
 import enums.EditorMode;
 import helpers.*;
 import javafx.geometry.Pos;
@@ -23,7 +24,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     private Point2D selectionOffsetVector;
 
     private BundleDto topSelectedBundle;
-    private LiftPresenter liftPresenter;
     private boolean canDrag;
     private DropShadow dropShadow;
 
@@ -53,7 +53,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         mousePositionLabel.setAlignment(Pos.BOTTOM_RIGHT);
         xAxis = new Line();
         yAxis = new Line();
-        liftPresenter = new LiftPresenter(larmanController.getLift());
 
         dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
@@ -109,7 +108,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         updateMousePosition(event);
         if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
             Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
-            dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
+            dragVector = newDraggedPoint.substract(lastClickedPoint).multiply(1 / zoom);
             draw();
         } else {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
@@ -117,7 +116,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
                     shouldUpdate = true;
                     Point2D newBundlePosition = mainController.gridIsOn
                             ? positionInGrid(mousePositionInRealCoords)
-                            : mousePositionInRealCoords.subtract(selectionOffsetVector);
+                            : mousePositionInRealCoords.substract(selectionOffsetVector);
 
                     larmanController.modifyBundlePosition(topSelectedBundle.id, newBundlePosition);
                     draw();
@@ -151,58 +150,31 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             handleZoom(delta, getPlanCenterCoords());
         }
         if (event.getCode().equals(KeyCode.RIGHT)) {
-            liftPresenter.turnRight();
+            larmanController.turnLiftRight();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
-            liftPresenter.turnLeft();
+            larmanController.turnLiftLeft();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.UP)) {
-            liftPresenter.forward();
+            larmanController.moveLiftForward();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.DOWN)) {
-            liftPresenter.backward();
+            larmanController.moveLiftBackward();
             draw();
             event.consume();
         }
-
-
-        /*if (event.getCode().equals(KeyCode.UP)){
-            UndoRedo.add(larmanController.getYard());
-            LiftDto liftDtoUp = new LiftDto(larmanController.getYard().getLift());
-            larmanController.getYard().setLift(larmanController.moveForward(liftDtoUp).position);
-            draw();
-        }
-        if (event.getCode().equals(KeyCode.DOWN)){
-            UndoRedo.add(larmanController.getYard());
-            LiftDto liftDtoDown = new LiftDto(larmanController.getYard().getLift());
-            larmanController.getYard().setLift(larmanController.moveBackward(liftDtoDown).position);
-            draw();
-        }
-        if (event.getCode().equals(KeyCode.LEFT)){
-            UndoRedo.add(larmanController.getYard());
-            LiftDto liftDtoLeft = new LiftDto(larmanController.getYard().getLift());
-            larmanController.getYard().setLift(larmanController.turnLeft(liftDtoLeft).position);
-            draw();
-        }
-        if (event.getCode().equals(KeyCode.RIGHT)) {
-            UndoRedo.add(larmanController.getYard());
-            LiftDto liftDtoRight = new LiftDto(larmanController.getYard().getLift());
-            larmanController.getYard().setLift(larmanController.turnRight(liftDtoRight).position);
-            draw();
-        }
-        */
     }
 
     private void handleOnKeyReleasedEvent(KeyEvent event) {
         KeyCode code = event.getCode();
         if (code == KeyCode.DOWN || code == KeyCode.UP || code == KeyCode.LEFT || code == KeyCode.RIGHT) {
-            larmanController.setLiftMovement(liftPresenter.dto);
+            UndoRedo.add(larmanController.getYard());
         }
     }
 
@@ -221,11 +193,11 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private void handleZoom(double delta, Point2D position) {
-        Point2D panningVector = position.subtract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
+        Point2D panningVector = position.substract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
         if (delta > 0) {
             // ZOOM
             zoom *= ConfigHelper.zoomFactor;
-            translateVector = translateVector.subtract(panningVector.multiply(1.0 / zoom));
+            translateVector = translateVector.substract(panningVector.multiply(1.0 / zoom));
         } else if (delta < 0) {
             // UNZOOM
             translateVector = translateVector.add(panningVector.multiply(1.0 / zoom));
@@ -249,9 +221,9 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private Point2D transformPlanCoordsToRealCoords(Point2D planPosition) {
-        Point2D withoutPlanOffset = planPosition.subtract(getPlanCenterCoords());
+        Point2D withoutPlanOffset = planPosition.substract(getPlanCenterCoords());
         Point2D unzoomed = withoutPlanOffset.multiply(1.0 / zoom);
-        Point2D untranslated = unzoomed.subtract(translateVector).subtract(dragVector);
+        Point2D untranslated = unzoomed.substract(translateVector).substract(dragVector);
         return GeomHelper.invertY(untranslated);
     }
 
@@ -267,7 +239,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             mainController.setFocusedBundleElevView(topSelectedBundle);
             mainController.updateBundleInfo(topSelectedBundle);
             mainController.setFocusedBundleElevView(topSelectedBundle);
-            selectionOffsetVector = mousePositionInRealCoords.subtract(topSelectedBundle.position);
+            selectionOffsetVector = mousePositionInRealCoords.substract(topSelectedBundle.position);
         } else {
             topSelectedBundle = null;
             mainController.clearElevationView();
@@ -327,6 +299,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     public void draw() {
+        // TODO Should NOT be here
         if (UndoRedo.getUndo() == 0) {
             mainController.undoButton.setDisable(true);
         } else {
@@ -342,7 +315,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (mainController.gridIsOn) {
             drawGrid();
         }
-        drawLift();
+        drawLift(larmanController.getLift());
         drawBundles(larmanController.getBundlesSortedZ());
         mainController.clearTableView();
         if (!larmanController.getBundles().isEmpty()) {
@@ -390,14 +363,16 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         }
     }
 
-    private void drawLift() {
-        Point2D planPosition = transformRealCoordsToPlanCoords(liftPresenter.dto.position);
-        Point2D armsPlanPosition = transformRealCoordsToPlanCoords(liftPresenter.getArmsPosition());
+    private void drawLift(LiftDto liftDto) {
+        LiftPresenter liftPresenter = new LiftPresenter(liftDto);
+        Point2D liftPlanPosition = transformRealCoordsToPlanCoords(liftDto.position);
+        liftPresenter.setPosition(liftPlanPosition);
         liftPresenter.setScale(zoom);
-        liftPresenter.setPosition(planPosition);
         getChildren().add(liftPresenter.getRectangle());
-        liftPresenter.getArms().setScale(zoom);
+
+        Point2D armsPlanPosition = transformRealCoordsToPlanCoords(liftDto.armsPosition);
         liftPresenter.getArms().setPosition(armsPlanPosition);
+        liftPresenter.getArms().setScale(zoom);
         getChildren().add(liftPresenter.getArms().getRectangle());
     }
 
@@ -457,7 +432,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     public BundleDto getTopSelectedBundle() {
         return topSelectedBundle;
     }
-
+/*
     private boolean checkIfLiftColliding() {
         boolean liftIsColliding = false;
         List<BundleDto> bundlesToCheck = larmanController.getBundles();
@@ -469,5 +444,5 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             }
         }
         return liftIsColliding;
-    }
+    }*/
 }

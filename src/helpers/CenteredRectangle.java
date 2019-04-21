@@ -115,7 +115,7 @@ public class CenteredRectangle {
         double sinAngle = Math.sin((rectangle.getRotate() * 2.0 * Math.PI) / 360.0);
 
         for (int i = 0; i < points.size(); i++) {
-            Point2D point = points.get(i).subtract(getPosition());
+            Point2D point = points.get(i).substract(getPosition());
             Point2D transformedPoint = new Point2D(
                     point.getX() * cosAngle - point.getY() * sinAngle,
                     point.getX() * sinAngle + point.getY() * cosAngle

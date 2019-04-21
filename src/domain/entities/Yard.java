@@ -52,9 +52,6 @@ public class Yard implements Serializable {
     public void setLift(Point2D position) {
         this.lift = new Lift(position);
     }
-    public void setLiftMovement(LiftDto liftDto){
-        lift.setMovement(liftDto);
-    }
 
     public Bundle createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);
@@ -132,5 +129,25 @@ public class Yard implements Serializable {
             }
         }
         return collidingBundles;
+    }
+
+    public void moveLiftForward() {
+        // TODO Calculate for front collision HERE (ONLY the lift, NOT the arms)
+        lift.moveForward();
+    }
+
+    public void moveLiftBackward() {
+        // TODO Calculate for back collision HERE (ONLY the lift, NOT the arms)
+        lift.moveBackward();
+    }
+
+    public void turnLiftRight() {
+        // TODO Calculate for rotational collision HERE (ONLY the lift, NOT the arms)
+        lift.turnRight();
+    }
+
+    public void turnLiftLeft() {
+        // TODO Calculate for rotational collision HERE (ONLY the lift, NOT the arms)
+        lift.turnLeft();
     }
 }

@@ -73,13 +73,7 @@ public class LarmanController {
     }
 
     public LiftDto getLift() {
-        Lift lift = getYard().getLift();
-        return new LiftDto(lift);
-    }
-
-    public void setLiftMovement(LiftDto liftDto) {
-        getYard().setLiftMovement(liftDto);
-
+        return new LiftDto(yard.getLift());
     }
 
     public BundleDto getBundle(String id) {
@@ -109,7 +103,7 @@ public class LarmanController {
         List<BundleDto> bundlesInStack = new ArrayList<>();
         getAllCollidingBundles(bundlesInStack, bundleDto);
         for (BundleDto bundle : bundlesInStack) {
-            if (bundleDto.z < bundle.z && bundleDto.id != bundle.id) {
+            if (bundleDto.z < bundle.z && !bundleDto.equals(bundle)) {
                 bundle.z = bundle.z + zChange;
                 yard.modifyBundleProperties(bundle);
             }
@@ -140,7 +134,7 @@ public class LarmanController {
         for (BundleDto bundle : getCollidingBundles(bundleToCheck)) {
             int count = 0;
             for (BundleDto bundleInBundles : bundles) {
-                if (bundleInBundles.id != bundle.id) {
+                if (!bundleInBundles.equals(bundle)) {
                     count++;
                 }
             }
@@ -165,5 +159,21 @@ public class LarmanController {
         for (BundleDto bundle : bundles) {
             yard.modifyBundlePosition(bundle.id, position);
         }
+    }
+
+    public void moveLiftForward() {
+        yard.moveLiftForward();
+    }
+
+    public void moveLiftBackward() {
+        yard.moveLiftBackward();
+    }
+
+    public void turnLiftRight() {
+        yard.turnLiftRight();
+    }
+
+    public void turnLiftLeft() {
+        yard.turnLiftLeft();
     }
 }

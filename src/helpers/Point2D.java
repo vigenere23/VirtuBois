@@ -17,6 +17,11 @@ public class Point2D implements Serializable {
         setY(y);
     }
 
+    public Point2D(double both) {
+        setX(both);
+        setY(both);
+    }
+
     public double getX() {
         return x;
     }
@@ -37,7 +42,7 @@ public class Point2D implements Serializable {
         return new Point2D(x + point.getX(), y + point.getY());
     }
 
-    public Point2D subtract(Point2D point) {
+    public Point2D substract(Point2D point) {
         return new Point2D(x - point.getX(), y - point.getY());
 
     }

@@ -587,5 +587,4 @@ public class MainController extends BaseController {
         JavafxHelper.popupGrid();
     }
 
-
 }

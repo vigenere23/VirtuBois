@@ -1,13 +1,7 @@
 package domain.entities;
 
-import com.sun.jmx.remote.internal.ArrayQueue;
 import domain.dtos.BundleDto;
-import domain.dtos.LiftDto;
-import helpers.CenteredRectangle;
-import helpers.Converter;
-import helpers.GeomHelper;
-
-import helpers.Point2D;
+import helpers.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -38,6 +32,16 @@ public class Yard implements Serializable {
         return bundles;
     }
 
+    private List<Bundle> getBundlesWithMinZ(List<Bundle> bundles, double zMin) {
+        List<Bundle> bundlesZMin = new ArrayList<>();
+        for (Bundle bundle : bundles) {
+            if (bundle.z >= zMin) {
+                bundlesZMin.add(bundle);
+            }
+        }
+        return bundlesZMin;
+    }
+
     public List<Bundle> getBundles() {
         return new ArrayList<>(this.bundles.values());
     }
@@ -56,20 +60,20 @@ public class Yard implements Serializable {
 
     public Bundle createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);
-        adjustBundleHeight(bundle);
+        putBundleToTop(bundle);
         bundles.put(bundle.getId(), bundle);
         lastBundleCreated = bundle;
         return bundle;
     }
 
-    private void adjustBundleHeight(Bundle bundle) {
-        double maxZ = 0;
-        for (Bundle collidingBundle : getCollidingBundles(bundle, null)) {
-            double bundleTopZ = collidingBundle.z + collidingBundle.getHeight();
-            if (bundleTopZ > maxZ) maxZ = bundleTopZ;
+    private void putBundleToTop(Bundle bundle) {
+        List<Bundle> collidingBundles = getCollidingBundles(bundle, null);
+        if (!collidingBundles.isEmpty()) {
+            Bundle higherBundle = Collections.max(collidingBundles, Comparator.comparing(b -> b.getZ() + b.getHeight()));
+            bundle.setZ(higherBundle.getZ() + higherBundle.getHeight());
+        } else {
+            bundle.setZ(0);
         }
-
-        bundle.setZ(maxZ);
     }
 
     public Bundle getBundle(String id) {
@@ -84,37 +88,72 @@ public class Yard implements Serializable {
                 selectedBundles.add(bundle);
             }
         }
-
         return selectedBundles;
+    }
+
+    public Bundle getTopBundle(Point2D position) {
+        List<Bundle> bundles = sortBundlesZ(getBundlesAtPosition(position));
+        if (!bundles.isEmpty()) {
+            return bundles.get(bundles.size() - 1);
+        }
+        return null;
     }
 
     public void deleteBundle(String id) {
         bundles.remove(id);
     }
 
-
     public void modifyBundleProperties(BundleDto bundleDto)
     {
         Bundle bundle = getBundle(bundleDto.id);
-        List<Bundle> beforeCollidingBundles = getCollidingBundles(bundle, null);
-        bundle.setBarcode(bundleDto.barcode);
-        bundle.setHeight(bundleDto.height);
-        bundle.setWidth(bundleDto.width);
-        bundle.setLength(bundleDto.length);
-        bundle.setTime(bundleDto.time);
-        bundle.setDate(bundleDto.date);
-        bundle.setEssence(bundleDto.essence);
-        bundle.setPlanckSize(bundleDto.plankSize);
-        bundle.setAngle(bundleDto.angle);
-        bundle.setZ(bundleDto.z);
-        List<Bundle> afterCollidingBundles = getCollidingBundles(bundle, null);
+        if (bundle != null) {
+            Set<Bundle> allTimeCollidingBundles = new LinkedHashSet<>(getAllCollidingBundles(bundle));
+            bundle.setBarcode(bundleDto.barcode);
+            bundle.setHeight(bundleDto.height);
+            bundle.setWidth(bundleDto.width);
+            bundle.setLength(bundleDto.length);
+            bundle.setTime(bundleDto.time);
+            bundle.setDate(bundleDto.date);
+            bundle.setEssence(bundleDto.essence);
+            bundle.setPlanckSize(bundleDto.plankSize);
+            bundle.setAngle(bundleDto.angle);
+            bundle.setZ(bundleDto.z);
+            allTimeCollidingBundles.addAll(getAllCollidingBundles(bundle));
+            adjustBundlesHeightAfterChange(bundle, new ArrayList<>(allTimeCollidingBundles));
+            UndoRedo.add(this);
+        }
+    }
+
+    private void adjustBundlesHeightAfterChange(Bundle source, List<Bundle> allTimeCollidingBundles) {
+        System.out.println("\n----------------\n");
+        List<Bundle> bundlesHigher = sortBundlesZ(getBundlesWithMinZ(allTimeCollidingBundles, source.getZ() + source.getHeight()));
+        adjustBundleHeight(source);
+        if (!bundlesHigher.isEmpty()) {
+            for (Bundle bundle : bundlesHigher) {
+                adjustBundleHeight(bundle);
+            }
+        }
+    }
+
+    private void adjustBundleHeight(Bundle bundle) {
+        System.out.println("Adjusting bundle " + bundle.getBarcode());
+        List<Bundle> collidingBundles = sortBundlesZ(getCollidingBundles(bundle, null));
+        double newZ = 0;
+        for (Bundle lowerBundle : collidingBundles) {
+            System.out.println("Colliding with " + lowerBundle.getBarcode());
+            if (lowerBundle.getZ() >= bundle.getZ() + bundle.getHeight()) break;
+            newZ = lowerBundle.getZ() + lowerBundle.getHeight();
+            System.out.println("newZ adjusted to " + newZ);
+        }
+        System.out.println("Setting z to " + newZ);
+        bundle.setZ(newZ);
     }
 
     public void modifyBundlePosition(String id, Point2D position)
     {
         Bundle bundle = getBundle(id);
         bundle.setPosition(position);
-        adjustBundleHeight(bundle);
+        putBundleToTop(bundle);
     }
 
     public List<Bundle> getCollidingBundles(Bundle bundleToCheck, Set<Bundle> exceptionList) {
@@ -136,8 +175,7 @@ public class Yard implements Serializable {
         return collidingBundles;
     }
 
-    public List<Bundle> getAllCollidingBundles(BundleDto bundleToCheck) {
-        Bundle originBundle = getBundle(bundleToCheck.id);
+    private List<Bundle> getAllCollidingBundles(Bundle originBundle) {
         Set<Bundle> allCollidingBundles = new HashSet<>();
         Set<Bundle> bundlesToCheck = new HashSet<>();
 
@@ -148,8 +186,7 @@ public class Yard implements Serializable {
                 Bundle bundle = bundlesToCheck.iterator().next();
                 bundlesToCheck.remove(bundle);
                 allCollidingBundles.add(bundle);
-                Set<Bundle> exceptedBundles = new HashSet<>();
-                exceptedBundles.addAll(allCollidingBundles);
+                Set<Bundle> exceptedBundles = new HashSet<>(allCollidingBundles);
                 exceptedBundles.addAll(bundlesToCheck);
                 for (Bundle collidingBundle : getCollidingBundles(bundle, exceptedBundles)) {
                     if (!allCollidingBundles.contains(collidingBundle)) {
@@ -160,6 +197,10 @@ public class Yard implements Serializable {
         }
 
         return new ArrayList<>(allCollidingBundles);
+    }
+
+    public List<Bundle> getAllCollidingBundles(BundleDto bundleToCheck) {
+        return getAllCollidingBundles(getBundle(bundleToCheck.id));
     }
 
     public void moveLiftForward() {

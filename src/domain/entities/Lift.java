@@ -1,25 +1,32 @@
 package domain.entities;
 
 import helpers.ConfigHelper;
+import helpers.GeomHelper;
 import helpers.Point2D;
+
 import java.io.Serializable;
 
 public class Lift extends Drawable3D implements Serializable {
-    
+
     private static final long serialVersionUID = 15641321L;
-    private double dy = 0, dx = 0;
     private double armsHeight;
     private double armsWidth;
     private double armsLength;
+    private Point2D armsPosition;
 
     public Lift(Point2D position) {
         super(position);
-        setWidth(ConfigHelper.chargerWidth);
-        setLength(ConfigHelper.chargerLenth);
+        setWidth(ConfigHelper.liftWidth);
+        setLength(ConfigHelper.liftLenth);
         setArmsHeight(ConfigHelper.armsHeight);
         setArmsWidth(ConfigHelper.armsWidth);
         setArmsLength(ConfigHelper.armsLength);
-        setAngle(ConfigHelper.chargerAngle);
+        setAngle(ConfigHelper.liftAngle);
+        repositionArms();
+    }
+
+    public Point2D getArmsPosition() {
+        return armsPosition;
     }
 
     public double getArmsHeight() {
@@ -49,48 +56,39 @@ public class Lift extends Drawable3D implements Serializable {
     @Override
     public void setAngle(double angle) {
         super.setAngle(angle);
-        ConfigHelper.chargerAngle = this.angle;
+        ConfigHelper.liftAngle = this.angle;
     }
 
-    public Lift moveForward() {
-       dx += Math.cos((this.angle * (Math.PI/180)) + Math.PI/2);
-       dy += Math.sin((this.angle * (Math.PI/180))+ Math.PI/2);
-       return new Lift(new Point2D(dx, dy));
+    public void turnRight() {
+        angle += ConfigHelper.liftAngleIncrement;
+        repositionArms();
     }
 
-    public Lift moveBackward() {
-        dx -= Math.cos((this.angle * (Math.PI/180)) + Math.PI/2);
-        dy -= Math.sin((this.angle * (Math.PI/180))+ Math.PI/2);
-        return new Lift(new Point2D(dx, dy));
+    public void turnLeft() {
+        angle -= ConfigHelper.liftAngleIncrement;
+        repositionArms();
     }
 
-    public Lift turnLeft() {
-        double angle = getAngle();
-        angle += 2;
-        setAngle(angle);
-        return new Lift(new Point2D(dx, dy));
+    public void moveForward() {
+        move(true);
     }
 
-    public Lift turnRight() {
-        double angle = getAngle();
-        angle -= 2;
-        setAngle(angle);
-        return new Lift(new Point2D(dx, dy));
+    public void moveBackward() {
+        move(false);
     }
 
-    public Lift raiseArms() {
-        double height = getArmsHeight();
-        height += 1;
-        setArmsHeight(height);
-        return new Lift(new Point2D(dx, dy));
-
+    private void move(boolean moveForward) {
+        Point2D increment = new Point2D(ConfigHelper.liftPositionIncrement);
+        Point2D rotatedIncrement = GeomHelper.getRotatedVector(increment, -angle + 90);
+        if (moveForward) setPosition(position.add(rotatedIncrement));
+        else setPosition(position.substract(rotatedIncrement));
+        repositionArms();
     }
 
-    public Lift lowerArms() {
-        double height = getArmsHeight();
-        height -= 1;
-        setArmsHeight(height);
-        return new Lift(new Point2D(dx, dy));
-
+    private void repositionArms() {
+        Point2D halfLiftVector = new Point2D(length / 2, width /2);
+        Point2D distanceVector = new Point2D(armsLength / 2).add(halfLiftVector);
+        Point2D rotatedDistanceVector = GeomHelper.getRotatedVector(distanceVector, -angle + 90);
+        armsPosition = position.add(rotatedDistanceVector);
     }
 }

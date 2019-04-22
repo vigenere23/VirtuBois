@@ -38,6 +38,7 @@ public class BundleDto {
     }
 
     public boolean equals(BundleDto other) {
+        if (other == null) return false;
         return id.equals(other.id);
     }
 

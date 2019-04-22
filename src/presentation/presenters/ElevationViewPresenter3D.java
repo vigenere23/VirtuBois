@@ -6,7 +6,10 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
-import javafx.scene.*;
+import javafx.scene.Camera;
+import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
+import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -19,6 +22,7 @@ import javafx.scene.shape.Box;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import presentation.controllers.MainController;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,14 +101,14 @@ public class ElevationViewPresenter3D implements IPresenter {
         scene.setOnMouseDragged(event -> {
             switch (event.getButton()) {
                 case SECONDARY: {
-                    if ( 90.0 > anchorAngleX - (anchorY - event.getSceneY()) && anchorAngleX - (anchorY - event.getSceneY()) > -3.0) {
+                    if (90.0 > anchorAngleX - (anchorY - event.getSceneY()) && anchorAngleX - (anchorY - event.getSceneY()) > -3.0) {
                         angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
                     }
                     angleY.set(anchorAngleY + anchorX - event.getSceneX());
                     break;
                 }
                 case PRIMARY: {
-                    Point2D direction = new Point2D((event.getSceneX() - lastPoint.getX())/50.0, (event.getSceneY() - lastPoint.getY())/50.0);
+                    Point2D direction = new Point2D((event.getSceneX() - lastPoint.getX()) / 50.0, (event.getSceneY() - lastPoint.getY()) / 50.0);
                     group.translateXProperty().set(groupTranslate.getX() + direction.getX());
                     group.translateYProperty().set(groupTranslate.getY() + direction.getY());
                     break;
@@ -122,7 +126,7 @@ public class ElevationViewPresenter3D implements IPresenter {
 
     @Override
     public void draw() {
-        for (BundleDto bundle : allBundles){
+        for (BundleDto bundle : allBundles) {
             Box box = new Box(bundle.width, bundle.height, bundle.length);
             box.setRotationAxis(new Point3D(0.0, 1.0, 0.0));
             box.setRotate(-bundle.angle);
@@ -137,7 +141,7 @@ public class ElevationViewPresenter3D implements IPresenter {
 
             boxToBundleDtoMap.put(box, bundle);
 
-            if (bundle == focusedBundle) {
+            if (bundle.equals(focusedBundle)) {
                 PhongMaterial phongMaterial = (PhongMaterial) box.getMaterial();
                 Color color = phongMaterial.getDiffuseColor();
                 phongMaterial.setDiffuseColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 0.5));
@@ -165,7 +169,7 @@ public class ElevationViewPresenter3D implements IPresenter {
         clearBundles();
         focusedBundle = bundle;
         //allBundles = larmanController.getBundles();
-        larmanController.getAllCollidingBundles(allBundles,bundle);
+        allBundles = larmanController.getAllCollidingBundles(bundle);
         setInitialGroupTranslate();
         draw();
     }
@@ -187,17 +191,17 @@ public class ElevationViewPresenter3D implements IPresenter {
         double maxX = allBundles.get(0).position.getX();
         double minY = allBundles.get(0).position.getY();
         double maxY = allBundles.get(0).position.getY();
-        double maxZ = allBundles.get(0).z+allBundles.get(0).height;
+        double maxZ = allBundles.get(0).z + allBundles.get(0).height;
         double minHeight = allBundles.get(0).height;
 
         for (BundleDto bundle : allBundles) {
             BundlePresenter presenter = new BundlePresenter(bundle);
-            for(helpers.Point2D position : presenter.getPoints()) {
+            for (helpers.Point2D position : presenter.getPoints()) {
                 if (position.getX() < minX) {
                     minX = position.getX();
                 }
                 if (position.getX() > maxX) {
-                    maxX = position.getX() ;
+                    maxX = position.getX();
                 }
                 if ((bundle.height + bundle.z > maxZ)) {
                     maxZ = bundle.height + bundle.z;
@@ -206,7 +210,7 @@ public class ElevationViewPresenter3D implements IPresenter {
                     minY = position.getY();
                 }
                 if (position.getY() > maxY) {
-                    maxY = position.getY() ;
+                    maxY = position.getY();
                 }
                 if (bundle.z == 0.0) {
                     if (bundle.height < minHeight) {
@@ -215,22 +219,22 @@ public class ElevationViewPresenter3D implements IPresenter {
                 }
             }
         }
-        double moyX = (maxX + minX)/2.0;
-        double moyY = (maxY + minY)/2.0;
+        double moyX = (maxX + minX) / 2.0;
+        double moyY = (maxY + minY) / 2.0;
         initGroupTranslate = new Point2D(moyX, moyY);
         double deltaX = maxX - minX;
-        double cameraTranslateX = (11.0/3.3) * deltaX;
-        double cameraTranslateY = (11.0/3.0) * maxZ;
+        double cameraTranslateX = (11.0 / 3.3) * deltaX;
+        double cameraTranslateY = (11.0 / 3.0) * maxZ;
 
         if (cameraTranslateX > cameraTranslateY) {
             camera.translateZProperty().set(-cameraTranslateX);
-        }else{
+        } else {
             camera.translateZProperty().set(-cameraTranslateY);
         }
         Rectangle rectangle = new Rectangle(-10.0, -10.0, 20.0, 20.0);
         rectangle.setRotationAxis(new Point3D(1.0, 0.0, 0.0));
         rectangle.setRotate(90);
-        rectangle.setTranslateY(1 + minHeight/2.0);
+        rectangle.setTranslateY(1 + minHeight / 2.0);
         rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/presentation/assets/images/bois.jpg"))));
         group.getChildren().add(rectangle);
 

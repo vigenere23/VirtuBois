@@ -13,6 +13,7 @@ public class LiftDto {
     public double armsWidth;
     public double armsLength;
     public double armsHeight;
+    public Point2D armsPosition;
 
     public LiftDto(Lift lift) {
         width = lift.getWidth();
@@ -23,5 +24,6 @@ public class LiftDto {
         armsWidth = lift.getArmsWidth();
         armsLength = lift.getArmsLength();
         armsHeight = lift.getArmsHeight();
+        armsPosition = lift.getArmsPosition();
     }
 }

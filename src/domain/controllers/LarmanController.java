@@ -7,7 +7,6 @@ import domain.entities.Yard;
 import helpers.Converter;
 import helpers.Point2D;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -32,7 +31,9 @@ public class LarmanController {
         yard = newYard;
     }
 
-    public Yard getYard() { return yard; }
+    public Yard getYard() {
+        return yard;
+    }
 
     public BundleDto createBundle(Point2D position) {
         return new BundleDto(yard.createBundle(position));
@@ -64,15 +65,8 @@ public class LarmanController {
         );
     }
 
-    public List<BundleDto> sortBundlesDtoZ(List<BundleDto> bundleDtos){
-        bundleDtos.sort(Comparator.comparing(BundleDto::getZ));
-        return bundleDtos;
-    }
-
-    public BundleDto getBundle(String id) {
-        Bundle bundle = yard.getBundle(id);
-        if (bundle == null) return null;
-        return new BundleDto(bundle);
+    public LiftDto getLift() {
+        return new LiftDto(yard.getLift());
     }
 
     public List<BundleDto> getSelectedBundles(Point2D position) {
@@ -81,78 +75,57 @@ public class LarmanController {
                 sortBundlesZ(bundles)
         );
     }
-    
-    public BundleDto getTopBundle(Point2D position)
-    {
-        List<BundleDto> bundlesDto = getSelectedBundles(position);
-        if (!bundlesDto.isEmpty()) {
-            return bundlesDto.get(bundlesDto.size() - 1);
-        }
-        return null;
+
+    public BundleDto getTopBundle(Point2D position) {
+        return new BundleDto(yard.getTopBundle(position));
     }
 
-    public void modifyBundleProperties(BundleDto bundleDto)
-    {
-        double zChange = bundleDto.height - getBundle(bundleDto.id).height;
+    public void modifyBundleProperties(BundleDto bundleDto) {
         yard.modifyBundleProperties(bundleDto);
-        List<BundleDto> bundlesInStack = new ArrayList<>();
-        getAllCollidingBundles(bundlesInStack,bundleDto);
-        for(BundleDto bundle : bundlesInStack){
-            if(bundleDto.z < bundle.z && bundleDto.id != bundle.id){
-                bundle.z = bundle.z + zChange ;
-                yard.modifyBundleProperties(bundle);
-            }
-        }
     }
 
     public void modifyBundlePosition(String id, Point2D position) {
         yard.modifyBundlePosition(id, position);
-        //TODO modify z if bundle doesn't collide anymore
     }
 
     public void deleteBundle(String id) {
         yard.deleteBundle(id);
     }
 
-    public List<BundleDto> getCollidingBundles(BundleDto bundleDtoToCheck){
+    public List<BundleDto> getCollidingBundles(BundleDto bundleDtoToCheck) {
         Bundle bundleToCheck = yard.getBundle(bundleDtoToCheck.id);
         if (bundleToCheck != null) {
             return Converter.fromBundlesToBundleDtos(
-                    yard.getCollidingBundles(bundleToCheck)
+                    yard.getCollidingBundles(bundleToCheck, null)
             );
         }
         return null;
     }
 
-    public List<BundleDto> getAllCollidingBundles(List<BundleDto> bundles, BundleDto bundleToCheck){
-        bundles.add(bundleToCheck);
-        for (BundleDto bundle : getCollidingBundles(bundleToCheck)) {
-            int count = 0;
-            for (BundleDto bundleInBundles : bundles) {
-                if (bundleInBundles.id != bundle.id) {
-                    count++;
-                }
-            }
-            if (count == bundles.size()){
-                bundles = getAllCollidingBundles(bundles, bundle);
-            }
-        }
-        return bundles;
-    }
-
-    public List<BundleDto> getAllCollidingBundlesZMin(List<BundleDto> bundles, BundleDto bundleToCheck, float zMin) {
-        List<BundleDto> bundlesZMin = new ArrayList<>();
-        for (BundleDto bundle : getAllCollidingBundles(bundles, bundleToCheck)) {
-            if (bundle.z >= zMin) {
-                bundlesZMin.add(bundle);
-            }
-        }
-        return bundlesZMin;
+    public List<BundleDto> getAllCollidingBundles(BundleDto bundleToCheck) {
+        List<Bundle> collidingBundles = yard.getAllCollidingBundles(bundleToCheck);
+        return Converter.fromBundlesToBundleDtos(collidingBundles);
     }
 
     public void modifyBundlesPositionUsingLift(List<BundleDto> bundles, Point2D position) {
         for (BundleDto bundle : bundles) {
             yard.modifyBundlePosition(bundle.id, position);
         }
+    }
+
+    public void moveLiftForward() {
+        yard.moveLiftForward();
+    }
+
+    public void moveLiftBackward() {
+        yard.moveLiftBackward();
+    }
+
+    public void turnLiftRight() {
+        yard.turnLiftRight();
+    }
+
+    public void turnLiftLeft() {
+        yard.turnLiftLeft();
     }
 }

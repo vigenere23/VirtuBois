@@ -3,15 +3,8 @@ package presentation.presenters;
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
-import domain.entities.Lift;
-import domain.entities.Yard;
 import enums.EditorMode;
 import helpers.*;
-import helpers.Point2D;
-import javafx.animation.AnimationTimer;
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -19,14 +12,11 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.util.Duration;
 import presentation.controllers.MainController;
 
-import java.security.Key;
 import java.util.List;
 
 public class YardPresenter extends Pane implements IPresenter, Cloneable {
-    private static final Duration TRANSLATE_DURATION = Duration.seconds(1.0);
     private double zoom;
     private Point2D lastClickedPoint;
     private Point2D dragVector;
@@ -34,10 +24,8 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     private Point2D selectionOffsetVector;
 
     private BundleDto topSelectedBundle;
-    private Lift lift;
     private boolean canDrag;
     private DropShadow dropShadow;
-    private int gridDimension;
 
     private Point2D mousePositionInRealCoords;
     private Label mousePositionLabel;
@@ -50,7 +38,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
 
     public YardPresenter(MainController mainController) {
         super();
-        setFocusTraversable(true);
+        setFocusTraversable(false);
         this.mainController = mainController;
 
         larmanController = mainController.larmanController;
@@ -65,7 +53,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         mousePositionLabel.setAlignment(Pos.BOTTOM_RIGHT);
         xAxis = new Line();
         yAxis = new Line();
-        lift = larmanController.getYard().getLift();
 
         dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
@@ -85,6 +72,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         setOnMouseMoved(this::updateMousePosition);
         setOnScroll(this::handleOnScrollEvent);
         setOnKeyPressed(this::handleOnKeyPressedEvent);
+        setOnKeyReleased(this::handleOnKeyReleasedEvent);
     }
 
     private void handleOnMousePressedEvent(MouseEvent event) {
@@ -120,15 +108,15 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         updateMousePosition(event);
         if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
             Point2D newDraggedPoint = new Point2D(event.getX(), event.getY());
-            dragVector = newDraggedPoint.subtract(lastClickedPoint).multiply(1 / zoom);
+            dragVector = newDraggedPoint.substract(lastClickedPoint).multiply(1 / zoom);
             draw();
         } else {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (canDrag) {
                     shouldUpdate = true;
                     Point2D newBundlePosition = mainController.gridIsOn
-                        ? positionInGrid(mousePositionInRealCoords)
-                        : mousePositionInRealCoords.subtract(selectionOffsetVector);
+                            ? positionInGrid(mousePositionInRealCoords)
+                            : mousePositionInRealCoords.substract(selectionOffsetVector);
 
                     larmanController.modifyBundlePosition(topSelectedBundle.id, newBundlePosition);
                     draw();
@@ -161,29 +149,32 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             double delta = event.getCode() == KeyCode.EQUALS ? 1 : event.getCode() == KeyCode.MINUS ? -1 : 0;
             handleZoom(delta, getPlanCenterCoords());
         }
-        if (event.getCode().equals(KeyCode.UP)){
-            UndoRedo.add(larmanController.getYard());
-            Lift liftUp = lift.moveForward();
-            larmanController.getYard().setLift(liftUp);
-            draw();
-        }
-        if (event.getCode().equals(KeyCode.DOWN)){
-            UndoRedo.add(larmanController.getYard());
-            Lift liftDown = lift.moveBackward();
-            larmanController.getYard().setLift(liftDown);
-            draw();
-        }
-        if (event.getCode().equals(KeyCode.LEFT)){
-            UndoRedo.add(larmanController.getYard());
-            Lift liftLeft = lift.turnLeft();
-            larmanController.getYard().setLift(liftLeft);
-            draw();
-        }
         if (event.getCode().equals(KeyCode.RIGHT)) {
-            UndoRedo.add(larmanController.getYard());
-            Lift liftRight = lift.turnRight();
-            larmanController.getYard().setLift(liftRight);
+            larmanController.turnLiftRight();
             draw();
+            event.consume();
+        }
+        if (event.getCode().equals(KeyCode.LEFT)) {
+            larmanController.turnLiftLeft();
+            draw();
+            event.consume();
+        }
+        if (event.getCode().equals(KeyCode.UP)) {
+            larmanController.moveLiftForward();
+            draw();
+            event.consume();
+        }
+        if (event.getCode().equals(KeyCode.DOWN)) {
+            larmanController.moveLiftBackward();
+            draw();
+            event.consume();
+        }
+    }
+
+    private void handleOnKeyReleasedEvent(KeyEvent event) {
+        KeyCode code = event.getCode();
+        if (code == KeyCode.DOWN || code == KeyCode.UP || code == KeyCode.LEFT || code == KeyCode.RIGHT) {
+            UndoRedo.add(larmanController.getYard());
         }
     }
 
@@ -202,11 +193,11 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private void handleZoom(double delta, Point2D position) {
-        Point2D panningVector = position.subtract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
+        Point2D panningVector = position.substract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
         if (delta > 0) {
             // ZOOM
             zoom *= ConfigHelper.zoomFactor;
-            translateVector = translateVector.subtract(panningVector.multiply(1.0 / zoom));
+            translateVector = translateVector.substract(panningVector.multiply(1.0 / zoom));
         } else if (delta < 0) {
             // UNZOOM
             translateVector = translateVector.add(panningVector.multiply(1.0 / zoom));
@@ -230,9 +221,9 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private Point2D transformPlanCoordsToRealCoords(Point2D planPosition) {
-        Point2D withoutPlanOffset = planPosition.subtract(getPlanCenterCoords());
+        Point2D withoutPlanOffset = planPosition.substract(getPlanCenterCoords());
         Point2D unzoomed = withoutPlanOffset.multiply(1.0 / zoom);
-        Point2D untranslated = unzoomed.subtract(translateVector).subtract(dragVector);
+        Point2D untranslated = unzoomed.substract(translateVector).substract(dragVector);
         return GeomHelper.invertY(untranslated);
     }
 
@@ -245,9 +236,10 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (!selectedBundles.isEmpty()) {
             topSelectedBundle = larmanController.getTopBundle(mousePositionInRealCoords);
             //mainController.updateElevationView(topSelectedBundle);
-            mainController.setFocusedBundleElevView(topSelectedBundle);
             mainController.updateBundleInfo(topSelectedBundle);
-            selectionOffsetVector = mousePositionInRealCoords.subtract(topSelectedBundle.position);
+
+            mainController.setFocusedBundleElevView(topSelectedBundle);
+            selectionOffsetVector = mousePositionInRealCoords.substract(topSelectedBundle.position);
         } else {
             topSelectedBundle = null;
             mainController.clearElevationView();
@@ -262,8 +254,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             BundleDto createdBundle = larmanController.createBundle(positionInGrid(mousePositionInRealCoords));
             showBundleEditorWindow(createdBundle);
             selectBundle(createdBundle);
-        }
-        else {
+        } else {
             BundleDto createdBundle = larmanController.createBundle(mousePositionInRealCoords);
             showBundleEditorWindow(createdBundle);
             selectBundle(createdBundle);
@@ -272,16 +263,16 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private Point2D positionInGrid(Point2D point) {
-        int x = (int)(point.getX()/gridDimension) * gridDimension;
+        int x = (int) (point.getX() / ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
         if (x >= 0) {
-            x += gridDimension;
+            x += ConfigHelper.gridSquareSize;
         }
-        int y = (int)(point.getY()/gridDimension) * gridDimension;
+        int y = (int) (point.getY() / ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
         if (y <= 0) {
-            y -= gridDimension;
+            y -= ConfigHelper.gridSquareSize;
         }
-        int prevX = x - gridDimension;
-        int prevY = y + gridDimension;
+        int prevX = x - ConfigHelper.gridSquareSize;
+        int prevY = y + ConfigHelper.gridSquareSize;
         if (Math.abs(point.getX() - x) > Math.abs(point.getX() - prevX)) {
             x = prevX;
         }
@@ -308,7 +299,8 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     public void draw() {
-        if(UndoRedo.getUndo() == 0) {
+        // TODO Should NOT be here
+        if (UndoRedo.getUndo() == 0) {
             mainController.undoButton.setDisable(true);
         } else {
             mainController.undoButton.setDisable(false);
@@ -323,10 +315,10 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (mainController.gridIsOn) {
             drawGrid();
         }
+        drawLift(larmanController.getLift());
         drawBundles(larmanController.getBundlesSortedZ());
-        drawLift(new LiftDto(larmanController.getYard().getLift()));
         mainController.clearTableView();
-        if(!larmanController.getBundles().isEmpty()) {
+        if (!larmanController.getBundles().isEmpty()) {
             mainController.addTableViewBundles(larmanController.getBundles());
         }
         drawOtherGraphics();
@@ -362,8 +354,8 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             Point2D planPosition = transformRealCoordsToPlanCoords(bundleDto.position);
             bundlePresenter.setScale(zoom);
             bundlePresenter.setPosition(planPosition);
-            if (topSelectedBundle != null){
-                if (bundleDto.equals(topSelectedBundle)){
+            if (topSelectedBundle != null) {
+                if (bundleDto.equals(topSelectedBundle)) {
                     bundlePresenter.getRectangle().setEffect(dropShadow);
                 }
             }
@@ -371,13 +363,17 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         }
     }
 
-    private void drawLift(LiftDto liftDto){
+    private void drawLift(LiftDto liftDto) {
         LiftPresenter liftPresenter = new LiftPresenter(liftDto);
-        Point2D planPosition = transformRealCoordsToPlanCoords(liftDto.position);
+        Point2D liftPlanPosition = transformRealCoordsToPlanCoords(liftDto.position);
+        liftPresenter.setPosition(liftPlanPosition);
         liftPresenter.setScale(zoom);
-        liftPresenter.setPosition(planPosition);
         getChildren().add(liftPresenter.getRectangle());
 
+        Point2D armsPlanPosition = transformRealCoordsToPlanCoords(liftDto.armsPosition);
+        liftPresenter.getArms().setPosition(armsPlanPosition);
+        liftPresenter.getArms().setScale(zoom);
+        getChildren().add(liftPresenter.getArms().getRectangle());
     }
 
     private void drawOtherGraphics() {
@@ -387,11 +383,11 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     private void drawGrid() {
         double screenWidth = getWidth();
         double screenHeight = getHeight();
-        Point2D coord1 = transformPlanCoordsToRealCoords(new Point2D(0,0));
+        Point2D coord1 = transformPlanCoordsToRealCoords(new Point2D(0, 0));
         Point2D coord2 = transformPlanCoordsToRealCoords(new Point2D(screenWidth, screenHeight));
 
-        int nextX = (int)(coord1.getX()/ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
-        int nextY = (int)(coord1.getY()/ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
+        int nextX = (int) (coord1.getX() / ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
+        int nextY = (int) (coord1.getY() / ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
 
         for (int x = nextX; x <= coord2.getX(); x += ConfigHelper.gridSquareSize) {
             Point2D pointX = transformRealCoordsToPlanCoords(new Point2D(x, 0));
@@ -420,22 +416,33 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         }
     }
 
-    private boolean isOverAll(BundleDto bundleToCheck)
-    {
+    private boolean isOverAll(BundleDto bundleToCheck) {
         List<BundleDto> bundlesToCompare = larmanController.getCollidingBundles(bundleToCheck);
-        for (BundleDto bundleDto : bundlesToCompare)
-        {
+        for (BundleDto bundleDto : bundlesToCompare) {
             if (bundleDto.z > bundleToCheck.z) return false;
         }
         return true;
     }
 
-    public void setTopSelectedBundle(BundleDto bundle)
-    {
+    public void setTopSelectedBundle(BundleDto bundle) {
         topSelectedBundle = bundle;
         draw();
     }
-    public BundleDto getTopSelectedBundle(){
+
+    public BundleDto getTopSelectedBundle() {
         return topSelectedBundle;
     }
+/*
+    private boolean checkIfLiftColliding() {
+        boolean liftIsColliding = false;
+        List<BundleDto> bundlesToCheck = larmanController.getBundles();
+        for (BundleDto bundleDto : bundlesToCheck) {
+            BundlePresenter bundleRectangle = new BundlePresenter(bundleDto);
+            if (GeomHelper.rectangleCollidesRectangle(bundleRectangle, liftPresenter)) {
+                liftIsColliding = true;
+                break;
+            }
+        }
+        return liftIsColliding;
+    }*/
 }

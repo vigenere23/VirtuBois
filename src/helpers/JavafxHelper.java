@@ -1,17 +1,16 @@
 package helpers;
 
 import domain.dtos.BundleDto;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.control.TextField;
-import presentation.controllers.BundleEditorController;
-import presentation.controllers.GridController;
-import presentation.controllers.IController;
-import presentation.Main;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import presentation.Main;
+import presentation.controllers.BundleEditorController;
+import presentation.controllers.IController;
 
 public class JavafxHelper {
 
@@ -26,8 +25,7 @@ public class JavafxHelper {
 
         try {
             page = loader.load();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Could not load view");
             e.printStackTrace();
             return null;
@@ -74,7 +72,7 @@ public class JavafxHelper {
         setupStage(stage, "Éditer un paquet", false, true);
     }
 
-    public static void popupGrid(){
+    public static void popupGrid() {
         Stage stage = new Stage();
         setupScene(stage, "Grid");
         setupStage(stage, "Éditer la grille", false, true);
@@ -83,14 +81,14 @@ public class JavafxHelper {
     public static void addStringToDoubleConverter(TextField textField, Double defaultValue, Double min, Double max) {
         ChangeListener<String> stringToDoubleConverter = (observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
-                if(!newValue.equals("-") && !newValue.equals("-.") && !newValue.equals("."))
-                try {
-                    double value = Double.parseDouble(newValue);
-                    if (min != null && value < min || max != null && value > max)
+                if (!newValue.equals("-") && !newValue.equals("-.") && !newValue.equals("."))
+                    try {
+                        double value = Double.parseDouble(newValue);
+                        if (min != null && value < min || max != null && value > max)
+                            textField.setText(oldValue);
+                    } catch (Exception e) {
                         textField.setText(oldValue);
-                } catch (Exception e) {
-                    textField.setText(oldValue);
-                }
+                    }
             }
         };
         addChangeAndFocusListeners(textField, stringToDoubleConverter, defaultValue);

@@ -1,11 +1,9 @@
 package presentation.controllers;
 
-import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
-import helpers.STLWriter;
 import helpers.UndoRedo;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -24,11 +22,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 import presentation.presenters.ElevationViewPresenter3D;
 import presentation.presenters.YardPresenter;
 
-import java.io.File;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -103,6 +99,8 @@ public class MainController extends BaseController {
     @FXML
     public TextField bundleYPosValue;
     @FXML
+    public Label bundleZPosValue;
+    @FXML
     public TextField bundleAngleValue;
 
     @FXML
@@ -122,6 +120,7 @@ public class MainController extends BaseController {
 
     @FXML
     public void initialize() {
+        root.setFocusTraversable(false);
         editorMode = new SimpleObjectProperty<>();
 
         initTableView();
@@ -180,7 +179,7 @@ public class MainController extends BaseController {
         AnchorPane.setTopAnchor(yardPresenter, 0.0);
     }
 
-    private void initElevationView(){
+    private void initElevationView() {
         elevationViewPresenter3D = new ElevationViewPresenter3D(subScenePane, this);
     }
 
@@ -218,7 +217,7 @@ public class MainController extends BaseController {
         });
 
         bundleLengthValue.setOnKeyPressed(event -> {
-            if(bundleLengthValue.isEditable()) {
+            if (bundleLengthValue.isEditable()) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleLengthValue.getText().isEmpty() && !bundleLengthValue.getText().equals("-") && !bundleLengthValue.getText().equals(".") && !bundleLengthValue.getText().equals("-.") && Double.parseDouble(bundleLengthValue.getText()) != 0.0) {
@@ -236,7 +235,7 @@ public class MainController extends BaseController {
         });
 
         bundleWidthValue.setOnKeyPressed(event -> {
-            if(bundleWidthValue.isEditable()) {
+            if (bundleWidthValue.isEditable()) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleWidthValue.getText().isEmpty() && !bundleWidthValue.getText().equals("-") && !bundleWidthValue.getText().equals(".") && !bundleWidthValue.getText().equals("-.") && Double.parseDouble(bundleWidthValue.getText()) != 0.0) {
@@ -253,7 +252,7 @@ public class MainController extends BaseController {
         });
 
         bundleHeightValue.setOnKeyPressed(event -> {
-            if(bundleHeightValue.isEditable()) {
+            if (bundleHeightValue.isEditable()) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleHeightValue.getText().isEmpty() && !bundleHeightValue.getText().equals("-") && !bundleHeightValue.getText().equals(".") && !bundleHeightValue.getText().equals("-.") && Double.parseDouble(bundleHeightValue.getText()) != 0.0) {
@@ -356,7 +355,7 @@ public class MainController extends BaseController {
         });
 
         bundleXPosValue.setOnKeyPressed(event -> {
-            if(bundleXPosValue.isEditable()) {
+            if (bundleXPosValue.isEditable()) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleXPosValue.getText().isEmpty() && !bundleXPosValue.getText().equals("-") && !bundleXPosValue.getText().equals(".") && !bundleXPosValue.getText().equals("-.")) {
@@ -373,7 +372,7 @@ public class MainController extends BaseController {
         });
 
         bundleYPosValue.setOnKeyPressed(event -> {
-            if(bundleYPosValue.isEditable()) {
+            if (bundleYPosValue.isEditable()) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleYPosValue.getText().isEmpty() && !bundleYPosValue.getText().equals("-") && !bundleYPosValue.getText().equals(".") && !bundleYPosValue.getText().equals("-.")) {
@@ -459,7 +458,7 @@ public class MainController extends BaseController {
         });
     }
 
-    public YardPresenter getYardPresenter(){
+    public YardPresenter getYardPresenter() {
         return yardPresenter;
     }
 
@@ -477,6 +476,7 @@ public class MainController extends BaseController {
         bundlePlankSizeValue2.clear();
         bundleXPosValue.clear();
         bundleYPosValue.clear();
+        bundleZPosValue.textProperty().setValue("");
         bundleAngleValue.clear();
 
     }
@@ -496,26 +496,28 @@ public class MainController extends BaseController {
         bundlePlankSizeValue2.setText(plankSize[1]);
         bundleXPosValue.setText(String.valueOf(bundle.position.getX()));
         bundleYPosValue.setText(String.valueOf(bundle.position.getY()));
+        bundleZPosValue.setText(String.valueOf(bundle.z));
         bundleAngleValue.setText(String.valueOf(bundle.angle));
+
         boolean canChange = true;
-        for(BundleDto bundleDto : larmanController.getCollidingBundles(bundle)){
-            if(bundleDto.z > bundle.z){
+        for (BundleDto bundleDto : larmanController.getCollidingBundles(bundle)) {
+            if (bundleDto.z > bundle.z) {
                 canChange = false;
             }
         }
-        bundleLengthValue.setEditable(canChange);
+        /*bundleLengthValue.setEditable(canChange);
         bundleWidthValue.setEditable(canChange);
         bundleHeightValue.setEditable(canChange);
+        bundleAngleValue.setEditable(canChange);*/
         bundleXPosValue.setEditable(canChange);
         bundleYPosValue.setEditable(canChange);
-        bundleAngleValue.setEditable(canChange);
     }
 
     public void updateElevationView(BundleDto bundle) {
         //elevationViewPresenter.setBundles(bundle);
     }
 
-    public void setFocusedBundleElevView(BundleDto bundle){
+    public void setFocusedBundleElevView(BundleDto bundle) {
         elevationViewPresenter3D.setFocusedBundle(bundle);
     }
 
@@ -523,18 +525,17 @@ public class MainController extends BaseController {
         elevationViewPresenter3D.clearBundles();
     }
 
-    public void clearTableView(){
+    public void clearTableView() {
         inventoryTable.getItems().clear();
     }
 
     public void addTableViewBundles(List<BundleDto> bundles) {
         inventorySearchBar.clear();
-        if(!bundles.isEmpty()) {
+        if (!bundles.isEmpty()) {
             observableBundleList = bundles;
             ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
             inventoryTable.setItems(data);
-        }
-        else{
+        } else {
             inventoryTable.getItems().clear();
         }
     }
@@ -559,15 +560,12 @@ public class MainController extends BaseController {
         JavafxHelper.popupView("About", "À propos", false, false);
     }
 
-    public void handleFOVButton(ActionEvent actionEvent){
-        if(elevationViewMode == 'x')
-        {
+    public void handleFOVButton(ActionEvent actionEvent) {
+        if (elevationViewMode == 'x') {
             FOVImage.setRotate(-90);
             elevationViewMode = 'y';
             //elevationViewPresenter.draw();
-        }
-        else if(elevationViewMode == 'y')
-        {
+        } else if (elevationViewMode == 'y') {
             FOVImage.setRotate(0);
             elevationViewMode = 'x';
             //elevationViewPresenter.draw();
@@ -575,12 +573,8 @@ public class MainController extends BaseController {
     }
 
     public void handleExport3D() {
-        if (!larmanController.getBundles().isEmpty()){
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("STL files (*.stl)", "*.stl");
-            fileChooser.getExtensionFilters().add(extFilter);
-            File file = fileChooser.showSaveDialog(stage);
-            STLWriter exportView = new STLWriter(larmanController.getBundles(), file.getPath());
+        if (!larmanController.getBundles().isEmpty()) {
+            FileHelper.saveSTLFile(stage, larmanController.getBundles());
         }
     }
 
@@ -597,6 +591,5 @@ public class MainController extends BaseController {
     public void handleGridSize(ActionEvent actionEvent) {
         JavafxHelper.popupGrid();
     }
-
 
 }

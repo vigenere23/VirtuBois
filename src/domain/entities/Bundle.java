@@ -2,6 +2,7 @@ package domain.entities;
 
 import helpers.ColorHelper;
 import helpers.ConfigHelper;
+import helpers.MathHelper;
 import helpers.Point2D;
 import javafx.scene.paint.Color;
 
@@ -53,7 +54,7 @@ public class Bundle extends Drawable3D implements Serializable
     @Override
     public void setWidth(double width) {
         if (width > 0) {
-            super.setWidth(width);
+            super.setWidth(MathHelper.round(width, 2));
             ConfigHelper.bundleWidth = this.width;
         }
     }
@@ -61,7 +62,7 @@ public class Bundle extends Drawable3D implements Serializable
     @Override
     public void setLength(double length) {
         if (length > 0) {
-            super.setLength(length);
+            super.setLength(MathHelper.round(length, 2));
             ConfigHelper.bundleLength = this.length;
         }
     }
@@ -74,14 +75,14 @@ public class Bundle extends Drawable3D implements Serializable
     public void setHeight(double height)
     {
         if (height > 0) {
-            this.height = height;
+            this.height = MathHelper.round(height, 2);
             ConfigHelper.bundleHeight = this.height;
         }
     }
 
     @Override
     public void setAngle(double angle) {
-        super.setAngle(angle);
+        super.setAngle(MathHelper.round(angle, 2));
         ConfigHelper.bundleAngle = this.angle;
     }
 

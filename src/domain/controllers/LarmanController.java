@@ -81,17 +81,7 @@ public class LarmanController {
     }
 
     public void modifyBundleProperties(BundleDto bundleDto) {
-        //double zChange = bundleDto.height - getBundle(bundleDto.id).height;
         yard.modifyBundleProperties(bundleDto);
-        // TODO this logic should be part of the yard
-        /*
-        List<BundleDto> bundlesInStack = getAllCollidingBundles(bundleDto);
-        for (BundleDto bundle : bundlesInStack) {
-            if (bundleDto.z < bundle.z && !bundleDto.equals(bundle)) {
-                bundle.z = bundle.z + zChange;
-                yard.modifyBundleProperties(bundle);
-            }
-        }*/
     }
 
     public void modifyBundlePosition(String id, Point2D position) {

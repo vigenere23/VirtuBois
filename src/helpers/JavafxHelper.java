@@ -86,8 +86,6 @@ public class JavafxHelper {
                         double value = Double.parseDouble(newValue);
                         if (min != null && value < min || max != null && value > max)
                             textField.setText(oldValue);
-                        else
-                            textField.setText(String.valueOf(MathHelper.round(value, 2)));
                     } catch (Exception e) {
                         textField.setText(oldValue);
                     }

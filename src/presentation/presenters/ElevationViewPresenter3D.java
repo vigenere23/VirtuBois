@@ -131,7 +131,7 @@ public class ElevationViewPresenter3D implements IPresenter {
             box.setRotationAxis(new Point3D(0.0, 1.0, 0.0));
             box.setRotate(-bundle.angle);
             box.setTranslateX(bundle.getX() - initGroupTranslate.getX());
-            box.setTranslateY(-bundle.getZ() + 1);
+            box.setTranslateY(-(bundle.height)/2 - bundle.getZ() + 1);
             box.setTranslateZ(bundle.getY() - initGroupTranslate.getY());
 
             PhongMaterial material = new PhongMaterial();
@@ -234,7 +234,7 @@ public class ElevationViewPresenter3D implements IPresenter {
         Rectangle rectangle = new Rectangle(-10.0, -10.0, 20.0, 20.0);
         rectangle.setRotationAxis(new Point3D(1.0, 0.0, 0.0));
         rectangle.setRotate(90);
-        rectangle.setTranslateY(1 + minHeight / 2.0);
+        rectangle.setTranslateY(1);
         rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/presentation/assets/images/bois.jpg"))));
         group.getChildren().add(rectangle);
 

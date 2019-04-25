@@ -191,7 +191,7 @@ public class ElevationViewPresenter3D implements IPresenter {
         double maxX = allBundles.get(0).position.getX();
         double minY = allBundles.get(0).position.getY();
         double maxY = allBundles.get(0).position.getY();
-        double maxZ = allBundles.get(0).z + allBundles.get(0).height;
+        double maxZ = allBundles.get(0).topZ;
         double minHeight = allBundles.get(0).height;
 
         for (BundleDto bundle : allBundles) {

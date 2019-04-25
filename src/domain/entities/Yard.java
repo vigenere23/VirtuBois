@@ -70,8 +70,8 @@ public class Yard implements Serializable {
     private void putBundleToTop(Bundle bundle) {
         List<Bundle> collidingBundles = getCollidingBundles(bundle, null);
         if (!collidingBundles.isEmpty()) {
-            Bundle higherBundle = Collections.max(collidingBundles, Comparator.comparing(b -> b.getZ() + b.getHeight()));
-            bundle.setZ(higherBundle.getZ() + higherBundle.getHeight());
+            Bundle higherBundle = Collections.max(collidingBundles, Comparator.comparing(Bundle::getTopZ));
+            bundle.setZ(higherBundle.getTopZ());
         } else {
             bundle.setZ(0);
         }
@@ -104,8 +104,7 @@ public class Yard implements Serializable {
         bundles.remove(id);
     }
 
-    public void modifyBundleProperties(BundleDto bundleDto)
-    {
+    public void modifyBundleProperties(BundleDto bundleDto) {
         Bundle bundle = getBundle(bundleDto.id);
         if (bundle != null) {
             Set<Bundle> allTimeCollidingBundles = new LinkedHashSet<>(getAllCollidingBundles(bundle));
@@ -126,7 +125,7 @@ public class Yard implements Serializable {
     }
 
     private void adjustBundlesHeightAfterChange(Bundle source, List<Bundle> allTimeCollidingBundles) {
-        List<Bundle> bundlesHigher = sortBundlesZ(getBundlesWithMinZ(allTimeCollidingBundles, source.getZ() + source.getHeight()));
+        List<Bundle> bundlesHigher = sortBundlesZ(getBundlesWithMinZ(allTimeCollidingBundles, source.getTopZ()));
         adjustBundleHeight(source);
         if (!bundlesHigher.isEmpty()) {
             for (Bundle bundle : bundlesHigher) {
@@ -139,14 +138,13 @@ public class Yard implements Serializable {
         List<Bundle> collidingBundles = sortBundlesZ(getCollidingBundles(bundle, null));
         double newZ = 0;
         for (Bundle lowerBundle : collidingBundles) {
-            if (MathHelper.compareDoubles(lowerBundle.getZ(), bundle.getZ() + bundle.getHeight()) != Comparison.SMALLER) break;
-            newZ = lowerBundle.getZ() + lowerBundle.getHeight();
+            if (MathHelper.compareDoubles(lowerBundle.getZ(), bundle.getTopZ()) != Comparison.SMALLER) break;
+            newZ = lowerBundle.getTopZ();
         }
         bundle.setZ(newZ);
     }
 
-    public void modifyBundlePosition(String id, Point2D position)
-    {
+    public void modifyBundlePosition(String id, Point2D position) {
         Bundle bundle = getBundle(id);
         bundle.setPosition(new Point2D(
                 MathHelper.round(position.getX(), 2),

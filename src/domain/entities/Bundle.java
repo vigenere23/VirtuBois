@@ -16,7 +16,6 @@ public class Bundle extends Drawable3D implements Serializable
     private static final long serialVersionUID = 15641321L;
     private String id;
     private String color;
-    private double height;
     private LocalDate date;
     private LocalTime time;
     private String essence;
@@ -67,11 +66,7 @@ public class Bundle extends Drawable3D implements Serializable
         }
     }
 
-    public double getHeight()
-    {
-        return height;
-    }
-
+    @Override
     public void setHeight(double height)
     {
         if (height > 0) {

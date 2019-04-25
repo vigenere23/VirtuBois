@@ -69,7 +69,7 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
         double width = getWidth();
         double minWidth = allBundles.get(0).position.getX();
         double maxWidth = allBundles.get(0).position.getX();
-        double maxHeight = allBundles.get(0).z + allBundles.get(0).height;
+        double maxHeight = allBundles.get(0).topZ;
         for (BundleDto bundle : allBundles) {
             BundlePresenter presenter = new BundlePresenter(bundle);
             for (Point2D position : presenter.getPoints()) {
@@ -144,7 +144,7 @@ public class ElevationViewPresenter extends Pane implements IPresenter {
         double width = getWidth();
         double minLength = allBundles.get(0).position.getY();
         double maxLength = allBundles.get(0).position.getY();
-        double maxHeight = allBundles.get(0).z + allBundles.get(0).height;
+        double maxHeight = allBundles.get(0).topZ;
         for (BundleDto bundle : allBundles) {
             BundlePresenter presenter = new BundlePresenter(bundle);
             for (Point2D position : presenter.getPoints()) {

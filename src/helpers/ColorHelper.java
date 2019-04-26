@@ -5,15 +5,27 @@ import javafx.scene.paint.Color;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ColorHelper {
+
+    public static Color lastColor;
+
     public static Color randomColor() {
         double saturation = ThreadLocalRandom.current().nextDouble(0, 1);
         double brightness = ThreadLocalRandom.current().nextDouble(0, 1);
-        return randomColor(saturation, brightness);
+        lastColor = randomColor(saturation, brightness);
+        return lastColor;
     }
 
     public static Color randomColor(double saturation, double brightness) {
         double hue = ThreadLocalRandom.current().nextDouble(0, 360);
-        return Color.hsb(hue, saturation, brightness);
+        lastColor = Color.hsb(hue, saturation, brightness);
+        return lastColor;
+    }
+
+    public static Color nextHueRandomColor(double saturation, double brightness) {
+        if (lastColor == null) return randomColor(saturation, brightness);
+        double hue = lastColor.getHue() + ThreadLocalRandom.current().nextDouble(30, 60);
+        lastColor = Color.hsb(hue, saturation, brightness);
+        return lastColor;
     }
 
     public static Color setOpacity(Color color, double opacity) {

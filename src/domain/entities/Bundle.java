@@ -46,7 +46,7 @@ public class Bundle extends Drawable3D implements Serializable
     public String getColor() { return color; }
 
     private void initColor() {
-        Color color = ColorHelper.randomColor(ConfigHelper.bundleSaturation, ConfigHelper.bundleBrightness);
+        Color color = ColorHelper.nextHueRandomColor(ConfigHelper.bundleSaturation, ConfigHelper.bundleBrightness);
         this.color = ColorHelper.toWeb(color);
     }
 

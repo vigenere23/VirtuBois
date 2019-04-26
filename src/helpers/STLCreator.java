@@ -16,10 +16,10 @@ public class STLCreator {
         bundlePoints3D.add(new Point3D(bundlePoints2D.get(1).getX(), bundlePoints2D.get(1).getY(), bundle.dto.z));
         bundlePoints3D.add(new Point3D(bundlePoints2D.get(2).getX(), bundlePoints2D.get(2).getY(), bundle.dto.z));
         bundlePoints3D.add(new Point3D(bundlePoints2D.get(3).getX(), bundlePoints2D.get(3).getY(), bundle.dto.z));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(0).getX(), bundlePoints2D.get(0).getY(), bundle.dto.z + bundle.dto.height));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(1).getX(), bundlePoints2D.get(1).getY(), bundle.dto.z + bundle.dto.height));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(2).getX(), bundlePoints2D.get(2).getY(), bundle.dto.z + bundle.dto.height));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(3).getX(), bundlePoints2D.get(3).getY(), bundle.dto.z + bundle.dto.height));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(0).getX(), bundlePoints2D.get(0).getY(), bundle.dto.topZ));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(1).getX(), bundlePoints2D.get(1).getY(), bundle.dto.topZ));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(2).getX(), bundlePoints2D.get(2).getY(), bundle.dto.topZ));
+        bundlePoints3D.add(new Point3D(bundlePoints2D.get(3).getX(), bundlePoints2D.get(3).getY(), bundle.dto.topZ));
         return bundlePoints3D;
     }
 

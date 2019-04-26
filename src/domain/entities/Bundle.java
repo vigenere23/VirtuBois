@@ -16,7 +16,6 @@ public class Bundle extends Drawable3D implements Serializable
     private static final long serialVersionUID = 15641321L;
     private String id;
     private String color;
-    private double height;
     private LocalDate date;
     private LocalTime time;
     private String essence;
@@ -47,7 +46,7 @@ public class Bundle extends Drawable3D implements Serializable
     public String getColor() { return color; }
 
     private void initColor() {
-        Color color = ColorHelper.randomColor(ConfigHelper.bundleSaturation, ConfigHelper.bundleBrightness);
+        Color color = ColorHelper.nextHueRandomColor(ConfigHelper.bundleSaturation, ConfigHelper.bundleBrightness);
         this.color = ColorHelper.toWeb(color);
     }
 
@@ -67,11 +66,7 @@ public class Bundle extends Drawable3D implements Serializable
         }
     }
 
-    public double getHeight()
-    {
-        return height;
-    }
-
+    @Override
     public void setHeight(double height)
     {
         if (height > 0) {

@@ -15,6 +15,7 @@ public class BundleDto {
     public double angle;
     public Point2D position;
     public double z;
+    public double topZ;
     public LocalDate date;
     public LocalTime time;
     public String essence;
@@ -30,6 +31,7 @@ public class BundleDto {
         angle = bundle.getAngle();
         position = bundle.getPosition();
         z = bundle.getZ();
+        topZ = bundle.getTopZ();
         date = bundle.getDate();
         time = bundle.getTime();
         essence = bundle.getEssence();

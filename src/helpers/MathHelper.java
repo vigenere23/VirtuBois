@@ -20,6 +20,6 @@ public class MathHelper {
         double diff = d1 - d2;
         if (Math.abs(diff) < DELTA) return Comparison.EQUAL;
         else if (diff < 0) return Comparison.SMALLER;
-        else return Comparison.BIGGER;
+        else return Comparison.GREATER;
     }
 }

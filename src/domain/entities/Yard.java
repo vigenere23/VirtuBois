@@ -38,14 +38,26 @@ public class Yard implements Serializable {
         return bundles;
     }
 
+    private List<Bundle> sortBundlesTopZ(List<Bundle> bundles) {
+        bundles.sort(Comparator.comparing(Bundle::getTopZ));
+        return bundles;
+    }
+
     private List<Bundle> getBundlesWithMinZ(List<Bundle> bundles, double zMin) {
-        List<Bundle> bundlesZMin = new ArrayList<>();
+        return getBundlesWithMinZ(bundles, zMin, true);
+    }
+
+    private List<Bundle> getBundlesWithMinZ(List<Bundle> bundles, double zMin, boolean includeEquals) {
+        List<Bundle> bundlesMinZ = new ArrayList<>();
         for (Bundle bundle : bundles) {
-            if (MathHelper.compareDoubles(bundle.z, zMin) != Comparison.SMALLER) {
-                bundlesZMin.add(bundle);
+            boolean shouldAdd = includeEquals
+                    ? MathHelper.compareDoubles(bundle.getZ(), zMin) != Comparison.SMALLER
+                    : MathHelper.compareDoubles(bundle.getZ(), zMin) == Comparison.GREATER;
+            if (shouldAdd) {
+                bundlesMinZ.add(bundle);
             }
         }
-        return bundlesZMin;
+        return bundlesMinZ;
     }
 
     public List<Bundle> getBundles() {
@@ -75,10 +87,13 @@ public class Yard implements Serializable {
     }
 
     private void putBundleToTop(Bundle bundle) {
-        List<Bundle> collidingBundles = getCollidingBundles(bundle, null);
-        if (!collidingBundles.isEmpty()) {
-            Bundle higherBundle = Collections.max(collidingBundles, Comparator.comparing(b -> b.getZ() + b.getHeight()));
-            bundle.setZ(higherBundle.getZ() + higherBundle.getHeight());
+        putBundleToTop(bundle, getCollidingBundles(bundle, null));
+    }
+
+    private void putBundleToTop(Bundle bundle, List<Bundle> bundlesToPutUnder) {
+        if (!bundlesToPutUnder.isEmpty()) {
+            Bundle higherBundle = Collections.max(bundlesToPutUnder, Comparator.comparing(Bundle::getTopZ));
+            bundle.setZ(higherBundle.getTopZ());
         } else {
             bundle.setZ(0);
         }
@@ -111,11 +126,11 @@ public class Yard implements Serializable {
         bundles.remove(id);
     }
 
-    public void modifyBundleProperties(BundleDto bundleDto)
-    {
+    public void modifyBundleProperties(BundleDto bundleDto) {
         Bundle bundle = getBundle(bundleDto.id);
         if (bundle != null) {
-            Set<Bundle> allTimeCollidingBundles = new LinkedHashSet<>(getAllCollidingBundles(bundle));
+            UndoRedo.add(this);
+            Set<Bundle> allTimeCollidingBundles = new LinkedHashSet<>(getAllCollidingBundles(bundle, true));
             bundle.setBarcode(bundleDto.barcode);
             bundle.setHeight(MathHelper.round(bundleDto.height, 2));
             bundle.setWidth(MathHelper.round(bundleDto.width, 2));
@@ -126,33 +141,28 @@ public class Yard implements Serializable {
             bundle.setPlanckSize(bundleDto.plankSize);
             bundle.setAngle(MathHelper.round(bundleDto.angle, 2));
             bundle.setZ(MathHelper.round(bundleDto.z, 2));
-            allTimeCollidingBundles.addAll(getAllCollidingBundles(bundle));
+            allTimeCollidingBundles.addAll(getAllCollidingBundles(bundle, true));
             adjustBundlesHeightAfterChange(bundle, new ArrayList<>(allTimeCollidingBundles));
         }
     }
 
     private void adjustBundlesHeightAfterChange(Bundle source, List<Bundle> allTimeCollidingBundles) {
-        List<Bundle> bundlesHigher = sortBundlesZ(getBundlesWithMinZ(allTimeCollidingBundles, source.getZ() + source.getHeight()));
-        adjustBundleHeight(source);
-        if (!bundlesHigher.isEmpty()) {
-            for (Bundle bundle : bundlesHigher) {
-                adjustBundleHeight(bundle);
-            }
+        List<Bundle> bundlesToAdjust = sortBundlesZ(getBundlesWithMinZ(allTimeCollidingBundles, source.getZ()));
+        adjustBundleHeight(source, bundlesToAdjust);
+        Iterator<Bundle> bundlesToAdjustIterator = bundlesToAdjust.iterator();
+        while (bundlesToAdjustIterator.hasNext()) {
+            Bundle bundleToAdjust = bundlesToAdjustIterator.next();
+            bundlesToAdjustIterator.remove();
+            adjustBundleHeight(bundleToAdjust, bundlesToAdjust);
         }
     }
 
-    private void adjustBundleHeight(Bundle bundle) {
-        List<Bundle> collidingBundles = sortBundlesZ(getCollidingBundles(bundle, null));
-        double newZ = 0;
-        for (Bundle lowerBundle : collidingBundles) {
-            if (MathHelper.compareDoubles(lowerBundle.getZ(), bundle.getZ() + bundle.getHeight()) != Comparison.SMALLER) break;
-            newZ = lowerBundle.getZ() + lowerBundle.getHeight();
-        }
-        bundle.setZ(newZ);
+    private void adjustBundleHeight(Bundle bundle, List<Bundle> exceptionList) {
+        List<Bundle> bundlesToPutUnder = getCollidingBundles(bundle, new HashSet<>(exceptionList));
+        putBundleToTop(bundle, bundlesToPutUnder);
     }
 
-    public void modifyBundlePosition(String id, Point2D position)
-    {
+    public void modifyBundlePosition(String id, Point2D position) {
         Bundle bundle = getBundle(id);
         bundle.setPosition(new Point2D(
                 MathHelper.round(position.getX(), 2),
@@ -180,7 +190,7 @@ public class Yard implements Serializable {
         return collidingBundles;
     }
 
-    private List<Bundle> getAllCollidingBundles(Bundle originBundle) {
+    private List<Bundle> getAllCollidingBundles(Bundle originBundle, boolean removeOriginBundle) {
         Set<Bundle> allCollidingBundles = new HashSet<>();
         Set<Bundle> bundlesToCheck = new HashSet<>();
 
@@ -199,13 +209,15 @@ public class Yard implements Serializable {
                     }
                 }
             }
+            if (removeOriginBundle) {
+                allCollidingBundles.removeIf(b -> b.equals(originBundle));
+            }
         }
-
         return new ArrayList<>(allCollidingBundles);
     }
 
     public List<Bundle> getAllCollidingBundles(BundleDto bundleToCheck) {
-        return getAllCollidingBundles(getBundle(bundleToCheck.id));
+        return getAllCollidingBundles(getBundle(bundleToCheck.id), false);
     }
 
     private boolean checkIfColliding(LiftDto lift, List<Bundle> bundleList) {

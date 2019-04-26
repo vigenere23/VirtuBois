@@ -1,8 +1,11 @@
 package domain.entities;
 
+import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
+import domain.dtos.LiftDto;
 import enums.Comparison;
 import helpers.*;
+import javafx.scene.input.KeyCode;
 
 import java.io.Serializable;
 import java.util.*;
@@ -12,6 +15,8 @@ public class Yard implements Serializable {
     private Map<String, Bundle> bundles;
     public Bundle lastBundleCreated;
     private Lift lift;
+    boolean isColliding = false;
+    String lastMovement = "none";
 
     public Yard() {
         setBundles(new HashMap<>());
@@ -23,9 +28,9 @@ public class Yard implements Serializable {
         setLift(lift.position);
     }
 
-    public Yard(Yard yard) {
-        this.bundles = new HashMap<>(yard.getBundlesMap());
-        this.lift = yard.getLift();
+    public Yard(Yard newYard) {
+        this.bundles = new HashMap<>(newYard.getBundlesMap());
+        setLiftAngle(newYard.getLift().getPosition(), newYard.getLift().getAngle());
     }
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
@@ -58,6 +63,8 @@ public class Yard implements Serializable {
     public void setLift(Point2D position) {
         this.lift = new Lift(position);
     }
+
+    public void setLiftAngle(Point2D position, double angle) {this.lift = new Lift(position, angle);}
 
     public Bundle createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);
@@ -121,7 +128,6 @@ public class Yard implements Serializable {
             bundle.setZ(MathHelper.round(bundleDto.z, 2));
             allTimeCollidingBundles.addAll(getAllCollidingBundles(bundle));
             adjustBundlesHeightAfterChange(bundle, new ArrayList<>(allTimeCollidingBundles));
-            UndoRedo.add(this);
         }
     }
 
@@ -202,23 +208,66 @@ public class Yard implements Serializable {
         return getAllCollidingBundles(getBundle(bundleToCheck.id));
     }
 
+    private boolean checkIfColliding(LiftDto lift, List<Bundle> bundleList) {
+        List<CenteredRectangle> rectangleBundle = new ArrayList<>();
+        CenteredRectangle rectangleLift = new CenteredRectangle(lift.position.getX(), lift.position.getY(), lift.width * 1.2, lift.length * 1.2, lift.angle);
+        for(Bundle bundles: bundleList){
+            rectangleBundle.add(new CenteredRectangle(bundles.position.getX(), bundles.position.getY(), bundles.width, bundles.length, bundles.angle));
+        }
+        for(CenteredRectangle rectangle: rectangleBundle){
+            if (GeomHelper.rectangleCollidesRectangle(rectangle, rectangleLift)){
+                isColliding = true;
+                break;
+            }
+            else {
+                isColliding = false;
+            }
+        }
+        return isColliding;
+    }
     public void moveLiftForward() {
-        // TODO Calculate for front collision HERE (ONLY the lift, NOT the arms)
-        lift.moveForward();
+        if(!checkIfColliding(new LiftDto(lift), getBundles())){
+            lastMovement = "UP";
+            lift.moveForward();
+        }
+        else if(checkIfColliding(new LiftDto(lift), getBundles()) && !lastMovement.equals("UP")){
+            lift.moveForward();
+        }
     }
 
     public void moveLiftBackward() {
-        // TODO Calculate for back collision HERE (ONLY the lift, NOT the arms)
-        lift.moveBackward();
+        if(!checkIfColliding(new LiftDto(lift), getBundles())){
+            lastMovement = "DOWN";
+            lift.moveBackward();
+        }
+        else if(checkIfColliding(new LiftDto(lift), getBundles()) && !lastMovement.equals("DOWN")) {
+            lift.moveBackward();
+        }
     }
 
     public void turnLiftRight() {
-        // TODO Calculate for rotational collision HERE (ONLY the lift, NOT the arms)
-        lift.turnRight();
+        if(!checkIfColliding(new LiftDto(lift), getBundles())){
+            lastMovement = "RIGHT";
+            lift.turnRight();
+        }
+        else if(checkIfColliding(new LiftDto(lift), getBundles()) && !lastMovement.equals("RIGHT")) {
+            lift.turnRight();
+        }
+        else if(checkIfColliding(new LiftDto(lift), getBundles()) && lastMovement.equals("RIGHT")){
+            lift.turnLeft();
+        }
     }
 
     public void turnLiftLeft() {
-        // TODO Calculate for rotational collision HERE (ONLY the lift, NOT the arms)
-        lift.turnLeft();
+        if(!checkIfColliding(new LiftDto(lift), getBundles())){
+            lastMovement = "LEFT";
+            lift.turnLeft();
+        }
+        else if(checkIfColliding(new LiftDto(lift), getBundles()) && !lastMovement.equals("LEFT")) {
+            lift.turnLeft();
+        }
+        else if(checkIfColliding(new LiftDto(lift), getBundles()) && lastMovement.equals("LEFT")){
+            lift.turnRight();
+        }
     }
 }

@@ -150,21 +150,25 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             handleZoom(delta, getPlanCenterCoords());
         }
         if (event.getCode().equals(KeyCode.RIGHT)) {
+            UndoRedo.add(larmanController.getYard());
             larmanController.turnLiftRight();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
+            UndoRedo.add(larmanController.getYard());
             larmanController.turnLiftLeft();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.UP)) {
+            UndoRedo.add(larmanController.getYard());
             larmanController.moveLiftForward();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.DOWN)) {
+            UndoRedo.add(larmanController.getYard());
             larmanController.moveLiftBackward();
             draw();
             event.consume();
@@ -172,10 +176,10 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private void handleOnKeyReleasedEvent(KeyEvent event) {
-        KeyCode code = event.getCode();
-        if (code == KeyCode.DOWN || code == KeyCode.UP || code == KeyCode.LEFT || code == KeyCode.RIGHT) {
-            UndoRedo.add(larmanController.getYard());
-        }
+//        KeyCode code = event.getCode();
+//        if (code == KeyCode.DOWN || code == KeyCode.UP || code == KeyCode.LEFT || code == KeyCode.RIGHT) {
+//            UndoRedo.add(larmanController.getYard());
+//        }
     }
 
     private void updateMousePosition(MouseEvent event) {
@@ -297,20 +301,27 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         draw();
     }
 
-    public void draw() {
-        // TODO Should NOT be here
+    private void checkUndoSize(){
         if (UndoRedo.getUndo() == 0) {
             mainController.undoButton.setDisable(true);
         } else {
             mainController.undoButton.setDisable(false);
         }
+    }
+
+    private void checkRedoSize(){
         if (UndoRedo.getRedo() == 0) {
             mainController.redoButton.setDisable(true);
         } else {
             mainController.redoButton.setDisable(false);
         }
+    }
+
+    public void draw() {
         getChildren().clear();
         drawAxes();
+        checkUndoSize();
+        checkRedoSize();
         if (mainController.gridIsOn) {
             drawGrid();
         }
@@ -431,17 +442,4 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     public BundleDto getTopSelectedBundle() {
         return topSelectedBundle;
     }
-/*
-    private boolean checkIfLiftColliding() {
-        boolean liftIsColliding = false;
-        List<BundleDto> bundlesToCheck = larmanController.getBundles();
-        for (BundleDto bundleDto : bundlesToCheck) {
-            BundlePresenter bundleRectangle = new BundlePresenter(bundleDto);
-            if (GeomHelper.rectangleCollidesRectangle(bundleRectangle, liftPresenter)) {
-                liftIsColliding = true;
-                break;
-            }
-        }
-        return liftIsColliding;
-    }*/
 }

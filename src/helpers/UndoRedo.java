@@ -10,7 +10,7 @@ public class UndoRedo {
     private static Deque<Yard> undo = new ArrayDeque<>();
     private static Deque<Yard> redo = new ArrayDeque<>();
 
-    private static int sizeMax = 20;
+    private static int sizeMax = 50;
 
     private UndoRedo(){}
 

@@ -200,9 +200,9 @@ public class MainController extends BaseController {
     }
 
     private void initTextFieldsHandlers() {
-
         bundleBarcodeValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
+                UndoRedo.add(larmanController.getYard());
                 if (selectedBundle != null) {
                     if (!bundleBarcodeValue.getText().isEmpty()) {
                         selectedBundle.barcode = bundleBarcodeValue.getText();
@@ -590,6 +590,7 @@ public class MainController extends BaseController {
 
     public void handleGridSize(ActionEvent actionEvent) {
         JavafxHelper.popupGrid();
+        yardPresenter.draw();
     }
 
 }

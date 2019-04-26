@@ -55,40 +55,6 @@ public class Yard implements Serializable {
         return bundlesMinZ;
     }
 
-    private List<Bundle> getBundlesWithMaxZ(List<Bundle> bundles, double zMax) {
-        return getBundlesWithMaxZ(bundles, zMax, true);
-    }
-
-    private List<Bundle> getBundlesWithMaxZ(List<Bundle> bundles, double zMax, boolean includeEquals) {
-        List<Bundle> bundlesMaxZ = new ArrayList<>();
-        for (Bundle bundle : bundles) {
-            boolean shouldAdd = includeEquals
-                    ? MathHelper.compareDoubles(bundle.getZ(), zMax) != Comparison.GREATER
-                    : MathHelper.compareDoubles(bundle.getZ(), zMax) == Comparison.SMALLER;
-            if (shouldAdd) {
-                bundlesMaxZ.add(bundle);
-            }
-        }
-        return bundlesMaxZ;
-    }
-
-    private List<Bundle> getBundlesWithMaxTopZ(List<Bundle> bundles, double zMax) {
-        return getBundlesWithMaxTopZ(bundles, zMax, true);
-    }
-
-    private List<Bundle> getBundlesWithMaxTopZ(List<Bundle> bundles, double zMax, boolean includeEquals) {
-        List<Bundle> bundlesMaxTopZ = new ArrayList<>();
-        for (Bundle bundle : bundles) {
-            boolean shouldAdd = includeEquals
-                    ? MathHelper.compareDoubles(bundle.getTopZ(), zMax) != Comparison.GREATER
-                    : MathHelper.compareDoubles(bundle.getTopZ(), zMax) == Comparison.SMALLER;
-            if (shouldAdd) {
-                bundlesMaxTopZ.add(bundle);
-            }
-        }
-        return bundlesMaxTopZ;
-    }
-
     public List<Bundle> getBundles() {
         return new ArrayList<>(this.bundles.values());
     }
@@ -114,9 +80,12 @@ public class Yard implements Serializable {
     }
 
     private void putBundleToTop(Bundle bundle) {
-        List<Bundle> collidingBundles = getCollidingBundles(bundle, null);
-        if (!collidingBundles.isEmpty()) {
-            Bundle higherBundle = Collections.max(collidingBundles, Comparator.comparing(Bundle::getTopZ));
+        putBundleToTop(bundle, getCollidingBundles(bundle, null));
+    }
+
+    private void putBundleToTop(Bundle bundle, List<Bundle> bundlesToPutUnder) {
+        if (!bundlesToPutUnder.isEmpty()) {
+            Bundle higherBundle = Collections.max(bundlesToPutUnder, Comparator.comparing(Bundle::getTopZ));
             bundle.setZ(higherBundle.getTopZ());
         } else {
             bundle.setZ(0);
@@ -171,44 +140,19 @@ public class Yard implements Serializable {
     }
 
     private void adjustBundlesHeightAfterChange(Bundle source, List<Bundle> allTimeCollidingBundles) {
-        System.out.println("*****");
         List<Bundle> bundlesToAdjust = sortBundlesZ(getBundlesWithMinZ(allTimeCollidingBundles, source.getZ()));
-        adjustBundleHeight(source, true);
-        for (Bundle bundle : bundlesToAdjust) {
-            adjustBundleHeight(bundle, false);
+        adjustBundleHeight(source, bundlesToAdjust);
+        Iterator<Bundle> bundlesToAdjustIterator = bundlesToAdjust.iterator();
+        while (bundlesToAdjustIterator.hasNext()) {
+            Bundle bundleToAdjust = bundlesToAdjustIterator.next();
+            bundlesToAdjustIterator.remove();
+            adjustBundleHeight(bundleToAdjust, bundlesToAdjust);
         }
     }
 
-    private void adjustBundleHeight(Bundle bundle, boolean forceLowestZ) {
-        List<Bundle> bundlesToPutUnder = sortBundlesTopZ(getCollidingBundles(bundle, null));
-        bundlesToPutUnder.removeIf(b -> forceLowestZ
-                ? !(b.getZ() < bundle.getZ() && b.getTopZ() < bundle.getTopZ())
-                : !(b.getTopZ() <= bundle.getZ() || b.getZ() <= bundle.getZ() && b.getTopZ() >= bundle.getTopZ())
-        );
-        double newZ = 0;
-        System.out.println("----");
-        System.out.println(bundlesToPutUnder.size() + " force? " + forceLowestZ);
-        if (forceLowestZ && !bundlesToPutUnder.isEmpty()) {
-            newZ = Collections.max(bundlesToPutUnder, Comparator.comparing(Bundle::getTopZ)).getTopZ();
-        } else {
-            for (int i = 0; i < bundlesToPutUnder.size(); i++) {
-                if (i + 1 < bundlesToPutUnder.size()) {
-                    double roof = bundlesToPutUnder.get(i + 1).getZ();
-                    double possibleNewTopZ = bundlesToPutUnder.get(i).getTopZ() + bundle.getHeight();
-                    if (MathHelper.compareDoubles(possibleNewTopZ, roof) != Comparison.GREATER) {
-                        newZ = bundlesToPutUnder.get(i).getTopZ();
-                        System.out.println("breaking at newZ = " + newZ);
-                        break;
-                    } else {
-                        System.out.println("didn't fit, going to next one");
-                    }
-                } else {
-                    newZ = bundlesToPutUnder.get(i).getTopZ();
-                    System.out.println("no next one, others didn't fit, newZ = " + newZ);
-                }
-            }
-        }
-        bundle.setZ(newZ);
+    private void adjustBundleHeight(Bundle bundle, List<Bundle> exceptionList) {
+        List<Bundle> bundlesToPutUnder = getCollidingBundles(bundle, new HashSet<>(exceptionList));
+        putBundleToTop(bundle, bundlesToPutUnder);
     }
 
     public void modifyBundlePosition(String id, Point2D position) {

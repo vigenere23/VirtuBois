@@ -8,6 +8,7 @@ public class LiftDto {
     public double width;
     public double length;
     public double angle;
+    public double height;
     public Point2D position;
     public Rectangle boundaries;
     public double armsWidth;
@@ -18,6 +19,7 @@ public class LiftDto {
     public LiftDto(Lift lift) {
         width = lift.getWidth();
         length = lift.getLength();
+        height = lift.getHeight();
         angle = lift.getAngle();
         position = lift.getPosition();
         boundaries = lift.getBoundaries();

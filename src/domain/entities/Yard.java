@@ -221,17 +221,18 @@ public class Yard implements Serializable {
     }
 
     private boolean checkIfColliding(LiftDto lift, List<Bundle> bundleList) {
-        List<CenteredRectangle> rectangleBundle = new ArrayList<>();
         CenteredRectangle rectangleLift = new CenteredRectangle(lift.position.getX(), lift.position.getY(), lift.width * 1.2, lift.length * 1.2, lift.angle);
         for(Bundle bundles: bundleList){
-            rectangleBundle.add(new CenteredRectangle(bundles.position.getX(), bundles.position.getY(), bundles.width, bundles.length, bundles.angle));
-        }
-        for(CenteredRectangle rectangle: rectangleBundle){
-            if (GeomHelper.rectangleCollidesRectangle(rectangle, rectangleLift)){
-                isColliding = true;
+            double z = bundles.getZ();
+            CenteredRectangle rectangle = new CenteredRectangle(bundles.position.getX(), bundles.position.getY(), bundles.width, bundles.length, bundles.angle);
+            if (GeomHelper.rectangleCollidesRectangle(rectangle, rectangleLift) && z > lift.height) {
+                isColliding = false;
                 break;
             }
-            else {
+            else if (GeomHelper.rectangleCollidesRectangle(rectangle, rectangleLift)){
+                isColliding = true;
+                break;
+            } else {
                 isColliding = false;
             }
         }

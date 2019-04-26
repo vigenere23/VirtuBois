@@ -15,8 +15,6 @@ public class Yard implements Serializable {
     private Map<String, Bundle> bundles;
     public Bundle lastBundleCreated;
     private Lift lift;
-    boolean isColliding = false;
-    String lastMovement = "none";
 
     public Yard() {
         setBundles(new HashMap<>());
@@ -221,66 +219,48 @@ public class Yard implements Serializable {
     }
 
     private boolean checkIfColliding(LiftDto lift, List<Bundle> bundleList) {
-        CenteredRectangle rectangleLift = new CenteredRectangle(lift.position.getX(), lift.position.getY(), lift.width * 1.2, lift.length * 1.2, lift.angle);
+        CenteredRectangle rectangleLift = new CenteredRectangle(lift.position.getX(), lift.position.getY(), lift.width, lift.length, lift.angle);
+        boolean isColliding = false;
+        if(bundleList.isEmpty())
+        {
+            return true;
+        }
         for(Bundle bundles: bundleList){
             double z = bundles.getZ();
             CenteredRectangle rectangle = new CenteredRectangle(bundles.position.getX(), bundles.position.getY(), bundles.width, bundles.length, bundles.angle);
-            if (GeomHelper.rectangleCollidesRectangle(rectangle, rectangleLift) && z > lift.height) {
-                isColliding = false;
-                break;
-            }
-            else if (GeomHelper.rectangleCollidesRectangle(rectangle, rectangleLift)){
+            if (GeomHelper.rectangleCollidesRectangle(rectangle, rectangleLift) && lift.height > z) {
                 isColliding = true;
                 break;
-            } else {
-                isColliding = false;
             }
         }
         return isColliding;
     }
     public void moveLiftForward() {
-        if(!checkIfColliding(new LiftDto(lift), getBundles())){
-            lastMovement = "UP";
-            lift.moveForward();
+        lift.moveForward();
+        if(checkIfColliding(new LiftDto(lift),getBundles())){
+            lift.moveBackward();
         }
-        else if(checkIfColliding(new LiftDto(lift), getBundles()) && !lastMovement.equals("UP")){
-            lift.moveForward();
-        }
+
     }
 
     public void moveLiftBackward() {
-        if(!checkIfColliding(new LiftDto(lift), getBundles())){
-            lastMovement = "DOWN";
-            lift.moveBackward();
-        }
-        else if(checkIfColliding(new LiftDto(lift), getBundles()) && !lastMovement.equals("DOWN")) {
-            lift.moveBackward();
+        lift.moveBackward();
+        if(checkIfColliding(new LiftDto(lift), getBundles())){
+            lift.moveForward();
         }
     }
 
     public void turnLiftRight() {
-        if(!checkIfColliding(new LiftDto(lift), getBundles())){
-            lastMovement = "RIGHT";
-            lift.turnRight();
-        }
-        else if(checkIfColliding(new LiftDto(lift), getBundles()) && !lastMovement.equals("RIGHT")) {
-            lift.turnRight();
-        }
-        else if(checkIfColliding(new LiftDto(lift), getBundles()) && lastMovement.equals("RIGHT")){
+        lift.turnRight();
+        if(checkIfColliding(new LiftDto(lift), getBundles())){
             lift.turnLeft();
         }
     }
 
     public void turnLiftLeft() {
-        if(!checkIfColliding(new LiftDto(lift), getBundles())){
-            lastMovement = "LEFT";
+        lift.turnLeft();
+        if(checkIfColliding(new LiftDto(lift), getBundles())){
             lift.turnLeft();
-        }
-        else if(checkIfColliding(new LiftDto(lift), getBundles()) && !lastMovement.equals("LEFT")) {
-            lift.turnLeft();
-        }
-        else if(checkIfColliding(new LiftDto(lift), getBundles()) && lastMovement.equals("LEFT")){
-            lift.turnRight();
         }
     }
 }

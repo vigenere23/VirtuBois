@@ -19,7 +19,7 @@ public class LiftDto {
     public LiftDto(Lift lift) {
         width = lift.getWidth();
         length = lift.getLength();
-        height = lift.getHeight();
+        height = lift.getliftHeight();
         angle = lift.getAngle();
         position = lift.getPosition();
         boundaries = lift.getBoundaries();

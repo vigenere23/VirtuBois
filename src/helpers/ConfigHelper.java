@@ -28,7 +28,7 @@ public class ConfigHelper {
     public static double armsHeight = 0.0;
     public static final double liftAngleIncrement = 5.0;
     public static final double liftPositionIncrement = 0.2;
-    public static final double liftHeight = 5;
+    public static final double liftHeight = 5.0;
 
     // DRAWING
     public static final double defaultZoom = 50.0;

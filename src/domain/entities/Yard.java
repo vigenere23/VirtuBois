@@ -102,7 +102,11 @@ public class Yard implements Serializable {
 
     public void modifyBundleProperties(BundleDto bundleDto) {
         Bundle bundle = getBundle(bundleDto.id);
-        if (bundle != null) {
+        boolean modifiedBundleCollidesLift = GeomHelper.rectangleCollidesRectangle(
+                new CenteredRectangle(bundleDto),
+                new CenteredRectangle(lift)
+        );
+        if (bundle != null && !modifiedBundleCollidesLift) {
             Set<Bundle> allTimeCollidingBundles = new LinkedHashSet<>(getAllCollidingBundles(bundle, true));
             bundle.setBarcode(bundleDto.barcode);
             bundle.setHeight(MathHelper.round(bundleDto.height, 2));
@@ -146,11 +150,15 @@ public class Yard implements Serializable {
 
     public void modifyBundlePosition(String id, Point2D position) {
         Bundle bundle = getBundle(id);
-        bundle.setPosition(new Point2D(
-            MathHelper.round(position.getX(), 2),
-            MathHelper.round(position.getY(), 2)
-        ));
-        putBundleToTop(bundle);
+        if (bundle != null) {
+            Point2D oldPosition = bundle.getPosition();
+            bundle.setPosition(position);
+            if (liftCollidesBundle(bundle)) {
+                bundle.setPosition(oldPosition);
+            } else {
+                putBundleToTop(bundle);
+            }
+        }
     }
 
     public List<Bundle> getCollidingBundles(Bundle bundleToCheck, Set<Bundle> exceptionList) {

@@ -1,5 +1,6 @@
 package helpers;
 
+import domain.dtos.DrawableDto;
 import domain.entities.Drawable;
 import javafx.scene.shape.Rectangle;
 
@@ -21,6 +22,15 @@ public class CenteredRectangle {
                 drawable.getWidth(),
                 drawable.getLength(),
                 drawable.getAngle()
+        );
+    }
+
+    public CenteredRectangle(DrawableDto drawableDto) {
+        this(
+                drawableDto.position,
+                drawableDto.width,
+                drawableDto.length,
+                drawableDto.angle
         );
     }
 

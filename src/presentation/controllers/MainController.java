@@ -213,7 +213,7 @@ public class MainController extends BaseController {
 
     private void initLiftInfo() {
         armsHeightValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsHeight()));
-        liftHeightValue.setText(String.valueOf(larmanController.getYard().getLift().getliftHeight()));
+        liftHeightValue.setText(String.valueOf(larmanController.getYard().getLift().getHeight()));
         armsXValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsPosition().getX()));
         armsYValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsPosition().getY()));
         liftXValue.setText(String.valueOf(larmanController.getYard().getLift().getPosition().getX()));

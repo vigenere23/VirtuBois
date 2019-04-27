@@ -41,7 +41,6 @@ public class MainController extends BaseController {
     private ElevationViewPresenter3D elevationViewPresenter3D;
     private YardPresenter yardPresenter;
 
-    //private Map<Rectangle, BundleDto> rectanglesId = new HashMap<>();
     private List<BundleDto> observableBundleList;
     private BundleDto selectedBundle;
 
@@ -49,13 +48,7 @@ public class MainController extends BaseController {
     Pane root;
     @FXML
     Pane yardWrapper;
-    @FXML
-    Pane elevationViewWrapper;
 
-    @FXML
-    public Button FOVButton;
-    @FXML
-    public ImageView FOVImage;
     @FXML
     public Button undoButton;
     @FXML
@@ -630,18 +623,6 @@ public class MainController extends BaseController {
         JavafxHelper.popupView("About", "À propos", false, false);
     }
 
-    public void handleFOVButton(ActionEvent actionEvent) {
-        if (elevationViewMode == 'x') {
-            FOVImage.setRotate(-90);
-            elevationViewMode = 'y';
-            //elevationViewPresenter.draw();
-        } else if (elevationViewMode == 'y') {
-            FOVImage.setRotate(0);
-            elevationViewMode = 'x';
-            //elevationViewPresenter.draw();
-        }
-    }
-
     public void handleExport3D() {
         if (!larmanController.getBundles().isEmpty()) {
             FileHelper.saveSTLFile(stage, larmanController.getBundles());
@@ -649,13 +630,25 @@ public class MainController extends BaseController {
     }
 
     public void handleUndoButton(ActionEvent actionEvent) {
-        larmanController.setYard(UndoRedo.undo());
-        yardPresenter.draw();
+        try {
+            larmanController.setYard(UndoRedo.undo());
+            yardPresenter.updateSelectedBundles();
+            yardPresenter.draw();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleRedoButton(ActionEvent actionEvent) {
-        larmanController.setYard(UndoRedo.redo());
-        yardPresenter.draw();
+        try {
+            larmanController.setYard(UndoRedo.redo());
+            yardPresenter.updateSelectedBundles();
+            yardPresenter.draw();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleGridSize(ActionEvent actionEvent) {

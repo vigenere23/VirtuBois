@@ -6,8 +6,8 @@ import domain.entities.Bundle;
 import domain.entities.Yard;
 import helpers.Converter;
 import helpers.Point2D;
+import helpers.UndoRedo;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -36,22 +36,12 @@ public class LarmanController {
     }
 
     public BundleDto createBundle(Point2D position) {
+        UndoRedo.addCurrentYard();
         return new BundleDto(yard.createBundle(position));
     }
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));
-        return bundles;
-    }
-
-    public List<BundleDto> sortBundlesY(List<BundleDto> bundles) {
-        bundles.sort(Comparator.comparing(BundleDto::getY));
-        Collections.reverse(bundles);
-        return bundles;
-    }
-
-    public List<BundleDto> sortBundlesX(List<BundleDto> bundles) {
-        bundles.sort(Comparator.comparing(BundleDto::getX));
         return bundles;
     }
 
@@ -61,7 +51,7 @@ public class LarmanController {
 
     public List<BundleDto> getBundlesSortedZ() {
         return Converter.fromBundlesToBundleDtos(
-                sortBundlesZ(yard.getBundles())
+            sortBundlesZ(yard.getBundles())
         );
     }
 
@@ -72,7 +62,7 @@ public class LarmanController {
     public List<BundleDto> getSelectedBundles(Point2D position) {
         List<Bundle> bundles = yard.getBundlesAtPosition(position);
         return Converter.fromBundlesToBundleDtos(
-                sortBundlesZ(bundles)
+            sortBundlesZ(bundles)
         );
     }
 
@@ -81,6 +71,7 @@ public class LarmanController {
     }
 
     public void modifyBundleProperties(BundleDto bundleDto) {
+        UndoRedo.addCurrentYard();
         yard.modifyBundleProperties(bundleDto);
     }
 
@@ -93,6 +84,7 @@ public class LarmanController {
     }
 
     public void deleteBundle(String id) {
+        UndoRedo.addCurrentYard();
         yard.deleteBundle(id);
     }
 
@@ -100,7 +92,7 @@ public class LarmanController {
         Bundle bundleToCheck = yard.getBundle(bundleDtoToCheck.id);
         if (bundleToCheck != null) {
             return Converter.fromBundlesToBundleDtos(
-                    yard.getCollidingBundles(bundleToCheck, null)
+                yard.getCollidingBundles(bundleToCheck, null)
             );
         }
         return null;
@@ -117,9 +109,13 @@ public class LarmanController {
         }
     }
 
-    public void riseArms() {yard.riseArms();}
+    public void riseArms() {
+        yard.riseArms();
+    }
 
-    public void lowerArms() {yard.lowerArms();}
+    public void lowerArms() {
+        yard.lowerArms();
+    }
 
     public void moveLiftForward() {
         yard.moveLiftForward();

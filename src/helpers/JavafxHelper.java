@@ -1,6 +1,5 @@
 package helpers;
 
-import domain.dtos.BundleDto;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import presentation.Main;
-import presentation.controllers.BundleEditorController;
 import presentation.controllers.IController;
 
 public class JavafxHelper {
@@ -61,15 +59,6 @@ public class JavafxHelper {
 
     public static void quitApplication() {
         Platform.exit();
-    }
-
-    public static void popupBundleEditorView(BundleDto bundleToEditDto) {
-        Stage stage = new Stage();
-        IController controller = setupScene(stage, "BundleEditor");
-        if (controller instanceof BundleEditorController) {
-            ((BundleEditorController) controller).setBundleDto(bundleToEditDto);
-        }
-        setupStage(stage, "Éditer un paquet", false, true);
     }
 
     public static void popupGrid() {

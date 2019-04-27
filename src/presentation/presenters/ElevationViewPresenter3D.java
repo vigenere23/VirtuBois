@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -231,12 +232,22 @@ public class ElevationViewPresenter3D implements IPresenter {
         } else {
             camera.translateZProperty().set(-cameraTranslateY);
         }
-        Rectangle rectangle = new Rectangle(-10.0, -10.0, 20.0, 20.0);
-        rectangle.setRotationAxis(new Point3D(1.0, 0.0, 0.0));
-        rectangle.setRotate(90);
-        rectangle.setTranslateY(1);
-        rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/presentation/assets/images/bois.jpg"))));
-        group.getChildren().add(rectangle);
+        ImageView imageView = new ImageView();
+        Image image = new Image("/presentation/assets/images/asphalte.jpg");
+        imageView.setImage(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(100);
+        imageView.setFitHeight(100);
+        imageView.setSmooth(true);
+        imageView.setCache(true);
+        imageView.setTranslateX(-50);
+        imageView.setTranslateY(-49);
+        imageView.setTranslateZ(0);
+        imageView.setScaleX(0.25);
+        imageView.setScaleY(0.25);
+        imageView.setRotationAxis(new Point3D(1.0, 0.0, 0.0));
+        imageView.setRotate(-90);
+        group.getChildren().add(imageView);
 
     }
 }

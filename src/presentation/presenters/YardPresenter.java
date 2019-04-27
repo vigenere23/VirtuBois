@@ -202,12 +202,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         mousePositionLabel.setText(text);
     }
 
-    private void showBundleEditorWindow(BundleDto bundleDto) {
-        JavafxHelper.popupBundleEditorView(bundleDto); // BLOCKING!!!
-        larmanController.modifyBundleProperties(bundleDto);
-        draw();
-    }
-
     private void handleZoom(double delta, Point2D position) {
         Point2D panningVector = position.substract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
         if (delta > 0) {
@@ -268,11 +262,9 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         UndoRedo.add(larmanController.getYard());
         if (mainController.gridIsOn) {
             BundleDto createdBundle = larmanController.createBundle(positionInGrid(mousePositionInRealCoords));
-            showBundleEditorWindow(createdBundle);
             selectBundle(createdBundle);
         } else {
             BundleDto createdBundle = larmanController.createBundle(mousePositionInRealCoords);
-            showBundleEditorWindow(createdBundle);
             selectBundle(createdBundle);
         }
         draw();

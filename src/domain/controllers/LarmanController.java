@@ -117,6 +117,8 @@ public class LarmanController {
         yard.lowerArms();
     }
 
+    public void moveLiftToBundle() {yard.moveLiftToBundle();}
+
     public void moveLiftForward() {
         yard.moveLiftForward();
     }

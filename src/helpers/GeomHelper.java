@@ -1,5 +1,7 @@
 package helpers;
 
+import javafx.scene.shape.Line;
+
 import java.awt.geom.Line2D;
 import java.util.List;
 
@@ -54,6 +56,10 @@ public class GeomHelper {
                 line2end.getX(), line2end.getY()
         );
     }
+//
+//    public static boolean lineIntersectsRectangle(Line line, CenteredRectangle rectangle){
+//
+//    }
 
     public static Point2D invertY(Point2D point) {
         return new Point2D(point.getX(), -point.getY());

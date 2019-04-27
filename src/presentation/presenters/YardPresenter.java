@@ -182,18 +182,22 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         }
         if (event.getCode().equals(KeyCode.W) && event.isControlDown()) {
             updateLiftInfo();
-            if (event.getCode().equals(KeyCode.W) && event.isControlDown()) {
-                UndoRedo.addCurrentYard();
-                larmanController.riseArms();
-                draw();
-                event.consume();
-            }
-            if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
-                larmanController.lowerArms();
-                updateLiftInfo();
-                draw();
-                event.consume();
-            }
+            UndoRedo.addCurrentYard();
+            larmanController.riseArms();
+            draw();
+            event.consume();
+        }
+        if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
+            larmanController.lowerArms();
+            updateLiftInfo();
+            draw();
+            event.consume();
+        }
+        if (event.getCode().equals((KeyCode.UP)) && event.isControlDown()) {
+            larmanController.moveLiftToBundle();
+            updateLiftInfo();
+            draw();
+            event.consume();
         }
     }
 

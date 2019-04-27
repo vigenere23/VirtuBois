@@ -4,7 +4,10 @@ import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
 import enums.Comparison;
 import helpers.*;
+import javafx.scene.shape.Line;
 
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.*;
 
@@ -118,6 +121,7 @@ public class Yard implements Serializable {
         if (lift != null){
             lift.setArmsHeight(liftDto.armsHeight);
             lift.setPosition(new Point2D(liftDto.position.getX(), liftDto.position.getY()));
+            lift.setAngle(liftDto.angle);
             lift.repositionArms();
         }
     }
@@ -228,6 +232,10 @@ public class Yard implements Serializable {
         }
     }
 
+    public void moveLiftToBundle() {
+        Line2D line = new Line2D.Double(lift.position.getX()* (Math.cos(lift.angle - 90)), lift.position.getY() * lift.angle, Math.cos(lift.angle) + 10000, Math.sin(lift.angle) + 10000);{
+        }
+    }
     public void turnLiftRight() {
         lift.turnRight();
         if (checkIfColliding(new LiftDto(lift), getBundles())) {

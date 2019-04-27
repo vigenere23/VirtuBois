@@ -27,6 +27,7 @@ import javafx.scene.paint.Color;
 import presentation.presenters.ElevationViewPresenter3D;
 import presentation.presenters.YardPresenter;
 
+import javax.sound.sampled.Line;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -110,6 +111,8 @@ public class MainController extends BaseController {
     public TextField liftXValue;
     @FXML
     public TextField liftYValue;
+    @FXML
+    public TextField liftAngleValue;
 
     @FXML
     public ToggleButton pointerButton;
@@ -215,10 +218,21 @@ public class MainController extends BaseController {
         armsYValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsPosition().getY()));
         liftXValue.setText(String.valueOf(larmanController.getYard().getLift().getPosition().getX()));
         liftYValue.setText(String.valueOf(larmanController.getYard().getLift().getPosition().getY()));
+        liftAngleValue.setText(String.valueOf(larmanController.getYard().getLift().getAngle()));
         initTextFieldsHandlers();
     }
 
     private void initTextFieldsHandlers() {
+        liftAngleValue.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                if(!liftAngleValue.getText().isEmpty()){
+                    LiftDto liftDto = new LiftDto(larmanController.getYard().getLift());
+                    liftDto.angle = Double.parseDouble(liftAngleValue.getText());
+                    larmanController.modifyLiftProperties(liftDto);
+                    yardPresenter.draw();
+                }
+            }
+        });
         armsHeightValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(!armsHeightValue.getText().isEmpty()) {
@@ -530,11 +544,7 @@ public class MainController extends BaseController {
         bundleAngleValue.clear();
 
     }
-//
-//    public void updateLiftInfo(LiftDto lift){
-//        this.liftDto = lift;
-//        armsHeightValue.setText(String.valueOf(lift.armsHeight));
-//    }
+
 
     public void updateLiftInfo(LiftDto liftDto){
         armsXValue.setText(String.valueOf(liftDto.armsPosition.getX()));
@@ -542,6 +552,7 @@ public class MainController extends BaseController {
         liftXValue.setText(String.valueOf(liftDto.position.getX()));
         liftYValue.setText(String.valueOf(liftDto.position.getY()));
         armsHeightValue.setText(String.valueOf(liftDto.armsHeight));
+        liftAngleValue.setText(String.valueOf(liftDto.angle));
 
     }
     public void updateBundleInfo(BundleDto bundle) {

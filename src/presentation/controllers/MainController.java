@@ -202,7 +202,6 @@ public class MainController extends BaseController {
     private void initTextFieldsHandlers() {
         bundleBarcodeValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                UndoRedo.add(larmanController.getYard());
                 if (selectedBundle != null) {
                     if (!bundleBarcodeValue.getText().isEmpty()) {
                         selectedBundle.barcode = bundleBarcodeValue.getText();
@@ -580,11 +579,13 @@ public class MainController extends BaseController {
 
     public void handleUndoButton(ActionEvent actionEvent) {
         larmanController.setYard(UndoRedo.undo());
+        yardPresenter.updateSelectedBundles();
         yardPresenter.draw();
     }
 
     public void handleRedoButton(ActionEvent actionEvent) {
         larmanController.setYard(UndoRedo.redo());
+        yardPresenter.updateSelectedBundles();
         yardPresenter.draw();
     }
 

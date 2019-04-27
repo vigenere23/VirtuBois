@@ -12,21 +12,21 @@ public class UndoRedo {
 
     private static int sizeMax = 50;
 
-    private UndoRedo(){}
+    private UndoRedo() {}
 
-    public static void add(Yard yard) {
+    public static void addCurrentYard() {
         if (sizeMax > 0) {
-            if(undo.size() == sizeMax) {
+            if (undo.size() == sizeMax) {
                 undo.removeLast();
             }
-            Yard prevYard = new Yard(yard);
+            Yard prevYard = new Yard(LarmanController.getInstance().getYard());
             undo.push(prevYard);
             redo.clear();
         }
     }
 
     public static Yard undo() {
-        if(!undo.isEmpty()) {
+        if (!undo.isEmpty()) {
             Yard yard = undo.pop();
             redo.push(new Yard(LarmanController.getInstance().getYard()));
             return yard;
@@ -44,7 +44,7 @@ public class UndoRedo {
     }
 
     public static Yard redo() {
-        if(!redo.isEmpty()) {
+        if (!redo.isEmpty()) {
             Yard yard = redo.pop();
             undo.push(new Yard(LarmanController.getInstance().getYard()));
             return yard;

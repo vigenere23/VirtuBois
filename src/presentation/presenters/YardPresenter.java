@@ -299,9 +299,11 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private void selectBundle(BundleDto bundleDto) {
-        mainController.editorMode.setValue(EditorMode.POINTER);
-        mousePositionInRealCoords = bundleDto.position;
-        updateSelectedBundles();
+        if (bundleDto != null) {
+            mainController.editorMode.setValue(EditorMode.POINTER);
+            mousePositionInRealCoords = bundleDto.position;
+            updateSelectedBundles();
+        }
     }
 
     private void deleteBundle(String id) {

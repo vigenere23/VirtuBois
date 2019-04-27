@@ -36,8 +36,12 @@ public class LarmanController {
     }
 
     public BundleDto createBundle(Point2D position) {
-        UndoRedo.addCurrentYard();
-        return new BundleDto(yard.createBundle(position));
+        Bundle bundle = yard.createBundle(position);
+        if (bundle != null) {
+            return new BundleDto(bundle);
+        } else {
+            return null;
+        }
     }
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {

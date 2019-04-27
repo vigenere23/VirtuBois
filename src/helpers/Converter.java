@@ -2,6 +2,7 @@ package helpers;
 
 import domain.dtos.BundleDto;
 import domain.entities.Bundle;
+import domain.entities.Lift;
 import presentation.presenters.BundlePresenter;
 
 import java.util.ArrayList;
@@ -15,15 +16,6 @@ public class Converter {
             dtos.add(new BundleDto(bundle));
         }
         return dtos;
-    }
-
-    public static CenteredRectangle fromBundleToCenteredRectangle(Bundle bundle) {
-        return new CenteredRectangle(
-                bundle.getPosition(),
-                bundle.getWidth(),
-                bundle.getLength(),
-                bundle.getAngle()
-        );
     }
 
     public static List<BundlePresenter> fromBundleDtosToBundlePresenters(List<BundleDto> bundleDtos) {

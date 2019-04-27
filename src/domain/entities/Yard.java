@@ -4,10 +4,8 @@ import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
 import enums.Comparison;
 import helpers.*;
-import javafx.scene.shape.Line;
 
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.*;
 
@@ -53,9 +51,14 @@ public class Yard implements Serializable {
 
     public Bundle createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);
-        putBundleToTop(bundle);
-        bundles.put(bundle.getId(), bundle);
-        return bundle;
+        if (!liftCollidesBundle(bundle)) {
+            UndoRedo.addCurrentYard();
+            bundles.put(bundle.getId(), bundle);
+            putBundleToTop(bundle);
+            return bundle;
+        } else {
+            return null;
+        }
     }
 
     private void putBundleToTop(Bundle bundle) {
@@ -78,8 +81,7 @@ public class Yard implements Serializable {
     public List<Bundle> getBundlesAtPosition(Point2D position) {
         List<Bundle> selectedBundles = new ArrayList<>();
         for (Bundle bundle : new ArrayList<>(bundles.values())) {
-            CenteredRectangle rectangle = Converter.fromBundleToCenteredRectangle(bundle);
-            if (GeomHelper.pointIsInsideRectangle(position, rectangle)) {
+            if (GeomHelper.pointIsInsideRectangle(position, new CenteredRectangle(bundle))) {
                 selectedBundles.add(bundle);
             }
         }
@@ -100,7 +102,11 @@ public class Yard implements Serializable {
 
     public void modifyBundleProperties(BundleDto bundleDto) {
         Bundle bundle = getBundle(bundleDto.id);
-        if (bundle != null) {
+        boolean modifiedBundleCollidesLift = GeomHelper.rectangleCollidesRectangle(
+                new CenteredRectangle(bundleDto),
+                new CenteredRectangle(lift)
+        );
+        if (bundle != null && !modifiedBundleCollidesLift) {
             Set<Bundle> allTimeCollidingBundles = new LinkedHashSet<>(getAllCollidingBundles(bundle, true));
             bundle.setBarcode(bundleDto.barcode);
             bundle.setHeight(MathHelper.round(bundleDto.height, 2));
@@ -118,7 +124,7 @@ public class Yard implements Serializable {
     }
 
     public void modifyLiftProperties(LiftDto liftDto) {
-        if (lift != null){
+        if (lift != null) {
             lift.setArmsHeight(liftDto.armsHeight);
             lift.setPosition(new Point2D(liftDto.position.getX(), liftDto.position.getY()));
             lift.setAngle(liftDto.angle);
@@ -143,11 +149,15 @@ public class Yard implements Serializable {
 
     public void modifyBundlePosition(String id, Point2D position) {
         Bundle bundle = getBundle(id);
-        bundle.setPosition(new Point2D(
-            MathHelper.round(position.getX(), 2),
-            MathHelper.round(position.getY(), 2)
-        ));
-        putBundleToTop(bundle);
+        if (bundle != null) {
+            Point2D oldPosition = bundle.getPosition();
+            bundle.setPosition(position);
+            if (liftCollidesBundle(bundle)) {
+                bundle.setPosition(oldPosition);
+            } else {
+                putBundleToTop(bundle);
+            }
+        }
     }
 
     public List<Bundle> getCollidingBundles(Bundle bundleToCheck, Set<Bundle> exceptionList) {
@@ -158,8 +168,8 @@ public class Yard implements Serializable {
                     continue;
                 }
                 boolean bundleCollides = GeomHelper.rectangleCollidesRectangle(
-                    Converter.fromBundleToCenteredRectangle(bundle),
-                    Converter.fromBundleToCenteredRectangle(bundleToCheck)
+                    new CenteredRectangle(bundle),
+                    new CenteredRectangle(bundleToCheck)
                 );
                 if (bundleCollides) {
                     collidingBundles.add(bundle);
@@ -199,34 +209,36 @@ public class Yard implements Serializable {
         return getAllCollidingBundles(getBundle(bundleToCheck.id), false);
     }
 
-    private boolean checkIfColliding(LiftDto lift, List<Bundle> bundleList) {
-        CenteredRectangle rectangleLift = new CenteredRectangle(lift.position.getX(), lift.position.getY(), lift.width, lift.length, lift.angle);
-        boolean isColliding = false;
-        if (bundleList.isEmpty()) {
-            return false;
-        }
-        for (Bundle bundles : bundleList) {
-            double z = bundles.getZ();
-            CenteredRectangle rectangle = new CenteredRectangle(bundles.position.getX(), bundles.position.getY(), bundles.width, bundles.length, bundles.angle);
-            if (GeomHelper.rectangleCollidesRectangle(rectangle, rectangleLift) && lift.height > z) {
-                isColliding = true;
-                break;
+    private boolean liftCollidesAnyBundle() {
+        return liftCollidesAnyBundle(getBundles());
+    }
+
+    private boolean liftCollidesAnyBundle(List<Bundle> bundles) {
+        for (Bundle bundle : bundles) {
+            if (liftCollidesBundle(bundle) && lift.getHeight() > bundle.getZ()) {
+                return true;
             }
         }
-        return isColliding;
+        return false;
+    }
+
+    private boolean liftCollidesBundle(Bundle bundle) {
+        return GeomHelper.rectangleCollidesRectangle(
+                new CenteredRectangle(bundle),
+                new CenteredRectangle(lift)
+        );
     }
 
     public void moveLiftForward() {
         lift.moveForward();
-        if (checkIfColliding(new LiftDto(lift), getBundles())) {
+        if (liftCollidesAnyBundle()) {
             lift.moveBackward();
         }
-
     }
 
     public void moveLiftBackward() {
         lift.moveBackward();
-        if (checkIfColliding(new LiftDto(lift), getBundles())) {
+        if (liftCollidesAnyBundle()) {
             lift.moveForward();
         }
     }
@@ -247,14 +259,14 @@ public class Yard implements Serializable {
     }
     public void turnLiftRight() {
         lift.turnRight();
-        if (checkIfColliding(new LiftDto(lift), getBundles())) {
+        if (liftCollidesAnyBundle()) {
             lift.turnLeft();
         }
     }
 
     public void turnLiftLeft() {
         lift.turnLeft();
-        if (checkIfColliding(new LiftDto(lift), getBundles())) {
+        if (liftCollidesAnyBundle()) {
             lift.turnRight();
         }
     }

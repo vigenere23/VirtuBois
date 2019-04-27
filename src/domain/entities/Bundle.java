@@ -81,6 +81,14 @@ public class Bundle extends Drawable3D implements Serializable
         ConfigHelper.bundleAngle = this.angle;
     }
 
+    @Override
+    public void setPosition(Point2D position) {
+        super.setPosition(new Point2D(
+                MathHelper.round(position.getX(), 2),
+                MathHelper.round(position.getY(), 2)
+        ));
+    }
+
     public String getEssence()
     {
         return essence;

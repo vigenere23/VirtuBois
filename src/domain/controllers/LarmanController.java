@@ -8,7 +8,6 @@ import helpers.Converter;
 import helpers.Point2D;
 import helpers.UndoRedo;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -43,17 +42,6 @@ public class LarmanController {
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));
-        return bundles;
-    }
-
-    public List<BundleDto> sortBundlesY(List<BundleDto> bundles) {
-        bundles.sort(Comparator.comparing(BundleDto::getY));
-        Collections.reverse(bundles);
-        return bundles;
-    }
-
-    public List<BundleDto> sortBundlesX(List<BundleDto> bundles) {
-        bundles.sort(Comparator.comparing(BundleDto::getX));
         return bundles;
     }
 

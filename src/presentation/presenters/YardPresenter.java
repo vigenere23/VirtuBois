@@ -113,7 +113,10 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         } else {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (canDrag) {
-                    shouldUpdate = true;
+                    if (!shouldUpdate) {
+                        shouldUpdate = true;
+                        UndoRedo.addCurrentYard();
+                    }
                     Point2D newBundlePosition = mainController.gridIsOn
                         ? positionInGrid(mousePositionInRealCoords)
                         : mousePositionInRealCoords.substract(selectionOffsetVector);
@@ -133,7 +136,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         } else {
             if (shouldUpdate) {
                 updateSelectedBundles();
-                UndoRedo.addCurrentYard();
+                shouldUpdate = false;
             }
             canDrag = false;
             draw();
@@ -304,7 +307,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private void checkUndoSize() {
-        if (UndoRedo.getUndo() == 0) {
+        if (UndoRedo.getUndoSize() == 0) {
             mainController.undoButton.setDisable(true);
         } else {
             mainController.undoButton.setDisable(false);
@@ -312,7 +315,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private void checkRedoSize() {
-        if (UndoRedo.getRedo() == 0) {
+        if (UndoRedo.getRedoSize() == 0) {
             mainController.redoButton.setDisable(true);
         } else {
             mainController.redoButton.setDisable(false);

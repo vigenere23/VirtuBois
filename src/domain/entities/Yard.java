@@ -14,27 +14,12 @@ public class Yard implements Serializable {
     private Lift lift;
 
     public Yard() {
-        setBundles(new HashMap<>());
-        setLift(new Point2D(0, 0));
-    }
-
-    public Yard(Map<String, Bundle> bundles) {
-        setBundles(bundles);
-        setLift(lift.position);
-    }
-
-    public Yard(Yard newYard) {
-        this.bundles = new HashMap<>(newYard.getBundlesMap());
-        setLiftAngle(newYard.getLift().getPosition(), newYard.getLift().getAngle());
+        this.bundles = new HashMap<>();
+        this.lift = new Lift(new Point2D(0, 0));
     }
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));
-        return bundles;
-    }
-
-    private List<Bundle> sortBundlesTopZ(List<Bundle> bundles) {
-        bundles.sort(Comparator.comparing(Bundle::getTopZ));
         return bundles;
     }
 
@@ -59,24 +44,8 @@ public class Yard implements Serializable {
         return new ArrayList<>(this.bundles.values());
     }
 
-    public Map<String, Bundle> getBundlesMap() {
-        return bundles;
-    }
-
-    public void setBundles(Map<String, Bundle> bundles) {
-        this.bundles = bundles;
-    }
-
     public Lift getLift() {
         return lift;
-    }
-
-    public void setLift(Point2D position) {
-        this.lift = new Lift(position);
-    }
-
-    public void setLiftAngle(Point2D position, double angle) {
-        this.lift = new Lift(position, angle);
     }
 
     public Bundle createBundle(Point2D position) {
@@ -261,7 +230,7 @@ public class Yard implements Serializable {
     public void turnLiftLeft() {
         lift.turnLeft();
         if (checkIfColliding(new LiftDto(lift), getBundles())) {
-            lift.turnLeft();
+            lift.turnRight();
         }
     }
 

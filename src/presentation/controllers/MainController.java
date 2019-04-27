@@ -236,7 +236,7 @@ public class MainController extends BaseController {
         armsHeightValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(!armsHeightValue.getText().isEmpty()) {
-                    LiftDto liftDto = new LiftDto(larmanController.getYard().getLift());
+                    LiftDto liftDto = larmanController.getLift();
                     liftDto.armsHeight = Double.parseDouble(armsHeightValue.getText());
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
@@ -247,8 +247,8 @@ public class MainController extends BaseController {
         liftYValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(!liftYValue.getText().isEmpty()) {
-                    LiftDto liftDto = new LiftDto(larmanController.getYard().getLift());
-                    liftDto.position = new Point2D(liftDto.position.getX(), Double.parseDouble(liftYValue.getText()));
+                    LiftDto liftDto = larmanController.getLift();
+                    liftDto.position.setY(Double.parseDouble(liftYValue.getText()));
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }
@@ -258,8 +258,8 @@ public class MainController extends BaseController {
         liftXValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(!liftXValue.getText().isEmpty()) {
-                    LiftDto liftDto = new LiftDto(larmanController.getYard().getLift());
-                    liftDto.position = new Point2D(Double.parseDouble(liftXValue.getText()), liftDto.position.getY());
+                    LiftDto liftDto = larmanController.getLift();
+                    liftDto.position.setX(Double.parseDouble(liftXValue.getText()));
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }

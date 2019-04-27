@@ -2,6 +2,7 @@ package helpers;
 
 import javafx.scene.shape.Line;
 
+import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.List;
 
@@ -56,10 +57,17 @@ public class GeomHelper {
                 line2end.getX(), line2end.getY()
         );
     }
-//
-//    public static boolean lineIntersectsRectangle(Line line, CenteredRectangle rectangle){
-//
-//    }
+
+    public static boolean lineIntersectsRectangle(Point2D point1, Point2D point2, CenteredRectangle rectangle){
+        boolean collides = false;
+        List<Point2D> pointsRect = rectangle.getPoints();
+        for(int i = 0; i < pointsRect.size();i++){
+            if(lineIntersectsOtherLine(point1, point2, pointsRect.get(i), pointsRect.get((i + 1) % pointsRect.size()))){
+                collides = true;
+            }
+        }
+        return collides;
+    }
 
     public static Point2D invertY(Point2D point) {
         return new Point2D(point.getX(), -point.getY());

@@ -122,7 +122,6 @@ public class Yard implements Serializable {
             lift.setArmsHeight(liftDto.armsHeight);
             lift.setPosition(new Point2D(liftDto.position.getX(), liftDto.position.getY()));
             lift.setAngle(liftDto.angle);
-            lift.repositionArms();
         }
     }
 
@@ -233,7 +232,17 @@ public class Yard implements Serializable {
     }
 
     public void moveLiftToBundle() {
-        Line2D line = new Line2D.Double(lift.position.getX()* (Math.cos(lift.angle - 90)), lift.position.getY() * lift.angle, Math.cos(lift.angle) + 10000, Math.sin(lift.angle) + 10000);{
+        Point2D point1 = new Point2D(lift.position.getX(), lift.position.getY());
+        Point2D point2 = new Point2D(lift.position.getX() + 100000 * Math.cos(Math.toRadians(-(lift.angle) +90 )), lift.position.getY() + 100000 * Math.sin(Math.toRadians(-lift.angle+ 90)));
+        System.out.println(point1.getX());
+        System.out.println(point2.getX());
+        List<Bundle> listBundles = getBundles();
+        for (Bundle bundles : listBundles) {
+            double z = bundles.getZ();
+            CenteredRectangle rectangle = new CenteredRectangle(bundles.position.getX(), bundles.position.getY(), bundles.width, bundles.length, bundles.angle);
+            if (GeomHelper.lineIntersectsRectangle(point1, point2, rectangle) && lift.height > z) {
+                lift.setPosition(bundles.position);
+            }
         }
     }
     public void turnLiftRight() {

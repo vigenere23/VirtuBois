@@ -86,8 +86,8 @@ public class GeomHelper {
     }
 
     public static Point2D getRotatedVector(Point2D point, double angle) {
-        double x = point.getX() * Math.cos(Math.toRadians(angle));
-        double y = point.getX() * Math.sin(Math.toRadians(angle));
+        double x = MathHelper.round(point.getX() * Math.cos(Math.toRadians(angle)),2);
+        double y = MathHelper.round(point.getY() * Math.sin(Math.toRadians(angle)),2);
         return new Point2D(x, y);
     }
 

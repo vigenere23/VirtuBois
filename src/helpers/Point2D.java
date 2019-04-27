@@ -39,7 +39,7 @@ public class Point2D implements Serializable {
     }
 
     public Point2D add(Point2D point) {
-        return new Point2D(x + point.getX(), y + point.getY());
+        return new Point2D(MathHelper.round(x + point.getX(),2), MathHelper.round(y + point.getY(),2));
     }
 
     public Point2D substract(Point2D point) {

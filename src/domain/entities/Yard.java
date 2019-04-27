@@ -7,6 +7,7 @@ import helpers.*;
 
 import java.awt.geom.Line2D;
 import java.io.Serializable;
+import java.math.MathContext;
 import java.util.*;
 
 public class Yard implements Serializable {
@@ -125,9 +126,9 @@ public class Yard implements Serializable {
 
     public void modifyLiftProperties(LiftDto liftDto) {
         if (lift != null) {
-            lift.setArmsHeight(liftDto.armsHeight);
+            lift.setArmsHeight(MathHelper.round(liftDto.armsHeight,2));
             lift.setPosition(new Point2D(liftDto.position.getX(), liftDto.position.getY()));
-            lift.setAngle(liftDto.angle);
+            lift.setAngle(MathHelper.round(liftDto.angle,2));
         }
     }
 

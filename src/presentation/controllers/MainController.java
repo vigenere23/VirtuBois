@@ -212,6 +212,10 @@ public class MainController extends BaseController {
     }
 
     private void initLiftInfo() {
+        JavafxHelper.addStringToDoubleConverter(armsHeightValue, null, 0.0, null);
+        JavafxHelper.addStringToDoubleConverter(liftXValue, 0.0, null, null);
+        JavafxHelper.addStringToDoubleConverter(liftYValue, 0.0, null,null);
+        JavafxHelper.addStringToDoubleConverter(liftAngleValue, 0.0, 0.0,359.0);
         armsHeightValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsHeight()));
         liftHeightValue.setText(String.valueOf(larmanController.getYard().getLift().getHeight()));
         armsXValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsPosition().getX()));
@@ -219,52 +223,60 @@ public class MainController extends BaseController {
         liftXValue.setText(String.valueOf(larmanController.getYard().getLift().getPosition().getX()));
         liftYValue.setText(String.valueOf(larmanController.getYard().getLift().getPosition().getY()));
         liftAngleValue.setText(String.valueOf(larmanController.getYard().getLift().getAngle()));
-        initTextFieldsHandlers();
+        initLiftTextFieldsHandlers();
     }
-
-    private void initTextFieldsHandlers() {
+    private void initLiftTextFieldsHandlers(){
         liftAngleValue.setOnKeyPressed(event -> {
             if(event.getCode().equals(KeyCode.ENTER)){
-                if(!liftAngleValue.getText().isEmpty()){
+                if(!liftAngleValue.getText().isEmpty() && !liftAngleValue.getText().equals("-") && !liftAngleValue.getText().equals(".") && !liftAngleValue.getText().equals("-.")){
                     LiftDto liftDto = new LiftDto(larmanController.getYard().getLift());
                     liftDto.angle = Double.parseDouble(liftAngleValue.getText());
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }
+                updateLiftInfo(larmanController.getLift());
             }
         });
         armsHeightValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!armsHeightValue.getText().isEmpty()) {
+                if(!armsHeightValue.getText().isEmpty() && !armsHeightValue.getText().equals("-") && !armsHeightValue.getText().equals(".") && !armsHeightValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
                     liftDto.armsHeight = Double.parseDouble(armsHeightValue.getText());
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }
+                updateLiftInfo(larmanController.getLift());
             }
         });
 
         liftYValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!liftYValue.getText().isEmpty()) {
+                if(!liftYValue.getText().isEmpty() && !liftYValue.getText().equals("-") && !liftYValue.getText().equals(".") && !liftYValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
                     liftDto.position.setY(Double.parseDouble(liftYValue.getText()));
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }
+                updateLiftInfo(larmanController.getLift());
             }
         });
 
         liftXValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!liftXValue.getText().isEmpty()) {
+                if(!liftXValue.getText().isEmpty() && !liftXValue.getText().equals("-") && !liftXValue.getText().equals(".") && !liftXValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
-                    liftDto.position.setX(Double.parseDouble(liftXValue.getText()));
+                    liftDto.position.setX(Math.round(Double.parseDouble(liftXValue.getText())));
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }
+                updateLiftInfo(larmanController.getLift());
             }
         });
+    }
+
+
+
+    private void initTextFieldsHandlers() {
         bundleBarcodeValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {

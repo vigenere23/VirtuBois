@@ -157,35 +157,30 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             handleZoom(delta, getPlanCenterCoords());
         }
         if (event.getCode().equals(KeyCode.RIGHT)) {
-            UndoRedo.addCurrentYard();
             larmanController.turnLiftRight();
             updateLiftInfo();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
-            UndoRedo.addCurrentYard();
             larmanController.turnLiftLeft();
             updateLiftInfo();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.UP)) {
-            UndoRedo.addCurrentYard();
             larmanController.moveLiftForward();
             updateLiftInfo();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.DOWN)) {
-            UndoRedo.addCurrentYard();
             larmanController.moveLiftBackward();
             updateLiftInfo();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.W) && event.isControlDown()) {
-            UndoRedo.addCurrentYard();
             updateLiftInfo();
             if (event.getCode().equals(KeyCode.W) && event.isControlDown()) {
                 UndoRedo.addCurrentYard();
@@ -194,7 +189,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
                 event.consume();
             }
             if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
-                UndoRedo.addCurrentYard();
                 larmanController.lowerArms();
                 updateLiftInfo();
                 draw();

@@ -2,6 +2,7 @@ package domain.entities;
 
 import helpers.ConfigHelper;
 import helpers.GeomHelper;
+import helpers.MathHelper;
 import helpers.Point2D;
 
 import java.io.Serializable;
@@ -104,7 +105,7 @@ public class Lift extends Drawable3D implements Serializable {
         repositionArms();
     }
 
-    private void repositionArms() {
+    public void repositionArms() {
         Point2D halfLiftVector = new Point2D(length / 2, width /2);
         Point2D distanceVector = new Point2D(armsLength / 2).add(halfLiftVector);
         Point2D rotatedDistanceVector = GeomHelper.getRotatedVector(distanceVector, -angle + 90);

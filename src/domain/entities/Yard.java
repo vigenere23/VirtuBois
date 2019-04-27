@@ -127,7 +127,6 @@ public class Yard implements Serializable {
     public void modifyBundleProperties(BundleDto bundleDto) {
         Bundle bundle = getBundle(bundleDto.id);
         if (bundle != null) {
-            UndoRedo.add(this);
             Set<Bundle> allTimeCollidingBundles = new LinkedHashSet<>(getAllCollidingBundles(bundle, true));
             bundle.setBarcode(bundleDto.barcode);
             bundle.setHeight(MathHelper.round(bundleDto.height, 2));
@@ -141,6 +140,14 @@ public class Yard implements Serializable {
             bundle.setZ(MathHelper.round(bundleDto.z, 2));
             allTimeCollidingBundles.addAll(getAllCollidingBundles(bundle, true));
             adjustBundlesHeightAfterChange(bundle, new ArrayList<>(allTimeCollidingBundles));
+        }
+    }
+
+    public void modifyLiftProperties(LiftDto liftDto) {
+        if (lift != null){
+            lift.setArmsHeight(liftDto.armsHeight);
+            lift.setPosition(new Point2D(liftDto.position.getX(), liftDto.position.getY()));
+            lift.repositionArms();
         }
     }
 
@@ -223,7 +230,7 @@ public class Yard implements Serializable {
         boolean isColliding = false;
         if(bundleList.isEmpty())
         {
-            return true;
+            return false;
         }
         for(Bundle bundles: bundleList){
             double z = bundles.getZ();
@@ -275,6 +282,5 @@ public class Yard implements Serializable {
         if(lift.getArmsHeight() < 0){
             lift.setArmsHeight(0);
         }
-        System.out.println(lift.getArmsHeight());
     }
 }

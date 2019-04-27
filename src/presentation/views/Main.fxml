@@ -29,7 +29,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="dark" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.controllers.MainController">
+<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="dark" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../assets/css/style.css" fx:controller="presentation.controllers.MainController">
     <children>
         <VBox prefHeight="26.0" prefWidth="1280.0" AnchorPane.bottomAnchor="694.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -360,7 +360,7 @@
                                 </SplitPane>
                             </children>
                         </AnchorPane>
-                        <StackPane fx:id="yardWrapper" />
+                        <StackPane fx:id="yardWrapper" prefHeight="638.0" prefWidth="716.0" />
                         <AnchorPane prefHeight="718.0" prefWidth="370.0">
                             <children>
                                 <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="693.0" prefWidth="355.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -404,10 +404,41 @@
                                         </AnchorPane>
                                         <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                             <children>
-                                                <TitledPane alignment="CENTER_RIGHT" animated="false" collapsible="false" layoutX="14.0" layoutY="74.0" prefHeight="342.0" prefWidth="353.0" text="Chargeuse" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                    <content>
-                                                        <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                                    </content>
+                                                <TitledPane alignment="CENTER_RIGHT" collapsible="false" layoutX="14.0" layoutY="74.0" prefHeight="342.0" prefWidth="353.0" text="Chargeuse" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <content>
+                                          <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                                             <content>
+                                                <GridPane prefHeight="270.0" prefWidth="247.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="188.0" minWidth="10.0" prefWidth="172.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="75.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Abscisse de la chargeuse" />
+                                                      <Label text="Ordonné de la chargeuse" GridPane.rowIndex="1" />
+                                                      <Label text="Hauteur des bras" GridPane.rowIndex="3" />
+                                                      <Label focusTraversable="false" text="Abscisse des bras" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="liftXValue" GridPane.columnIndex="1" />
+                                                      <TextField fx:id="armsHeightValue" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="liftYValue" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <Label text="Ordonné des bras" GridPane.rowIndex="5" />
+                                                      <Label fx:id="armsXValue" prefHeight="21.0" prefWidth="76.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <Label fx:id="armsYValue" prefHeight="21.0" prefWidth="76.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <Label text="Hauteur de la chargeuse" GridPane.rowIndex="2" />
+                                                      <Label fx:id="liftHeightValue" prefHeight="21.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                   </children>
+                                                </GridPane>
+                                             </content>
+                                          </ScrollPane>
+                                       </content>
                                                 </TitledPane>
                                             </children>
                                         </AnchorPane>

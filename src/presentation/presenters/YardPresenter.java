@@ -152,29 +152,34 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (event.getCode().equals(KeyCode.RIGHT)) {
             UndoRedo.add(larmanController.getYard());
             larmanController.turnLiftRight();
+            updateLiftInfo();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
             UndoRedo.add(larmanController.getYard());
             larmanController.turnLiftLeft();
+            updateLiftInfo();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.UP)) {
             UndoRedo.add(larmanController.getYard());
             larmanController.moveLiftForward();
+            updateLiftInfo();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.DOWN)) {
             UndoRedo.add(larmanController.getYard());
             larmanController.moveLiftBackward();
+            updateLiftInfo();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.W) && event.isControlDown()){
             UndoRedo.add(larmanController.getYard());
+            updateLiftInfo();
             larmanController.riseArms();
             draw();
             event.consume();
@@ -182,6 +187,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (event.getCode().equals(KeyCode.S) && event.isControlDown()){
             UndoRedo.add(larmanController.getYard());
             larmanController.lowerArms();
+            updateLiftInfo();
             draw();
             event.consume();
         }
@@ -245,6 +251,10 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
 
     private Point2D getPlanCenterCoords() {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
+    }
+
+    private void updateLiftInfo(){
+        mainController.updateLiftInfo(larmanController.getLift());
     }
 
     private void updateSelectedBundles() {

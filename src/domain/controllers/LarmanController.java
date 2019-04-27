@@ -84,6 +84,10 @@ public class LarmanController {
         yard.modifyBundleProperties(bundleDto);
     }
 
+    public void modifyLiftProperties(LiftDto liftDto){
+        yard.modifyLiftProperties(liftDto);
+    }
+
     public void modifyBundlePosition(String id, Point2D position) {
         yard.modifyBundlePosition(id, position);
     }

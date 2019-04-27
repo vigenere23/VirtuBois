@@ -29,7 +29,7 @@ public class ConfigHelper {
     public static final double liftAngleIncrement = 5.0;
     public static final double liftPositionIncrement = 0.2;
     public static final double liftHeight = 5.0;
-    public static final double armsHeightIncrement = 0.2;
+    public static final double armsHeightIncrement = MathHelper.round(0.2, 1);
 
     // DRAWING
     public static final double defaultZoom = 50.0;

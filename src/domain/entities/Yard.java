@@ -263,4 +263,18 @@ public class Yard implements Serializable {
             lift.turnLeft();
         }
     }
+
+    public void riseArms(){
+        lift.riseArms();
+    }
+
+    public void lowerArms(){
+        if(lift.getArmsHeight() > 0){
+            lift.lowerArms();
+        }
+        if(lift.getArmsHeight() < 0){
+            lift.setArmsHeight(0);
+        }
+        System.out.println(lift.getArmsHeight());
+    }
 }

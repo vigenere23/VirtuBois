@@ -92,6 +92,10 @@ public class Lift extends Drawable3D implements Serializable {
         move(false);
     }
 
+    public void riseArms(){armsHeight += ConfigHelper.armsHeightIncrement;}
+
+    public void lowerArms() {armsHeight -= ConfigHelper.armsHeightIncrement;}
+
     private void move(boolean moveForward) {
         Point2D increment = new Point2D(ConfigHelper.liftPositionIncrement);
         Point2D rotatedIncrement = GeomHelper.getRotatedVector(increment, -angle + 90);

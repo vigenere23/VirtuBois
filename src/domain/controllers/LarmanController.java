@@ -113,6 +113,9 @@ public class LarmanController {
         }
     }
 
+    public void riseArms() {yard.riseArms();}
+
+    public void lowerArms() {yard.lowerArms();}
 
     public void moveLiftForward() {
         yard.moveLiftForward();

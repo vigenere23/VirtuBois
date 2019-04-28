@@ -22,7 +22,7 @@ public class ConfigHelper {
     // LIFT
     public static final double liftWidth = 1.5;
     public static final double liftLenth = 2.0;
-    public static double liftAngle = 0.0;
+    public static double liftAngle = 90.0;
     public static final double armsWidth = 1.0;
     public static final double armsLength = 1.25;
     public static double armsHeight = 0.0;

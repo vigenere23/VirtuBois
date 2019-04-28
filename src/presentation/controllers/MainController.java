@@ -2,6 +2,7 @@ package presentation.controllers;
 
 import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
+import domain.entities.Bundle;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
@@ -611,8 +612,20 @@ public class MainController extends BaseController {
             observableBundleList = bundles;
             ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
             inventoryTable.setItems(data);
+            if(yardPresenter.getTopSelectedBundle() != null){
+                selectTableViewBundle(yardPresenter.getTopSelectedBundle());
+            }
         } else {
             inventoryTable.getItems().clear();
+        }
+    }
+    public void selectTableViewBundle(BundleDto bundle){
+        for(BundleDto bundles : inventoryTable.getItems()){
+            if(bundle.equals(bundles)){
+                int index = inventoryTable.getItems().indexOf(bundles);
+                inventoryTable.getSelectionModel().select(index);
+                inventoryTable.getSelectionModel().focus(index);
+            }
         }
     }
 

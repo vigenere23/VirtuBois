@@ -23,9 +23,9 @@ public class LiftPresenter extends CenteredRectangle implements IPresenter {
 
     @Override
     public void draw() {
-        Image image = new Image("presentation/assets/images/lift2.png");
+        Image image = new Image("presentation/assets/images/lift2.png", 342.0,256.0,true,true);
         rectangle.setFill(new ImagePattern(image));
-        Image imageArms = new Image("presentation/assets/images/goodArms.png");
+        Image imageArms = new Image("presentation/assets/images/goodArms.png", 164,124,true,true);
         arms.getRectangle().setFill(new ImagePattern(imageArms));
     }
 }

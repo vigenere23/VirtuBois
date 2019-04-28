@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
+import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -15,8 +16,11 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import presentation.controllers.MainController;
@@ -221,30 +225,28 @@ public class ElevationViewPresenter3D implements IPresenter {
         double moyY = (maxY + minY) / 2.0;
         initGroupTranslate = new Point2D(moyX, moyY);
         double deltaX = maxX - minX;
-        double cameraTranslateX = (11.0 / 3.3) * deltaX;
-        double cameraTranslateY = (11.0 / 3.0) * maxZ;
+        double deltaY = maxY - minY;
+        double cameraTranslateX = deltaX + 3;
+        double cameraTranslateY = 11.0/3.0 * maxZ;
+        double cameraTranslateZ = deltaY + 3;
 
-        if (cameraTranslateX > cameraTranslateY) {
-            camera.translateZProperty().set(-cameraTranslateX);
-        } else {
-            camera.translateZProperty().set(-cameraTranslateY);
-        }
-        ImageView imageView = new ImageView();
-        Image image = new Image("/presentation/assets/images/asphalte.jpg");
-        imageView.setImage(image);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(100);
-        imageView.setFitHeight(100);
-        imageView.setSmooth(true);
-        imageView.setCache(true);
-        imageView.setTranslateX(-50);
-        imageView.setTranslateY(-49);
-        imageView.setTranslateZ(0);
-        imageView.setScaleX(0.25);
-        imageView.setScaleY(0.25);
-        imageView.setRotationAxis(new Point3D(1.0, 0.0, 0.0));
-        imageView.setRotate(-90);
-        group.getChildren().add(imageView);
+        double translate = Math.max(cameraTranslateX, Math.max(cameraTranslateY,cameraTranslateZ));
+        camera.translateZProperty().set(-translate);
+
+        Cylinder plancher = new Cylinder(Math.max(deltaX,Math.max(deltaY, maxZ*4)) + 20,0.1);
+        plancher.setRotate(-90);
+        plancher.setTranslateY(1);
+        plancher.setRotationAxis(new Point3D(0,1,0));
+        plancher.setRotate(90);
+
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.GREY);
+        material.setDiffuseMap(new Image(getClass().getResourceAsStream("/presentation/assets/images/asphalte.jpg")));
+        plancher.setMaterial(material);
+
+        AmbientLight sun = new AmbientLight();
+
+        group.getChildren().addAll(sun, plancher);
 
     }
 }

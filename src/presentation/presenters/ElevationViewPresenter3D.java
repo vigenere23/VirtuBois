@@ -241,7 +241,8 @@ public class ElevationViewPresenter3D implements IPresenter {
 
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseColor(Color.GREY);
-        material.setDiffuseMap(new Image(getClass().getResourceAsStream("/presentation/assets/images/asphalte.jpg")));
+        Image image = new Image("/presentation/assets/images/asphalte.jpg",3000,3000,true,true);
+        material.setDiffuseMap(image);
         plancher.setMaterial(material);
 
         AmbientLight sun = new AmbientLight();

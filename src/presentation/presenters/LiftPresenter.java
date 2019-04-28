@@ -4,7 +4,6 @@ import domain.dtos.LiftDto;
 import helpers.CenteredRectangle;
 import helpers.ConfigHelper;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 
 public class LiftPresenter extends CenteredRectangle implements IPresenter {

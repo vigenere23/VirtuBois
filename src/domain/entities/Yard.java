@@ -125,7 +125,7 @@ public class Yard implements Serializable {
     }
 
     public void modifyLiftProperties(LiftDto liftDto) {
-        if (lift != null) {
+        if (liftDto != null && !liftDtoCollidesAnyBundle(liftDto)) {
             lift.setArmsHeight(MathHelper.round(liftDto.armsHeight,2));
             lift.setPosition(new Point2D(liftDto.position.getX(), liftDto.position.getY()));
             lift.setAngle(MathHelper.round(liftDto.angle,2));
@@ -223,10 +223,27 @@ public class Yard implements Serializable {
         return false;
     }
 
+    private boolean liftDtoCollidesAnyBundle(LiftDto liftDto) {
+        return liftDtoCollidesAnyBundle(liftDto, getBundles());
+    }
+
+    private boolean liftDtoCollidesAnyBundle(LiftDto liftDto, List<Bundle> bundles) {
+        for (Bundle bundle : bundles) {
+            if (liftDtoCollidesBundle(liftDto, bundle) && liftDto.height > bundle.getZ()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean liftCollidesBundle(Bundle bundle) {
+        return liftDtoCollidesBundle(new LiftDto(lift), bundle);
+    }
+
+    private boolean liftDtoCollidesBundle(LiftDto liftDto, Bundle bundle) {
         return GeomHelper.rectangleCollidesRectangle(
                 new CenteredRectangle(bundle),
-                new CenteredRectangle(lift)
+                new CenteredRectangle(liftDto)
         );
     }
 

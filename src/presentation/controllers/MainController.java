@@ -5,7 +5,6 @@ import domain.dtos.LiftDto;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
-import helpers.Point2D;
 import helpers.UndoRedo;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -27,7 +26,6 @@ import javafx.scene.paint.Color;
 import presentation.presenters.ElevationViewPresenter3D;
 import presentation.presenters.YardPresenter;
 
-import javax.sound.sampled.Line;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -591,16 +589,8 @@ public class MainController extends BaseController {
                 canChange = false;
             }
         }
-        /*bundleLengthValue.setEditable(canChange);
-        bundleWidthValue.setEditable(canChange);
-        bundleHeightValue.setEditable(canChange);
-        bundleAngleValue.setEditable(canChange);*/
         bundleXPosValue.setEditable(canChange);
         bundleYPosValue.setEditable(canChange);
-    }
-
-    public void updateElevationView(BundleDto bundle) {
-        //elevationViewPresenter.setBundles(bundle);
     }
 
     public void setFocusedBundleElevView(BundleDto bundle) {

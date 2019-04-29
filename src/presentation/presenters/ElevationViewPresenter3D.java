@@ -111,9 +111,7 @@ public class ElevationViewPresenter3D implements IPresenter {
                 }
                 case PRIMARY: {
                     Point2D direction = new Point2D((event.getSceneX() - lastPoint.getX()) / 50.0, (event.getSceneY() - lastPoint.getY()) / 50.0);
-                    if(groupTranslate.getY() + direction.getY() > -0.5) {
-                        group.translateYProperty().set(groupTranslate.getY() + direction.getY());
-                    }
+                    group.translateYProperty().set(groupTranslate.getY() + direction.getY());
                     group.translateXProperty().set(groupTranslate.getX() + direction.getX());
                     break;
                 }
@@ -122,7 +120,12 @@ public class ElevationViewPresenter3D implements IPresenter {
 
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
             double delta = event.getDeltaY();
-            camera.translateZProperty().set(camera.getTranslateZ() - delta / 100.0d);
+            if(camera.getTranslateZ() > 1.0 || camera.getTranslateZ() < -1.0) {
+                camera.translateZProperty().set(camera.getTranslateZ() - delta * Math.abs(camera.getTranslateZ()) / 200.0d);
+            }
+            else{
+                camera.translateZProperty().set(camera.getTranslateZ() - delta / 200.0d);
+            }
         });
     }
 

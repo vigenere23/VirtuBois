@@ -6,6 +6,7 @@ import domain.entities.Bundle;
 import enums.EditorMode;
 import helpers.FileHelper;
 import helpers.JavafxHelper;
+import helpers.Point2D;
 import helpers.UndoRedo;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -252,7 +253,7 @@ public class MainController extends BaseController {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(!liftYValue.getText().isEmpty() && !liftYValue.getText().equals("-") && !liftYValue.getText().equals(".") && !liftYValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
-                    liftDto.position.setY(Double.parseDouble(liftYValue.getText()));
+                    liftDto.position = new Point2D(liftDto.position.getX(), Math.round(Double.parseDouble(liftYValue.getText())));
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }
@@ -264,7 +265,7 @@ public class MainController extends BaseController {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(!liftXValue.getText().isEmpty() && !liftXValue.getText().equals("-") && !liftXValue.getText().equals(".") && !liftXValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
-                    liftDto.position.setX(Math.round(Double.parseDouble(liftXValue.getText())));
+                    liftDto.position = new Point2D(Math.round(Double.parseDouble(liftXValue.getText())), liftDto.position.getY());
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }

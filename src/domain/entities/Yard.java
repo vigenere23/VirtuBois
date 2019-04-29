@@ -263,15 +263,30 @@ public class Yard implements Serializable {
 
     public void moveLiftToBundle() {
         Point2D point1 = new Point2D(lift.position.getX(), lift.position.getY());
-        Point2D point2 = new Point2D(lift.position.getX() + 100000 * Math.cos(Math.toRadians(-(lift.angle) +90 )), lift.position.getY() + 100000 * Math.sin(Math.toRadians(-lift.angle+ 90)));
-        System.out.println(point1.getX());
-        System.out.println(point2.getX());
+        Point2D point2 = new Point2D(lift.position.getX() + 100000 * Math.cos(Math.toRadians(lift.angle)), lift.position.getY() + 100000 * Math.sin(Math.toRadians(lift.angle)));
+        Point2D point3 = new Point2D(lift.position.getX() + (lift.getArmsLength()/2), lift.position.getY() + (lift.getArmsLength()/2));
+        Point2D point4 = new Point2D(lift.position.getX() + (100000 + lift.getArmsLength()/2) * Math.cos(Math.toRadians(lift.angle)) , lift.position.getY() + (lift.getArmsLength()/2 + 100000) * Math.sin(Math.toRadians(lift.angle)));
+        Point2D point5 = new Point2D(lift.position.getX() - (lift.getArmsLength()/2) * Math.cos(Math.toRadians(lift.angle)) , lift.position.getY() - (lift.getArmsLength()/2) * Math.sin(Math.toRadians(lift.angle)));
+        Point2D point6 = new Point2D(lift.position.getX() - (lift.getArmsLength()/2 + 100000) * Math.cos(Math.toRadians(lift.angle)) , lift.position.getY() - (lift.getArmsLength()/2 + 100000) * Math.sin(Math.toRadians(lift.angle)));
+        System.out.println(point3.getX());
         List<Bundle> listBundles = getBundles();
         for (Bundle bundles : listBundles) {
             double z = bundles.getZ();
             CenteredRectangle rectangle = new CenteredRectangle(bundles.position.getX(), bundles.position.getY(), bundles.width, bundles.length, bundles.angle);
             if (GeomHelper.lineIntersectsRectangle(point1, point2, rectangle) && lift.height > z) {
-                lift.setPosition(bundles.position);
+                while(!liftCollidesAnyBundle()){
+                    lift.moveForward();
+                }
+            }
+            if (GeomHelper.lineIntersectsRectangle(point3, point4, rectangle) && lift.height > z) {
+                while(!liftCollidesAnyBundle()){
+                    lift.moveForward();
+                }
+            }
+            if (GeomHelper.lineIntersectsRectangle(point5, point6, rectangle) && lift.height > z) {
+                while(!liftCollidesAnyBundle()){
+                    lift.moveForward();
+                }
             }
         }
     }

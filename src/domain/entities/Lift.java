@@ -18,7 +18,7 @@ public class Lift extends Drawable3D implements Serializable {
     public Lift(Point2D position) {
         super(position);
         setWidth(ConfigHelper.liftWidth);
-        setLength(ConfigHelper.liftLenth);
+        setLength(ConfigHelper.liftLength);
         setHeight(ConfigHelper.liftHeight);
         setArmsHeight(ConfigHelper.armsHeight);
         setArmsWidth(ConfigHelper.armsWidth);

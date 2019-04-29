@@ -139,6 +139,7 @@ public class Yard implements Serializable {
     }
 
     public void modifyLiftProperties(LiftDto liftDto) {
+        double scaleBackup = lift.getScale();
         if (liftDto != null && !liftDtoCollidesAnyBundle(liftDto) && liftDto.length > liftDto.armsLength) {
             lift.setArmsHeight(MathHelper.round(liftDto.armsHeight,2));
             lift.setPosition(new Point2D(liftDto.position.getX(), liftDto.position.getY()));
@@ -149,6 +150,9 @@ public class Yard implements Serializable {
             lift.setArmsLength(MathHelper.round(liftDto.armsLength,2));
             lift.setArmsWidth(MathHelper.round(liftDto.armsWidth,2));
             lift.setScale(MathHelper.round(liftDto.scale,2));
+        }
+        if(liftDtoCollidesAnyBundle(new LiftDto(lift))){
+            lift.setScale(scaleBackup);
         }
     }
 

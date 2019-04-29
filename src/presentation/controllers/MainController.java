@@ -270,7 +270,7 @@ public class MainController extends BaseController {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(!liftYValue.getText().isEmpty() && !liftYValue.getText().equals("-") && !liftYValue.getText().equals(".") && !liftYValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
-                    liftDto.position = new Point2D(liftDto.position.getX(), Math.round(Double.parseDouble(liftYValue.getText())));
+                    liftDto.position = new Point2D(liftDto.position.getX(), Double.parseDouble(liftYValue.getText()));
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }
@@ -282,7 +282,7 @@ public class MainController extends BaseController {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(!liftXValue.getText().isEmpty() && !liftXValue.getText().equals("-") && !liftXValue.getText().equals(".") && !liftXValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
-                    liftDto.position = new Point2D(Math.round(Double.parseDouble(liftXValue.getText())), liftDto.position.getY());
+                    liftDto.position = new Point2D(Double.parseDouble(liftXValue.getText()), liftDto.position.getY());
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }
@@ -294,7 +294,7 @@ public class MainController extends BaseController {
             if(event.getCode().equals(KeyCode.ENTER)){
                 if(!liftScaleValue.getText().isEmpty() && !liftScaleValue.getText().equals("-") && !liftScaleValue.getText().equals(".") && !liftScaleValue.getText().equals("-.")){
                     LiftDto liftDto = larmanController.getLift();
-                    liftDto.scale = Math.round(Double.parseDouble(liftScaleValue.getText()));
+                    liftDto.scale = Double.parseDouble(liftScaleValue.getText());
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }

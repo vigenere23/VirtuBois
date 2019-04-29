@@ -136,7 +136,9 @@ public class ElevationViewPresenter3D implements IPresenter {
         });
         viewAllBundlesButton.setOnAction(event -> {
             if(viewAllBundlesButton.isSelected()){
-                setFocusedBundle(mainController.getYardPresenter().getTopSelectedBundle());
+                if(!larmanController.getBundles().isEmpty()) {
+                    setFocusedBundle(mainController.getYardPresenter().getTopSelectedBundle());
+                }
             }
             else {
                 clearBundles(false);

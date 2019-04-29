@@ -75,6 +75,9 @@ public class Yard implements Serializable {
         if (!bundlesToPutUnder.isEmpty()) {
             Bundle higherBundle = Collections.max(bundlesToPutUnder, Comparator.comparing(Bundle::getTopZ));
             bundle.setZ(higherBundle.getTopZ());
+            if(liftCollidesAnyBundle()){
+                UndoRedo.undoAction();
+            }
         } else {
             bundle.setZ(0);
         }
@@ -169,10 +172,9 @@ public class Yard implements Serializable {
         if (bundle != null) {
             Point2D oldPosition = bundle.getPosition();
             bundle.setPosition(position);
-            if (liftCollidesBundle(bundle)) {
+            putBundleToTop(bundle);
+            if(liftCollidesAnyBundle()){
                 bundle.setPosition(oldPosition);
-            } else {
-                putBundleToTop(bundle);
             }
         }
     }

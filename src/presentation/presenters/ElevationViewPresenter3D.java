@@ -103,7 +103,7 @@ public class ElevationViewPresenter3D implements IPresenter {
         scene.setOnMouseDragged(event -> {
             switch (event.getButton()) {
                 case SECONDARY: {
-                    if (90.0 > anchorAngleX - (anchorY - event.getSceneY()) && anchorAngleX - (anchorY - event.getSceneY()) > -3.0) {
+                    if (90.0 > anchorAngleX - (anchorY - event.getSceneY()) && anchorAngleX - (anchorY - event.getSceneY()) > 0.0) {
                         angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
                     }
                     angleY.set(anchorAngleY + anchorX - event.getSceneX());
@@ -111,8 +111,10 @@ public class ElevationViewPresenter3D implements IPresenter {
                 }
                 case PRIMARY: {
                     Point2D direction = new Point2D((event.getSceneX() - lastPoint.getX()) / 50.0, (event.getSceneY() - lastPoint.getY()) / 50.0);
+                    if(groupTranslate.getY() + direction.getY() > -0.5) {
+                        group.translateYProperty().set(groupTranslate.getY() + direction.getY());
+                    }
                     group.translateXProperty().set(groupTranslate.getX() + direction.getX());
-                    group.translateYProperty().set(groupTranslate.getY() + direction.getY());
                     break;
                 }
             }
@@ -120,7 +122,7 @@ public class ElevationViewPresenter3D implements IPresenter {
 
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
             double delta = event.getDeltaY();
-            group.translateZProperty().set(group.getTranslateZ() - delta / 100.0d);
+            camera.translateZProperty().set(camera.getTranslateZ() - delta / 100.0d);
         });
     }
 
@@ -180,12 +182,14 @@ public class ElevationViewPresenter3D implements IPresenter {
         allBundles.clear();
         group.getChildren().clear();
         boxToBundleDtoMap.clear();
-        camera.translateXProperty().set(0);
-        camera.translateYProperty().set(0);
+        camera.translateXProperty().set(0.0);
+        camera.translateYProperty().set(0.0);
+        camera.translateZProperty().set(0.0);
+        group.translateXProperty().set(0.0);
+        group.translateYProperty().set(0.0);
         angleX.set(0.0);
         angleY.set(0.0);
         focusedBundle = null;
-        draw();
     }
 
     private void setInitialGroupTranslate() {

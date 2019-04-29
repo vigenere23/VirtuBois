@@ -374,7 +374,7 @@
                                                    <center>
                                                       <AnchorPane fx:id="subSceneAnchor">
                                                          <children>
-                                                            <StackPane fx:id="subScenePane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                            <StackPane fx:id="subScenePane" alignment="TOP_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
                                                    </center>

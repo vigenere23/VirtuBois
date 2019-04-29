@@ -631,7 +631,7 @@ public class MainController extends BaseController {
     }
 
     public void clearElevationView() {
-        elevationViewPresenter3D.clearBundles();
+        elevationViewPresenter3D.clearBundles(true);
     }
 
     public void clearTableView() {

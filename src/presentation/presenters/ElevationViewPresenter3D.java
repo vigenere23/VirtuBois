@@ -7,6 +7,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,16 +51,21 @@ public class ElevationViewPresenter3D implements IPresenter {
     private Point2D groupTranslate;
     private Point2D initGroupTranslate;
     private Map<Box, BundleDto> boxToBundleDtoMap;
+    private Map<BundleDto, Box> dtoToBoxMap;
     private BundleDto focusedBundle;
+    private ToggleButton viewAllBundlesButton;
 
     public ElevationViewPresenter3D(StackPane parent, MainController mainController) {
         this.mainController = mainController;
         this.larmanController = mainController.larmanController;
         boxToBundleDtoMap = new HashMap<>();
+        dtoToBoxMap = new HashMap<>();
         allBundles = new ArrayList<>();
         group = new Group();
         scene = new SubScene(group, 1, 1, true, SceneAntialiasing.BALANCED);
+        viewAllBundlesButton = new ToggleButton("Vue totale");
         parent.getChildren().add(scene);
+        parent.getChildren().add(viewAllBundlesButton);
         this.scene.heightProperty().bind(parent.heightProperty());
         this.scene.widthProperty().bind(parent.widthProperty());
         scene.setFill(Color.valueOf("#37474f"));
@@ -127,7 +134,16 @@ public class ElevationViewPresenter3D implements IPresenter {
                 camera.translateZProperty().set(camera.getTranslateZ() - delta / 100.0d);
             }
         });
-    }
+        viewAllBundlesButton.setOnAction(event -> {
+            if(viewAllBundlesButton.isSelected()){
+                setFocusedBundle(mainController.getYardPresenter().getTopSelectedBundle());
+            }
+            else {
+                clearBundles(false);
+                mainController.getYardPresenter().setTopSelectedBundle(null);
+            }
+        });
+   }
 
 //https://github.com/afsalashyana/JavaFX-3D/blob/master/src/gc/tutorial/chapt4/Rotation3DWithMouse.java
 
@@ -147,6 +163,7 @@ public class ElevationViewPresenter3D implements IPresenter {
             box.setMaterial(material);
 
             boxToBundleDtoMap.put(box, bundle);
+            dtoToBoxMap.put(bundle, box);
 
             if (bundle.equals(focusedBundle)) {
                 PhongMaterial phongMaterial = (PhongMaterial) box.getMaterial();
@@ -173,25 +190,40 @@ public class ElevationViewPresenter3D implements IPresenter {
     }
 
     public void setFocusedBundle(BundleDto bundle) {
-        clearBundles();
+        clearBundles(false);
         focusedBundle = bundle;
-        //allBundles = larmanController.getBundles();
-        allBundles = larmanController.getAllCollidingBundles(bundle);
-        setInitialGroupTranslate();
-        draw();
+        if(!viewAllBundlesButton.isSelected()) {
+            allBundles = larmanController.getAllCollidingBundles(bundle);
+            setInitialGroupTranslate();
+            draw();
+        }
+        else{
+            allBundles = larmanController.getBundles();
+            setInitialGroupTranslate();
+            draw();
+        }
     }
 
-    public void clearBundles() {
-        allBundles.clear();
-        group.getChildren().clear();
-        boxToBundleDtoMap.clear();
-        camera.translateXProperty().set(0.0);
-        camera.translateYProperty().set(0.0);
-        camera.translateZProperty().set(0.0);
-        group.translateXProperty().set(0.0);
-        group.translateYProperty().set(0.0);
-        angleX.set(0.0);
-        angleY.set(0.0);
+    public void clearBundles(boolean fromMain) {
+        if(!fromMain || !viewAllBundlesButton.isSelected()) {
+            allBundles.clear();
+            group.getChildren().clear();
+            boxToBundleDtoMap.clear();
+            dtoToBoxMap.clear();
+        }
+        if(fromMain && viewAllBundlesButton.isSelected())
+        {
+            deselect();
+        }
+        if(!viewAllBundlesButton.isSelected()){
+            camera.translateXProperty().set(0.0);
+            camera.translateYProperty().set(0.0);
+            camera.translateZProperty().set(0.0);
+            group.translateXProperty().set(0.0);
+            group.translateYProperty().set(0.0);
+            angleX.set(0.0);
+            angleY.set(0.0);
+        }
         focusedBundle = null;
     }
 
@@ -238,7 +270,9 @@ public class ElevationViewPresenter3D implements IPresenter {
         double cameraTranslateZ = deltaY + 3;
 
         double translate = Math.max(cameraTranslateX, Math.max(cameraTranslateY,cameraTranslateZ));
-        camera.translateZProperty().set(-translate);
+        if(!viewAllBundlesButton.isSelected() || camera.getTranslateZ() == 0) {
+            camera.translateZProperty().set(-translate);
+        }
 
         Cylinder plancher = new Cylinder(Math.max(deltaX,Math.max(deltaY, maxZ*4)) + 20,0.1);
         plancher.setRotate(-90);
@@ -256,5 +290,16 @@ public class ElevationViewPresenter3D implements IPresenter {
 
         group.getChildren().addAll(sun, plancher);
 
+    }
+
+    private void deselect(){
+        if(focusedBundle != null && !allBundles.isEmpty()) {
+            for(int i = 2 ; i < group.getChildren().size() ; i++) {
+                Box box = (Box) group.getChildren().get(i);
+                PhongMaterial material = (PhongMaterial) box.getMaterial();
+                Color color = material.getDiffuseColor();
+                material.setDiffuseColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 1.0));
+            }
+        }
     }
 }

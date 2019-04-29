@@ -68,7 +68,7 @@ public class ElevationViewPresenter3D implements IPresenter {
         camera.translateXProperty().set(0);
         camera.translateYProperty().set(0);
         camera.setNearClip(1);
-        camera.setFarClip(1000);
+        camera.setFarClip(10000);
         initControl(group, scene);
     }
 
@@ -121,10 +121,10 @@ public class ElevationViewPresenter3D implements IPresenter {
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
             double delta = event.getDeltaY();
             if(camera.getTranslateZ() > 1.0 || camera.getTranslateZ() < -1.0) {
-                camera.translateZProperty().set(camera.getTranslateZ() - delta * Math.abs(camera.getTranslateZ()) / 200.0d);
+                camera.translateZProperty().set(camera.getTranslateZ() - delta * Math.abs(camera.getTranslateZ()) / 300.0d);
             }
             else{
-                camera.translateZProperty().set(camera.getTranslateZ() - delta / 200.0d);
+                camera.translateZProperty().set(camera.getTranslateZ() - delta / 100.0d);
             }
         });
     }

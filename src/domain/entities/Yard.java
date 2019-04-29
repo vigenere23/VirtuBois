@@ -148,6 +148,7 @@ public class Yard implements Serializable {
             lift.setWidth(MathHelper.round(liftDto.width,2));
             lift.setArmsLength(MathHelper.round(liftDto.armsLength,2));
             lift.setArmsWidth(MathHelper.round(liftDto.armsWidth,2));
+            lift.setScale(MathHelper.round(liftDto.scale,2));
         }
     }
 
@@ -337,5 +338,8 @@ public class Yard implements Serializable {
 
     public void moveBundles(){
 
+    }
+    public void setLiftScale(double scale){
+        lift.setScale(scale);
     }
 }

@@ -13,7 +13,7 @@ public class LiftPresenter extends CenteredRectangle implements IPresenter {
     public LiftPresenter(LiftDto dto) {
         super(dto.position, dto.width, dto.length, -dto.angle);
         this.dto = dto;
-        this.arms = new CenteredRectangle(dto.armsPosition, ConfigHelper.armsWidth, ConfigHelper.armsLength, -dto.angle);
+        this.arms = new CenteredRectangle(dto.armsPosition, dto.armsWidth, dto.armsLength, -dto.angle);
         draw();
     }
 

@@ -8,6 +8,7 @@ public class LiftDto extends Drawable3DDto {
     public double armsLength;
     public double armsHeight;
     public Point2D armsPosition;
+    public double scale;
 
     public LiftDto(Lift lift) {
         super(lift);
@@ -15,5 +16,6 @@ public class LiftDto extends Drawable3DDto {
         armsLength = lift.getArmsLength();
         armsHeight = lift.getArmsHeight();
         armsPosition = lift.getArmsPosition();
+        scale = lift.getScale();
     }
 }

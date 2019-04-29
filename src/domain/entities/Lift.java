@@ -14,6 +14,7 @@ public class Lift extends Drawable3D implements Serializable {
     private double armsWidth;
     private double armsLength;
     private Point2D armsPosition;
+    private double scale;
 
     public Lift(Point2D position) {
         super(position);
@@ -24,6 +25,7 @@ public class Lift extends Drawable3D implements Serializable {
         setArmsWidth(ConfigHelper.armsWidth);
         setArmsLength(ConfigHelper.armsLength);
         setAngle(ConfigHelper.liftAngle);
+        this.scale = ConfigHelper.liftScale;
         repositionArms();
     }
 
@@ -53,6 +55,19 @@ public class Lift extends Drawable3D implements Serializable {
 
     public void setArmsLength(double armsLenght) {
         this.armsLength = armsLenght;
+    }
+    public double getScale(){
+        return scale;
+    }
+
+    public void setScale(double scale){
+        this.scale = scale;
+        setWidth(ConfigHelper.liftWidth * scale);
+        setLength(ConfigHelper.liftLength * scale);
+        setHeight(ConfigHelper.liftHeight * scale);
+        setArmsWidth(ConfigHelper.armsWidth * scale);
+        setArmsLength(ConfigHelper.armsLength * scale);
+        repositionArms();
     }
 
     @Override
@@ -98,14 +113,14 @@ public class Lift extends Drawable3D implements Serializable {
     }
 
     private void move(boolean moveForward) {
-        Point2D increment = new Point2D(ConfigHelper.liftPositionIncrement);
+        Point2D increment = new Point2D(ConfigHelper.liftPositionIncrement * getScale());
         Point2D rotatedIncrement = GeomHelper.getRotatedVector(increment, angle);
         if (moveForward) setPosition(position.add(rotatedIncrement));
         else setPosition(position.substract(rotatedIncrement));
     }
 
     public void repositionArms() {
-        Point2D halfLiftVector = new Point2D(width / 2.45,length / 2);
+        Point2D halfLiftVector = new Point2D(width / 2.5,length / 2.0);
         Point2D distanceVector = new Point2D(armsWidth / 2).add(halfLiftVector);
         Point2D rotatedDistanceVector = GeomHelper.getRotatedVector(distanceVector, angle);
         armsPosition = position.add(rotatedDistanceVector);

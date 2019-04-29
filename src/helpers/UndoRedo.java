@@ -45,6 +45,8 @@ public class UndoRedo {
         }
     }
 
+    public static Deque<byte[]> getUndo() {return undo;}
+
     public static int getUndoSize() {
         return undo.size();
     }

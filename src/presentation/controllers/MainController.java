@@ -106,13 +106,21 @@ public class MainController extends BaseController {
     @FXML
     public Label armsYValue;
     @FXML
-    public Label liftHeightValue;
+    public TextField liftHeightValue;
     @FXML
     public TextField liftXValue;
     @FXML
     public TextField liftYValue;
     @FXML
     public TextField liftAngleValue;
+    @FXML
+    public TextField liftLengthValue;
+    @FXML
+    public TextField liftWidthValue;
+    @FXML
+    public TextField armsWidthValue;
+    @FXML
+    public TextField armsLengthValue;
 
     @FXML
     public ToggleButton pointerButton;
@@ -223,6 +231,10 @@ public class MainController extends BaseController {
         liftXValue.setText(String.valueOf(larmanController.getYard().getLift().getPosition().getX()));
         liftYValue.setText(String.valueOf(larmanController.getYard().getLift().getPosition().getY()));
         liftAngleValue.setText(String.valueOf(larmanController.getYard().getLift().getAngle()));
+        armsWidthValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsWidth()));
+        armsLengthValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsLength()));
+        liftLengthValue.setText(String.valueOf(larmanController.getYard().getLift().getLength()));
+        liftWidthValue.setText(String.valueOf(larmanController.getYard().getLift().getWidth()));
         initLiftTextFieldsHandlers();
     }
     private void initLiftTextFieldsHandlers(){
@@ -237,11 +249,72 @@ public class MainController extends BaseController {
                 updateLiftInfo(larmanController.getLift());
             }
         });
+
         armsHeightValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(!armsHeightValue.getText().isEmpty() && !armsHeightValue.getText().equals("-") && !armsHeightValue.getText().equals(".") && !armsHeightValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
                     liftDto.armsHeight = Double.parseDouble(armsHeightValue.getText());
+                    larmanController.modifyLiftProperties(liftDto);
+                    yardPresenter.draw();
+                }
+                updateLiftInfo(larmanController.getLift());
+            }
+        });
+
+        liftHeightValue.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if(!liftHeightValue.getText().isEmpty() && !liftHeightValue.getText().equals("-") && !liftHeightValue.getText().equals(".") && !liftHeightValue.getText().equals("-.")) {
+                    LiftDto liftDto = larmanController.getLift();
+                    liftDto.height = Double.parseDouble(liftHeightValue.getText());
+                    larmanController.modifyLiftProperties(liftDto);
+                    yardPresenter.draw();
+                }
+                updateLiftInfo(larmanController.getLift());
+            }
+        });
+
+        liftLengthValue.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if(!liftLengthValue.getText().isEmpty() && !liftLengthValue.getText().equals("-") && !liftLengthValue.getText().equals(".") && !liftLengthValue.getText().equals("-.")) {
+                    LiftDto liftDto = larmanController.getLift();
+                    liftDto.length = Double.parseDouble(liftLengthValue.getText());
+                    larmanController.modifyLiftProperties(liftDto);
+                    yardPresenter.draw();
+                }
+                updateLiftInfo(larmanController.getLift());
+            }
+        });
+
+        liftWidthValue.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if(!liftWidthValue.getText().isEmpty() && !liftWidthValue.getText().equals("-") && !liftWidthValue.getText().equals(".") && !liftWidthValue.getText().equals("-.")) {
+                    LiftDto liftDto = larmanController.getLift();
+                    liftDto.width = Double.parseDouble(liftWidthValue.getText());
+                    larmanController.modifyLiftProperties(liftDto);
+                    yardPresenter.draw();
+                }
+                updateLiftInfo(larmanController.getLift());
+            }
+        });
+
+        armsLengthValue.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if(!armsLengthValue.getText().isEmpty() && !armsLengthValue.getText().equals("-") && !armsLengthValue.getText().equals(".") && !armsLengthValue.getText().equals("-.")) {
+                    LiftDto liftDto = larmanController.getLift();
+                    liftDto.armsLength = Double.parseDouble(armsLengthValue.getText());
+                    larmanController.modifyLiftProperties(liftDto);
+                    yardPresenter.draw();
+                }
+                updateLiftInfo(larmanController.getLift());
+            }
+        });
+
+        armsWidthValue.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if(!armsWidthValue.getText().isEmpty() && !armsWidthValue.getText().equals("-") && !armsWidthValue.getText().equals(".") && !armsWidthValue.getText().equals("-.")) {
+                    LiftDto liftDto = larmanController.getLift();
+                    liftDto.armsWidth = Double.parseDouble(armsWidthValue.getText());
                     larmanController.modifyLiftProperties(liftDto);
                     yardPresenter.draw();
                 }
@@ -564,9 +637,14 @@ public class MainController extends BaseController {
         liftXValue.setText(String.valueOf(liftDto.position.getX()));
         liftYValue.setText(String.valueOf(liftDto.position.getY()));
         armsHeightValue.setText(String.valueOf(liftDto.armsHeight));
+        liftHeightValue.setText(String.valueOf(liftDto.height));
         liftAngleValue.setText(String.valueOf(liftDto.angle));
-
+        armsLengthValue.setText(String.valueOf(liftDto.armsLength));
+        liftLengthValue.setText(String.valueOf(liftDto.length));
+        armsWidthValue.setText(String.valueOf(liftDto.armsWidth));
+        liftWidthValue.setText(String.valueOf(liftDto.width));
     }
+
     public void updateBundleInfo(BundleDto bundle) {
         this.selectedBundle = bundle;
         bundleBarcodeValue.setText(bundle.barcode);

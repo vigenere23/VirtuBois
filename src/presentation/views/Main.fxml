@@ -403,8 +403,17 @@
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <TextField fx:id="liftLengthValue" />
+                                                         </children>
+                                                      </AnchorPane>
                                                       <AnchorPane GridPane.hgrow="ALWAYS">
                                                          <children>
                                                             <Label text="Abscisse de la chargeuse" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
@@ -415,12 +424,12 @@
                                                             <Label text="Ordonné de la chargeuse" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
-                                                      <AnchorPane GridPane.rowIndex="3">
+                                                      <AnchorPane GridPane.rowIndex="5">
                                                          <children>
                                                             <Label text="Hauteur des bras" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
-                                                      <AnchorPane GridPane.rowIndex="4">
+                                                      <AnchorPane GridPane.rowIndex="8">
                                                          <children>
                                                             <Label focusTraversable="false" text="Abscisse des bras" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
@@ -430,7 +439,7 @@
                                                             <TextField fx:id="liftXValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
-                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                          <children>
                                                             <TextField fx:id="armsHeightValue" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
@@ -440,17 +449,17 @@
                                                             <TextField fx:id="liftYValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
-                                                      <AnchorPane GridPane.rowIndex="5">
+                                                      <AnchorPane GridPane.rowIndex="9">
                                                          <children>
                                                             <Label text="Ordonné des bras" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
-                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="8">
                                                          <children>
                                                             <Label fx:id="armsXValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
-                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="9">
                                                          <children>
                                                             <Label fx:id="armsYValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
@@ -462,17 +471,52 @@
                                                       </AnchorPane>
                                                       <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                          <children>
-                                                            <Label fx:id="liftHeightValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                            <TextField fx:id="liftHeightValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
-                                                      <AnchorPane GridPane.rowIndex="6">
+                                                      <AnchorPane GridPane.rowIndex="10">
                                                          <children>
                                                             <Label text="Angle de la Chargeuse et Bras" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
-                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="10">
                                                          <children>
                                                             <TextField fx:id="liftAngleValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="7">
+                                                         <children>
+                                                            <Label text="Largeur des bras" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <Label text="Largeur de la chargeuse" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="6">
+                                                         <children>
+                                                            <Label text="Longueur des bras" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                         <children>
+                                                            <TextField fx:id="armsWidthValue" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                         <children>
+                                                            <TextField fx:id="armsLengthValue" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <TextField fx:id="liftWidthValue" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <Label text="Longeur de la chargeuse" AnchorPane.bottomAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
                                                    </children>

@@ -122,13 +122,21 @@ public class Yard implements Serializable {
             allTimeCollidingBundles.addAll(getAllCollidingBundles(bundle, true));
             adjustBundlesHeightAfterChange(bundle, new ArrayList<>(allTimeCollidingBundles));
         }
+        else {
+            UndoRedo.getUndo().removeFirst();
+        }
     }
 
     public void modifyLiftProperties(LiftDto liftDto) {
-        if (liftDto != null && !liftDtoCollidesAnyBundle(liftDto)) {
+        if (liftDto != null && !liftDtoCollidesAnyBundle(liftDto) && liftDto.length > liftDto.armsLength) {
             lift.setArmsHeight(MathHelper.round(liftDto.armsHeight,2));
             lift.setPosition(new Point2D(liftDto.position.getX(), liftDto.position.getY()));
             lift.setAngle(MathHelper.round(liftDto.angle,2));
+            lift.setHeight(MathHelper.round(liftDto.height, 2));
+            lift.setLength(MathHelper.round(liftDto.length, 2));
+            lift.setWidth(MathHelper.round(liftDto.width,2));
+            lift.setArmsLength(MathHelper.round(liftDto.armsLength,2));
+            lift.setArmsWidth(MathHelper.round(liftDto.armsWidth,2));
         }
     }
 

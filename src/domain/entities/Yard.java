@@ -1,5 +1,6 @@
 package domain.entities;
 
+import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
 import enums.Comparison;
@@ -121,9 +122,12 @@ public class Yard implements Serializable {
             bundle.setZ(MathHelper.round(bundleDto.z, 2));
             allTimeCollidingBundles.addAll(getAllCollidingBundles(bundle, true));
             adjustBundlesHeightAfterChange(bundle, new ArrayList<>(allTimeCollidingBundles));
+            if(liftCollidesAnyBundle()){
+                UndoRedo.undoAction();
+            }
         }
         else {
-            UndoRedo.getUndo().removeFirst();
+            UndoRedo.undoUndo();
         }
     }
 

@@ -45,7 +45,7 @@ public class UndoRedo {
         }
     }
 
-    public static Deque<byte[]> getUndo() {return undo;}
+    public static void undoUndo() {undo.removeFirst();}
 
     public static int getUndoSize() {
         return undo.size();
@@ -80,5 +80,14 @@ public class UndoRedo {
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
         Yard yard = (Yard) objectInputStream.readObject();
         return yard;
+    }
+
+    public static void undoAction(){
+        try{
+            LarmanController.getInstance().setYard(UndoRedo.undo());
+            redo.removeFirst();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

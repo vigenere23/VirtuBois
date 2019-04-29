@@ -199,6 +199,9 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             draw();
             event.consume();
         }
+        if (event.getCode().equals(KeyCode.SPACE)){
+            larmanController.moveBundles();
+        }
     }
 
     private void updateMousePosition(MouseEvent event) {

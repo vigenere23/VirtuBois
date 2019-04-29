@@ -53,14 +53,18 @@ public class Yard implements Serializable {
 
     public Bundle createBundle(Point2D position) {
         Bundle bundle = new Bundle(position);
-        if (!liftCollidesBundle(bundle)) {
-            UndoRedo.addCurrentYard();
-            bundles.put(bundle.getId(), bundle);
-            putBundleToTop(bundle);
+        UndoRedo.addCurrentYard();
+        bundles.put(bundle.getId(), bundle);
+        putBundleToTop(bundle);
+        if (!liftCollidesAnyBundle()) {
             return bundle;
+        }
+        else if (liftCollidesAnyBundle()){
+            UndoRedo.undoAction();
         } else {
             return null;
         }
+        return null;
     }
 
     private void putBundleToTop(Bundle bundle) {
@@ -327,5 +331,9 @@ public class Yard implements Serializable {
         if (lift.getArmsHeight() < 0) {
             lift.setArmsHeight(0);
         }
+    }
+
+    public void moveBundles(){
+
     }
 }

@@ -3,6 +3,7 @@ package presentation.presenters;
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
+import domain.entities.Bundle;
 import enums.EditorMode;
 import helpers.*;
 import javafx.geometry.Pos;
@@ -159,47 +160,55 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (event.getCode().equals(KeyCode.RIGHT)) {
             larmanController.turnLiftRight();
             updateLiftInfo();
+            updateSelectedBundlesLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
             larmanController.turnLiftLeft();
             updateLiftInfo();
+            updateSelectedBundlesLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.UP)) {
             larmanController.moveLiftForward();
             updateLiftInfo();
+            updateSelectedBundlesLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.DOWN)) {
             larmanController.moveLiftBackward();
             updateLiftInfo();
+            updateSelectedBundlesLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.W) && event.isControlDown()) {
             larmanController.riseArms();
             updateLiftInfo();
+            updateSelectedBundlesLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
             larmanController.lowerArms();
             updateLiftInfo();
+            updateSelectedBundlesLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals((KeyCode.UP)) && event.isControlDown()) {
             larmanController.moveLiftToBundle();
             updateLiftInfo();
+            updateSelectedBundlesLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.SPACE)){
             larmanController.setLiftBundles();
+            selectBundle(new BundleDto(larmanController.getYard().sortBundlesZ(larmanController.getYard().bundlesToMove()).get(0)));
         }
         if (event.getCode().equals(KeyCode.ENTER)) {
             larmanController.clearLiftBundles();
@@ -269,6 +278,15 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             mainController.clearElevationView();
             mainController.clearAllBundleInfo();
             selectionOffsetVector = new Point2D(0, 0);
+        }
+    }
+
+    private void updateSelectedBundlesLift(){
+        List<BundleDto> selectBundle = larmanController.getBundles();
+        if(selectBundle != null){
+            for (BundleDto bundles : selectBundle){
+                mainController.updateBundleInfo(bundles);
+            }
         }
     }
 

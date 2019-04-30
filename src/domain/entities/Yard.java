@@ -19,7 +19,7 @@ public class Yard implements Serializable {
         this.lift = new Lift(new Point2D(0, 0));
     }
 
-    private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
+    public List<Bundle> sortBundlesZ(List<Bundle> bundles) {
         bundles.sort(Comparator.comparing(Bundle::getZ));
         return bundles;
     }
@@ -362,7 +362,7 @@ public class Yard implements Serializable {
         lift.lowerArms();
     }
 
-    private List<Bundle> bundlesToMove(){
+    public List<Bundle> bundlesToMove(){
         List<Bundle> bundleTolift = new ArrayList<>();
         CenteredRectangle rectArms = new CenteredRectangle(lift.getArmsPosition().getX(), lift.getArmsPosition().getY(), lift.getArmsWidth(), lift.getArmsLength(), lift.angle);
         List<Bundle> bundlesSorted = sortBundlesZ(getBundles());
@@ -447,8 +447,9 @@ public class Yard implements Serializable {
         return(new Point2D(xPos, yPos));
     }
 
-    public void setLiftBundles(){
+    public boolean setLiftBundles(){
         lift.setBundlesOnLift(bundlesToMove());
+        return true;
     }
 
     public void clearLiftBundles(){

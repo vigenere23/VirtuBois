@@ -180,7 +180,17 @@ public class Yard implements Serializable {
 
     public void modifyBundlePosition(String id, Point2D position) {
         Bundle bundle = getBundle(id);
-        if (bundle != null) {
+        boolean isOnLift = false;
+        List<Bundle> bundleOnLift = lift.getBundlesOnLift();
+        if(!bundleOnLift.isEmpty()){
+            for(Bundle bundleLift : bundleOnLift){
+                if (bundleLift.getId().equals(id)){
+                    isOnLift = true;
+                    break;
+                }
+            }
+        }
+        if (bundle != null && !isOnLift) {
             Point2D oldPosition = bundle.getPosition();
             bundle.setPosition(position);
             putBundleToTop(bundle);

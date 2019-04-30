@@ -11,7 +11,7 @@ public class Main extends Application {
     JavafxHelper.loadView(stage, "Start", "Démarrer un projet", false);
   }
 
-  public static void main(String[] args) {
+  public static void main(String ...args) {
     launch(args);
   }
 }

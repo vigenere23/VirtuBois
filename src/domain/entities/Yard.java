@@ -113,7 +113,17 @@ public class Yard implements Serializable {
                 new CenteredRectangle(bundleDto),
                 new CenteredRectangle(lift)
         );
-        if (bundle != null && !modifiedBundleCollidesLift) {
+        boolean isOnLift = false;
+        List<Bundle> bundleOnLift = lift.getBundlesOnLift();
+        if(!bundleOnLift.isEmpty()){
+            for(Bundle bundleLift : bundleOnLift){
+                if (bundleLift.getId().equals(bundleDto.id)){
+                    isOnLift = true;
+                    break;
+                }
+            }
+        }
+        if (bundle != null && !modifiedBundleCollidesLift && !isOnLift) {
             Set<Bundle> allTimeCollidingBundles = new LinkedHashSet<>(getAllCollidingBundles(bundle, true));
             bundle.setBarcode(bundleDto.barcode);
             bundle.setHeight(MathHelper.round(bundleDto.height, 2));

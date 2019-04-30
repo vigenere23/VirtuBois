@@ -1,8 +1,6 @@
 package domain.dtos;
 
 import domain.entities.Bundle;
-import helpers.Point2D;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 

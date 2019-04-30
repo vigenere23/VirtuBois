@@ -67,6 +67,10 @@ public class UndoRedo {
         }
     }
 
+    public static Deque<byte[]> getUndo(){ return undo;}
+
+    public static Deque<byte[]> getRedo(){ return redo;}
+
     private static byte[] serializeYard(Yard yard) throws Exception {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);

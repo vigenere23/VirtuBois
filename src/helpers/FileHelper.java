@@ -9,6 +9,8 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import presentation.controllers.MainController;
+import presentation.presenters.YardPresenter;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -54,6 +56,8 @@ public class FileHelper {
     public static void newFile(Stage stage) {
         savedOnce = false;
         JavafxHelper.loadView(stage, "Main", "Nouvelle Cour", true);
+        UndoRedo.getUndo().clear();
+        UndoRedo.getRedo().clear();
     }
 
     public static void openFile(Stage stage, Yard yard) {

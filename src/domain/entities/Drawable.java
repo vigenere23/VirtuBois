@@ -12,7 +12,6 @@ public abstract class Drawable implements Serializable
     protected double angle;
     protected double width;
     protected double length;
-    protected Rectangle boundaries;
 
     public Drawable(Point2D position) {
         setPosition(position);
@@ -52,8 +51,6 @@ public abstract class Drawable implements Serializable
     public double getAngle() { return angle; }
 
     public void setAngle(double angle) { this.angle = angle; }
-
-    public Rectangle getBoundaries() { return boundaries; }
 
     private void calculateBoundaries() {
     }

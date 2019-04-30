@@ -157,135 +157,47 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (event.getCode().equals(KeyCode.RIGHT)) {
             larmanController.turnLiftRight();
             updateLiftInfo();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                BundleDto oldSelectedBundle = topSelectedBundle;
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-                mainController.updateBundleInfo(topSelectedBundle);
-                if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
-                    mainController.setFocusedBundleElevView(topSelectedBundle);
-                }
-            }
-            else {
-                draw();
-            }
             getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
             larmanController.turnLiftLeft();
             updateLiftInfo();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                BundleDto oldSelectedBundle = topSelectedBundle;
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-                mainController.updateBundleInfo(topSelectedBundle);
-                if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
-                    mainController.setFocusedBundleElevView(topSelectedBundle);
-                }
-            }
-            else {
-                draw();
-            }
             getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.UP)) {
             larmanController.moveLiftForward();
             updateLiftInfo();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                BundleDto oldSelectedBundle = topSelectedBundle;
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-                mainController.updateBundleInfo(topSelectedBundle);
-                if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
-                    mainController.setFocusedBundleElevView(topSelectedBundle);
-                }
-            }
-            else {
-                draw();
-            }
             getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.DOWN)) {
             larmanController.moveLiftBackward();
             updateLiftInfo();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                BundleDto oldSelectedBundle = topSelectedBundle;
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-                mainController.updateBundleInfo(topSelectedBundle);
-                if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
-                    mainController.setFocusedBundleElevView(topSelectedBundle);
-                }
-            }
-            else {
-                draw();
-            }
             getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.W) && event.isControlDown()) {
             larmanController.riseArms();
             updateLiftInfo();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                BundleDto oldSelectedBundle = topSelectedBundle;
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-                mainController.updateBundleInfo(topSelectedBundle);
-                if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
-                    mainController.setFocusedBundleElevView(topSelectedBundle);
-                }
-            }
-            else {
-                draw();
-            }
             getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
             larmanController.lowerArms();
             updateLiftInfo();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                BundleDto oldSelectedBundle = topSelectedBundle;
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-                mainController.updateBundleInfo(topSelectedBundle);
-                if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
-                    mainController.setFocusedBundleElevView(topSelectedBundle);
-                }
-            }
-            else {
-                draw();
-            }
             getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals((KeyCode.UP)) && event.isControlDown()) {
             larmanController.moveLiftToBundle();
             updateLiftInfo();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                BundleDto oldSelectedBundle = topSelectedBundle;
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-                mainController.updateBundleInfo(topSelectedBundle);
-                if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
-                    mainController.setFocusedBundleElevView(topSelectedBundle);
-                }
-            }
-            else {
-                draw();
-            }
             getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.SPACE)) {
             larmanController.setLiftBundles();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                BundleDto oldSelectedBundle = topSelectedBundle;
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-                mainController.updateBundleInfo(topSelectedBundle);
-                if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
-                    mainController.setFocusedBundleElevView(topSelectedBundle);
-                }
-            }
-            else {
-                draw();
-            }
             getSelectedBundleLift();
         }
         if (event.getCode().equals(KeyCode.ENTER)) {
@@ -299,7 +211,12 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
 
     private void getSelectedBundleLift(){
         if(!larmanController.getLiftBundles().isEmpty()) {
+            BundleDto oldSelectedBundle = topSelectedBundle;
             setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            mainController.updateBundleInfo(topSelectedBundle);
+            if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
+                mainController.setFocusedBundleElevView(topSelectedBundle);
+            }
         }
         else {
             draw();

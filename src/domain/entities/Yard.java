@@ -311,6 +311,9 @@ public class Yard implements Serializable {
         lift.moveForward();
         if (liftCollidesAnyBundle()) {
             lift.moveBackward();
+            if (!lift.getBundlesOnLift().isEmpty()) {
+                movingBundles(lift.getBundlesOnLift(), false);
+            }
         }
     }
 
@@ -321,35 +324,40 @@ public class Yard implements Serializable {
         lift.moveBackward();
         if (liftCollidesAnyBundle()) {
             lift.moveForward();
+            if (!lift.getBundlesOnLift().isEmpty()) {
+                movingBundles(lift.getBundlesOnLift(), true);
+            }
         }
     }
 
     public void moveLiftToBundle() {
-        Point2D point1 = new Point2D(lift.position.getX(), lift.position.getY());
-        Point2D point2 = new Point2D(lift.position.getX() + 100000 * Math.cos(Math.toRadians(lift.angle)), lift.position.getY() + 100000 * Math.sin(Math.toRadians(lift.angle)));
-        Point2D point3 = new Point2D(lift.position.getX() + (lift.getArmsLength()/2), lift.position.getY() + (lift.getArmsLength()/2));
-        Point2D point4 = new Point2D(lift.position.getX() + (100000 + lift.getArmsLength()/2) * Math.cos(Math.toRadians(lift.angle)) , lift.position.getY() + (lift.getArmsLength()/2 + 100000) * Math.sin(Math.toRadians(lift.angle)));
-        Point2D point5 = new Point2D(lift.position.getX() - (lift.getArmsLength()/2) * Math.cos(Math.toRadians(lift.angle)) , lift.position.getY() - (lift.getArmsLength()/2) * Math.sin(Math.toRadians(lift.angle)));
-        Point2D point6 = new Point2D(lift.position.getX() - (lift.getArmsLength()/2 + 100000) * Math.cos(Math.toRadians(lift.angle)) , lift.position.getY() - (lift.getArmsLength()/2 + 100000) * Math.sin(Math.toRadians(lift.angle)));
-        List<Bundle> listBundles = getBundles();
-        for (Bundle bundles : listBundles) {
-            double z = bundles.getZ();
-            CenteredRectangle rectangle = new CenteredRectangle(bundles.position.getX(), bundles.position.getY(), bundles.width, bundles.length, bundles.angle);
-            if (GeomHelper.lineIntersectsRectangle(point1, point2, rectangle) && lift.height > z) {
-                while(!liftCollidesAnyBundle()){
-                    lift.moveForward();
+        if(lift.getBundlesOnLift().isEmpty()) {
+            Point2D point1 = new Point2D(lift.position.getX(), lift.position.getY());
+            Point2D point2 = new Point2D(lift.position.getX() + 100000 * Math.cos(Math.toRadians(lift.angle)), lift.position.getY() + 100000 * Math.sin(Math.toRadians(lift.angle)));
+            Point2D point3 = new Point2D(lift.position.getX() + (lift.getArmsLength() / 2), lift.position.getY() + (lift.getArmsLength() / 2));
+            Point2D point4 = new Point2D(lift.position.getX() + (100000 + lift.getArmsLength() / 2) * Math.cos(Math.toRadians(lift.angle)), lift.position.getY() + (lift.getArmsLength() / 2 + 100000) * Math.sin(Math.toRadians(lift.angle)));
+            Point2D point5 = new Point2D(lift.position.getX() - (lift.getArmsLength() / 2) * Math.cos(Math.toRadians(lift.angle)), lift.position.getY() - (lift.getArmsLength() / 2) * Math.sin(Math.toRadians(lift.angle)));
+            Point2D point6 = new Point2D(lift.position.getX() - (lift.getArmsLength() / 2 + 100000) * Math.cos(Math.toRadians(lift.angle)), lift.position.getY() - (lift.getArmsLength() / 2 + 100000) * Math.sin(Math.toRadians(lift.angle)));
+            List<Bundle> listBundles = getBundles();
+            for (Bundle bundles : listBundles) {
+                double z = bundles.getZ();
+                CenteredRectangle rectangle = new CenteredRectangle(bundles.position.getX(), bundles.position.getY(), bundles.width, bundles.length, bundles.angle);
+                if (GeomHelper.lineIntersectsRectangle(point1, point2, rectangle) && lift.height > z) {
+                    while (!liftCollidesAnyBundle()) {
+                        lift.moveForward();
+                    }
+                    lift.moveBackward();
                 }
-                lift.moveBackward();
-            }
-            if (GeomHelper.lineIntersectsRectangle(point3, point4, rectangle) && lift.height > z) {
-                while(!liftCollidesAnyBundle()){
-                    lift.moveForward();
+                if (GeomHelper.lineIntersectsRectangle(point3, point4, rectangle) && lift.height > z) {
+                    while (!liftCollidesAnyBundle()) {
+                        lift.moveForward();
+                    }
+                    lift.moveBackward();
                 }
-                lift.moveBackward();
-            }
-            if (GeomHelper.lineIntersectsRectangle(point5, point6, rectangle) && lift.height > z) {
-                while(!liftCollidesAnyBundle()){
-                    lift.moveForward();
+                if (GeomHelper.lineIntersectsRectangle(point5, point6, rectangle) && lift.height > z) {
+                    while (!liftCollidesAnyBundle()) {
+                        lift.moveForward();
+                    }
                 }
             }
         }
@@ -361,6 +369,9 @@ public class Yard implements Serializable {
         lift.turnRight();
         if (liftCollidesAnyBundle()) {
             lift.turnLeft();
+            if(!lift.getBundlesOnLift().isEmpty()) {
+                turnBundlesLeft(lift.getBundlesOnLift());
+            }
         }
     }
 
@@ -371,6 +382,9 @@ public class Yard implements Serializable {
         lift.turnLeft();
         if (liftCollidesAnyBundle()) {
             lift.turnRight();
+            if(!lift.getBundlesOnLift().isEmpty()) {
+                turnBundlesRight(lift.getBundlesOnLift());
+            }
         }
     }
 
@@ -473,24 +487,15 @@ public class Yard implements Serializable {
 
     public void clearLiftBundles(){
         if(!lift.getBundlesOnLift().isEmpty()) {
-            Map<Bundle,Boolean> isChecked = new HashMap<>();
-            for(Bundle toCheck : lift.getBundlesOnLift()){
-                isChecked.put(toCheck,false);
-            }
             List<Bundle> sortedBundles = sortBundlesZ(lift.getBundlesOnLift());
             for(Bundle bundle : sortedBundles){
-                System.out.print(bundle.getColor());
                 List<Bundle> exception = new ArrayList<>();
                 for(Bundle otherBundle :lift.getBundlesOnLift()){
-                    if(otherBundle.getZ() >= bundle.getZ()){
+                    if(otherBundle.getZ() > bundle.getZ()){
                         exception.add(otherBundle);
                     }
-                    if(isChecked.get(otherBundle)){
-                       exception.add(otherBundle);
-                    }
-                    adjustBundleHeight(bundle, exception);
                 }
-
+                adjustBundleHeight(bundle, exception);
             }
         }
         lift.clearBundles();

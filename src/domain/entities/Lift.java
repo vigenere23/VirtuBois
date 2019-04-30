@@ -147,7 +147,7 @@ public class Lift extends Drawable3D implements Serializable {
     }
 
     public void setBundlesOnLift(List<Bundle> bundlesOnLift) {
-        if(!bundlesOnLift.isEmpty()) {
+        if(this.bundlesOnLift.isEmpty()) {
             this.bundlesOnLift = bundlesOnLift;
         }
     }

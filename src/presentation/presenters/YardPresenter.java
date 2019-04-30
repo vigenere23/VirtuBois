@@ -114,16 +114,18 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         } else {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (canDrag) {
-                    if (!shouldUpdate) {
-                        shouldUpdate = true;
-                        UndoRedo.addCurrentYard();
-                    }
-                    Point2D newBundlePosition = mainController.gridIsOn
-                        ? positionInGrid(mousePositionInRealCoords)
-                        : mousePositionInRealCoords.substract(selectionOffsetVector);
+                    if(!larmanController.getLiftBundles().contains(topSelectedBundle)) {
+                        if (!shouldUpdate) {
+                            shouldUpdate = true;
+                            UndoRedo.addCurrentYard();
+                        }
+                        Point2D newBundlePosition = mainController.gridIsOn
+                                ? positionInGrid(mousePositionInRealCoords)
+                                : mousePositionInRealCoords.substract(selectionOffsetVector);
 
-                    larmanController.modifyBundlePosition(topSelectedBundle.id, newBundlePosition);
-                    draw();
+                        larmanController.modifyBundlePosition(topSelectedBundle.id, newBundlePosition);
+                        draw();
+                    }
                 }
             }
         }
@@ -161,54 +163,94 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             larmanController.turnLiftRight();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            draw();
+            if(!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            }
+            else {
+                draw();
+            }
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
             larmanController.turnLiftLeft();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            draw();
+            if(!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            }
+            else {
+                draw();
+            }
             event.consume();
         }
         if (event.getCode().equals(KeyCode.UP)) {
             larmanController.moveLiftForward();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            draw();
+            if(!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            }
+            else {
+                draw();
+            }
             event.consume();
         }
         if (event.getCode().equals(KeyCode.DOWN)) {
             larmanController.moveLiftBackward();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            draw();
+            if(!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            }
+            else {
+                draw();
+            }
             event.consume();
         }
         if (event.getCode().equals(KeyCode.W) && event.isControlDown()) {
             larmanController.riseArms();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            draw();
+            if(!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            }
+            else {
+                draw();
+            }
             event.consume();
         }
         if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
             larmanController.lowerArms();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            draw();
+            if(!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            }
+            else {
+                draw();
+            }
             event.consume();
         }
         if (event.getCode().equals((KeyCode.UP)) && event.isControlDown()) {
             larmanController.moveLiftToBundle();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            draw();
+            if(!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            }
+            else {
+                draw();
+            }
             event.consume();
         }
         if (event.getCode().equals(KeyCode.SPACE)){
             larmanController.setLiftBundles();
-            selectBundle(new BundleDto(larmanController.getYard().sortBundlesZ(larmanController.getYard().bundlesToMove()).get(0)));
+            if(!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            }
+            else {
+                draw();
+            }
         }
         if (event.getCode().equals(KeyCode.ENTER)) {
             larmanController.clearLiftBundles();

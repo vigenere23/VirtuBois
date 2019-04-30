@@ -133,6 +133,11 @@ public class LarmanController {
         yard.turnLiftLeft();
     }
 
+    public List<BundleDto> getLiftBundles(){
+        List<Bundle> liftBundles = sortBundlesZ(yard.getLift().getBundlesOnLift());
+        return Converter.fromBundlesToBundleDtos(liftBundles);
+    }
+
     public void setLiftBundles(){ yard.setLiftBundles();}
 
     public void clearLiftBundles(){yard.clearLiftBundles();}

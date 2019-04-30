@@ -325,7 +325,6 @@ public class MainController extends BaseController {
                         if (!bundleLengthValue.getText().isEmpty() && !bundleLengthValue.getText().equals("-") && !bundleLengthValue.getText().equals(".") && !bundleLengthValue.getText().equals("-.") && Double.parseDouble(bundleLengthValue.getText()) != 0.0) {
                             selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
                             larmanController.modifyBundleProperties(selectedBundle);
-                            //elevationViewPresenter.setBundles(selectedBundle);
                             setFocusedBundleElevView(selectedBundle);
                             yardPresenter.draw();
                         }
@@ -343,7 +342,6 @@ public class MainController extends BaseController {
                         if (!bundleWidthValue.getText().isEmpty() && !bundleWidthValue.getText().equals("-") && !bundleWidthValue.getText().equals(".") && !bundleWidthValue.getText().equals("-.") && Double.parseDouble(bundleWidthValue.getText()) != 0.0) {
                             selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
                             larmanController.modifyBundleProperties(selectedBundle);
-                            //elevationViewPresenter.setBundles(selectedBundle);
                             setFocusedBundleElevView(selectedBundle);
                             yardPresenter.draw();
                         }
@@ -361,7 +359,6 @@ public class MainController extends BaseController {
                             selectedBundle.height = Double.parseDouble(bundleHeightValue.getText());
                             larmanController.modifyBundleProperties(selectedBundle);
                             yardPresenter.draw();
-                            //elevationViewPresenter.setBundles(selectedBundle);
                             setFocusedBundleElevView(selectedBundle);
                         }
                         updateBundleInfo(selectedBundle);
@@ -376,7 +373,6 @@ public class MainController extends BaseController {
                     if (bundleDateValue.getValue() != selectedBundle.date) {
                         selectedBundle.date = bundleDateValue.getValue();
                         larmanController.modifyBundleProperties(selectedBundle);
-                        //elevationViewPresenter.setBundles(selectedBundle);
                         setFocusedBundleElevView(selectedBundle);
                         yardPresenter.draw();
                         updateBundleInfo(selectedBundle);
@@ -390,7 +386,6 @@ public class MainController extends BaseController {
                 if (selectedBundle != null) {
                     selectedBundle.time = LocalTime.of(bundleHourValue.getValue(), bundleMinuteValue.getValue());
                     larmanController.modifyBundleProperties(selectedBundle);
-                    //elevationViewPresenter.setBundles(selectedBundle);
                     setFocusedBundleElevView(selectedBundle);
                     yardPresenter.draw();
                     updateBundleInfo(selectedBundle);
@@ -403,7 +398,6 @@ public class MainController extends BaseController {
                 if (selectedBundle != null) {
                     selectedBundle.time = LocalTime.of(bundleHourValue.getValue(), bundleMinuteValue.getValue());
                     larmanController.modifyBundleProperties(selectedBundle);
-                    //elevationViewPresenter.setBundles(selectedBundle);
                     setFocusedBundleElevView(selectedBundle);
                     yardPresenter.draw();
                     updateBundleInfo(selectedBundle);
@@ -417,7 +411,6 @@ public class MainController extends BaseController {
                     if (!bundleEssenceValue.getText().isEmpty()) {
                         selectedBundle.essence = bundleEssenceValue.getText();
                         larmanController.modifyBundleProperties(selectedBundle);
-                        //elevationViewPresenter.setBundles(selectedBundle);
                         setFocusedBundleElevView(selectedBundle);
                         yardPresenter.draw();
                     }
@@ -432,7 +425,6 @@ public class MainController extends BaseController {
                     if (!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()) {
                         selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
                         larmanController.modifyBundleProperties(selectedBundle);
-                        //elevationViewPresenter.setBundles(selectedBundle);
                         setFocusedBundleElevView(selectedBundle);
                         yardPresenter.draw();
                     }
@@ -448,7 +440,6 @@ public class MainController extends BaseController {
                         selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
                         larmanController.modifyBundleProperties(selectedBundle);
                         yardPresenter.draw();
-                        //elevationViewPresenter.setBundles(selectedBundle);
                         setFocusedBundleElevView(selectedBundle);
                     }
                     updateBundleInfo(selectedBundle);
@@ -464,7 +455,6 @@ public class MainController extends BaseController {
                             selectedBundle.position.setX(Double.parseDouble(bundleXPosValue.getText()));
                             larmanController.modifyBundlePosition(selectedBundle.id, selectedBundle.position);
                             yardPresenter.draw();
-                            //elevationViewPresenter.setBundles(selectedBundle);
                             setFocusedBundleElevView(selectedBundle);
                         }
                         updateBundleInfo(selectedBundle);
@@ -480,7 +470,6 @@ public class MainController extends BaseController {
                         if (!bundleYPosValue.getText().isEmpty() && !bundleYPosValue.getText().equals("-") && !bundleYPosValue.getText().equals(".") && !bundleYPosValue.getText().equals("-.")) {
                             selectedBundle.position.setY(Double.parseDouble(bundleYPosValue.getText()));
                             larmanController.modifyBundlePosition(selectedBundle.id, selectedBundle.position);
-                            //elevationViewPresenter.setBundles(selectedBundle);
                             setFocusedBundleElevView(selectedBundle);
                             yardPresenter.draw();
                         }
@@ -497,7 +486,6 @@ public class MainController extends BaseController {
                         selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
                         larmanController.modifyBundleProperties(selectedBundle);
                         yardPresenter.draw();
-                        //elevationViewPresenter.setBundles(selectedBundle);
                         setFocusedBundleElevView(selectedBundle);
                     }
                     updateBundleInfo(selectedBundle);
@@ -521,11 +509,7 @@ public class MainController extends BaseController {
                 if (bundleDto.getEssence().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
-                if (bundleDto.getPlankSize().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-
-                return false;
+                return bundleDto.getPlankSize().toLowerCase().contains(lowerCaseFilter);
 
             });
             SortedList<BundleDto> sortedData = new SortedList<>(filteredData);
@@ -546,7 +530,6 @@ public class MainController extends BaseController {
                     BundleDto bundle = row.getItem();
                     yardPresenter.setTopSelectedBundle(bundle);
                     clearElevationView();
-                    //elevationViewPresenter.setBundles(bundle);
                     elevationViewPresenter3D.setFocusedBundle(bundle);
                     inventoryTable.getSelectionModel().select(bundle);
                     updateBundleInfo(bundle);
@@ -610,7 +593,7 @@ public class MainController extends BaseController {
         bundlePlankSizeValue2.setText(plankSize[1]);
         bundleXPosValue.setText(String.valueOf(bundle.position.getX()));
         bundleYPosValue.setText(String.valueOf(bundle.position.getY()));
-        bundleZPosValue.setText(String.valueOf(bundle.z));
+        bundleZPosValue.setText(String.valueOf(MathHelper.round(bundle.getZ(),2)));
         bundleAngleValue.setText(String.valueOf(bundle.angle));
 
         boolean canChange = true;
@@ -648,7 +631,7 @@ public class MainController extends BaseController {
             inventoryTable.getItems().clear();
         }
     }
-    public void selectTableViewBundle(BundleDto bundle){
+    private void selectTableViewBundle(BundleDto bundle){
         for(BundleDto bundles : inventoryTable.getItems()){
             if(bundle.equals(bundles)){
                 int index = inventoryTable.getItems().indexOf(bundles);

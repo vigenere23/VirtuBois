@@ -384,22 +384,18 @@ public class Yard implements Serializable {
         }
     }
 
-    public BundleDto moveBundlesUp(List<Bundle> bundlesToMove, boolean Up){
+    private void moveBundlesUp(List<Bundle> bundlesToMove, boolean Up){
         if(bundlesToMove != null){
             for(Bundle bundle : bundlesToMove){
                 if (Up) {
                     bundle.setZ(bundle.getZ() + ConfigHelper.armsHeightIncrement);
-                    modifyBundleProperties(new BundleDto(bundle));
-                    return new BundleDto(bundle);
                 }
                 else {
                     bundle.setZ(bundle.getZ() - ConfigHelper.armsHeightIncrement);
                     modifyBundleProperties(new BundleDto(bundle));
-                    return new BundleDto(bundle);
                 }
             }
         }
-        return null;
     }
 
     private List<Bundle> moveBundles(){
@@ -431,15 +427,7 @@ public class Yard implements Serializable {
         if(bundlesToMove != null){
             for(Bundle bundle : bundlesToMove){
                 double alpha = Math.toRadians(+5.0);
-                double x1 = lift.getPosition().getX();
-                double y1 = lift.getPosition().getY();
-                double x2 = bundle.getPosition().getX();
-                double y2 = bundle.getPosition().getY();
-                double xPos=(x2-x1)*Math.cos(alpha)-(y2-y1)*Math.sin(alpha) + x1;
-                double yPos=(x2-x1)*Math.sin(alpha)+(y2-y1)*Math.cos(alpha) + y1;
-
-                bundle.setPosition(new Point2D(xPos,yPos));
-
+                bundle.setPosition(changeBundleOnLift(bundle, alpha));
                 bundle.setAngle(bundle.getAngle() + 5.0);
             }
         }
@@ -449,18 +437,20 @@ public class Yard implements Serializable {
         if(bundlesToMove != null){
             for(Bundle bundle : bundlesToMove){
                 double alpha = Math.toRadians(-5.0);
-                double x1 = lift.getPosition().getX();
-                double y1 = lift.getPosition().getY();
-                double x2 = bundle.getPosition().getX();
-                double y2 = bundle.getPosition().getY();
-                double xPos=(x2-x1)*Math.cos(alpha)-(y2-y1)*Math.sin(alpha) + x1;
-                double yPos=(x2-x1)*Math.sin(alpha)+(y2-y1)*Math.cos(alpha) + y1;
-
-                bundle.setPosition(new Point2D(xPos,yPos));
-
+                bundle.setPosition(changeBundleOnLift(bundle, alpha));
                 bundle.setAngle(bundle.getAngle() - 5.0);
             }
         }
+    }
+
+    private Point2D changeBundleOnLift(Bundle bundle, double alpha){
+        double x1 = lift.getPosition().getX();
+        double y1 = lift.getPosition().getY();
+        double x2 = bundle.getPosition().getX();
+        double y2 = bundle.getPosition().getY();
+        double xPos=(x2-x1)*Math.cos(alpha)-(y2-y1)*Math.sin(alpha) + x1;
+        double yPos=(x2-x1)*Math.sin(alpha)+(y2-y1)*Math.cos(alpha) + y1;
+        return(new Point2D(xPos, yPos));
     }
     public void setLiftScale(double scale){
         lift.setScale(scale);

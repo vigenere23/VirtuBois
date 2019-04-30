@@ -270,11 +270,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             for(BundleDto bundleDto : selectedBundles){
                 mainController.updateBundleInfo(bundleDto);
             }
-        } else {
-            topSelectedBundle = null;
-            mainController.clearElevationView();
-            mainController.clearAllBundleInfo();
-            selectionOffsetVector = new Point2D(0, 0);
         }
     }
 

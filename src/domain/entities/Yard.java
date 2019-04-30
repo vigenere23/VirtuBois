@@ -473,6 +473,27 @@ public class Yard implements Serializable {
     }
 
     public void clearLiftBundles(){
+        if(!lift.getBundlesOnLift().isEmpty()) {
+            Map<Bundle,Boolean> isChecked = new HashMap<>();
+            for(Bundle toCheck : lift.getBundlesOnLift()){
+                isChecked.put(toCheck,false);
+            }
+            List<Bundle> sortedBundles = sortBundlesZ(lift.getBundlesOnLift());
+            for(Bundle bundle : sortedBundles){
+                System.out.print(bundle.getColor());
+                List<Bundle> exception = new ArrayList<>();
+                for(Bundle otherBundle :lift.getBundlesOnLift()){
+                    if(otherBundle.getZ() >= bundle.getZ()){
+                        exception.add(otherBundle);
+                    }
+                    if(isChecked.get(otherBundle)){
+                       exception.add(otherBundle);
+                    }
+                    adjustBundleHeight(bundle, exception);
+                }
+
+            }
+        }
         lift.clearBundles();
     }
 }

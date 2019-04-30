@@ -132,4 +132,8 @@ public class LarmanController {
     public void turnLiftLeft() {
         yard.turnLiftLeft();
     }
+
+    public void setLiftBundles(){ yard.setLiftBundles();}
+
+    public void clearLiftBundles(){yard.clearLiftBundles();}
 }

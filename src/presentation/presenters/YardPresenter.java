@@ -206,11 +206,10 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             event.consume();
         }
         if (event.getCode().equals(KeyCode.SPACE)){
-            larmanController.getYard().setMovement(true);
+            larmanController.setLiftBundles();
         }
         if (event.getCode().equals(KeyCode.ENTER)) {
-            larmanController.getYard().setMovement(false);
-
+            larmanController.clearLiftBundles();
         }
     }
 

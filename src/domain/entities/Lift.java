@@ -6,6 +6,8 @@ import helpers.MathHelper;
 import helpers.Point2D;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Lift extends Drawable3D implements Serializable {
 
@@ -15,6 +17,7 @@ public class Lift extends Drawable3D implements Serializable {
     private double armsLength;
     private Point2D armsPosition;
     private double scale;
+    private List<Bundle> bundlesOnLift;
 
     public Lift(Point2D position) {
         super(position);
@@ -27,6 +30,7 @@ public class Lift extends Drawable3D implements Serializable {
         setAngle(ConfigHelper.liftAngle);
         this.scale = ConfigHelper.liftScale;
         repositionArms();
+        bundlesOnLift = new ArrayList<>();
     }
 
     public Point2D getArmsPosition() {
@@ -124,5 +128,19 @@ public class Lift extends Drawable3D implements Serializable {
         Point2D distanceVector = new Point2D(armsWidth / 2.0).add(halfLiftVector);
         Point2D rotatedDistanceVector = GeomHelper.getRotatedVector(distanceVector, angle);
         armsPosition = position.add(rotatedDistanceVector);
+    }
+
+    public void setBundlesOnLift(List<Bundle> bundlesOnLift) {
+        if(!bundlesOnLift.isEmpty()) {
+            this.bundlesOnLift = bundlesOnLift;
+        }
+    }
+
+    public List<Bundle> getBundlesOnLift(){
+        return bundlesOnLift;
+    }
+
+    public void clearBundles(){
+        bundlesOnLift.clear();
     }
 }

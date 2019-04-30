@@ -348,7 +348,7 @@ public class Yard implements Serializable {
             lift.turnLeft();
         } if (movement) {
             List<Bundle> bundlesToMove = moveBundles();
-            turnBundles(bundlesToMove);
+            turnBundlesRight(bundlesToMove);
         }
     }
 
@@ -359,7 +359,7 @@ public class Yard implements Serializable {
         }
         if (movement) {
             List<Bundle> bundlesToMove = moveBundles();
-            turnBundles(bundlesToMove);
+            turnBundlesLeft(bundlesToMove);
         }
     }
 
@@ -412,12 +412,38 @@ public class Yard implements Serializable {
             }
         }
     }
-    private void turnBundles(List<Bundle> bundlesToMove){
+    private void turnBundlesLeft(List<Bundle> bundlesToMove){
         if(bundlesToMove != null){
             for(Bundle bundle : bundlesToMove){
-                bundle.setPosition(new Point2D(bundle.position.getX() + GeomHelper.rotateAroundCircle(new LiftDto(lift), new BundleDto(bundle)).getX(),
-                        bundle.position.getY() + GeomHelper.rotateAroundCircle(new LiftDto(lift), new BundleDto(bundle)).getY()));
+                double alpha = Math.toRadians(+5.0);
+                double x1 = lift.getPosition().getX();
+                double y1 = lift.getPosition().getY();
+                double x2 = bundle.getPosition().getX();
+                double y2 = bundle.getPosition().getY();
+                double xPos=(x2-x1)*Math.cos(alpha)-(y2-y1)*Math.sin(alpha) + x1;
+                double yPos=(x2-x1)*Math.sin(alpha)+(y2-y1)*Math.cos(alpha) + y1;
 
+                bundle.setPosition(new Point2D(xPos,yPos));
+
+                bundle.setAngle(bundle.getAngle() + 5.0);
+            }
+        }
+    }
+
+    private void turnBundlesRight(List<Bundle> bundlesToMove){
+        if(bundlesToMove != null){
+            for(Bundle bundle : bundlesToMove){
+                double alpha = Math.toRadians(-5.0);
+                double x1 = lift.getPosition().getX();
+                double y1 = lift.getPosition().getY();
+                double x2 = bundle.getPosition().getX();
+                double y2 = bundle.getPosition().getY();
+                double xPos=(x2-x1)*Math.cos(alpha)-(y2-y1)*Math.sin(alpha) + x1;
+                double yPos=(x2-x1)*Math.sin(alpha)+(y2-y1)*Math.cos(alpha) + y1;
+
+                bundle.setPosition(new Point2D(xPos,yPos));
+
+                bundle.setAngle(bundle.getAngle() - 5.0);
             }
         }
     }

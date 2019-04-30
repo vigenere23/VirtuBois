@@ -121,7 +121,7 @@ public class Lift extends Drawable3D implements Serializable {
 
     public void repositionArms() {
         Point2D halfLiftVector = new Point2D(width / 2.5,length / 2.0);
-        Point2D distanceVector = new Point2D(armsWidth / 2).add(halfLiftVector);
+        Point2D distanceVector = new Point2D(armsWidth / 2.0).add(halfLiftVector);
         Point2D rotatedDistanceVector = GeomHelper.getRotatedVector(distanceVector, angle);
         armsPosition = position.add(rotatedDistanceVector);
     }

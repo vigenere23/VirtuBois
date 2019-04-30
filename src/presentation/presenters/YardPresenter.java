@@ -159,42 +159,49 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (event.getCode().equals(KeyCode.RIGHT)) {
             larmanController.turnLiftRight();
             updateLiftInfo();
+            updateSelectedBundlesOnLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
             larmanController.turnLiftLeft();
             updateLiftInfo();
+            updateSelectedBundlesOnLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.UP)) {
             larmanController.moveLiftForward();
             updateLiftInfo();
+            updateSelectedBundlesOnLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.DOWN)) {
             larmanController.moveLiftBackward();
             updateLiftInfo();
+            updateSelectedBundlesOnLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.W) && event.isControlDown()) {
             larmanController.riseArms();
             updateLiftInfo();
+            updateSelectedBundlesOnLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
             larmanController.lowerArms();
             updateLiftInfo();
+            updateSelectedBundlesOnLift();
             draw();
             event.consume();
         }
         if (event.getCode().equals((KeyCode.UP)) && event.isControlDown()) {
             larmanController.moveLiftToBundle();
             updateLiftInfo();
+            updateSelectedBundlesOnLift();
             draw();
             event.consume();
         }
@@ -255,6 +262,20 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
 
     private void updateLiftInfo(){
         mainController.updateLiftInfo(larmanController.getLift());
+    }
+
+    private void updateSelectedBundlesOnLift(){
+        List<BundleDto> selectedBundles = larmanController.getBundles();
+        if (!selectedBundles.isEmpty()) {
+            for(BundleDto bundleDto : selectedBundles){
+                mainController.updateBundleInfo(bundleDto);
+            }
+        } else {
+            topSelectedBundle = null;
+            mainController.clearElevationView();
+            mainController.clearAllBundleInfo();
+            selectionOffsetVector = new Point2D(0, 0);
+        }
     }
 
     public void updateSelectedBundles() {

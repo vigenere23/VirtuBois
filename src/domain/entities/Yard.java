@@ -442,7 +442,7 @@ public class Yard implements Serializable {
             for(Bundle bundle : bundlesToMove){
                 double alpha = Math.toRadians(+5.0);
                 bundle.setPosition(changeBundleOnLift(bundle, alpha));
-                bundle.setAngle(bundle.getAngle() + 5.0);
+                bundle.angle = bundle.getAngle() + 5.0;
             }
         }
     }
@@ -452,7 +452,7 @@ public class Yard implements Serializable {
             for(Bundle bundle : bundlesToMove){
                 double alpha = Math.toRadians(-5.0);
                 bundle.setPosition(changeBundleOnLift(bundle, alpha));
-                bundle.setAngle(bundle.getAngle() - 5.0);
+                bundle.angle = bundle.getAngle() - 5.0;
             }
         }
     }

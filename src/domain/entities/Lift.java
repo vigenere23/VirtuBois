@@ -50,8 +50,7 @@ public class Lift extends Drawable3D implements Serializable {
                     bundle.setZ(bundle.getZ() + difference);
                 }
             }
-        }
-        else{
+        } else {
             double difference = 0 - this.armsHeight;
             this.armsHeight = 0;
             if (!bundlesOnLift.isEmpty()) {
@@ -77,11 +76,12 @@ public class Lift extends Drawable3D implements Serializable {
     public void setArmsLength(double armsLenght) {
         this.armsLength = armsLenght;
     }
-    public double getScale(){
+
+    public double getScale() {
         return scale;
     }
 
-    public void setScale(double scale){
+    public void setScale(double scale) {
         this.scale = scale;
         setWidth(ConfigHelper.liftWidth * scale);
         setLength(ConfigHelper.liftLength * scale);
@@ -128,7 +128,7 @@ public class Lift extends Drawable3D implements Serializable {
 
     @Override
     public void setPosition(Point2D position) {
-        super.setPosition(new Point2D(MathHelper.round(position.getX(),2),MathHelper.round(position.getY(),2)));
+        super.setPosition(new Point2D(MathHelper.round(position.getX(), 2), MathHelper.round(position.getY(), 2)));
         repositionArms();
     }
 
@@ -140,23 +140,23 @@ public class Lift extends Drawable3D implements Serializable {
     }
 
     public void repositionArms() {
-        Point2D halfLiftVector = new Point2D(width / 2.5,length / 2.0);
+        Point2D halfLiftVector = new Point2D(width / 2.5, length / 2.0);
         Point2D distanceVector = new Point2D(armsWidth / 2.0).add(halfLiftVector);
         Point2D rotatedDistanceVector = GeomHelper.getRotatedVector(distanceVector, angle);
         armsPosition = position.add(rotatedDistanceVector);
     }
 
     public void setBundlesOnLift(List<Bundle> bundlesOnLift) {
-        if(this.bundlesOnLift.isEmpty()) {
+        if (this.bundlesOnLift.isEmpty()) {
             this.bundlesOnLift = bundlesOnLift;
         }
     }
 
-    public List<Bundle> getBundlesOnLift(){
+    public List<Bundle> getBundlesOnLift() {
         return bundlesOnLift;
     }
 
-    public void clearBundles(){
+    public void clearBundles() {
         bundlesOnLift.clear();
     }
 }

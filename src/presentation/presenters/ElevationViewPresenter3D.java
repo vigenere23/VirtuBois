@@ -83,8 +83,8 @@ public class ElevationViewPresenter3D implements IPresenter {
         Rotate xRotate;
         Rotate yRotate;
         group.getTransforms().addAll(
-                xRotate = new Rotate(0, Rotate.X_AXIS),
-                yRotate = new Rotate(0, Rotate.Y_AXIS)
+            xRotate = new Rotate(0, Rotate.X_AXIS),
+            yRotate = new Rotate(0, Rotate.Y_AXIS)
         );
         xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
@@ -127,25 +127,23 @@ public class ElevationViewPresenter3D implements IPresenter {
 
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
             double delta = event.getDeltaY();
-            if(camera.getTranslateZ() > 1.0 || camera.getTranslateZ() < -1.0) {
+            if (camera.getTranslateZ() > 1.0 || camera.getTranslateZ() < -1.0) {
                 camera.translateZProperty().set(camera.getTranslateZ() - delta * Math.abs(camera.getTranslateZ()) / 300.0d);
-            }
-            else{
+            } else {
                 camera.translateZProperty().set(camera.getTranslateZ() - delta / 100.0d);
             }
         });
         viewAllBundlesButton.setOnAction(event -> {
-            if(viewAllBundlesButton.isSelected()){
-                if(!larmanController.getBundles().isEmpty()) {
+            if (viewAllBundlesButton.isSelected()) {
+                if (!larmanController.getBundles().isEmpty()) {
                     setFocusedBundle(mainController.getYardPresenter().getTopSelectedBundle());
                 }
-            }
-            else {
+            } else {
                 clearBundles(false);
                 mainController.getYardPresenter().setTopSelectedBundle(null);
             }
         });
-   }
+    }
 
 //https://github.com/afsalashyana/JavaFX-3D/blob/master/src/gc/tutorial/chapt4/Rotation3DWithMouse.java
 
@@ -156,7 +154,7 @@ public class ElevationViewPresenter3D implements IPresenter {
             box.setRotationAxis(new Point3D(0.0, 1.0, 0.0));
             box.setRotate(-bundle.angle);
             box.setTranslateX(bundle.getX() - initGroupTranslate.getX());
-            box.setTranslateY(-(bundle.height)/2 - bundle.getZ() + 1);
+            box.setTranslateY(-(bundle.height) / 2 - bundle.getZ() + 1);
             box.setTranslateZ(bundle.getY() - initGroupTranslate.getY());
 
             PhongMaterial material = new PhongMaterial();
@@ -194,12 +192,11 @@ public class ElevationViewPresenter3D implements IPresenter {
     public void setFocusedBundle(BundleDto bundle) {
         clearBundles(false);
         focusedBundle = bundle;
-        if(!viewAllBundlesButton.isSelected()) {
+        if (!viewAllBundlesButton.isSelected()) {
             allBundles = larmanController.getAllCollidingBundles(bundle);
             setInitialGroupTranslate();
             draw();
-        }
-        else{
+        } else {
             allBundles = larmanController.getBundles();
             setInitialGroupTranslate();
             draw();
@@ -207,17 +204,16 @@ public class ElevationViewPresenter3D implements IPresenter {
     }
 
     public void clearBundles(boolean fromMain) {
-        if(!fromMain || !viewAllBundlesButton.isSelected()) {
+        if (!fromMain || !viewAllBundlesButton.isSelected()) {
             allBundles.clear();
             group.getChildren().clear();
             boxToBundleDtoMap.clear();
             dtoToBoxMap.clear();
         }
-        if(fromMain && viewAllBundlesButton.isSelected())
-        {
+        if (fromMain && viewAllBundlesButton.isSelected()) {
             deselect();
         }
-        if(!viewAllBundlesButton.isSelected()){
+        if (!viewAllBundlesButton.isSelected()) {
             camera.translateXProperty().set(0.0);
             camera.translateYProperty().set(0.0);
             camera.translateZProperty().set(0.0);
@@ -268,23 +264,23 @@ public class ElevationViewPresenter3D implements IPresenter {
         double deltaX = maxX - minX;
         double deltaY = maxY - minY;
         double cameraTranslateX = deltaX + 3;
-        double cameraTranslateY = 11.0/3.0 * maxZ;
+        double cameraTranslateY = 11.0 / 3.0 * maxZ;
         double cameraTranslateZ = deltaY + 3;
 
-        double translate = Math.max(cameraTranslateX, Math.max(cameraTranslateY,cameraTranslateZ));
-        if(!viewAllBundlesButton.isSelected() || camera.getTranslateZ() == 0) {
+        double translate = Math.max(cameraTranslateX, Math.max(cameraTranslateY, cameraTranslateZ));
+        if (!viewAllBundlesButton.isSelected() || camera.getTranslateZ() == 0) {
             camera.translateZProperty().set(-translate);
         }
 
-        Cylinder plancher = new Cylinder(Math.max(deltaX,Math.max(deltaY, maxZ*4)) + 20,0.1);
+        Cylinder plancher = new Cylinder(Math.max(deltaX, Math.max(deltaY, maxZ * 4)) + 20, 0.1);
         plancher.setRotate(-90);
         plancher.setTranslateY(1);
-        plancher.setRotationAxis(new Point3D(0,1,0));
+        plancher.setRotationAxis(new Point3D(0, 1, 0));
         plancher.setRotate(90);
 
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseColor(Color.GREY);
-        Image image = new Image("/presentation/assets/images/asphalte.jpg",3000,3000,true,true);
+        Image image = new Image("/presentation/assets/images/asphalte.jpg", 3000, 3000, true, true);
         material.setDiffuseMap(image);
         plancher.setMaterial(material);
 
@@ -294,9 +290,9 @@ public class ElevationViewPresenter3D implements IPresenter {
 
     }
 
-    private void deselect(){
-        if(focusedBundle != null && !allBundles.isEmpty()) {
-            for(int i = 2 ; i < group.getChildren().size() ; i++) {
+    private void deselect() {
+        if (focusedBundle != null && !allBundles.isEmpty()) {
+            for (int i = 2; i < group.getChildren().size(); i++) {
                 Box box = (Box) group.getChildren().get(i);
                 PhongMaterial material = (PhongMaterial) box.getMaterial();
                 Color color = material.getDiffuseColor();

@@ -79,7 +79,7 @@ public class LarmanController {
         yard.modifyBundleProperties(bundleDto);
     }
 
-    public void modifyLiftProperties(LiftDto liftDto){
+    public void modifyLiftProperties(LiftDto liftDto) {
         yard.modifyLiftProperties(liftDto);
     }
 
@@ -115,7 +115,9 @@ public class LarmanController {
         yard.lowerArms();
     }
 
-    public void moveLiftToBundle() {yard.moveLiftToBundle();}
+    public void moveLiftToBundle() {
+        yard.moveLiftToBundle();
+    }
 
     public void moveLiftForward() {
         yard.moveLiftForward();
@@ -133,12 +135,16 @@ public class LarmanController {
         yard.turnLiftLeft();
     }
 
-    public List<BundleDto> getLiftBundles(){
+    public List<BundleDto> getLiftBundles() {
         List<Bundle> liftBundles = sortBundlesZ(yard.getLift().getBundlesOnLift());
         return Converter.fromBundlesToBundleDtos(liftBundles);
     }
 
-    public void setLiftBundles(){ yard.setLiftBundles();}
+    public void setLiftBundles() {
+        yard.setLiftBundles();
+    }
 
-    public void clearLiftBundles(){yard.clearLiftBundles();}
+    public void clearLiftBundles() {
+        yard.clearLiftBundles();
+    }
 }

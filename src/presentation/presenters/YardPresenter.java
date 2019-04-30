@@ -3,7 +3,6 @@ package presentation.presenters;
 import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
-import domain.entities.Bundle;
 import enums.EditorMode;
 import helpers.*;
 import javafx.geometry.Pos;
@@ -73,7 +72,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         setOnMouseMoved(this::updateMousePosition);
         setOnScroll(this::handleOnScrollEvent);
         setOnKeyPressed(this::handleOnKeyPressedEvent);
-        setOnKeyReleased(this::handleOnKeyReleasedEvent);
     }
 
     private void handleOnMousePressedEvent(MouseEvent event) {
@@ -146,9 +144,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         }
     }
 
-    private void handleOnKeyReleasedEvent(KeyEvent keyEvent) {
-    }
-
     private void handleOnScrollEvent(ScrollEvent event) {
         if (event.isControlDown()) handleZoom(event.getDeltaY(), new Point2D(event.getX(), event.getY()));
         else handlePanning(event);
@@ -162,98 +157,65 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (event.getCode().equals(KeyCode.RIGHT)) {
             larmanController.turnLiftRight();
             updateLiftInfo();
-            updateSelectedBundlesLift();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-            }
-            else {
-                draw();
-            }
+            getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
             larmanController.turnLiftLeft();
             updateLiftInfo();
-            updateSelectedBundlesLift();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-            }
-            else {
-                draw();
-            }
+            getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.UP)) {
             larmanController.moveLiftForward();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-            }
-            else {
-                draw();
-            }
+            getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.DOWN)) {
             larmanController.moveLiftBackward();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-            }
-            else {
-                draw();
-            }
+            getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.W) && event.isControlDown()) {
             larmanController.riseArms();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-            }
-            else {
-                draw();
-            }
+            getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
             larmanController.lowerArms();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-            }
-            else {
-                draw();
-            }
+            getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals((KeyCode.UP)) && event.isControlDown()) {
             larmanController.moveLiftToBundle();
             updateLiftInfo();
             updateSelectedBundlesLift();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-            }
-            else {
-                draw();
-            }
+            getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.SPACE)){
             larmanController.setLiftBundles();
-            if(!larmanController.getLiftBundles().isEmpty()) {
-                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
-            }
-            else {
-                draw();
-            }
+            getSelectedBundleLift();
         }
         if (event.getCode().equals(KeyCode.ENTER)) {
             larmanController.clearLiftBundles();
+        }
+    }
+
+    private void getSelectedBundleLift(){
+        if(!larmanController.getLiftBundles().isEmpty()) {
+            setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+        }
+        else {
+            draw();
         }
     }
 

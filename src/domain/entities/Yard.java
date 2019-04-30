@@ -5,6 +5,7 @@ import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
 import enums.Comparison;
 import helpers.*;
+import presentation.controllers.MainController;
 
 import java.io.Serializable;
 import java.util.*;
@@ -364,7 +365,14 @@ public class Yard implements Serializable {
     }
 
     public void riseArms() {
-        lift.riseArms();
+        if(movement){
+            List<Bundle> bundlesToMove = moveBundles();
+            moveBundlesUp(bundlesToMove, true);
+            lift.riseArms();
+        } else {
+            lift.riseArms();
+        }
+
     }
 
     public void lowerArms(){
@@ -376,15 +384,22 @@ public class Yard implements Serializable {
         }
     }
 
-    private void moveBundlesUp(List<Bundle> bundlesToMove, boolean Up){
+    public BundleDto moveBundlesUp(List<Bundle> bundlesToMove, boolean Up){
         if(bundlesToMove != null){
             for(Bundle bundle : bundlesToMove){
-                System.out.println(bundle.z);
-                if (Up) bundle.setZ(bundle.z += ConfigHelper.armsHeightIncrement);
-                else bundle.z -= ConfigHelper.armsHeightIncrement;
-                modifyBundleProperties(new BundleDto(bundle));
+                if (Up) {
+                    bundle.setZ(bundle.getZ() + ConfigHelper.armsHeightIncrement);
+                    modifyBundleProperties(new BundleDto(bundle));
+                    return new BundleDto(bundle);
+                }
+                else {
+                    bundle.setZ(bundle.getZ() - ConfigHelper.armsHeightIncrement);
+                    modifyBundleProperties(new BundleDto(bundle));
+                    return new BundleDto(bundle);
+                }
             }
         }
+        return null;
     }
 
     private List<Bundle> moveBundles(){

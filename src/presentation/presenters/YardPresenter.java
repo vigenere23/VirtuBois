@@ -112,14 +112,14 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         } else {
             if (mainController.editorMode.getValue() == EditorMode.POINTER) {
                 if (canDrag) {
-                    if(!larmanController.getLiftBundles().contains(topSelectedBundle)) {
+                    if (!larmanController.getLiftBundles().contains(topSelectedBundle)) {
                         if (!shouldUpdate) {
                             shouldUpdate = true;
                             UndoRedo.addCurrentYard();
                         }
                         Point2D newBundlePosition = mainController.gridIsOn
-                                ? positionInGrid(mousePositionInRealCoords)
-                                : mousePositionInRealCoords.substract(selectionOffsetVector);
+                            ? positionInGrid(mousePositionInRealCoords)
+                            : mousePositionInRealCoords.substract(selectionOffsetVector);
 
                         larmanController.modifyBundlePosition(topSelectedBundle.id, newBundlePosition);
                         draw();
@@ -157,12 +157,24 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         if (event.getCode().equals(KeyCode.RIGHT)) {
             larmanController.turnLiftRight();
             updateLiftInfo();
+            updateSelectedBundlesLift();
+            if (!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            } else {
+                draw();
+            }
             getSelectedBundleLift();
             event.consume();
         }
         if (event.getCode().equals(KeyCode.LEFT)) {
             larmanController.turnLiftLeft();
             updateLiftInfo();
+            updateSelectedBundlesLift();
+            if (!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            } else {
+                draw();
+            }
             getSelectedBundleLift();
             event.consume();
         }
@@ -170,6 +182,11 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             larmanController.moveLiftForward();
             updateLiftInfo();
             updateSelectedBundlesLift();
+            if (!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            } else {
+                draw();
+            }
             getSelectedBundleLift();
             event.consume();
         }
@@ -177,6 +194,11 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             larmanController.moveLiftBackward();
             updateLiftInfo();
             updateSelectedBundlesLift();
+            if (!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            } else {
+                draw();
+            }
             getSelectedBundleLift();
             event.consume();
         }
@@ -184,6 +206,11 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             larmanController.riseArms();
             updateLiftInfo();
             updateSelectedBundlesLift();
+            if (!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            } else {
+                draw();
+            }
             getSelectedBundleLift();
             event.consume();
         }
@@ -191,6 +218,11 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             larmanController.lowerArms();
             updateLiftInfo();
             updateSelectedBundlesLift();
+            if (!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            } else {
+                draw();
+            }
             getSelectedBundleLift();
             event.consume();
         }
@@ -198,11 +230,21 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             larmanController.moveLiftToBundle();
             updateLiftInfo();
             updateSelectedBundlesLift();
+            if (!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            } else {
+                draw();
+            }
             getSelectedBundleLift();
             event.consume();
         }
-        if (event.getCode().equals(KeyCode.SPACE)){
+        if (event.getCode().equals(KeyCode.SPACE)) {
             larmanController.setLiftBundles();
+            if (!larmanController.getLiftBundles().isEmpty()) {
+                setTopSelectedBundle(larmanController.getLiftBundles().get(0));
+            } else {
+                draw();
+            }
             getSelectedBundleLift();
         }
         if (event.getCode().equals(KeyCode.ENTER)) {
@@ -266,7 +308,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         return new Point2D(getWidth() / 2.0, getHeight() / 2.0);
     }
 
-    private void updateLiftInfo(){
+    private void updateLiftInfo() {
         mainController.updateLiftInfo(larmanController.getLift());
     }
 
@@ -285,10 +327,10 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         }
     }
 
-    private void updateSelectedBundlesLift(){
+    private void updateSelectedBundlesLift() {
         List<BundleDto> selectBundle = larmanController.getBundles();
-        if(selectBundle != null){
-            for (BundleDto bundles : selectBundle){
+        if (selectBundle != null) {
+            for (BundleDto bundles : selectBundle) {
                 mainController.updateBundleInfo(bundles);
             }
         }

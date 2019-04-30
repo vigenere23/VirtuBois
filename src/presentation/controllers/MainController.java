@@ -213,9 +213,9 @@ public class MainController extends BaseController {
     private void initLiftInfo() {
         JavafxHelper.addStringToDoubleConverter(armsHeightValue, null, 0.0, null);
         JavafxHelper.addStringToDoubleConverter(liftXValue, 0.0, null, null);
-        JavafxHelper.addStringToDoubleConverter(liftYValue, 0.0, null,null);
-        JavafxHelper.addStringToDoubleConverter(liftAngleValue, 0.0, 0.0,359.0);
-        JavafxHelper.addStringToDoubleConverter(liftScaleValue,1.0,0.01,null);
+        JavafxHelper.addStringToDoubleConverter(liftYValue, 0.0, null, null);
+        JavafxHelper.addStringToDoubleConverter(liftAngleValue, 0.0, 0.0, 359.0);
+        JavafxHelper.addStringToDoubleConverter(liftScaleValue, 1.0, 0.01, null);
         armsHeightValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsHeight()));
         liftHeightValue.setText(String.valueOf(larmanController.getYard().getLift().getHeight()));
         armsXValue.setText(String.valueOf(larmanController.getYard().getLift().getArmsPosition().getX()));
@@ -226,10 +226,11 @@ public class MainController extends BaseController {
         liftScaleValue.setText(String.valueOf(larmanController.getYard().getLift().getScale()));
         initLiftTextFieldsHandlers();
     }
-    private void initLiftTextFieldsHandlers(){
+
+    private void initLiftTextFieldsHandlers() {
         liftAngleValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(!liftAngleValue.getText().isEmpty() && !liftAngleValue.getText().equals("-") && !liftAngleValue.getText().equals(".") && !liftAngleValue.getText().equals("-.")){
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (!liftAngleValue.getText().isEmpty() && !liftAngleValue.getText().equals("-") && !liftAngleValue.getText().equals(".") && !liftAngleValue.getText().equals("-.")) {
                     LiftDto liftDto = new LiftDto(larmanController.getYard().getLift());
                     liftDto.angle = Double.parseDouble(liftAngleValue.getText());
                     larmanController.modifyLiftProperties(liftDto);
@@ -241,7 +242,7 @@ public class MainController extends BaseController {
 
         armsHeightValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!armsHeightValue.getText().isEmpty() && !armsHeightValue.getText().equals("-") && !armsHeightValue.getText().equals(".") && !armsHeightValue.getText().equals("-.")) {
+                if (!armsHeightValue.getText().isEmpty() && !armsHeightValue.getText().equals("-") && !armsHeightValue.getText().equals(".") && !armsHeightValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
                     liftDto.armsHeight = Double.parseDouble(armsHeightValue.getText());
                     larmanController.modifyLiftProperties(liftDto);
@@ -253,7 +254,7 @@ public class MainController extends BaseController {
 
         liftHeightValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!liftHeightValue.getText().isEmpty() && !liftHeightValue.getText().equals("-") && !liftHeightValue.getText().equals(".") && !liftHeightValue.getText().equals("-.")) {
+                if (!liftHeightValue.getText().isEmpty() && !liftHeightValue.getText().equals("-") && !liftHeightValue.getText().equals(".") && !liftHeightValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
                     liftDto.height = Double.parseDouble(liftHeightValue.getText());
                     larmanController.modifyLiftProperties(liftDto);
@@ -265,7 +266,7 @@ public class MainController extends BaseController {
 
         liftYValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!liftYValue.getText().isEmpty() && !liftYValue.getText().equals("-") && !liftYValue.getText().equals(".") && !liftYValue.getText().equals("-.")) {
+                if (!liftYValue.getText().isEmpty() && !liftYValue.getText().equals("-") && !liftYValue.getText().equals(".") && !liftYValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
                     liftDto.position = new Point2D(liftDto.position.getX(), Double.parseDouble(liftYValue.getText()));
                     larmanController.modifyLiftProperties(liftDto);
@@ -277,7 +278,7 @@ public class MainController extends BaseController {
 
         liftXValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!liftXValue.getText().isEmpty() && !liftXValue.getText().equals("-") && !liftXValue.getText().equals(".") && !liftXValue.getText().equals("-.")) {
+                if (!liftXValue.getText().isEmpty() && !liftXValue.getText().equals("-") && !liftXValue.getText().equals(".") && !liftXValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
                     liftDto.position = new Point2D(Double.parseDouble(liftXValue.getText()), liftDto.position.getY());
                     larmanController.modifyLiftProperties(liftDto);
@@ -288,8 +289,8 @@ public class MainController extends BaseController {
         });
 
         liftScaleValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(!liftScaleValue.getText().isEmpty() && !liftScaleValue.getText().equals("-") && !liftScaleValue.getText().equals(".") && !liftScaleValue.getText().equals("-.")){
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (!liftScaleValue.getText().isEmpty() && !liftScaleValue.getText().equals("-") && !liftScaleValue.getText().equals(".") && !liftScaleValue.getText().equals("-.")) {
                     LiftDto liftDto = larmanController.getLift();
                     liftDto.scale = Double.parseDouble(liftScaleValue.getText());
                     larmanController.modifyLiftProperties(liftDto);
@@ -299,7 +300,6 @@ public class MainController extends BaseController {
             }
         });
     }
-
 
 
     private void initTextFieldsHandlers() {
@@ -567,12 +567,12 @@ public class MainController extends BaseController {
     }
 
 
-    public void updateLiftInfo(LiftDto liftDto){
+    public void updateLiftInfo(LiftDto liftDto) {
         armsXValue.setText(String.valueOf(liftDto.armsPosition.getX()));
         armsYValue.setText(String.valueOf(liftDto.armsPosition.getY()));
         liftXValue.setText(String.valueOf(liftDto.position.getX()));
         liftYValue.setText(String.valueOf(liftDto.position.getY()));
-        armsHeightValue.setText(String.valueOf(MathHelper.round(liftDto.armsHeight,2)));
+        armsHeightValue.setText(String.valueOf(MathHelper.round(liftDto.armsHeight, 2)));
         liftHeightValue.setText(String.valueOf(liftDto.height));
         liftAngleValue.setText(String.valueOf(liftDto.angle));
         liftScaleValue.setText(String.valueOf(liftDto.scale));
@@ -593,7 +593,7 @@ public class MainController extends BaseController {
         bundlePlankSizeValue2.setText(plankSize[1]);
         bundleXPosValue.setText(String.valueOf(bundle.position.getX()));
         bundleYPosValue.setText(String.valueOf(bundle.position.getY()));
-        bundleZPosValue.setText(String.valueOf(MathHelper.round(bundle.getZ(),2)));
+        bundleZPosValue.setText(String.valueOf(MathHelper.round(bundle.getZ(), 2)));
         bundleAngleValue.setText(String.valueOf(bundle.angle));
 
         boolean canChange = true;
@@ -624,16 +624,17 @@ public class MainController extends BaseController {
             observableBundleList = bundles;
             ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
             inventoryTable.setItems(data);
-            if(yardPresenter.getTopSelectedBundle() != null){
+            if (yardPresenter.getTopSelectedBundle() != null) {
                 selectTableViewBundle(yardPresenter.getTopSelectedBundle());
             }
         } else {
             inventoryTable.getItems().clear();
         }
     }
-    private void selectTableViewBundle(BundleDto bundle){
-        for(BundleDto bundles : inventoryTable.getItems()){
-            if(bundle.equals(bundles)){
+
+    private void selectTableViewBundle(BundleDto bundle) {
+        for (BundleDto bundles : inventoryTable.getItems()) {
+            if (bundle.equals(bundles)) {
                 int index = inventoryTable.getItems().indexOf(bundles);
                 inventoryTable.getSelectionModel().select(index);
                 inventoryTable.getSelectionModel().focus(index);
@@ -672,8 +673,7 @@ public class MainController extends BaseController {
             larmanController.setYard(UndoRedo.undo());
             yardPresenter.updateSelectedBundles();
             yardPresenter.draw();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -683,8 +683,7 @@ public class MainController extends BaseController {
             larmanController.setYard(UndoRedo.redo());
             yardPresenter.updateSelectedBundles();
             yardPresenter.draw();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

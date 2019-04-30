@@ -13,12 +13,11 @@ public class GeomHelper {
 
     public static boolean pointIsInsideRectangle(Point2D point, CenteredRectangle rectangle) {
         List<Point2D> points = rectangle.getPoints();
-
         double totalArea = 0;
         for (int i = 0; i < points.size(); i++) {
             totalArea += getTriangleArea(points.get(i), points.get((i + 1) % points.size()), point);
         }
-        return MathHelper.round(totalArea - rectangle.area(), 2) == 0;
+        return MathHelper.round(totalArea - rectangle.area(), 1) == 0;
     }
 
     public static boolean rectangleCollidesRectangle(CenteredRectangle rectangle1, CenteredRectangle rectangle2) {

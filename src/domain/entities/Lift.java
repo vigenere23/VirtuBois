@@ -42,11 +42,22 @@ public class Lift extends Drawable3D implements Serializable {
     }
 
     public void setArmsHeight(double armsHeight) {
-        double difference =  armsHeight - this.armsHeight;
-        this.armsHeight = armsHeight;
-        if(!bundlesOnLift.isEmpty()){
-            for(Bundle bundle : bundlesOnLift){
-                bundle.setZ(bundle.getZ() + difference);
+        if (armsHeight > 0) {
+            double difference = armsHeight - this.armsHeight;
+            this.armsHeight = armsHeight;
+            if (!bundlesOnLift.isEmpty()) {
+                for (Bundle bundle : bundlesOnLift) {
+                    bundle.setZ(bundle.getZ() + difference);
+                }
+            }
+        }
+        else{
+            double difference = 0 - this.armsHeight;
+            this.armsHeight = 0;
+            if (!bundlesOnLift.isEmpty()) {
+                for (Bundle bundle : bundlesOnLift) {
+                    bundle.setZ(bundle.getZ() + difference);
+                }
             }
         }
     }
@@ -108,12 +119,11 @@ public class Lift extends Drawable3D implements Serializable {
     }
 
     public void riseArms() {
-        armsHeight += ConfigHelper.armsHeightIncrement;
+        setArmsHeight(armsHeight + ConfigHelper.armsHeightIncrement);
     }
 
     public void lowerArms() {
-        armsHeight -= ConfigHelper.armsHeightIncrement;
-        if (armsHeight < 0) armsHeight = 0;
+        setArmsHeight(armsHeight - ConfigHelper.armsHeightIncrement);
     }
 
     @Override

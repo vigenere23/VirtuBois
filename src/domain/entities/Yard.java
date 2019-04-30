@@ -355,34 +355,11 @@ public class Yard implements Serializable {
     }
 
     public void riseArms() {
-        if(!lift.getBundlesOnLift().isEmpty()) {
-            moveBundlesUp(lift.getBundlesOnLift(), true);
-        }
         lift.riseArms();
     }
 
     public void lowerArms(){
-        if(!lift.getBundlesOnLift().isEmpty()){
-            moveBundlesUp(lift.getBundlesOnLift(), false);
-        }
         lift.lowerArms();
-        if (lift.getArmsHeight() < 0) {
-        }
-    }
-
-    private void moveBundlesUp(List<Bundle> bundlesToMove, boolean Up){
-        if(!bundlesToMove.isEmpty()){
-            for(Bundle bundle : bundlesToMove){
-                if (Up) {
-                    bundle.setZ(bundle.getZ() + ConfigHelper.armsHeightIncrement);
-                    changeZOnLiftBundle(new BundleDto(bundle));
-                }
-                else{
-                    bundle.setZ(bundle.getZ() - ConfigHelper.armsHeightIncrement);
-                    changeZOnLiftBundle(new BundleDto(bundle));
-                }
-            }
-        }
     }
 
     private List<Bundle> bundlesToMove(){

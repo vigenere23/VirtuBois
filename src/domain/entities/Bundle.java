@@ -77,7 +77,9 @@ public class Bundle extends Drawable3D implements Serializable
 
     @Override
     public void setAngle(double angle) {
-        super.setAngle(MathHelper.round(angle, 2));
+        angle %= 360;
+        if (angle < 0) angle += 360;
+        super.setAngle(angle);
         ConfigHelper.bundleAngle = this.angle;
     }
 

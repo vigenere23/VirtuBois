@@ -21,6 +21,7 @@ public class Lift extends Drawable3D implements Serializable {
 
     public Lift(Point2D position) {
         super(position);
+        bundlesOnLift = new ArrayList<>();
         setWidth(ConfigHelper.liftWidth);
         setLength(ConfigHelper.liftLength);
         setHeight(ConfigHelper.liftHeight);
@@ -30,7 +31,6 @@ public class Lift extends Drawable3D implements Serializable {
         setAngle(ConfigHelper.liftAngle);
         this.scale = ConfigHelper.liftScale;
         repositionArms();
-        bundlesOnLift = new ArrayList<>();
     }
 
     public Point2D getArmsPosition() {
@@ -42,7 +42,13 @@ public class Lift extends Drawable3D implements Serializable {
     }
 
     public void setArmsHeight(double armsHeight) {
+        double difference =  armsHeight - this.armsHeight;
         this.armsHeight = armsHeight;
+        if(!bundlesOnLift.isEmpty()){
+            for(Bundle bundle : bundlesOnLift){
+                bundle.setZ(bundle.getZ() + difference);
+            }
+        }
     }
 
     public double getArmsWidth() {

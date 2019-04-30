@@ -135,6 +135,9 @@ public class Yard implements Serializable {
             UndoRedo.undoUndo();
         }
     }
+    public void changeZOnLiftBundle(BundleDto bundle){
+        getBundle(bundle.id).setZ(MathHelper.round(bundle.z,2));
+    }
 
     public void modifyLiftProperties(LiftDto liftDto) {
         double scaleBackup = lift.getScale();
@@ -316,11 +319,13 @@ public class Yard implements Serializable {
                 while(!liftCollidesAnyBundle()){
                     lift.moveForward();
                 }
+                lift.moveBackward();
             }
             if (GeomHelper.lineIntersectsRectangle(point3, point4, rectangle) && lift.height > z) {
                 while(!liftCollidesAnyBundle()){
                     lift.moveForward();
                 }
+                lift.moveBackward();
             }
             if (GeomHelper.lineIntersectsRectangle(point5, point6, rectangle) && lift.height > z) {
                 while(!liftCollidesAnyBundle()){
@@ -357,23 +362,24 @@ public class Yard implements Serializable {
     }
 
     public void lowerArms(){
-        if (lift.getArmsHeight() > 0) {
-            lift.lowerArms();
+        if(!lift.getBundlesOnLift().isEmpty()){
+            moveBundlesUp(lift.getBundlesOnLift(), false);
         }
+        lift.lowerArms();
         if (lift.getArmsHeight() < 0) {
-            lift.setArmsHeight(0);
         }
     }
 
     private void moveBundlesUp(List<Bundle> bundlesToMove, boolean Up){
-        if(bundlesToMove != null){
+        if(!bundlesToMove.isEmpty()){
             for(Bundle bundle : bundlesToMove){
                 if (Up) {
                     bundle.setZ(bundle.getZ() + ConfigHelper.armsHeightIncrement);
+                    changeZOnLiftBundle(new BundleDto(bundle));
                 }
-                else {
+                else{
                     bundle.setZ(bundle.getZ() - ConfigHelper.armsHeightIncrement);
-                    modifyBundleProperties(new BundleDto(bundle));
+                    changeZOnLiftBundle(new BundleDto(bundle));
                 }
             }
         }
@@ -387,8 +393,10 @@ public class Yard implements Serializable {
         for(Bundle bundle : bundlesSorted){
             CenteredRectangle rectangle1 = new CenteredRectangle(bundle);
             if(GeomHelper.rectangleCollidesRectangle(rectArms, rectangle1)){
-                bundleUnderAll = bundle;
-                break;
+                if(bundle.getZ() >= lift.getArmsHeight()) {
+                    bundleUnderAll = bundle;
+                    break;
+                }
             }
         }
         if(bundleUnderAll == null){
@@ -402,7 +410,7 @@ public class Yard implements Serializable {
             exceptions.add(check);
             List<Bundle> allColliding = getCollidingBundles(check, null);
             for(Bundle bundle : allColliding){
-                if(bundle.getZ() < check.getZ()){
+                if(bundle.getZ() <= check.getZ()){
                     exceptions.add(bundle);
                 }
             }
@@ -418,19 +426,9 @@ public class Yard implements Serializable {
             }
             bundlesToCheck.pop();
         }
-
-        /*for(Bundle bundles : sortBundlesZ(getBundles())){
-            if(armsCollidesAnyBundle(rectArms, bundles) && lift.getArmsHeight() <= bundles.getZ() + 0.2 && lift.getArmsHeight() >= bundles.getZ() - 0.2){
-                bundleTolift = bundles;
-                break;
-            }
-        }
-        if(bundleTolift != null){
-             return armsCollideAnyBundles(bundleTolift);
-        }
-        */
         return bundleTolift;
     }
+
     private void movingBundles(List<Bundle> bundlesToMove, boolean movingForward){
         if(!bundlesToMove.isEmpty()){
             for(Bundle bundle : bundlesToMove){
@@ -441,6 +439,7 @@ public class Yard implements Serializable {
             }
         }
     }
+
     private void turnBundlesLeft(List<Bundle> bundlesToMove){
         if(!bundlesToMove.isEmpty()){
             for(Bundle bundle : bundlesToMove){

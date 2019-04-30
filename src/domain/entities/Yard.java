@@ -55,12 +55,21 @@ public class Yard implements Serializable {
         Bundle bundle = new Bundle(position);
         bundles.put(bundle.getId(), bundle);
         putBundleToTop(bundle);
-        if (!liftCollidesAnyBundle()) {
-            return bundle;
-        } else if (liftCollidesAnyBundle()) {
-            UndoRedo.undoAction();
+        CenteredRectangle rectangleNew = new CenteredRectangle(bundle);
+        for(Bundle bundlesInLift : lift.getBundlesOnLift()) {
+            CenteredRectangle rectangleInLift = new CenteredRectangle(bundlesInLift);
+            if (GeomHelper.rectangleCollidesRectangle(rectangleNew,rectangleInLift)) {
+                UndoRedo.undoAction();
+                return null;
+            }
         }
-        return null;
+        if (liftCollidesAnyBundle()) {
+            UndoRedo.undoAction();
+            return null;
+        }
+        else{
+            return bundle;
+        }
     }
 
     private void putBundleToTop(Bundle bundle) {

@@ -289,15 +289,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         }
     }
 
-    private void updateSelectedBundlesLift() {
-        List<BundleDto> selectBundle = larmanController.getBundles();
-        if (selectBundle != null) {
-            for (BundleDto bundles : selectBundle) {
-                mainController.updateBundleInfo(bundles);
-            }
-        }
-    }
-
     private void createBundle() {
         if (mainController.gridIsOn) {
             BundleDto createdBundle = larmanController.createBundle(positionInGrid(mousePositionInRealCoords));

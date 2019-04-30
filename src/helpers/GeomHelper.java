@@ -1,5 +1,8 @@
 package helpers;
 
+import domain.dtos.BundleDto;
+import domain.dtos.LiftDto;
+import domain.entities.Bundle;
 import javafx.scene.shape.Line;
 
 import java.awt.*;
@@ -91,4 +94,15 @@ public class GeomHelper {
         return new Point2D(x, y);
     }
 
+    public static Point2D rotateAroundCircle(LiftDto centerOfRotation, BundleDto rotationObject) {
+        double x = MathHelper.round(
+                Math.cos(Math.toRadians(centerOfRotation.angle + 90)) * (rotationObject.position.getX() - centerOfRotation.position.getX())
+                        - Math.sin(Math.toRadians(centerOfRotation.angle + 90)) * (rotationObject.position.getY() - centerOfRotation.position.getY()) + centerOfRotation.position.getX(),
+                2);
+        double y = MathHelper.round(
+                Math.sin(Math.toRadians(centerOfRotation.angle + 90)) * (rotationObject.position.getX() - centerOfRotation.position.getX())
+                        + Math.cos(Math.toRadians(centerOfRotation.angle + 90)) * (rotationObject.position.getY() - centerOfRotation.position.getY()) + centerOfRotation.position.getX(),
+                2);
+        return new Point2D(x,y);
+    }
 }

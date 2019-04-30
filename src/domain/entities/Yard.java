@@ -6,19 +6,20 @@ import domain.dtos.LiftDto;
 import enums.Comparison;
 import helpers.*;
 
-import java.awt.geom.Line2D;
 import java.io.Serializable;
-import java.math.MathContext;
 import java.util.*;
 
 public class Yard implements Serializable {
     private static final long serialVersionUID = 15641321L;
     private Map<String, Bundle> bundles;
     private Lift lift;
+    private boolean movement;
+
 
     public Yard() {
         this.bundles = new HashMap<>();
         this.lift = new Lift(new Point2D(0, 0));
+        movement = false;
     }
 
     private List<Bundle> sortBundlesZ(List<Bundle> bundles) {
@@ -37,6 +38,7 @@ public class Yard implements Serializable {
                 ? MathHelper.compareDoubles(bundle.getZ(), zMin) != Comparison.SMALLER
                 : MathHelper.compareDoubles(bundle.getZ(), zMin) == Comparison.GREATER;
             if (shouldAdd) {
+                zMin = bundle.getTopZ();
                 bundlesMinZ.add(bundle);
             }
         }
@@ -51,9 +53,17 @@ public class Yard implements Serializable {
         return lift;
     }
 
+    public boolean isMovement() {
+        return movement;
+    }
+
+    public void setMovement(boolean movement){
+        this.movement = movement;
+    }
+
     public Bundle createBundle(Point2D position) {
-        Bundle bundle = new Bundle(position);
         UndoRedo.addCurrentYard();
+        Bundle bundle = new Bundle(position);
         bundles.put(bundle.getId(), bundle);
         putBundleToTop(bundle);
         if (!liftCollidesAnyBundle()) {
@@ -61,8 +71,6 @@ public class Yard implements Serializable {
         }
         else if (liftCollidesAnyBundle()){
             UndoRedo.undoAction();
-        } else {
-            return null;
         }
         return null;
     }
@@ -76,7 +84,8 @@ public class Yard implements Serializable {
             Bundle higherBundle = Collections.max(bundlesToPutUnder, Comparator.comparing(Bundle::getTopZ));
             bundle.setZ(higherBundle.getTopZ());
             if(liftCollidesAnyBundle()){
-                UndoRedo.undoAction();
+                deleteBundle(bundle.getId());
+                UndoRedo.undoUndo();
             }
         } else {
             bundle.setZ(0);
@@ -254,6 +263,24 @@ public class Yard implements Serializable {
         return false;
     }
 
+    private List<Bundle> armsCollideAnyBundles(Bundle bundle) {
+        if(bundle != null) {
+            List<Bundle> collidingBundles = getAllCollidingBundles(new BundleDto(bundle));
+            return getBundlesWithMinZ(sortBundlesZ(collidingBundles), lift.getArmsHeight(), true);
+        }
+        else{
+            return null;
+        }
+    }
+
+    private boolean armsCollidesAnyBundle(CenteredRectangle armsRect, Bundle bundle) {
+        return GeomHelper.rectangleCollidesRectangle(
+                armsRect,
+                new CenteredRectangle(bundle)
+        );
+    }
+
+
     private boolean liftCollidesBundle(Bundle bundle) {
         return liftDtoCollidesBundle(new LiftDto(lift), bundle);
     }
@@ -270,12 +297,20 @@ public class Yard implements Serializable {
         if (liftCollidesAnyBundle()) {
             lift.moveBackward();
         }
+        if (movement) {
+            List<Bundle> bundlesToMove = moveBundles();
+            movingBundles(bundlesToMove, true);
+        }
     }
 
     public void moveLiftBackward() {
         lift.moveBackward();
         if (liftCollidesAnyBundle()) {
             lift.moveForward();
+        }
+        if (movement) {
+            List<Bundle> bundlesToMove = moveBundles();
+            movingBundles(bundlesToMove, false);
         }
     }
 
@@ -286,7 +321,6 @@ public class Yard implements Serializable {
         Point2D point4 = new Point2D(lift.position.getX() + (100000 + lift.getArmsLength()/2) * Math.cos(Math.toRadians(lift.angle)) , lift.position.getY() + (lift.getArmsLength()/2 + 100000) * Math.sin(Math.toRadians(lift.angle)));
         Point2D point5 = new Point2D(lift.position.getX() - (lift.getArmsLength()/2) * Math.cos(Math.toRadians(lift.angle)) , lift.position.getY() - (lift.getArmsLength()/2) * Math.sin(Math.toRadians(lift.angle)));
         Point2D point6 = new Point2D(lift.position.getX() - (lift.getArmsLength()/2 + 100000) * Math.cos(Math.toRadians(lift.angle)) , lift.position.getY() - (lift.getArmsLength()/2 + 100000) * Math.sin(Math.toRadians(lift.angle)));
-        System.out.println(point3.getX());
         List<Bundle> listBundles = getBundles();
         for (Bundle bundles : listBundles) {
             double z = bundles.getZ();
@@ -312,6 +346,9 @@ public class Yard implements Serializable {
         lift.turnRight();
         if (liftCollidesAnyBundle()) {
             lift.turnLeft();
+        } if (movement) {
+            List<Bundle> bundlesToMove = moveBundles();
+            turnBundles(bundlesToMove);
         }
     }
 
@@ -319,6 +356,10 @@ public class Yard implements Serializable {
         lift.turnLeft();
         if (liftCollidesAnyBundle()) {
             lift.turnRight();
+        }
+        if (movement) {
+            List<Bundle> bundlesToMove = moveBundles();
+            turnBundles(bundlesToMove);
         }
     }
 
@@ -335,10 +376,53 @@ public class Yard implements Serializable {
         }
     }
 
-    public void moveBundles(){
+    private void moveBundlesUp(List<Bundle> bundlesToMove, boolean Up){
+        if(bundlesToMove != null){
+            for(Bundle bundle : bundlesToMove){
+                System.out.println(bundle.z);
+                if (Up) bundle.setZ(bundle.z += ConfigHelper.armsHeightIncrement);
+                else bundle.z -= ConfigHelper.armsHeightIncrement;
+                modifyBundleProperties(new BundleDto(bundle));
+            }
+        }
+    }
 
+    private List<Bundle> moveBundles(){
+        Bundle bundleTolift = null;
+        CenteredRectangle rectArms = new CenteredRectangle(lift.getArmsPosition().getX(), lift.getArmsPosition().getY(), lift.getArmsWidth(), lift.getArmsLength(), lift.angle);
+        for(Bundle bundles : sortBundlesZ(getBundles())){
+            if(armsCollidesAnyBundle(rectArms, bundles) && lift.getArmsHeight() <= bundles.getZ() + 0.2 && lift.getArmsHeight() >= bundles.getZ() - 0.2){
+                bundleTolift = bundles;
+                break;
+            }
+        }
+        if(bundleTolift != null){
+             return armsCollideAnyBundles(bundleTolift);
+        } else {
+            return null;
+        }
+    }
+    private void movingBundles(List<Bundle> bundlesToMove, boolean movingForward){
+        if(bundlesToMove != null){
+            for(Bundle bundle : bundlesToMove){
+                Point2D increment = new Point2D(ConfigHelper.liftPositionIncrement);
+                Point2D rotatedIncrement = GeomHelper.getRotatedVector(increment, lift.angle);
+                if (movingForward) bundle.setPosition(bundle.position.add(rotatedIncrement));
+                else bundle.setPosition(bundle.position.substract(rotatedIncrement));
+            }
+        }
+    }
+    private void turnBundles(List<Bundle> bundlesToMove){
+        if(bundlesToMove != null){
+            for(Bundle bundle : bundlesToMove){
+                bundle.setPosition(new Point2D(bundle.position.getX() + GeomHelper.rotateAroundCircle(new LiftDto(lift), new BundleDto(bundle)).getX(),
+                        bundle.position.getY() + GeomHelper.rotateAroundCircle(new LiftDto(lift), new BundleDto(bundle)).getY()));
+
+            }
+        }
     }
     public void setLiftScale(double scale){
         lift.setScale(scale);
     }
 }
+

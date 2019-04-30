@@ -113,8 +113,6 @@ public class LarmanController {
         }
     }
 
-    public void moveBundles(){ yard.moveBundles(); }
-
     public void riseArms() {
         yard.riseArms();
     }

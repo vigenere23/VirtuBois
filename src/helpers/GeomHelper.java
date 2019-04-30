@@ -2,10 +2,6 @@ package helpers;
 
 import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
-import domain.entities.Bundle;
-import javafx.scene.shape.Line;
-
-import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.List;
 
@@ -75,7 +71,6 @@ public class GeomHelper {
         return new Point2D(point.getX(), -point.getY());
     }
 
-    // https://en.wikipedia.org/wiki/Shoelace_formula
     public static double getTriangleArea(Point2D point1, Point2D point2, Point2D point3) {
         return 0.5 * Math.abs(
                 point1.getX() * point2.getY()

@@ -1,11 +1,9 @@
 package domain.entities;
 
-import domain.controllers.LarmanController;
 import domain.dtos.BundleDto;
 import domain.dtos.LiftDto;
 import enums.Comparison;
 import helpers.*;
-import presentation.controllers.MainController;
 
 import java.io.Serializable;
 import java.util.*;
@@ -52,10 +50,6 @@ public class Yard implements Serializable {
 
     public Lift getLift() {
         return lift;
-    }
-
-    public boolean isMovement() {
-        return movement;
     }
 
     public void setMovement(boolean movement){

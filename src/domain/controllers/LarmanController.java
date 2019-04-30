@@ -107,12 +107,6 @@ public class LarmanController {
         return Converter.fromBundlesToBundleDtos(collidingBundles);
     }
 
-    public void modifyBundlesPositionUsingLift(List<BundleDto> bundles, Point2D position) {
-        for (BundleDto bundle : bundles) {
-            yard.modifyBundlePosition(bundle.id, position);
-        }
-    }
-
     public void riseArms() {
         yard.riseArms();
     }

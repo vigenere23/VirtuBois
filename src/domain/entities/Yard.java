@@ -153,10 +153,6 @@ public class Yard implements Serializable {
         }
     }
 
-    public void changeZOnLiftBundle(BundleDto bundle) {
-        getBundle(bundle.id).setZ(MathHelper.round(bundle.z, 2));
-    }
-
     public void modifyLiftProperties(LiftDto liftDto) {
         double scaleBackup = lift.getScale();
         if (liftDto != null && !liftDtoCollidesAnyBundle(liftDto) && liftDto.length > liftDto.armsLength) {
@@ -282,23 +278,6 @@ public class Yard implements Serializable {
         }
         return false;
     }
-
-    private List<Bundle> armsCollideAnyBundles(Bundle bundle) {
-        if (bundle != null) {
-            List<Bundle> collidingBundles = getAllCollidingBundles(new BundleDto(bundle));
-            return getBundlesWithMinZ(sortBundlesZ(collidingBundles), lift.getArmsHeight(), true);
-        } else {
-            return null;
-        }
-    }
-
-    private boolean armsCollidesAnyBundle(CenteredRectangle armsRect, Bundle bundle) {
-        return GeomHelper.rectangleCollidesRectangle(
-            armsRect,
-            new CenteredRectangle(bundle)
-        );
-    }
-
 
     private boolean liftCollidesBundle(Bundle bundle) {
         return liftDtoCollidesBundle(new LiftDto(lift), bundle);

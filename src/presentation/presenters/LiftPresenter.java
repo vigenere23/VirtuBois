@@ -1,8 +1,7 @@
 package presentation.presenters;
 
 import domain.dtos.LiftDto;
-import helpers.CenteredRectangle;
-import helpers.ConfigHelper;
+import helpers.CenteredRectangle;;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 

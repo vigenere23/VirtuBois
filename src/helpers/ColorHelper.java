@@ -8,13 +8,6 @@ public class ColorHelper {
 
     public static Color lastColor;
 
-    public static Color randomColor() {
-        double saturation = ThreadLocalRandom.current().nextDouble(0, 1);
-        double brightness = ThreadLocalRandom.current().nextDouble(0, 1);
-        lastColor = randomColor(saturation, brightness);
-        return lastColor;
-    }
-
     public static Color randomColor(double saturation, double brightness) {
         double hue = ThreadLocalRandom.current().nextDouble(0, 360);
         lastColor = Color.hsb(hue, saturation, brightness);

@@ -2,7 +2,6 @@ package helpers;
 
 import domain.dtos.BundleDto;
 import domain.entities.Bundle;
-import domain.entities.Lift;
 import presentation.presenters.BundlePresenter;
 
 import java.util.ArrayList;

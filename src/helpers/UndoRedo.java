@@ -26,7 +26,6 @@ public class UndoRedo {
                 }
                 Yard prevYard = LarmanController.getInstance().getYard();
                 undo.push(serializeYard(prevYard));
-                redo.clear();
             }
         }
         catch (Exception e) {
@@ -38,7 +37,12 @@ public class UndoRedo {
         if (!undo.isEmpty()) {
             Yard newYard = deserializeYard(undo.pop());
             Yard oldYard = LarmanController.getInstance().getYard();
-            redo.push(serializeYard(oldYard));
+            if(redo.size() == sizeMax){
+                redo.removeLast();
+                redo.push(serializeYard(oldYard));
+            } else {
+                redo.push(serializeYard(oldYard));
+            }
             return newYard;
         } else {
             return LarmanController.getInstance().getYard();

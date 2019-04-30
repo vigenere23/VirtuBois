@@ -88,10 +88,6 @@ public class CenteredRectangle {
         rectangle.setY(y - height * scale / 2.0);
     }
 
-    public double getScale() {
-        return scale;
-    }
-
     public void setScale(double scale) {
         this.scale = scale;
         updateX();
@@ -105,10 +101,6 @@ public class CenteredRectangle {
     public void setWidth(double width) {
         this.width = width;
         updateX();
-    }
-
-    public double getHeight() {
-        return height;
     }
 
     public void setHeight(double height) {

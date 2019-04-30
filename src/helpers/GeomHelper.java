@@ -1,7 +1,5 @@
 package helpers;
 
-import domain.dtos.BundleDto;
-import domain.dtos.LiftDto;
 import java.awt.geom.Line2D;
 import java.util.List;
 
@@ -20,8 +18,6 @@ public class GeomHelper {
         List<Point2D> points1 = rectangle1.getPoints();
         List<Point2D> points2 = rectangle2.getPoints();
 
-        // Check if any vertex of the smallest rectangle
-        // is inside the biggest one
         if (rectangle1.area() < rectangle2.area()) {
             for (Point2D point : points1) {
                 if (pointIsInsideRectangle(point, rectangle2)) return true;
@@ -32,7 +28,6 @@ public class GeomHelper {
             }
         }
 
-        // Also check if any edges of rectangle1 intersects with any of rectangle2
         for (int i = 0; i < points1.size(); i++) {
             for (int j = 0; j < points2.size(); j++) {
                 boolean linesIntersects = lineIntersectsOtherLine(
@@ -86,17 +81,5 @@ public class GeomHelper {
         double x = MathHelper.round(point.getX() * Math.cos(Math.toRadians(angle)),2);
         double y = MathHelper.round(point.getY() * Math.sin(Math.toRadians(angle)),2);
         return new Point2D(x, y);
-    }
-
-    public static Point2D rotateAroundCircle(LiftDto centerOfRotation, BundleDto rotationObject) {
-        double x = MathHelper.round(
-                Math.cos(Math.toRadians(centerOfRotation.angle + 90)) * (rotationObject.position.getX() - centerOfRotation.position.getX())
-                        - Math.sin(Math.toRadians(centerOfRotation.angle + 90)) * (rotationObject.position.getY() - centerOfRotation.position.getY()) + centerOfRotation.position.getX(),
-                2);
-        double y = MathHelper.round(
-                Math.sin(Math.toRadians(centerOfRotation.angle + 90)) * (rotationObject.position.getX() - centerOfRotation.position.getX())
-                        + Math.cos(Math.toRadians(centerOfRotation.angle + 90)) * (rotationObject.position.getY() - centerOfRotation.position.getY()) + centerOfRotation.position.getX(),
-                2);
-        return new Point2D(x,y);
     }
 }

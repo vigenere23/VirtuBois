@@ -467,9 +467,8 @@ public class Yard implements Serializable {
         return(new Point2D(xPos, yPos));
     }
 
-    public boolean setLiftBundles(){
+    public void setLiftBundles(){
         lift.setBundlesOnLift(bundlesToMove());
-        return true;
     }
 
     public void clearLiftBundles(){

@@ -83,6 +83,12 @@ public class Bundle extends Drawable3D implements Serializable
         ConfigHelper.bundleAngle = this.angle;
     }
 
+    public void setAngleOnLift(double angle){
+        angle %= 360;
+        if (angle < 0) angle += 360;
+        super.setAngle(angle);
+    }
+
     @Override
     public void setPosition(Point2D position) {
         super.setPosition(new Point2D(

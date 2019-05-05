@@ -34,3 +34,10 @@ Voici comment créer une version compilée du programme.
 7. Cocher "Include in project build" si vous voulez que le .jar soit généré à chaque compilation
     1. Si jamais vous ne faite pas ça, aller dans "Build > Build artefacts...", puis cliquer sur "build"
 8. Sauvegarder et fermer la fenêtre
+
+## Team members
+
+* Gabriel St-Pierre (me)
+* Jordan Mayhue
+* Martine Deschênes
+* Yoan Chamberland

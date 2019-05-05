@@ -4,6 +4,8 @@ Bienvenue au projet VirtuBois Editor, l'éditeur de cours à bois le plus avanc�
 
 Avant de contribuer, assurez-vous de lire les règles de [contribution](CONTRIBUTION.md)!
 
+![VirtuBois screenshot](https://user-images.githubusercontent.com/32545895/57198755-79986300-6f44-11e9-87ca-74f1bad1140a.png)
+
 ## Installation
 
 Voici les étapes à suivre afin de pouvoir contribuer au projet : 

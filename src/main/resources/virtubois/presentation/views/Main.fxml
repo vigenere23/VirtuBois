@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="dark" stylesheets="/virtubois/presentation/assets/css/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="virtubois.presentation.controllers.MainController">
+    <children>
+        <VBox prefHeight="26.0" prefWidth="1280.0" AnchorPane.bottomAnchor="694.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <AnchorPane prefHeight="26.0" prefWidth="132.0">
+                    <children>
+                        <MenuBar layoutX="-11.0" prefHeight="25.0" prefWidth="132.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <menus>
+                                <Menu mnemonicParsing="false" text="Fichier">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuFileNew" text="Nouveau" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuFileOpen" text="Ouvrir" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuFileSave" text="Enregistrer" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuSaveAs" text="Enregistrer sous" />
+                                        <MenuItem mnemonicParsing="false" onAction="#handleExport3D" text="Exporter en 3D" />
+                                        <MenuItem mnemonicParsing="false" onAction="#quit" text="Quitter" />
+                                    </items>
+                                </Menu>
+                                <Menu mnemonicParsing="false" text="Aide">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#handleMenuHelpAbout" text="À propos" />
+                                    </items>
+                                </Menu>
+                        <Menu mnemonicParsing="false" text="Grille Magnétique">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#handleGridSize" text="Changer Grille" />
+                          </items>
+                        </Menu>
+                            </menus>
+                        </MenuBar>
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="50.0" prefWidth="1280.0">
+                    <children>
+                        <ToolBar prefHeight="50.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <items>
+                                <ToggleButton fx:id="pointerButton" mnemonicParsing="false">
+                                    <graphic>
+                                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../assets/images/pointer.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                           <tooltip>
+                              <Tooltip text="Outil de sélection" />
+                           </tooltip>
+                                </ToggleButton>
+                                <ToggleButton fx:id="addBundleButton" mnemonicParsing="false">
+                                    <graphic>
+                                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../assets/images/log.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                           <tooltip>
+                              <Tooltip text="Création de paquets" />
+                           </tooltip>
+                                </ToggleButton>
+                                <ToggleButton fx:id="deleteButton" mnemonicParsing="false">
+                                    <graphic>
+                                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../assets/images/delete.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                           <tooltip>
+                              <Tooltip text="Suppression de paquets" />
+                           </tooltip>
+                                </ToggleButton>
+                                <ToggleButton fx:id="snapGridButton" mnemonicParsing="false">
+                                    <graphic>
+                                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../assets/images/grid.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                           <tooltip>
+                              <Tooltip text="Grille magnétique" />
+                           </tooltip>
+                                </ToggleButton>
+                                <Button fx:id="undoButton" mnemonicParsing="false" onAction="#handleUndoButton">
+                                    <graphic>
+                                        <ImageView fx:id="undoImage" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../assets/images/undo.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                           <tooltip>
+                              <Tooltip text="Undo" />
+                           </tooltip>
+                                </Button>
+                                <Button fx:id="redoButton" mnemonicParsing="false" onAction="#handleRedoButton">
+                                    <graphic>
+                                        <ImageView fx:id="redoImage" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../assets/images/redo.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                           <tooltip>
+                              <Tooltip text="Redo" />
+                           </tooltip>
+                                </Button>
+                            </items>
+                        </ToolBar>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+        <HBox layoutY="75.0" prefHeight="645.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+            <children>
+                <SplitPane dividerPositions="0.2, 0.8" prefHeight="720.0" prefWidth="1280.0" style="-fx-box-border: transparent;" HBox.hgrow="ALWAYS">
+                    <items>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                            <children>
+                                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="693.0" prefWidth="304.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <items>
+                                        <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                            <children>
+                                                <TitledPane collapsible="false" prefHeight="342.0" prefWidth="302.0" text="Inventaire" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <content>
+                                          <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                             <top>
+                                                <BorderPane BorderPane.alignment="CENTER">
+                                                   <right>
+                                                      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                                         <image>
+                                                            <Image url="@../assets/images/search.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </right>
+                                                   <center>
+                                                      <TextField fx:id="inventorySearchBar" prefHeight="30.0" BorderPane.alignment="CENTER" />
+                                                   </center>
+                                                </BorderPane>
+                                             </top>
+                                             <center>
+                                                <TableView fx:id="inventoryTable" BorderPane.alignment="CENTER">
+                                                   <columnResizePolicy>
+                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                   </columnResizePolicy>
+                                                   <columns>
+                                                      <TableColumn fx:id="codeColumn" editable="false" prefWidth="75.0" text="Code Barre" />
+                                                      <TableColumn fx:id="typeColumn" editable="false" prefWidth="75.0" text="Essence" />
+                                                      <TableColumn fx:id="sizeColumn" editable="false" prefWidth="75.0" text="Dimension des planches" />
+                                                   </columns>
+                                                </TableView>
+                                             </center>
+                                          </BorderPane>
+                                       </content>
+                                                </TitledPane>
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                            <children>
+                                                <TitledPane collapsible="false" minHeight="30.0" prefHeight="342.0" prefWidth="251.0" text="Paquet" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <content>
+                                          <ScrollPane fitToWidth="true">
+                                             <content>
+                                                <GridPane vgap="5.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <AnchorPane>
+                                                         <children>
+                                                            <Label text="Code Barre" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <Label text="Longueur" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <Label text="Largeur" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <Label text="Hauteur" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <Label text="Date de production" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+                                                         <children>
+                                                            <Label text="Heure de production" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="6">
+                                                         <children>
+                                                            <Label text="Essence" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="7">
+                                                         <children>
+                                                            <Label text="Dimensions des planches" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8">
+                                                           <children>
+                                                               <Label text="Angle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="9">
+                                                         <children>
+                                                            <Label text="X" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="10">
+                                                         <children>
+                                                            <Label text="Y" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="11">
+                                                           <children>
+                                                               <Label text="Z" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                      <AnchorPane GridPane.columnIndex="1">
+                                                         <children>
+                                                            <TextField fx:id="bundleBarcodeValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <TextField fx:id="bundleLengthValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <TextField fx:id="bundleWidthValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <TextField fx:id="bundleHeightValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <DatePicker fx:id="bundleDateValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                         <children>
+                                                            <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                               <children>
+                                                                  <Spinner fx:id="bundleHourValue" HBox.hgrow="ALWAYS" />
+                                                                  <Region minWidth="5.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+                                                                  <Label prefHeight="37.0" prefWidth="0.0" text=":" />
+                                                                  <Region minWidth="5.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+                                                                  <Spinner fx:id="bundleMinuteValue" HBox.hgrow="ALWAYS" />
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                         <children>
+                                                            <TextField fx:id="bundleEssenceValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                         <children>
+                                                            <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                               <children>
+                                                                  <TextField fx:id="bundlePlankSizeValue1" HBox.hgrow="ALWAYS" />
+                                                                  <Region minWidth="4.0" prefHeight="200.0" prefWidth="4.0" />
+                                                                  <Label prefHeight="42.0" prefWidth="4.0" text="x" />
+                                                                  <Region minWidth="4.0" prefHeight="200.0" prefWidth="4.0" />
+                                                                  <TextField fx:id="bundlePlankSizeValue2" HBox.hgrow="ALWAYS" />
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </AnchorPane>
+                                                       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                                           <children>
+                                                               <TextField fx:id="bundleAngleValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                                         <children>
+                                                            <TextField fx:id="bundleXPosValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                                         <children>
+                                                            <TextField fx:id="bundleYPosValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                                           <children>
+                                                               <Label fx:id="bundleZPosValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                           </children>
+                                                       </AnchorPane>
+                                                   </children>
+                                                </GridPane>
+                                             </content>
+                                          </ScrollPane>
+                                                    </content></TitledPane>
+                                            </children>
+                                        </AnchorPane>
+                                    </items>
+                                </SplitPane>
+                            </children>
+                        </AnchorPane>
+                        <StackPane fx:id="yardWrapper" prefHeight="638.0" prefWidth="716.0" />
+                        <AnchorPane prefHeight="718.0" prefWidth="370.0">
+                            <children>
+                                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="693.0" prefWidth="355.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <items>
+                                        <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                            <children>
+                                                <TitledPane alignment="CENTER_RIGHT" animated="false" collapsible="false" layoutX="110.0" layoutY="53.0" prefHeight="343.0" prefWidth="353.0" text="Vue d'élévation" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <content>
+                                                        <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <BorderPane layoutX="12.0" layoutY="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <center>
+                                                      <AnchorPane fx:id="subSceneAnchor">
+                                                         <children>
+                                                            <StackPane fx:id="subScenePane" alignment="TOP_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </center>
+                                                </BorderPane>
+                                             </children></AnchorPane>
+                                                    </content>
+                                                </TitledPane>
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane minHeight="30.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                            <children>
+                                                <TitledPane alignment="CENTER_RIGHT" collapsible="false" layoutX="14.0" layoutY="74.0" prefHeight="342.0" prefWidth="353.0" text="Chargeuse" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <content>
+                                          <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                                             <content>
+                                                <GridPane vgap="5.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <AnchorPane GridPane.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label text="X" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.rowIndex="1">
+                                                         <children>
+                                                            <Label text="Y" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.rowIndex="3">
+                                                         <children>
+                                                            <Label text="Hauteur des bras" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.rowIndex="4">
+                                                         <children>
+                                                            <Label focusTraversable="false" text="X des bras" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                                                         <children>
+                                                            <TextField fx:id="liftXValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <TextField fx:id="armsHeightValue" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <TextField fx:id="liftYValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.rowIndex="5">
+                                                         <children>
+                                                            <Label text="Y des bras" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <Label fx:id="armsXValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                         <children>
+                                                            <Label fx:id="armsYValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.rowIndex="2">
+                                                         <children>
+                                                            <Label text="Hauteur" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <TextField fx:id="liftHeightValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.rowIndex="6">
+                                                         <children>
+                                                            <Label text="Angle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                         <children>
+                                                            <TextField fx:id="liftAngleValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="7">
+                                                         <children>
+                                                            <Label layoutX="27.0" layoutY="6.0" text="Échelle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                         <children>
+                                                            <TextField fx:id="liftScaleValue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </children>
+                                                </GridPane>
+                                             </content>
+                                          </ScrollPane>
+                                       </content>
+                                                </TitledPane>
+                                            </children>
+                                        </AnchorPane>
+                                    </items>
+                                </SplitPane>
+                            </children>
+                        </AnchorPane>
+                    </items>
+                </SplitPane>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

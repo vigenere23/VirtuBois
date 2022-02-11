@@ -1,5 +1,6 @@
 **.vppbak*
 **.log
+dependency-reduced-pom.xml
 
 Created by https://www.gitignore.io/api/intellij
 # Edit at https://www.gitignore.io/?templates=intellij
@@ -23,6 +24,7 @@ Created by https://www.gitignore.io/api/intellij
 
 # IntelliJ
 out/
+target/
 **.html
 **.jnlp
 

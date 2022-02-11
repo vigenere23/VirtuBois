@@ -6,10 +6,24 @@
 
 You will need the [JavaFX](https://openjfx.io/openjfx-docs/#install-javafx) external library installed and setup with IntelliJ.
 
-## Executing JAR file
+## Executing
+
+**Compiling**
 
 ```shell
-java --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml -jar GLO-2004.jar
+mvn clean compile
+```
+
+**Packaging**
+
+```shell
+mvn clean install
+```
+
+**Executing jar**
+
+```shell
+java --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml -jar target/app-0.1.0.jar
 ```
 
 ## Team members

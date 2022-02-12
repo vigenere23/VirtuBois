@@ -2,9 +2,10 @@
 
 ![VirtuBois screenshot](https://user-images.githubusercontent.com/32545895/57198755-79986300-6f44-11e9-87ca-74f1bad1140a.png)
 
-## Setup
+## Prerequisites
 
-You will need the [JavaFX](https://openjfx.io/openjfx-docs/#install-javafx) external library installed and setup with IntelliJ.
+- Java SDK 11
+- Maven
 
 ## Executing
 
@@ -17,13 +18,13 @@ mvn clean compile
 **Packaging**
 
 ```shell
-mvn clean install
+mvn clean package
 ```
 
 **Executing jar**
 
 ```shell
-java --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml -jar target/app-0.1.0.jar
+java -jar bin/virtubois.jar
 ```
 
 ## Team members

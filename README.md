@@ -24,7 +24,7 @@ mvn clean package
 **Executing jar**
 
 ```shell
-java -jar bin/virtubois.jar
+java -jar bin/glo2004.virtubois.jar
 ```
 
 ## Team members

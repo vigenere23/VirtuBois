@@ -10,7 +10,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <javafx.version>17.0.2</javafx.version>
-        <mainClass>virtubois.Main</mainClass>
+        <mainClass>glo2004.virtubois.Main</mainClass>
     </properties>
 
     <dependencies>

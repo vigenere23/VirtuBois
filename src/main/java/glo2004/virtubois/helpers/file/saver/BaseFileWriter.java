@@ -1,4 +1,4 @@
-package glo2004.virtubois.helpers.filesaver;
+package glo2004.virtubois.helpers.file.saver;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;

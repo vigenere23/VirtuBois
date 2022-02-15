@@ -1,12 +1,17 @@
 package glo2004.virtubois.presentation.controllers;
 
+import glo2004.virtubois.context.FileOpenerProvider;
 import glo2004.virtubois.context.FileSaverProvider;
 import glo2004.virtubois.context.SavingContext;
+import glo2004.virtubois.context.YardSavingContext;
+import glo2004.virtubois.domain.controllers.LarmanController;
 import glo2004.virtubois.domain.dtos.BundleDto;
 import glo2004.virtubois.domain.dtos.LiftDto;
+import glo2004.virtubois.domain.entities.Yard;
 import glo2004.virtubois.enums.EditorMode;
 import glo2004.virtubois.helpers.*;
-import glo2004.virtubois.helpers.filesaver.FileSaver;
+import glo2004.virtubois.helpers.file.opener.FileOpener;
+import glo2004.virtubois.helpers.file.saver.FileSaver;
 import glo2004.virtubois.presentation.presenters.ElevationViewPresenter3D;
 import glo2004.virtubois.presentation.presenters.YardPresenter;
 import javafx.beans.property.ObjectProperty;
@@ -29,12 +34,15 @@ import javafx.scene.paint.Color;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 public class MainController extends BaseController {
 
+    private final SavingContext yardSavingContext = YardSavingContext.getInstance();
     private final STLCreator stlCreator = new STLCreator();
-    private final FileSaver saveYardFileSaver;
+    private final FileSaver yardFileSaver;
     private final FileSaver export3DFileSaver;
+    private final FileOpener yardFileOpener;
 
     public ObjectProperty<EditorMode> editorMode;
     public ToggleGroup editorModeToggleGroup;
@@ -134,11 +142,12 @@ public class MainController extends BaseController {
     public StackPane subScenePane;
 
     public MainController() {
-        SavingContext savingContext = new SavingContext();
-        FileSaverProvider fileSaverProvider = new FileSaverProvider(stage, savingContext);
+        FileSaverProvider fileSaverProvider = new FileSaverProvider();
+        FileOpenerProvider fileOpenerProvider = new FileOpenerProvider();
 
-        saveYardFileSaver = fileSaverProvider.saveYardFileSaver;
-        export3DFileSaver = fileSaverProvider.export3DFileSaver;
+        yardFileSaver = fileSaverProvider.provideYardFileSaver(yardSavingContext, stage);
+        export3DFileSaver = fileSaverProvider.provideExport3DFileSaver(stage);
+        yardFileOpener = fileOpenerProvider.provideYardFileOpener(yardSavingContext, stage, true);
     }
 
     @FXML
@@ -694,19 +703,24 @@ public class MainController extends BaseController {
     }
 
     public void handleMenuFileNew(ActionEvent actionEvent) {
-        FileHelper.newFile(stage, larmanController.getYard());
+        FileHelper.newFile(stage, true);
     }
 
     public void handleMenuFileOpen(ActionEvent actionEvent) {
-        FileHelper.openFile(stage, larmanController.getYard());
+        Optional<Yard> openedYard = yardFileOpener.open();
+
+        if (openedYard.isPresent()) {
+            LarmanController.getInstance().setYard(openedYard.get());
+            JavafxHelper.loadView(stage, "Main", yardSavingContext.getFileName().orElse("New yard"), false);
+        }
     }
 
     public void handleMenuFileSave(ActionEvent actionEvent) {
-        saveYardFileSaver.save(larmanController.getYard(), false);
+        yardFileSaver.save(larmanController.getYard(), false);
     }
 
     public void handleMenuSaveAs(ActionEvent actionEvent) {
-        saveYardFileSaver.save(larmanController.getYard(), true);
+        yardFileSaver.save(larmanController.getYard(), true);
     }
 
     public void handleMenuHelpAbout(ActionEvent actionEvent) {

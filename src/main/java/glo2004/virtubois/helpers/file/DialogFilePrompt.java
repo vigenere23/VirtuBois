@@ -1,4 +1,4 @@
-package glo2004.virtubois.helpers.filesaver;
+package glo2004.virtubois.helpers.file;
 
 import glo2004.virtubois.context.SavingContext;
 import javafx.stage.FileChooser;
@@ -8,16 +8,16 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
 
-public class DialogSavingPrompt implements SavingPrompt {
+public abstract class DialogFilePrompt {
 
-    private final SavingContext savingContext;
-    private final Stage stage;
-    private final String dialogTitle;
-    private final String extension;
-    private final String fileDescriptor;
-    private final Path defaultPath;
+    protected final SavingContext savingContext;
+    protected final Stage stage;
+    protected final String dialogTitle;
+    protected final String extension;
+    protected final String fileDescriptor;
+    protected final Path defaultPath;
 
-    public DialogSavingPrompt(SavingContext savingContext, Stage stage, String dialogTitle, String extension, String fileDescriptor, Path defaultPath) {
+    public DialogFilePrompt(SavingContext savingContext, Stage stage, String dialogTitle, String extension, String fileDescriptor, Path defaultPath) {
         this.savingContext = savingContext;
         this.stage = stage;
         this.dialogTitle = dialogTitle;
@@ -26,10 +26,11 @@ public class DialogSavingPrompt implements SavingPrompt {
         this.defaultPath = defaultPath;
     }
 
-    @Override
-    public Optional<Path> promptSavingPath() {
+    public abstract File getFile(FileChooser fileChooser);
+
+    public Optional<Path> promptPath() {
         FileChooser fileChooser = initFileChooser();
-        File file = fileChooser.showSaveDialog(stage);
+        File file = getFile(fileChooser);
 
         if (file == null) {
             return Optional.empty();
@@ -58,7 +59,7 @@ public class DialogSavingPrompt implements SavingPrompt {
     }
 
     private FileChooser initFileChooser() {
-        Path initialPath = savingContext.getLastSavingPath().orElse(defaultPath);
+        Path initialPath = savingContext.getPath().orElse(defaultPath);
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(fileDescriptor + " files (*" + extension + ")", "*" + extension));
 

@@ -1,9 +1,8 @@
 package glo2004.virtubois.context;
 
-import glo2004.virtubois.helpers.filesaver.BaseFileWriter;
-import glo2004.virtubois.helpers.filesaver.DialogSavingPrompt;
-import glo2004.virtubois.helpers.filesaver.FileSaver;
-import glo2004.virtubois.helpers.filesaver.FileWriter;
+import glo2004.virtubois.helpers.file.saver.BaseFileWriter;
+import glo2004.virtubois.helpers.file.saver.DialogSavingPrompt;
+import glo2004.virtubois.helpers.file.saver.FileSaver;
 import javafx.stage.Stage;
 
 import java.nio.file.Path;
@@ -13,13 +12,8 @@ public class FileSaverProvider {
 
     public static final String USER_DIR = System.getProperty("user.home");
 
-    public final FileSaver saveYardFileSaver;
-    public final FileSaver export3DFileSaver;
-
-    public FileSaverProvider(Stage stage, SavingContext yardSavingContext) {
-        FileWriter fileWriter = new BaseFileWriter();
-
-        saveYardFileSaver = new FileSaver(
+    public FileSaver provideYardFileSaver(SavingContext yardSavingContext, Stage stage) {
+        return new FileSaver(
             yardSavingContext,
             new DialogSavingPrompt(
                 yardSavingContext,
@@ -29,12 +23,14 @@ public class FileSaverProvider {
                 "SER",
                 Path.of(USER_DIR, "Yard.ser")
             ),
-            fileWriter
+            new BaseFileWriter()
         );
+    }
 
+    public FileSaver provideExport3DFileSaver(Stage stage) {
         SavingContext export3DSavingContext = new SavingContext();
 
-        export3DFileSaver = new FileSaver(
+        return new FileSaver(
             export3DSavingContext,
             new DialogSavingPrompt(
                 export3DSavingContext,
@@ -44,7 +40,7 @@ public class FileSaverProvider {
                 "STL",
                 Path.of(USER_DIR, "Yard.stl")
             ),
-            fileWriter
+            new BaseFileWriter()
         );
     }
 }

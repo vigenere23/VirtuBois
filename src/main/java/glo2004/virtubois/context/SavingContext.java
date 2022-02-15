@@ -5,13 +5,21 @@ import java.util.Optional;
 
 public class SavingContext {
 
-    private Path lastSavingPath;
+    private Path path;
 
-    public void setLastSavingPath(Path lastSavingPath) {
-        this.lastSavingPath = lastSavingPath;
+    public void setPath(Path lastSavingPath) {
+        this.path = lastSavingPath;
     }
 
-    public Optional<Path> getLastSavingPath() {
-        return Optional.ofNullable(lastSavingPath);
+    public Optional<Path> getPath() {
+        return Optional.ofNullable(path);
+    }
+
+    public Optional<String> getFileName() {
+        if (path == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(path.getFileName().toString());
     }
 }

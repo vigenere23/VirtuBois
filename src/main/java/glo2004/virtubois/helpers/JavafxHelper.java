@@ -1,5 +1,7 @@
 package glo2004.virtubois.helpers;
 
+import glo2004.virtubois.Main;
+import glo2004.virtubois.presentation.controllers.IController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
@@ -7,8 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import glo2004.virtubois.Main;
-import glo2004.virtubois.presentation.controllers.IController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,6 +29,7 @@ public class JavafxHelper {
             Scene scene = new Scene(page);
             stage.setScene(scene);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(String.format("Could not load scene %s", viewName));
         }
 

@@ -1,9 +1,14 @@
 package glo2004.virtubois.presentation.controllers;
 
+import glo2004.virtubois.context.FileSaverProvider;
+import glo2004.virtubois.context.SavingContext;
 import glo2004.virtubois.domain.dtos.BundleDto;
 import glo2004.virtubois.domain.dtos.LiftDto;
 import glo2004.virtubois.enums.EditorMode;
 import glo2004.virtubois.helpers.*;
+import glo2004.virtubois.helpers.filesaver.FileSaver;
+import glo2004.virtubois.presentation.presenters.ElevationViewPresenter3D;
+import glo2004.virtubois.presentation.presenters.YardPresenter;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -21,13 +26,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import glo2004.virtubois.presentation.presenters.ElevationViewPresenter3D;
-import glo2004.virtubois.presentation.presenters.YardPresenter;
 
 import java.time.LocalTime;
 import java.util.List;
 
 public class MainController extends BaseController {
+
+    private final STLCreator stlCreator = new STLCreator();
+    private final FileSaver saveYardFileSaver;
+    private final FileSaver export3DFileSaver;
 
     public ObjectProperty<EditorMode> editorMode;
     public ToggleGroup editorModeToggleGroup;
@@ -126,6 +133,13 @@ public class MainController extends BaseController {
     @FXML
     public StackPane subScenePane;
 
+    public MainController() {
+        SavingContext savingContext = new SavingContext();
+        FileSaverProvider fileSaverProvider = new FileSaverProvider(stage, savingContext);
+
+        saveYardFileSaver = fileSaverProvider.saveYardFileSaver;
+        export3DFileSaver = fileSaverProvider.export3DFileSaver;
+    }
 
     @FXML
     public void initialize() {
@@ -229,9 +243,9 @@ public class MainController extends BaseController {
     private void initLiftTextFieldsHandlers() {
         liftAngleValue.setOnKeyPressed(event -> {
 
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(!liftAngleValue.getText().isEmpty() && !liftAngleValue.getText().equals("-") && !liftAngleValue.getText().equals(".") && !liftAngleValue.getText().equals("-.")){
-                    if(larmanController.getLiftBundles().isEmpty()) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (!liftAngleValue.getText().isEmpty() && !liftAngleValue.getText().equals("-") && !liftAngleValue.getText().equals(".") && !liftAngleValue.getText().equals("-.")) {
+                    if (larmanController.getLiftBundles().isEmpty()) {
                         LiftDto liftDto = new LiftDto(larmanController.getYard().getLift());
                         liftDto.angle = Double.parseDouble(liftAngleValue.getText());
                         larmanController.modifyLiftProperties(liftDto);
@@ -257,8 +271,8 @@ public class MainController extends BaseController {
 
         liftHeightValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!liftHeightValue.getText().isEmpty() && !liftHeightValue.getText().equals("-") && !liftHeightValue.getText().equals(".") && !liftHeightValue.getText().equals("-.")) {
-                    if(larmanController.getLiftBundles().isEmpty()) {
+                if (!liftHeightValue.getText().isEmpty() && !liftHeightValue.getText().equals("-") && !liftHeightValue.getText().equals(".") && !liftHeightValue.getText().equals("-.")) {
+                    if (larmanController.getLiftBundles().isEmpty()) {
                         LiftDto liftDto = larmanController.getLift();
                         liftDto.height = Double.parseDouble(liftHeightValue.getText());
                         larmanController.modifyLiftProperties(liftDto);
@@ -271,8 +285,8 @@ public class MainController extends BaseController {
 
         liftYValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!liftYValue.getText().isEmpty() && !liftYValue.getText().equals("-") && !liftYValue.getText().equals(".") && !liftYValue.getText().equals("-.")) {
-                    if(larmanController.getLiftBundles().isEmpty()) {
+                if (!liftYValue.getText().isEmpty() && !liftYValue.getText().equals("-") && !liftYValue.getText().equals(".") && !liftYValue.getText().equals("-.")) {
+                    if (larmanController.getLiftBundles().isEmpty()) {
                         LiftDto liftDto = larmanController.getLift();
                         liftDto.position = new Point2D(liftDto.position.getX(), Double.parseDouble(liftYValue.getText()));
                         larmanController.modifyLiftProperties(liftDto);
@@ -285,8 +299,8 @@ public class MainController extends BaseController {
 
         liftXValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(!liftXValue.getText().isEmpty() && !liftXValue.getText().equals("-") && !liftXValue.getText().equals(".") && !liftXValue.getText().equals("-.")) {
-                    if(larmanController.getLiftBundles().isEmpty()) {
+                if (!liftXValue.getText().isEmpty() && !liftXValue.getText().equals("-") && !liftXValue.getText().equals(".") && !liftXValue.getText().equals("-.")) {
+                    if (larmanController.getLiftBundles().isEmpty()) {
                         LiftDto liftDto = larmanController.getLift();
                         liftDto.position = new Point2D(Double.parseDouble(liftXValue.getText()), liftDto.position.getY());
                         larmanController.modifyLiftProperties(liftDto);
@@ -298,9 +312,9 @@ public class MainController extends BaseController {
         });
 
         liftScaleValue.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                if(!liftScaleValue.getText().isEmpty() && !liftScaleValue.getText().equals("-") && !liftScaleValue.getText().equals(".") && !liftScaleValue.getText().equals("-.")){
-                    if(larmanController.getLiftBundles().isEmpty()) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                if (!liftScaleValue.getText().isEmpty() && !liftScaleValue.getText().equals("-") && !liftScaleValue.getText().equals(".") && !liftScaleValue.getText().equals("-.")) {
+                    if (larmanController.getLiftBundles().isEmpty()) {
                         LiftDto liftDto = larmanController.getLift();
                         liftDto.scale = Double.parseDouble(liftScaleValue.getText());
                         larmanController.modifyLiftProperties(liftDto);
@@ -318,7 +332,7 @@ public class MainController extends BaseController {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
                     if (!bundleBarcodeValue.getText().isEmpty()) {
-                        if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                        if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                             selectedBundle.barcode = bundleBarcodeValue.getText();
                             larmanController.modifyBundleProperties(selectedBundle);
                             //elevationViewPresenter.setBundles(selectedBundle);
@@ -336,7 +350,7 @@ public class MainController extends BaseController {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleLengthValue.getText().isEmpty() && !bundleLengthValue.getText().equals("-") && !bundleLengthValue.getText().equals(".") && !bundleLengthValue.getText().equals("-.") && Double.parseDouble(bundleLengthValue.getText()) != 0.0) {
-                            if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                            if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                                 selectedBundle.length = Double.parseDouble(bundleLengthValue.getText());
                                 larmanController.modifyBundleProperties(selectedBundle);
                                 setFocusedBundleElevView(selectedBundle);
@@ -355,7 +369,7 @@ public class MainController extends BaseController {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleWidthValue.getText().isEmpty() && !bundleWidthValue.getText().equals("-") && !bundleWidthValue.getText().equals(".") && !bundleWidthValue.getText().equals("-.") && Double.parseDouble(bundleWidthValue.getText()) != 0.0) {
-                            if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                            if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                                 selectedBundle.width = Double.parseDouble(bundleWidthValue.getText());
                                 larmanController.modifyBundleProperties(selectedBundle);
                                 setFocusedBundleElevView(selectedBundle);
@@ -373,7 +387,7 @@ public class MainController extends BaseController {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleHeightValue.getText().isEmpty() && !bundleHeightValue.getText().equals("-") && !bundleHeightValue.getText().equals(".") && !bundleHeightValue.getText().equals("-.") && Double.parseDouble(bundleHeightValue.getText()) != 0.0) {
-                            if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                            if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                                 selectedBundle.height = Double.parseDouble(bundleHeightValue.getText());
                                 larmanController.modifyBundleProperties(selectedBundle);
                                 yardPresenter.draw();
@@ -390,7 +404,7 @@ public class MainController extends BaseController {
             if (selectedBundle != null) {
                 if (bundleDateValue.getValue() != null) {
                     if (bundleDateValue.getValue() != selectedBundle.date) {
-                        if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                        if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                             selectedBundle.date = bundleDateValue.getValue();
                             larmanController.modifyBundleProperties(selectedBundle);
                             setFocusedBundleElevView(selectedBundle);
@@ -405,7 +419,7 @@ public class MainController extends BaseController {
         bundleHourValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
-                    if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                    if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                         selectedBundle.time = LocalTime.of(bundleHourValue.getValue(), bundleMinuteValue.getValue());
                         larmanController.modifyBundleProperties(selectedBundle);
                         setFocusedBundleElevView(selectedBundle);
@@ -419,7 +433,7 @@ public class MainController extends BaseController {
         bundleMinuteValue.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
-                    if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                    if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                         selectedBundle.time = LocalTime.of(bundleHourValue.getValue(), bundleMinuteValue.getValue());
                         larmanController.modifyBundleProperties(selectedBundle);
                         setFocusedBundleElevView(selectedBundle);
@@ -434,7 +448,7 @@ public class MainController extends BaseController {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
                     if (!bundleEssenceValue.getText().isEmpty()) {
-                        if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                        if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                             selectedBundle.essence = bundleEssenceValue.getText();
                             larmanController.modifyBundleProperties(selectedBundle);
                             setFocusedBundleElevView(selectedBundle);
@@ -450,7 +464,7 @@ public class MainController extends BaseController {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
                     if (!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()) {
-                        if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                        if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                             selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
                             larmanController.modifyBundleProperties(selectedBundle);
                             setFocusedBundleElevView(selectedBundle);
@@ -466,7 +480,7 @@ public class MainController extends BaseController {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
                     if (!bundlePlankSizeValue1.getText().isEmpty() && !bundlePlankSizeValue2.getText().isEmpty()) {
-                        if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                        if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                             selectedBundle.plankSize = bundlePlankSizeValue1.getText() + "x" + bundlePlankSizeValue2.getText();
                             larmanController.modifyBundleProperties(selectedBundle);
                             yardPresenter.draw();
@@ -483,7 +497,7 @@ public class MainController extends BaseController {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleXPosValue.getText().isEmpty() && !bundleXPosValue.getText().equals("-") && !bundleXPosValue.getText().equals(".") && !bundleXPosValue.getText().equals("-.")) {
-                            if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                            if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                                 selectedBundle.position.setX(Double.parseDouble(bundleXPosValue.getText()));
                                 larmanController.modifyBundlePosition(selectedBundle.id, selectedBundle.position);
                                 yardPresenter.draw();
@@ -501,7 +515,7 @@ public class MainController extends BaseController {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if (selectedBundle != null) {
                         if (!bundleYPosValue.getText().isEmpty() && !bundleYPosValue.getText().equals("-") && !bundleYPosValue.getText().equals(".") && !bundleYPosValue.getText().equals("-.")) {
-                            if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                            if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                                 selectedBundle.position.setY(Double.parseDouble(bundleYPosValue.getText()));
                                 larmanController.modifyBundlePosition(selectedBundle.id, selectedBundle.position);
                                 setFocusedBundleElevView(selectedBundle);
@@ -518,7 +532,7 @@ public class MainController extends BaseController {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (selectedBundle != null) {
                     if (!bundleAngleValue.getText().isEmpty() && !bundleAngleValue.getText().equals("-") && !bundleAngleValue.getText().equals(".") && !bundleAngleValue.getText().equals("-.")) {
-                        if(!larmanController.getLiftBundles().contains(selectedBundle)) {
+                        if (!larmanController.getLiftBundles().contains(selectedBundle)) {
                             selectedBundle.angle = Double.parseDouble(bundleAngleValue.getText());
                             larmanController.modifyBundleProperties(selectedBundle);
                             yardPresenter.draw();
@@ -688,11 +702,11 @@ public class MainController extends BaseController {
     }
 
     public void handleMenuFileSave(ActionEvent actionEvent) {
-        FileHelper.saveFile(stage, larmanController.getYard());
+        saveYardFileSaver.save(larmanController.getYard(), false);
     }
 
     public void handleMenuSaveAs(ActionEvent actionEvent) {
-        FileHelper.saveFileAs(stage, larmanController.getYard());
+        saveYardFileSaver.save(larmanController.getYard(), true);
     }
 
     public void handleMenuHelpAbout(ActionEvent actionEvent) {
@@ -700,8 +714,10 @@ public class MainController extends BaseController {
     }
 
     public void handleExport3D() {
-        if (!larmanController.getBundles().isEmpty()) {
-            FileHelper.saveSTLFile(stage, larmanController.getBundles());
+        List<BundleDto> bundles = larmanController.getBundles();
+        if (!bundles.isEmpty()) {
+            String stl = stlCreator.generateSTL(bundles);
+            export3DFileSaver.save(stl, true);
         }
     }
 

@@ -9,46 +9,7 @@ import java.util.List;
 
 public class STLCreator {
 
-    private static List<Point3D> generateBundlePoints3D(BundlePresenter bundle) {
-        List<Point2D> bundlePoints2D = bundle.getPoints();
-        List<Point3D> bundlePoints3D = new ArrayList<>();
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(0).getX(), bundlePoints2D.get(0).getY(), bundle.dto.z));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(1).getX(), bundlePoints2D.get(1).getY(), bundle.dto.z));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(2).getX(), bundlePoints2D.get(2).getY(), bundle.dto.z));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(3).getX(), bundlePoints2D.get(3).getY(), bundle.dto.z));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(0).getX(), bundlePoints2D.get(0).getY(), bundle.dto.topZ));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(1).getX(), bundlePoints2D.get(1).getY(), bundle.dto.topZ));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(2).getX(), bundlePoints2D.get(2).getY(), bundle.dto.topZ));
-        bundlePoints3D.add(new Point3D(bundlePoints2D.get(3).getX(), bundlePoints2D.get(3).getY(), bundle.dto.topZ));
-        return bundlePoints3D;
-    }
-
-    private static List<Point3D> generateTriangle(Point3D p1, Point3D p2, Point3D p3) {
-        List<Point3D> triangle = new ArrayList<>();
-        triangle.add(p1);
-        triangle.add(p2);
-        triangle.add(p3);
-        return triangle;
-    }
-
-    private static List<List<Point3D>> generateBundleTriangles(List<Point3D> bundlePoints3D) {
-        List<List<Point3D>> triangles = new ArrayList<>();
-        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(2), bundlePoints3D.get(3)));
-        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(1), bundlePoints3D.get(2)));
-        triangles.add(generateTriangle(bundlePoints3D.get(4), bundlePoints3D.get(7), bundlePoints3D.get(6)));
-        triangles.add(generateTriangle(bundlePoints3D.get(4), bundlePoints3D.get(5), bundlePoints3D.get(6)));
-        triangles.add(generateTriangle(bundlePoints3D.get(2), bundlePoints3D.get(3), bundlePoints3D.get(7)));
-        triangles.add(generateTriangle(bundlePoints3D.get(2), bundlePoints3D.get(6), bundlePoints3D.get(7)));
-        triangles.add(generateTriangle(bundlePoints3D.get(1), bundlePoints3D.get(4), bundlePoints3D.get(5)));
-        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(1), bundlePoints3D.get(4)));
-        triangles.add(generateTriangle(bundlePoints3D.get(3), bundlePoints3D.get(4), bundlePoints3D.get(7)));
-        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(3), bundlePoints3D.get(4)));
-        triangles.add(generateTriangle(bundlePoints3D.get(2), bundlePoints3D.get(6), bundlePoints3D.get(5)));
-        triangles.add(generateTriangle(bundlePoints3D.get(1), bundlePoints3D.get(2), bundlePoints3D.get(5)));
-        return triangles;
-    }
-
-    public static String generateSTL(List<BundleDto> bundleDtos) {
+    public String generateSTL(List<BundleDto> bundleDtos) {
         List<BundlePresenter> bundles = Converter.fromBundleDtosToBundlePresenters(bundleDtos);
         StringBuilder sb = new StringBuilder();
         sb.append("solid stl\n");
@@ -68,5 +29,39 @@ public class STLCreator {
         }
         sb.append("endsolid stl");
         return sb.toString();
+    }
+
+    private List<Point3D> generateBundlePoints3D(BundlePresenter bundle) {
+        List<Point3D> bundlePoints3D = new ArrayList<>();
+
+        bundle.getPoints().forEach(point2D -> {
+            bundlePoints3D.add(new Point3D(point2D.getX(), point2D.getY(), bundle.dto.z));
+        });
+        bundle.getPoints().forEach(point2D -> {
+            bundlePoints3D.add(new Point3D(point2D.getX(), point2D.getY(), bundle.dto.topZ));
+        });
+
+        return bundlePoints3D;
+    }
+
+    private List<Point3D> generateTriangle(Point3D p1, Point3D p2, Point3D p3) {
+        return List.of(p1, p2, p3);
+    }
+
+    private List<List<Point3D>> generateBundleTriangles(List<Point3D> bundlePoints3D) {
+        List<List<Point3D>> triangles = new ArrayList<>();
+        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(2), bundlePoints3D.get(3)));
+        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(1), bundlePoints3D.get(2)));
+        triangles.add(generateTriangle(bundlePoints3D.get(4), bundlePoints3D.get(7), bundlePoints3D.get(6)));
+        triangles.add(generateTriangle(bundlePoints3D.get(4), bundlePoints3D.get(5), bundlePoints3D.get(6)));
+        triangles.add(generateTriangle(bundlePoints3D.get(2), bundlePoints3D.get(3), bundlePoints3D.get(7)));
+        triangles.add(generateTriangle(bundlePoints3D.get(2), bundlePoints3D.get(6), bundlePoints3D.get(7)));
+        triangles.add(generateTriangle(bundlePoints3D.get(1), bundlePoints3D.get(4), bundlePoints3D.get(5)));
+        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(1), bundlePoints3D.get(4)));
+        triangles.add(generateTriangle(bundlePoints3D.get(3), bundlePoints3D.get(4), bundlePoints3D.get(7)));
+        triangles.add(generateTriangle(bundlePoints3D.get(0), bundlePoints3D.get(3), bundlePoints3D.get(4)));
+        triangles.add(generateTriangle(bundlePoints3D.get(2), bundlePoints3D.get(6), bundlePoints3D.get(5)));
+        triangles.add(generateTriangle(bundlePoints3D.get(1), bundlePoints3D.get(2), bundlePoints3D.get(5)));
+        return triangles;
     }
 }

@@ -1,7 +1,6 @@
 package glo2004.virtubois.helpers;
 
 import glo2004.virtubois.domain.controllers.LarmanController;
-import glo2004.virtubois.domain.dtos.BundleDto;
 import glo2004.virtubois.domain.entities.Yard;
 import glo2004.virtubois.enums.DialogAction;
 import javafx.scene.control.Alert;
@@ -11,13 +10,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.Optional;
 
 public class FileHelper {
+
+    private static STLCreator stlCreator = new STLCreator();
 
     private static final File DEFAULT_DIRECTORY = new File(System.getProperty("user.home"));
 
@@ -35,8 +32,8 @@ public class FileHelper {
     public static void newFile(Stage stage, Yard yard) {
         if (yard != null && yard.getBundles().size() != 0) {
             DialogAction result = FileHelper.popupConfirmationDialog(
-                    "Enregistrer",
-                    "Voulez-vous enregistrer avant de continuer?"
+                "Enregistrer",
+                "Voulez-vous enregistrer avant de continuer?"
             );
 
             if (result == DialogAction.YES)
@@ -45,8 +42,7 @@ public class FileHelper {
                 LarmanController.getInstance().clearYard();
                 newFile(stage);
             }
-        }
-        else {
+        } else {
             newFile(stage);
         }
     }
@@ -59,19 +55,16 @@ public class FileHelper {
     }
 
     public static void openFile(Stage stage, Yard yard) {
-        if (yard != null && yard.getBundles().size() != 0) {
-            DialogAction result = FileHelper.popupConfirmationDialog(
-                    "Enregistrer",
-                    "Voulez-vous enregistrer avant de continuer?"
-            );
+        DialogAction result = FileHelper.popupConfirmationDialog(
+            "Enregistrer",
+            "Voulez-vous enregistrer avant de continuer?"
+        );
 
-            if (result == DialogAction.YES)
-                saveFile(stage, yard);
-            if (result == DialogAction.YES || result == DialogAction.NO) {
-                openFile(stage);
-            }
+        if (result == DialogAction.YES) {
+            saveFile(stage, yard);
         }
-        else {
+
+        if (result == DialogAction.YES || result == DialogAction.NO) {
             openFile(stage);
         }
     }
@@ -99,8 +92,7 @@ public class FileHelper {
     public static void saveFile(Stage stage, Yard yard) {
         if (!savedOnce) {
             saveFileAs(stage, yard);
-        }
-        else {
+        } else {
             writeFile(yard, lastFile);
         }
     }
@@ -117,20 +109,6 @@ public class FileHelper {
         }
     }
 
-    private static void writeTextFile(String text, File file) {
-        try (BufferedWriter writer = Files.newBufferedWriter(
-                    Paths.get(file.getPath()),
-                    Charset.forName("UTF-8"),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING
-        )) {
-            writer.write(text);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void saveFileAs(Stage stage, Yard yard) {
         FileChooser fileChooser = initFileChooser("Enregistrer sous", YARD_EXTENSION, YARD_FILE_DESCRIPTOR, YARD_DEFAULT_FILENAME, lastFile);
         File file = fileChooser.showSaveDialog(stage);
@@ -141,16 +119,6 @@ public class FileHelper {
         }
     }
 
-    public static void saveSTLFile(Stage stage, List<BundleDto> bundleDtos) {
-        String stl = STLCreator.generateSTL(bundleDtos);
-        FileChooser fileChooser = initFileChooser("Exporter en 3D...", STL_EXTENSION, STL_FILE_DESCRIPTOR, STL_DEFAULT_FILENAME, lastSTLFile);
-        File file = fileChooser.showSaveDialog(stage);
-        if (file != null) {
-            lastSTLFile = ensureExtension(file, STL_EXTENSION);
-            writeTextFile(stl, lastSTLFile);
-        }
-    }
-
     private static FileChooser initFileChooser(String title, String extension, String fileDescriptor, String defaultFilename, File lastFile) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(fileDescriptor + " files (*" + extension + ")", "*" + extension));
@@ -158,8 +126,7 @@ public class FileHelper {
         if (lastFile != null) {
             fileChooser.setInitialDirectory(lastFile.getParentFile());
             fileChooser.setInitialFileName(lastFile.getName());
-        }
-        else {
+        } else {
             fileChooser.setInitialDirectory(DEFAULT_DIRECTORY);
             fileChooser.setInitialFileName(defaultFilename);
         }
@@ -199,12 +166,14 @@ public class FileHelper {
     private static DialogAction parseDialogResults(Optional<ButtonType> result) {
         if (result.isPresent()) {
             switch (result.get().getButtonData()) {
-                case YES: return DialogAction.YES;
-                case NO: return DialogAction.NO;
-                default: return DialogAction.CANCEL;
+                case YES:
+                    return DialogAction.YES;
+                case NO:
+                    return DialogAction.NO;
+                default:
+                    return DialogAction.CANCEL;
             }
         }
         return DialogAction.CANCEL;
     }
-
 }

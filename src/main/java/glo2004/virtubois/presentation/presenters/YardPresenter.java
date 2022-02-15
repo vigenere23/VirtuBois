@@ -42,7 +42,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         this.mainController = mainController;
 
         larmanController = mainController.larmanController;
-        zoom = ConfigHelper.defaultZoom;
+        zoom = DefaultConfig.defaultZoom;
         canDrag = true;
         canDrag = false;
         shouldUpdate = false;
@@ -234,15 +234,15 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private void handleZoom(double delta, Point2D position) {
-        Point2D panningVector = position.substract(getPlanCenterCoords()).multiply(ConfigHelper.zoomFactor - 1);
+        Point2D panningVector = position.substract(getPlanCenterCoords()).multiply(DefaultConfig.zoomFactor - 1);
         if (delta > 0) {
             // ZOOM
-            zoom *= ConfigHelper.zoomFactor;
+            zoom *= DefaultConfig.zoomFactor;
             translateVector = translateVector.substract(panningVector.multiply(1.0 / zoom));
         } else if (delta < 0) {
             // UNZOOM
             translateVector = translateVector.add(panningVector.multiply(1.0 / zoom));
-            zoom /= ConfigHelper.zoomFactor;
+            zoom /= DefaultConfig.zoomFactor;
         } else return;
 
         draw();
@@ -303,16 +303,16 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private Point2D positionInGrid(Point2D point) {
-        int x = (int) (point.getX() / ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
+        int x = (int) (point.getX() / DefaultConfig.gridSquareSize) * DefaultConfig.gridSquareSize;
         if (x >= 0) {
-            x += ConfigHelper.gridSquareSize;
+            x += DefaultConfig.gridSquareSize;
         }
-        int y = (int) (point.getY() / ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
+        int y = (int) (point.getY() / DefaultConfig.gridSquareSize) * DefaultConfig.gridSquareSize;
         if (y <= 0) {
-            y -= ConfigHelper.gridSquareSize;
+            y -= DefaultConfig.gridSquareSize;
         }
-        int prevX = x - ConfigHelper.gridSquareSize;
-        int prevY = y + ConfigHelper.gridSquareSize;
+        int prevX = x - DefaultConfig.gridSquareSize;
+        int prevY = y + DefaultConfig.gridSquareSize;
         if (Math.abs(point.getX() - x) > Math.abs(point.getX() - prevX)) {
             x = prevX;
         }
@@ -434,10 +434,10 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         Point2D coord1 = transformPlanCoordsToRealCoords(new Point2D(0, 0));
         Point2D coord2 = transformPlanCoordsToRealCoords(new Point2D(screenWidth, screenHeight));
 
-        int nextX = (int) (coord1.getX() / ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
-        int nextY = (int) (coord1.getY() / ConfigHelper.gridSquareSize) * ConfigHelper.gridSquareSize;
+        int nextX = (int) (coord1.getX() / DefaultConfig.gridSquareSize) * DefaultConfig.gridSquareSize;
+        int nextY = (int) (coord1.getY() / DefaultConfig.gridSquareSize) * DefaultConfig.gridSquareSize;
 
-        for (int x = nextX; x <= coord2.getX(); x += ConfigHelper.gridSquareSize) {
+        for (int x = nextX; x <= coord2.getX(); x += DefaultConfig.gridSquareSize) {
             Point2D pointX = transformRealCoordsToPlanCoords(new Point2D(x, 0));
             Line line = new Line();
             line.setStartX(pointX.getX());
@@ -450,7 +450,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
             getChildren().add(line);
         }
 
-        for (int y = nextY; y >= coord2.getY(); y -= ConfigHelper.gridSquareSize) {
+        for (int y = nextY; y >= coord2.getY(); y -= DefaultConfig.gridSquareSize) {
             Point2D pointY = transformRealCoordsToPlanCoords(new Point2D(0, y));
             Line line = new Line();
             line.setStartY(pointY.getY());

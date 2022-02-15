@@ -1,6 +1,6 @@
 package glo2004.virtubois.domain.entities;
 
-import glo2004.virtubois.helpers.ConfigHelper;
+import glo2004.virtubois.helpers.DefaultConfig;
 import glo2004.virtubois.helpers.GeomHelper;
 import glo2004.virtubois.helpers.MathHelper;
 import glo2004.virtubois.helpers.Point2D;
@@ -22,14 +22,14 @@ public class Lift extends Drawable3D implements Serializable {
     public Lift(Point2D position) {
         super(position);
         bundlesOnLift = new ArrayList<>();
-        setWidth(ConfigHelper.liftWidth);
-        setLength(ConfigHelper.liftLength);
-        setHeight(ConfigHelper.liftHeight);
-        setArmsHeight(ConfigHelper.armsHeight);
-        setArmsWidth(ConfigHelper.armsWidth);
-        setArmsLength(ConfigHelper.armsLength);
-        setAngle(ConfigHelper.liftAngle);
-        this.scale = ConfigHelper.liftScale;
+        setWidth(DefaultConfig.liftWidth);
+        setLength(DefaultConfig.liftLength);
+        setHeight(DefaultConfig.liftHeight);
+        setArmsHeight(DefaultConfig.armsHeight);
+        setArmsWidth(DefaultConfig.armsWidth);
+        setArmsLength(DefaultConfig.armsLength);
+        setAngle(DefaultConfig.liftAngle);
+        this.scale = DefaultConfig.liftScale;
         repositionArms();
     }
 
@@ -83,11 +83,11 @@ public class Lift extends Drawable3D implements Serializable {
 
     public void setScale(double scale) {
         this.scale = scale;
-        setWidth(ConfigHelper.liftWidth * scale);
-        setLength(ConfigHelper.liftLength * scale);
-        setHeight(ConfigHelper.liftHeight * scale);
-        setArmsWidth(ConfigHelper.armsWidth * scale);
-        setArmsLength(ConfigHelper.armsLength * scale);
+        setWidth(DefaultConfig.liftWidth * scale);
+        setLength(DefaultConfig.liftLength * scale);
+        setHeight(DefaultConfig.liftHeight * scale);
+        setArmsWidth(DefaultConfig.armsWidth * scale);
+        setArmsLength(DefaultConfig.armsLength * scale);
         repositionArms();
     }
 
@@ -96,17 +96,17 @@ public class Lift extends Drawable3D implements Serializable {
         angle %= 360;
         if (angle < 0) angle += 360;
         super.setAngle(angle);
-        ConfigHelper.liftAngle = this.angle;
+        DefaultConfig.liftAngle = this.angle;
         repositionArms();
     }
 
     public void turnRight() {
-        setAngle(angle - ConfigHelper.liftAngleIncrement);
+        setAngle(angle - DefaultConfig.liftAngleIncrement);
         repositionArms();
     }
 
     public void turnLeft() {
-        setAngle(angle + ConfigHelper.liftAngleIncrement);
+        setAngle(angle + DefaultConfig.liftAngleIncrement);
         repositionArms();
     }
 
@@ -119,11 +119,11 @@ public class Lift extends Drawable3D implements Serializable {
     }
 
     public void riseArms() {
-        setArmsHeight(armsHeight + ConfigHelper.armsHeightIncrement);
+        setArmsHeight(armsHeight + DefaultConfig.armsHeightIncrement);
     }
 
     public void lowerArms() {
-        setArmsHeight(armsHeight - ConfigHelper.armsHeightIncrement);
+        setArmsHeight(armsHeight - DefaultConfig.armsHeightIncrement);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class Lift extends Drawable3D implements Serializable {
     }
 
     private void move(boolean moveForward) {
-        Point2D increment = new Point2D(ConfigHelper.liftPositionIncrement * getScale());
+        Point2D increment = new Point2D(DefaultConfig.liftPositionIncrement * getScale());
         Point2D rotatedIncrement = GeomHelper.getRotatedVector(increment, angle);
         if (moveForward) setPosition(position.add(rotatedIncrement));
         else setPosition(position.substract(rotatedIncrement));

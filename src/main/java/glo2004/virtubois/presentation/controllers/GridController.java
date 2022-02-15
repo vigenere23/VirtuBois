@@ -1,6 +1,6 @@
 package glo2004.virtubois.presentation.controllers;
 
-import glo2004.virtubois.helpers.ConfigHelper;
+import glo2004.virtubois.helpers.DefaultConfig;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,7 +15,7 @@ public class GridController extends BaseController {
     public Button cancelGridButton;
 
     public void handleModificationGridApply(ActionEvent actionEvent) {
-        ConfigHelper.gridSquareSize = Integer.parseInt(gridTextField.getText());
+        DefaultConfig.gridSquareSize = Integer.parseInt(gridTextField.getText());
         stage.close();
     }
 

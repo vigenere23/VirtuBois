@@ -3,7 +3,7 @@ package glo2004.virtubois.presentation.presenters;
 import glo2004.virtubois.domain.dtos.BundleDto;
 import glo2004.virtubois.helpers.CenteredRectangle;
 import glo2004.virtubois.helpers.ColorHelper;
-import glo2004.virtubois.helpers.ConfigHelper;
+import glo2004.virtubois.helpers.DefaultConfig;
 import javafx.scene.paint.Color;
 
 public class BundlePresenter extends CenteredRectangle implements IPresenter {
@@ -18,8 +18,8 @@ public class BundlePresenter extends CenteredRectangle implements IPresenter {
 
     public void draw() {
         Color color = Color.web(dto.color);
-        rectangle.setFill(ColorHelper.setOpacity(color, ConfigHelper.bundleOpacity));
+        rectangle.setFill(ColorHelper.setOpacity(color, DefaultConfig.bundleOpacity));
         rectangle.setStroke(color);
-        rectangle.setStrokeWidth(ConfigHelper.bundleBorderWidth);
+        rectangle.setStrokeWidth(DefaultConfig.bundleBorderWidth);
     }
 }

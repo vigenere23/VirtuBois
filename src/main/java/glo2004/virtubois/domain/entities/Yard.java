@@ -430,7 +430,7 @@ public class Yard implements Serializable {
     private void movingBundles(List<Bundle> bundlesToMove, boolean movingForward) {
         if (!bundlesToMove.isEmpty()) {
             for (Bundle bundle : bundlesToMove) {
-                Point2D increment = new Point2D(ConfigHelper.liftPositionIncrement);
+                Point2D increment = new Point2D(DefaultConfig.liftPositionIncrement);
                 Point2D rotatedIncrement = GeomHelper.getRotatedVector(increment, lift.angle);
                 if (movingForward) bundle.setPosition(bundle.position.add(rotatedIncrement));
                 else bundle.setPosition(bundle.position.substract(rotatedIncrement));

@@ -3,7 +3,7 @@ package glo2004.virtubois.helpers;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class ConfigHelper {
+public class DefaultConfig {
 
     //GRID
     public static int gridSquareSize = 1;

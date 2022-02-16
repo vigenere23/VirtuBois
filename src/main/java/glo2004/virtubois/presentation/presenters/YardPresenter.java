@@ -5,6 +5,7 @@ import glo2004.virtubois.domain.dtos.BundleDto;
 import glo2004.virtubois.domain.dtos.LiftDto;
 import glo2004.virtubois.enums.EditorMode;
 import glo2004.virtubois.helpers.*;
+import glo2004.virtubois.presentation.controllers.MainController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -12,7 +13,6 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import glo2004.virtubois.presentation.controllers.MainController;
 
 import java.util.List;
 
@@ -43,7 +43,6 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
 
         larmanController = mainController.larmanController;
         zoom = DefaultConfig.defaultZoom;
-        canDrag = true;
         canDrag = false;
         shouldUpdate = false;
         dragVector = new Point2D(0, 0);
@@ -211,16 +210,15 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
         }
     }
 
-    private void selectBundleLift(){
-        if(!larmanController.getLiftBundles().isEmpty()) {
+    private void selectBundleLift() {
+        if (!larmanController.getLiftBundles().isEmpty()) {
             BundleDto oldSelectedBundle = topSelectedBundle;
             setTopSelectedBundle(larmanController.getLiftBundles().get(0));
             mainController.updateBundleInfo(topSelectedBundle);
-            if(oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)){
+            if (oldSelectedBundle == null || !oldSelectedBundle.equals(topSelectedBundle)) {
                 mainController.setFocusedBundleElevView(topSelectedBundle);
             }
-        }
-        else {
+        } else {
             draw();
         }
     }
@@ -348,11 +346,7 @@ public class YardPresenter extends Pane implements IPresenter, Cloneable {
     }
 
     private void checkRedoSize() {
-        if (UndoRedo.getRedoSize() == 0) {
-            mainController.redoButton.setDisable(true);
-        } else {
-            mainController.redoButton.setDisable(false);
-        }
+        mainController.redoButton.setDisable(UndoRedo.getRedoSize() == 0);
     }
 
     public void draw() {

@@ -684,7 +684,7 @@ public class MainController extends BaseController {
             observableBundleList = bundles;
             ObservableList<BundleDto> data = FXCollections.observableArrayList(bundles);
             inventoryTable.setItems(data);
-            if (yardPresenter.getTopSelectedBundle() != null) {
+            if (yardPresenter != null && yardPresenter.getTopSelectedBundle() != null) {
                 selectTableViewBundle(yardPresenter.getTopSelectedBundle());
             }
         } else {

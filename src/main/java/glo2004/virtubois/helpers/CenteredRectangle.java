@@ -4,8 +4,9 @@ import glo2004.virtubois.domain.dtos.DrawableDto;
 import glo2004.virtubois.domain.entities.Drawable;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CenteredRectangle {
     protected Rectangle rectangle;
@@ -18,19 +19,19 @@ public class CenteredRectangle {
 
     public CenteredRectangle(Drawable drawable) {
         this(
-                drawable.getPosition(),
-                drawable.getWidth(),
-                drawable.getLength(),
-                drawable.getAngle()
+            drawable.getPosition(),
+            drawable.getWidth(),
+            drawable.getLength(),
+            drawable.getAngle()
         );
     }
 
     public CenteredRectangle(DrawableDto drawableDto) {
         this(
-                drawableDto.position,
-                drawableDto.width,
-                drawableDto.length,
-                drawableDto.angle
+            drawableDto.position,
+            drawableDto.width,
+            drawableDto.length,
+            drawableDto.angle
         );
     }
 
@@ -113,29 +114,25 @@ public class CenteredRectangle {
     }
 
     // https://stackoverflow.com/questions/2259476/rotating-a-point-about-another-point-2d
-    public List<Point2D> getPoints() {
+    public List<Point2D> get2DPoints() {
         // 0 --- 1
         // |     |
         // 3 --- 2
-        List<Point2D> points = new ArrayList<>();
-        points.add(new Point2D(x - width / 2.0, y + height / 2.0));
-        points.add(new Point2D(x + width / 2.0, y + height / 2.0));
-        points.add(new Point2D(x + width / 2.0, y - height / 2.0));
-        points.add(new Point2D(x - width / 2.0, y - height / 2.0));
-
         double cosAngle = Math.cos((rectangle.getRotate() * 2.0 * Math.PI) / 360.0);
         double sinAngle = Math.sin((rectangle.getRotate() * 2.0 * Math.PI) / 360.0);
 
-        for (int i = 0; i < points.size(); i++) {
-            Point2D point = points.get(i).substract(getPosition());
-            Point2D transformedPoint = new Point2D(
-                    point.getX() * cosAngle - point.getY() * sinAngle,
-                    point.getX() * sinAngle + point.getY() * cosAngle
+        return Stream.of(
+            new Point2D(x - width / 2.0, y + height / 2.0),
+            new Point2D(x + width / 2.0, y + height / 2.0),
+            new Point2D(x + width / 2.0, y - height / 2.0),
+            new Point2D(x - width / 2.0, y - height / 2.0)
+        ).map(point -> {
+            Point2D centeredPoint = point.substract(getPosition());
+            Point2D rotatedCenteredPoint = new Point2D(
+                centeredPoint.getX() * cosAngle - centeredPoint.getY() * sinAngle,
+                centeredPoint.getX() * sinAngle + centeredPoint.getY() * cosAngle
             );
-            points.set(i, transformedPoint.add(getPosition()));
-        }
-
-        return points;
-
+            return rotatedCenteredPoint.add(getPosition());
+        }).collect(Collectors.toList());
     }
 }

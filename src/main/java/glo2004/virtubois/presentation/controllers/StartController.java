@@ -8,6 +8,7 @@ import glo2004.virtubois.domain.entities.Yard;
 import glo2004.virtubois.helpers.FileHelper;
 import glo2004.virtubois.helpers.JavafxHelper;
 import glo2004.virtubois.helpers.file.opener.FileOpener;
+import glo2004.virtubois.helpers.view.ViewName;
 import javafx.event.ActionEvent;
 
 import java.util.Optional;
@@ -38,6 +39,6 @@ public class StartController extends BaseController {
         }
 
         LarmanController.getInstance().setYard(openedYard.get());
-        JavafxHelper.loadView(stage, "Main", savingContext.getFileName().orElse("New Yard"), false);
+        JavafxHelper.loadView(stage, ViewName.MAIN, savingContext.getFileName().orElse("New Yard"), false);
     }
 }

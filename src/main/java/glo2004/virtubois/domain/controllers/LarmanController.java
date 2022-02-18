@@ -1,22 +1,36 @@
 package glo2004.virtubois.domain.controllers;
 
+import glo2004.virtubois.context.FileSaverProvider;
 import glo2004.virtubois.domain.dtos.BundleDto;
 import glo2004.virtubois.domain.dtos.LiftDto;
 import glo2004.virtubois.domain.entities.Bundle;
 import glo2004.virtubois.domain.entities.Yard;
 import glo2004.virtubois.helpers.Converter;
 import glo2004.virtubois.helpers.Point2D;
+import glo2004.virtubois.helpers.STLGenerator;
 import glo2004.virtubois.helpers.UndoRedo;
+import glo2004.virtubois.helpers.export.BundlesExporter;
+import glo2004.virtubois.helpers.export.CuboidTriangleGenerator;
+import glo2004.virtubois.helpers.export.STLBundlesExporter;
+import glo2004.virtubois.helpers.export.SquareTriangleGenerator;
+import glo2004.virtubois.helpers.file.saver.FileSaver;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class LarmanController {
+
     private static final LarmanController instance = new LarmanController();
+
     private Yard yard;
+    private final BundlesExporter bundlesExporter;
 
     private LarmanController() {
         clearYard();
+        STLGenerator stlGenerator = new STLGenerator(new CuboidTriangleGenerator(new SquareTriangleGenerator()));
+        FileSaver export3DFileSaver = FileSaverProvider.getInstance().provideExport3DFileSaver(); // TODO Needs to be dynamic
+        // TODO create abstraction and provider for Stage (like Viewer?)
+        bundlesExporter = new STLBundlesExporter(stlGenerator, export3DFileSaver);
     }
 
     public static LarmanController getInstance() {
@@ -146,5 +160,9 @@ public class LarmanController {
 
     public void clearLiftBundles() {
         yard.clearLiftBundles();
+    }
+
+    public void export3DBundles() {
+        bundlesExporter.exportBundles(getBundles()); // TODO use Bundle directly
     }
 }

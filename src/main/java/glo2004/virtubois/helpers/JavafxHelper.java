@@ -1,6 +1,7 @@
 package glo2004.virtubois.helpers;
 
 import glo2004.virtubois.Main;
+import glo2004.virtubois.helpers.view.ViewName;
 import glo2004.virtubois.presentation.controllers.IController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -15,13 +16,13 @@ import java.net.URL;
 
 public class JavafxHelper {
 
-    public static void loadView(Stage stage, String viewName, String title, boolean maximised) {
+    public static void loadView(Stage stage, ViewName viewName, String title, boolean maximised) {
         setupScene(stage, viewName);
         setupStage(stage, title, maximised, false);
     }
 
-    private static void setupScene(Stage stage, String viewName) {
-        URL viewPath = Main.class.getResource("/glo2004/virtubois/presentation/views/" + viewName + ".fxml");
+    private static void setupScene(Stage stage, ViewName viewName) {
+        URL viewPath = Main.class.getResource("/glo2004/virtubois/presentation/views/" + viewName.getValue() + ".fxml");
         FXMLLoader loader = new FXMLLoader(viewPath);
 
         try {
@@ -52,7 +53,7 @@ public class JavafxHelper {
         }
     }
 
-    public static void popupView(String viewName, String title, boolean maximised, boolean waitForClosing) {
+    public static void popupView(ViewName viewName, String title, boolean maximised, boolean waitForClosing) {
         Stage stage = new Stage();
         setupScene(stage, viewName);
         setupStage(stage, title, maximised, waitForClosing);
@@ -64,7 +65,7 @@ public class JavafxHelper {
 
     public static void popupGrid() {
         Stage stage = new Stage();
-        setupScene(stage, "Grid");
+        setupScene(stage, ViewName.GRID);
         setupStage(stage, "Éditer la grille", false, true);
     }
 

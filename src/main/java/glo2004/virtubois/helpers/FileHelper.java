@@ -3,6 +3,7 @@ package glo2004.virtubois.helpers;
 import glo2004.virtubois.domain.controllers.LarmanController;
 import glo2004.virtubois.helpers.file.opener.ConfirmationDialog;
 import glo2004.virtubois.helpers.file.opener.PreconditionException;
+import glo2004.virtubois.helpers.view.ViewName;
 import javafx.stage.Stage;
 
 public class FileHelper {
@@ -26,7 +27,7 @@ public class FileHelper {
     }
 
     private static void newFile(Stage stage) {
-        JavafxHelper.loadView(stage, "Main", "Nouvelle Cour", false);
+        JavafxHelper.loadView(stage, ViewName.MAIN, "Nouvelle Cour", false);
         UndoRedo.getUndo().clear();
         UndoRedo.getRedo().clear();
     }

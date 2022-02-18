@@ -2,6 +2,7 @@ package glo2004.virtubois.presentation.presenters;
 
 import glo2004.virtubois.domain.controllers.LarmanController;
 import glo2004.virtubois.domain.dtos.BundleDto;
+import glo2004.virtubois.presentation.controllers.MainController;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
@@ -18,7 +19,6 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.transform.Rotate;
-import glo2004.virtubois.presentation.controllers.MainController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -228,7 +228,7 @@ public class ElevationViewPresenter3D implements IPresenter {
 
         for (BundleDto bundle : allBundles) {
             BundlePresenter presenter = new BundlePresenter(bundle);
-            for (glo2004.virtubois.helpers.Point2D position : presenter.getPoints()) {
+            for (glo2004.virtubois.helpers.Point2D position : presenter.get2DPoints()) {
                 if (position.getX() < minX) {
                     minX = position.getX();
                 }

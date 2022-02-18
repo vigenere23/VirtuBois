@@ -11,6 +11,16 @@ import java.nio.file.Path;
 public class FileSaverProvider {
 
     public static final String USER_DIR = System.getProperty("user.home");
+    private static final FileSaverProvider instance = new FileSaverProvider();
+
+    private FileSaver export3DFileSaver;
+
+    private FileSaverProvider() {
+    }
+
+    public static FileSaverProvider getInstance() {
+        return instance;
+    }
 
     public FileSaver provideYardFileSaver(SavingContext yardSavingContext, Stage stage) {
         return new FileSaver(
@@ -27,10 +37,14 @@ public class FileSaverProvider {
         );
     }
 
-    public FileSaver provideExport3DFileSaver(Stage stage) {
+    public FileSaver provideExport3DFileSaver() {
+        return export3DFileSaver;
+    }
+
+    public void initExport3DFileSaver(Stage stage) {
         SavingContext export3DSavingContext = new SavingContext();
 
-        return new FileSaver(
+        export3DFileSaver = new FileSaver(
             export3DSavingContext,
             new DialogSavingPrompt(
                 export3DSavingContext,

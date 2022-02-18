@@ -12,6 +12,7 @@ import glo2004.virtubois.enums.EditorMode;
 import glo2004.virtubois.helpers.*;
 import glo2004.virtubois.helpers.file.opener.FileOpener;
 import glo2004.virtubois.helpers.file.saver.FileSaver;
+import glo2004.virtubois.helpers.view.ViewName;
 import glo2004.virtubois.presentation.presenters.ElevationViewPresenter3D;
 import glo2004.virtubois.presentation.presenters.YardPresenter;
 import javafx.beans.property.ObjectProperty;
@@ -39,9 +40,7 @@ import java.util.Optional;
 public class MainController extends BaseController {
 
     private final SavingContext yardSavingContext = YardSavingContext.getInstance();
-    private final STLCreator stlCreator = new STLCreator();
     private final FileSaver yardFileSaver;
-    private final FileSaver export3DFileSaver;
     private final FileOpener yardFileOpener;
 
     public ObjectProperty<EditorMode> editorMode;
@@ -142,11 +141,11 @@ public class MainController extends BaseController {
     public StackPane subScenePane;
 
     public MainController() {
-        FileSaverProvider fileSaverProvider = new FileSaverProvider();
+        FileSaverProvider fileSaverProvider = FileSaverProvider.getInstance();
         FileOpenerProvider fileOpenerProvider = new FileOpenerProvider();
 
+        fileSaverProvider.initExport3DFileSaver(stage);
         yardFileSaver = fileSaverProvider.provideYardFileSaver(yardSavingContext, stage);
-        export3DFileSaver = fileSaverProvider.provideExport3DFileSaver(stage);
         yardFileOpener = fileOpenerProvider.provideYardFileOpener(yardSavingContext, stage, true);
     }
 
@@ -580,9 +579,9 @@ public class MainController extends BaseController {
     }
 
     private void initTableView() {
-        codeColumn.setCellValueFactory(new PropertyValueFactory<BundleDto, String>("barcode"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<BundleDto, String>("essence"));
-        sizeColumn.setCellValueFactory(new PropertyValueFactory<BundleDto, String>("plankSize"));
+        codeColumn.setCellValueFactory(new PropertyValueFactory<>("barcode"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("essence"));
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("plankSize"));
         inventoryTable.setRowFactory(tv -> {
             TableRow<BundleDto> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -660,6 +659,7 @@ public class MainController extends BaseController {
         for (BundleDto bundleDto : larmanController.getCollidingBundles(bundle)) {
             if (bundleDto.z > bundle.z) {
                 canChange = false;
+                break;
             }
         }
         bundleXPosValue.setEditable(canChange);
@@ -707,11 +707,12 @@ public class MainController extends BaseController {
     }
 
     public void handleMenuFileOpen(ActionEvent actionEvent) {
+        // TODO Move this to Larman controller
         Optional<Yard> openedYard = yardFileOpener.open();
 
         if (openedYard.isPresent()) {
             LarmanController.getInstance().setYard(openedYard.get());
-            JavafxHelper.loadView(stage, "Main", yardSavingContext.getFileName().orElse("New yard"), false);
+            JavafxHelper.loadView(stage, ViewName.MAIN, yardSavingContext.getFileName().orElse("New yard"), false);
         }
     }
 
@@ -724,15 +725,11 @@ public class MainController extends BaseController {
     }
 
     public void handleMenuHelpAbout(ActionEvent actionEvent) {
-        JavafxHelper.popupView("About", "À propos", false, false);
+        JavafxHelper.popupView(ViewName.ABOUT, "À propos", false, false);
     }
 
     public void handleExport3D() {
-        List<BundleDto> bundles = larmanController.getBundles();
-        if (!bundles.isEmpty()) {
-            String stl = stlCreator.generateSTL(bundles);
-            export3DFileSaver.save(stl, true);
-        }
+        larmanController.export3DBundles();
     }
 
     public void handleUndoButton(ActionEvent actionEvent) {

@@ -1,7 +1,7 @@
 package glo2004.virtubois.helpers;
 
 import glo2004.virtubois.Main;
-import glo2004.virtubois.helpers.view.ViewName;
+import glo2004.virtubois.helpers.window.ViewName;
 import glo2004.virtubois.presentation.controllers.IController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

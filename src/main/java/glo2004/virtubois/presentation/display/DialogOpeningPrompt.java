@@ -1,0 +1,20 @@
+package glo2004.virtubois.presentation.display;
+
+import glo2004.virtubois.context.SavingContext;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.nio.file.Path;
+
+public class DialogOpeningPrompt extends DialogFilePrompt {
+
+    public DialogOpeningPrompt(SavingContext savingContext, Stage stage, String dialogTitle, String extension, String fileDescriptor, Path defaultPath) {
+        super(savingContext, stage, dialogTitle, extension, fileDescriptor, defaultPath);
+    }
+
+    @Override
+    public File getFile(FileChooser fileChooser) {
+        return fileChooser.showOpenDialog(stage);
+    }
+}

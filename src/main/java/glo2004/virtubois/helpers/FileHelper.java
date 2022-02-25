@@ -1,9 +1,9 @@
 package glo2004.virtubois.helpers;
 
 import glo2004.virtubois.domain.controllers.LarmanController;
-import glo2004.virtubois.helpers.file.opener.ConfirmationDialog;
-import glo2004.virtubois.helpers.file.opener.PreconditionException;
-import glo2004.virtubois.helpers.view.ViewName;
+import glo2004.virtubois.enums.DialogAction;
+import glo2004.virtubois.helpers.window.ViewName;
+import glo2004.virtubois.presentation.display.ConfirmationDialog;
 import javafx.stage.Stage;
 
 public class FileHelper {
@@ -15,9 +15,9 @@ public class FileHelper {
                 "Vous êtes sur le point de perdre vos changements non sauvegardés. Continuer?"
             );
 
-            try {
-                confirmationDialog.execute();
-            } catch (PreconditionException e) {
+            DialogAction action = confirmationDialog.prompt();
+
+            if (!action.equals(DialogAction.YES)) {
                 return;
             }
         }

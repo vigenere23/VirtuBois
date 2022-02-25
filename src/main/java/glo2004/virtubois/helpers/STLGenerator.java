@@ -1,8 +1,8 @@
 package glo2004.virtubois.helpers;
 
 import glo2004.virtubois.domain.dtos.BundleDto;
-import glo2004.virtubois.helpers.export.Triangle;
-import glo2004.virtubois.helpers.export.TriangleGenerator;
+import glo2004.virtubois.infra.export.Triangle;
+import glo2004.virtubois.infra.export.TriangleGenerator;
 import glo2004.virtubois.presentation.presenters.BundlePresenter;
 import javafx.geometry.Point3D;
 

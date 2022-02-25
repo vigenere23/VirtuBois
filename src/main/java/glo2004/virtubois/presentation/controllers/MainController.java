@@ -1,18 +1,12 @@
 package glo2004.virtubois.presentation.controllers;
 
-import glo2004.virtubois.context.FileOpenerProvider;
-import glo2004.virtubois.context.FileSaverProvider;
-import glo2004.virtubois.context.SavingContext;
-import glo2004.virtubois.context.YardSavingContext;
-import glo2004.virtubois.domain.controllers.LarmanController;
+import glo2004.virtubois.context.*;
 import glo2004.virtubois.domain.dtos.BundleDto;
 import glo2004.virtubois.domain.dtos.LiftDto;
-import glo2004.virtubois.domain.entities.Yard;
 import glo2004.virtubois.enums.EditorMode;
 import glo2004.virtubois.helpers.*;
-import glo2004.virtubois.helpers.file.opener.FileOpener;
-import glo2004.virtubois.helpers.file.saver.FileSaver;
-import glo2004.virtubois.helpers.view.ViewName;
+import glo2004.virtubois.helpers.window.ViewName;
+import glo2004.virtubois.presentation.display.fileprompt.FilePrompt;
 import glo2004.virtubois.presentation.presenters.ElevationViewPresenter3D;
 import glo2004.virtubois.presentation.presenters.YardPresenter;
 import javafx.beans.property.ObjectProperty;
@@ -33,6 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+import java.nio.file.Path;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +35,10 @@ import java.util.Optional;
 public class MainController extends BaseController {
 
     private final SavingContext yardSavingContext = YardSavingContext.getInstance();
-    private final FileSaver yardFileSaver;
-    private final FileOpener yardFileOpener;
+    private final FilePrompt yardFileSavingPrompt;
+    private final FilePrompt yardFileSavingAsPrompt;
+    private final FilePrompt yardFileOpeningPrompt;
+    private final FilePrompt export3DPrompt;
 
     public ObjectProperty<EditorMode> editorMode;
     public ToggleGroup editorModeToggleGroup;
@@ -141,12 +138,14 @@ public class MainController extends BaseController {
     public StackPane subScenePane;
 
     public MainController() {
-        FileSaverProvider fileSaverProvider = FileSaverProvider.getInstance();
-        FileOpenerProvider fileOpenerProvider = new FileOpenerProvider();
+        FileSavingPromptProvider fileSavingPromptProvider = new FileSavingPromptProvider();
+        FileOpeningPromptProvider fileOpeningPromptProvider = new FileOpeningPromptProvider();
+        SavingContext export3DSavingContext = Export3DSavingContext.getInstance();
 
-        fileSaverProvider.initExport3DFileSaver(stage);
-        yardFileSaver = fileSaverProvider.provideYardFileSaver(yardSavingContext, stage);
-        yardFileOpener = fileOpenerProvider.provideYardFileOpener(yardSavingContext, stage, true);
+        export3DPrompt = fileSavingPromptProvider.provideExport3DFilePrompt(export3DSavingContext, stage);
+        yardFileSavingPrompt = fileSavingPromptProvider.provideSaveYardFilePrompt(yardSavingContext, stage);
+        yardFileSavingAsPrompt = fileSavingPromptProvider.provideSaveYardAsFilePrompt(yardSavingContext, stage);
+        yardFileOpeningPrompt = fileOpeningPromptProvider.provideOpenYardFilePrompt(yardSavingContext, stage, true);
     }
 
     @FXML
@@ -707,21 +706,22 @@ public class MainController extends BaseController {
     }
 
     public void handleMenuFileOpen(ActionEvent actionEvent) {
-        // TODO Move this to Larman controller
-        Optional<Yard> openedYard = yardFileOpener.open();
+        Optional<Path> path = yardFileOpeningPrompt.promptPath();
 
-        if (openedYard.isPresent()) {
-            LarmanController.getInstance().setYard(openedYard.get());
+        if (path.isPresent()) {
+            larmanController.openYard(path.get());
             JavafxHelper.loadView(stage, ViewName.MAIN, yardSavingContext.getFileName().orElse("New yard"), false);
         }
     }
 
     public void handleMenuFileSave(ActionEvent actionEvent) {
-        yardFileSaver.save(larmanController.getYard(), false);
+        Optional<Path> path = yardFileSavingPrompt.promptPath();
+        path.ifPresent(value -> larmanController.saveYard(value));
     }
 
     public void handleMenuSaveAs(ActionEvent actionEvent) {
-        yardFileSaver.save(larmanController.getYard(), true);
+        Optional<Path> path = yardFileSavingAsPrompt.promptPath();
+        path.ifPresent(value -> larmanController.saveYard(value));
     }
 
     public void handleMenuHelpAbout(ActionEvent actionEvent) {
@@ -729,7 +729,8 @@ public class MainController extends BaseController {
     }
 
     public void handleExport3D() {
-        larmanController.export3DBundles();
+        Optional<Path> path = export3DPrompt.promptPath();
+        path.ifPresent(value -> larmanController.export3DBundles(value));
     }
 
     public void handleUndoButton(ActionEvent actionEvent) {

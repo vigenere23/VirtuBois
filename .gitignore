@@ -2,5 +2,8 @@ target/
 lib/
 bin/
 
+**/*.ser
+**/*.stl
+
 .idea/workspace.xml
 .idea/misc.xml

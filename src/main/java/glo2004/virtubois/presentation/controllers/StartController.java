@@ -1,29 +1,26 @@
 package glo2004.virtubois.presentation.controllers;
 
-import glo2004.virtubois.context.FileOpenerProvider;
+import glo2004.virtubois.context.FileOpeningPromptProvider;
 import glo2004.virtubois.context.SavingContext;
 import glo2004.virtubois.context.YardSavingContext;
 import glo2004.virtubois.domain.controllers.LarmanController;
-import glo2004.virtubois.domain.entities.Yard;
 import glo2004.virtubois.helpers.FileHelper;
 import glo2004.virtubois.helpers.JavafxHelper;
-import glo2004.virtubois.helpers.file.opener.FileOpener;
-import glo2004.virtubois.helpers.view.ViewName;
+import glo2004.virtubois.helpers.window.ViewName;
+import glo2004.virtubois.presentation.display.fileprompt.FilePrompt;
 import javafx.event.ActionEvent;
 
+import java.nio.file.Path;
 import java.util.Optional;
 
 public class StartController extends BaseController {
 
     private final SavingContext savingContext = YardSavingContext.getInstance();
-    private final FileOpenerProvider fileOpenerProvider = new FileOpenerProvider();
-    private final FileOpener yardFileOpener;
+    private final FilePrompt yardOpeningFilePrompt;
 
     public StartController() {
-        SavingContext savingContext = YardSavingContext.getInstance();
-        FileOpenerProvider fileOpenerProvider = new FileOpenerProvider();
-
-        yardFileOpener = fileOpenerProvider.provideYardFileOpener(savingContext, stage, false);
+        FileOpeningPromptProvider fileOpeningPromptProvider = new FileOpeningPromptProvider();
+        yardOpeningFilePrompt = fileOpeningPromptProvider.provideOpenYardFilePrompt(savingContext, stage, false);
     }
 
     public void newFile(ActionEvent actionEvent) {
@@ -31,14 +28,13 @@ public class StartController extends BaseController {
     }
 
     public void openFile(ActionEvent actionEvent) {
-        // FileHelper.openFile(stage);
-        Optional<Yard> openedYard = yardFileOpener.open();
+        Optional<Path> path = yardOpeningFilePrompt.promptPath();
 
-        if (openedYard.isEmpty()) {
+        if (path.isEmpty()) {
             return;
         }
 
-        LarmanController.getInstance().setYard(openedYard.get());
+        LarmanController.getInstance().openYard(path.get());
         JavafxHelper.loadView(stage, ViewName.MAIN, savingContext.getFileName().orElse("New Yard"), false);
     }
 }

@@ -1,20 +1,23 @@
 package glo2004.virtubois.domain.controllers;
 
-import glo2004.virtubois.context.FileSaverProvider;
 import glo2004.virtubois.domain.dtos.BundleDto;
 import glo2004.virtubois.domain.dtos.LiftDto;
 import glo2004.virtubois.domain.entities.Bundle;
 import glo2004.virtubois.domain.entities.Yard;
+import glo2004.virtubois.domain.shared.BundlesExporter;
+import glo2004.virtubois.domain.shared.FileReader;
+import glo2004.virtubois.domain.shared.FileWriter;
 import glo2004.virtubois.helpers.Converter;
 import glo2004.virtubois.helpers.Point2D;
 import glo2004.virtubois.helpers.STLGenerator;
 import glo2004.virtubois.helpers.UndoRedo;
-import glo2004.virtubois.helpers.export.BundlesExporter;
-import glo2004.virtubois.helpers.export.CuboidTriangleGenerator;
-import glo2004.virtubois.helpers.export.STLBundlesExporter;
-import glo2004.virtubois.helpers.export.SquareTriangleGenerator;
-import glo2004.virtubois.helpers.file.saver.FileSaver;
+import glo2004.virtubois.infra.export.CuboidTriangleGenerator;
+import glo2004.virtubois.infra.export.STLBundlesExporter;
+import glo2004.virtubois.infra.export.SquareTriangleGenerator;
+import glo2004.virtubois.infra.file.BaseFileReader;
+import glo2004.virtubois.infra.file.BaseFileWriter;
 
+import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 
@@ -24,13 +27,17 @@ public class LarmanController {
 
     private Yard yard;
     private final BundlesExporter bundlesExporter;
+    private final FileWriter fileWriter;
+    private final FileReader fileReader;
 
     private LarmanController() {
         clearYard();
+
+        fileWriter = new BaseFileWriter();
+        fileReader = new BaseFileReader();
+
         STLGenerator stlGenerator = new STLGenerator(new CuboidTriangleGenerator(new SquareTriangleGenerator()));
-        FileSaver export3DFileSaver = FileSaverProvider.getInstance().provideExport3DFileSaver(); // TODO Needs to be dynamic
-        // TODO create abstraction and provider for Stage (like Viewer?)
-        bundlesExporter = new STLBundlesExporter(stlGenerator, export3DFileSaver);
+        bundlesExporter = new STLBundlesExporter(stlGenerator, fileWriter);
     }
 
     public static LarmanController getInstance() {
@@ -162,7 +169,16 @@ public class LarmanController {
         yard.clearLiftBundles();
     }
 
-    public void export3DBundles() {
-        bundlesExporter.exportBundles(getBundles()); // TODO use Bundle directly
+    public void export3DBundles(Path path) {
+        bundlesExporter.exportBundles(path, getBundles()); // TODO use Bundle directly
+    }
+
+    public void saveYard(Path path) {
+        fileWriter.write(path, yard);
+    }
+
+    public void openYard(Path path) {
+        Yard yard = fileReader.read(path);
+        setYard(yard);
     }
 }

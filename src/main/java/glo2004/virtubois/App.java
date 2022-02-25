@@ -1,7 +1,7 @@
 package glo2004.virtubois;
 
 import glo2004.virtubois.helpers.JavafxHelper;
-import glo2004.virtubois.helpers.view.ViewName;
+import glo2004.virtubois.helpers.window.ViewName;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
